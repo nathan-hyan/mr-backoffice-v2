@@ -46,7 +46,7 @@ interface Props {
 }
 
 function AddProductModal({ show, onClose }: Props) {
-    const { handleSubmit, control, reset, setValue, watch } = useForm<Product>({
+    const { handleSubmit, control, watch } = useForm<Product>({
         defaultValues: EMPTY_FORM,
     });
     const { addDocument } = useFirestore<Product>('products');

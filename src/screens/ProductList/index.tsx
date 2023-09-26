@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@mui/material';
 import { Product } from 'types/data';
 
@@ -11,14 +11,14 @@ function ProductList() {
     const [productList, setProductList] = useState<Product[]>([]);
     const { fetchData } = useFirestore<Product>('products');
 
-    const gatherData = useMemo(() => {
-        let data: Product[] = [];
-        fetchData().then((response) => {
-            data = response;
-        });
+    // const gatherData = useMemo(() => {
+    //     let data: Product[] = [];
+    //     fetchData().then((response) => {
+    //         data = response;
+    //     });
 
-        return data;
-    }, [fetchData]);
+    //     return data;
+    // }, [fetchData]);
 
     //     useEffect(() => {
     //        fetchData().then((response) => {
