@@ -12,7 +12,8 @@
             "~screens/*": ["./screens/*"],
             "~config/*": ["./config/*"],
             "~utils/*": ["./utils/*"],
-            "~hooks/*": ["./hooks/*"]
+            "~hooks/*": ["./hooks/*"],
+            "~assets/*": ["./assets/*"]
         },
 
         /* Bundler mode */

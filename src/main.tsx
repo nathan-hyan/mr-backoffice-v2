@@ -13,6 +13,7 @@ import '@fontsource/roboto/700.css';
 import NavbarWrapper from '~components/NavbarWrapper';
 import Login from '~screens/Login';
 import ProductList from '~screens/ProductList';
+import PrivateRoute from '~components/PrivateRoute';
 
 const root = document.getElementById('root');
 
@@ -31,7 +32,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products',
-                element: <ProductList />,
+                element: (
+                    <PrivateRoute>
+                        <ProductList />
+                    </PrivateRoute>
+                ),
             },
         ],
     },
