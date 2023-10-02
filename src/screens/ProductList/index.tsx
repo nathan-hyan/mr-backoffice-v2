@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Button } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
 import CustomTable from '~components/CustomTable';
@@ -11,32 +10,14 @@ function ProductList() {
     const [productList, setProductList] = useState<Product[]>([]);
     const { fetchData } = useFirestore<Product>('products');
 
-    // const gatherData = useMemo(() => {
-    //     let data: Product[] = [];
-    //     fetchData().then((response) => {
-    //         data = response;
-    //     });
-
-    //     return data;
-    // }, [fetchData]);
-
-    //     useEffect(() => {
-    //        fetchData().then((response) => {
-    // ;
-    //        });
-    //     }, [gatherData]);
+    useEffect(() => {
+        fetchData().then((res) => {
+            setProductList(res);
+        });
+    }, []);
 
     return (
         <>
-            <Button
-                onClick={() =>
-                    fetchData().then((response) => {
-                        setProductList(response);
-                    })
-                }
-            >
-                Fetch data
-            </Button>
             <SearchBox />
             <SortByBox />
             <CustomTable products={productList} />
