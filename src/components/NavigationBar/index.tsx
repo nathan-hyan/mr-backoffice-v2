@@ -5,11 +5,11 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 
 import SideDrawer from './components/SideDrawer';
 import UserMenu from './components/UserMenu';
-
-import { auth } from '~config/firebase';
+import useUserContext from '~contexts/User';
 
 function NavigationBar() {
     const [drawer, setDrawer] = useState(false);
+    const { user } = useUserContext();
     const navigate = useNavigate();
 
     const handleDrawer = () => {
@@ -47,7 +47,7 @@ function NavigationBar() {
                     >
                         StockOS
                     </Typography>
-                    {auth.currentUser ? (
+                    {user ? (
                         <UserMenu />
                     ) : (
                         <Button

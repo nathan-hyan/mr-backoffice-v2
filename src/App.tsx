@@ -2,9 +2,6 @@ import { Box, Button } from '@mui/material';
 import LogoBlack from '~assets/logo_black.png';
 import styles from './styles.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '~config/firebase';
 
 function App() {
     const navigate = useNavigate();
@@ -12,14 +9,6 @@ function App() {
     const handleNavigate = () => {
         navigate('/login');
     };
-
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                navigate('/products');
-            }
-        });
-    }, []);
 
     return (
         <Box

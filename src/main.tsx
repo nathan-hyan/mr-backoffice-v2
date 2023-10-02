@@ -13,14 +13,18 @@ import '@fontsource/roboto/700.css';
 import NavbarWrapper from '~components/NavbarWrapper';
 import Login from '~screens/Login';
 import ProductList from '~screens/ProductList';
-import PrivateRoute from '~components/PrivateRoute';
+import { UserContextProvider } from '~contexts/User';
 
 const root = document.getElementById('root');
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <NavbarWrapper />,
+        element: (
+            <UserContextProvider>
+                <NavbarWrapper />
+            </UserContextProvider>
+        ),
         children: [
             {
                 path: '/',
@@ -32,11 +36,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products',
-                element: (
-                    <PrivateRoute>
-                        <ProductList />
-                    </PrivateRoute>
-                ),
+                element: <ProductList />,
             },
         ],
     },

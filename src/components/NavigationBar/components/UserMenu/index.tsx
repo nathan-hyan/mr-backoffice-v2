@@ -15,9 +15,11 @@ import { enqueueSnackbar } from 'notistack';
 
 import { auth } from '~config/firebase';
 import { stringAvatar } from '~utils/getInitials';
+import useUserContext from '~contexts/User';
 
 function UserMenu() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const { user } = useUserContext();
     const navigate = useNavigate();
 
     const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -61,11 +63,8 @@ function UserMenu() {
                     aria-expanded={anchorEl ? 'true' : undefined}
                 >
                     <Avatar
-                        src={auth.currentUser?.photoURL ?? undefined}
-                        {...stringAvatar(
-                            auth.currentUser?.displayName ??
-                                auth.currentUser?.email
-                        )}
+                        src={user?.photoURL ?? undefined}
+                        {...stringAvatar(user?.displayName ?? user?.email)}
                     />
                 </IconButton>
             </Tooltip>
@@ -85,8 +84,7 @@ function UserMenu() {
             >
                 <MenuItem onClick={handleClose}>
                     <Typography fontWeight="bold">
-                        {auth.currentUser?.displayName ??
-                            auth.currentUser?.email}
+                        {user?.displayName ?? user?.email}
                     </Typography>
                 </MenuItem>
                 <Divider />

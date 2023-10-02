@@ -13,7 +13,8 @@
             "~config/*": ["./config/*"],
             "~utils/*": ["./utils/*"],
             "~hooks/*": ["./hooks/*"],
-            "~assets/*": ["./assets/*"]
+            "~assets/*": ["./assets/*"],
+            "~contexts/*": ["./contexts/*"]
         },
 
         /* Bundler mode */
