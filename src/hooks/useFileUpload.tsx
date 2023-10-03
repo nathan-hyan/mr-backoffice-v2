@@ -42,6 +42,7 @@ function useFileUpload(watch: UseFormWatch<Product>) {
             if (!current) {
                 return;
             }
+
             await uploadImage(current, watch('name'))
                 .then(() => {
                     clearCurrentTimeout();
@@ -52,6 +53,10 @@ function useFileUpload(watch: UseFormWatch<Product>) {
 
                         setIsUploading(false);
                     }
+
+                    // GetPercentage gets called with files.length
+                    // and the current index beign processed.
+
                     getPercentage(files.length, i);
                 })
                 .catch((err) => {

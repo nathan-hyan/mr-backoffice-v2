@@ -21,7 +21,7 @@ interface Props {
 }
 
 function CustomTable({ products }: Props) {
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(true);
 
     const toggleModal = () => {
         setShowModal((prevState) => !prevState);
