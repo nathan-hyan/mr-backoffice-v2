@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
     FormControl,
     InputLabel,
@@ -7,14 +6,19 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
+import { SortBy } from './constants';
+import { StateDispatch } from '~config/globalConstants';
 
-function SortByBox() {
-    const [sortBy, setSortBy] = useState(0);
+interface Props {
+    sortBy: SortBy;
+    setSortBy: StateDispatch<SortBy>;
+}
 
-    const handleSortBy = (event: SelectChangeEvent<number>) => {
+function SortByBox({ sortBy, setSortBy }: Props) {
+    const handleSortBy = (event: SelectChangeEvent<SortBy>) => {
         const { value } = event.target;
 
-        setSortBy(Number(value));
+        setSortBy(value as SortBy);
     };
 
     return (
@@ -30,9 +34,11 @@ function SortByBox() {
                     label="Seleccione una opcion..."
                     onChange={handleSortBy}
                 >
-                    <MenuItem value={0}>Nombre alfabético</MenuItem>
-                    <MenuItem value={1}>Última modificación</MenuItem>
-                    <MenuItem value={2}>ID Interno</MenuItem>
+                    <MenuItem value={SortBy.Name}>Nombre alfabético</MenuItem>
+                    <MenuItem value={SortBy.LastModified}>
+                        Última modificación
+                    </MenuItem>
+                    <MenuItem value={SortBy.InternalId}>ID Interno</MenuItem>
                 </Select>
             </FormControl>
         </Paper>

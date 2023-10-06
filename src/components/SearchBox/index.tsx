@@ -9,9 +9,14 @@ import {
     ToggleButton,
     ToggleButtonGroup,
 } from '@mui/material';
+import { StateDispatch } from '~config/globalConstants';
 
-function SearchBox() {
-    const [inputField, setInputField] = useState('');
+interface Props {
+    searchQuery: string;
+    setSearchQuery: StateDispatch<string>;
+}
+
+function SearchBox({ searchQuery, setSearchQuery }: Props) {
     const [searchCriteria, setSearchCriteria] = useState(0);
 
     const handleChangeValue: ChangeEventHandler<
@@ -19,11 +24,11 @@ function SearchBox() {
     > = (e) => {
         const { value } = e.target;
 
-        setInputField(value);
+        setSearchQuery(value);
     };
 
     const handleClearInput = () => {
-        setInputField('');
+        setSearchQuery('');
     };
 
     const handleChangeSearch: (
@@ -43,7 +48,7 @@ function SearchBox() {
                 sx={{
                     width: '100%',
                 }}
-                value={inputField}
+                value={searchQuery}
                 onChange={handleChangeValue}
                 id="standard-basic"
                 label="Buscar un producto..."
