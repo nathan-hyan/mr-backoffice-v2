@@ -18,10 +18,8 @@ function useFirestore<T>(collectionName: string) {
     const collectionRef = collection(database, collectionName);
 
     const fetchData = async () => {
-        const q = query(collectionRef);
-
         try {
-            const res = await getDocs(q);
+            const res = await getDocs(collectionRef);
 
             return res.docs.map((item) => ({
                 id: item.id,

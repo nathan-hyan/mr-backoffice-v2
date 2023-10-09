@@ -10,7 +10,17 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"dsznajder.es7-react-js-snippets"
+				"dsznajder.es7-react-js-snippets",
+				"vivaxy.vscode-conventional-commits",
+				"WallabyJs.console-ninja",
+				"kamikillerto.vscode-colorize",
+				"quicktype.quicktype",
+				"esbenp.prettier-vscode",
+				"yoavbls.pretty-ts-errors",
+				"hex-ci.stylelint-plus",
+				"meganrogge.template-string-converter",
+				"rangav.vscode-thunder-client",
+				"Gruntfuggly.todo-tree"
 			]
 		}
 	},

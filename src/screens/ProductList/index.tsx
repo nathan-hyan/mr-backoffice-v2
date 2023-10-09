@@ -14,16 +14,10 @@ function ProductList() {
     const { fetchData } = useFirestore<Product>('products');
 
     useEffect(() => {
-        fetchData(sortBy, searchQuery).then((res) => {
+        fetchData().then((res) => {
             setProductList(res);
         });
-    }, [sortBy, searchQuery]);
-
-    console.log({
-        productListLength: productList.length,
-        sortBy,
-        searchQuery,
-    });
+    }, []);
 
     return (
         <>

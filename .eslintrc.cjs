@@ -10,8 +10,17 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
+        'plugin:testing-library/react',
     ],
     overrides: [
+        {
+            // Enable eslint-plugin-testing-library rules or preset only for matching testing files!
+            files: [
+                '**/__tests__/**/*.[jt]s?(x)',
+                '**/?(*.)+(spec|test).[jt]s?(x)',
+            ],
+            extends: ['plugin:testing-library/react'],
+        },
         // override "simple-import-sort" config - requires 'eslint-plugin-simple-import-sort'
         {
             files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
@@ -38,8 +47,22 @@ module.exports = {
         sourceType: 'module',
         project: './tsconfig.json',
     },
-    plugins: ['react', '@typescript-eslint', 'simple-import-sort', 'prettier'],
+    plugins: [
+        'react',
+        '@typescript-eslint',
+        'simple-import-sort',
+        'prettier',
+        'testing-library',
+    ],
     rules: {
+        'no-unused-vars': [
+            'error',
+            { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+        ],
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+        ],
         'import/prefer-default-export': 0,
         'react/react-in-jsx-scope': 0,
         'react/jsx-props-no-spreading': 0,
