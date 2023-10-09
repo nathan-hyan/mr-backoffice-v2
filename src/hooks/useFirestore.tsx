@@ -1,45 +1,59 @@
+import { useCallback, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import {
     addDoc,
     collection,
+    DocumentData,
+    DocumentReference,
     getDocs,
-    orderBy,
-    query,
-    where,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
-import { SortBy } from '~components/SortByBox/constants';
 
 import { database } from '~config/firebase';
+import { FirebaseCollections } from '~constants/firebase';
 
-// TODO: Its best to have the collection names as enums to avoid any errors
-function useFirestore<T>(collectionName: string) {
+function useFirestore<T>(collectionName: FirebaseCollections) {
     const { enqueueSnackbar } = useSnackbar();
-    const collectionRef = collection(database, collectionName);
+    const [fetchLoading, setFetchLoading] = useState(true);
+    const [creatingLoading, setCreatingLoading] = useState(false);
 
-    const fetchData = async () => {
-        try {
-            const res = await getDocs(collectionRef);
+    const fetchData: () => Promise<({ id: string } & T)[]> =
+        useCallback(async () => {
+            const collectionRef = collection(database, collectionName);
+            setFetchLoading(true);
+            try {
+                const res = await getDocs(collectionRef);
 
-            return res.docs.map((item) => ({
-                id: item.id,
-                ...(item.data() as T),
-            }));
-        } catch (err: unknown) {
-            if (err instanceof FirebaseError) {
-                enqueueSnackbar(err.message, { variant: 'error' });
-                return [] as T[];
+                setFetchLoading(false);
+
+                return res.docs.map((item) => ({
+                    id: item.id,
+                    ...(item.data() as T),
+                }));
+            } catch (err: unknown) {
+                setFetchLoading(false);
+
+                if (err instanceof FirebaseError) {
+                    enqueueSnackbar(err.message, { variant: 'error' });
+                    return [];
+                }
+
+                enqueueSnackbar('Ocurrió un error inesperado.', {
+                    variant: 'error',
+                });
+
+                return [];
             }
+        }, [collectionName, enqueueSnackbar]);
 
-            enqueueSnackbar('Ocurrió un error inesperado.', {
-                variant: 'error',
-            });
+    const addDocument: (
+        newDocument: T
+    ) => Promise<
+        DocumentReference<Record<string, unknown>, DocumentData> | T[]
+    > = async (newDocument) => {
+        setCreatingLoading(true);
+        const collectionRef = collection(database, collectionName);
 
-            return [] as T[];
-        }
-    };
-
-    const addDocument = async (newDocument: T) => {
         try {
             const res = await addDoc(
                 collectionRef,
@@ -48,21 +62,23 @@ function useFirestore<T>(collectionName: string) {
             enqueueSnackbar('Producto creado correctamente', {
                 variant: 'success',
             });
+            setCreatingLoading(false);
 
             return res;
         } catch (err: unknown) {
+            setCreatingLoading(false);
             if (err instanceof FirebaseError) {
                 enqueueSnackbar(err.message, { variant: 'error' });
-                return [] as T[];
+                return [];
             }
 
             enqueueSnackbar('Ocurrió un error inesperado.', {
                 variant: 'error',
             });
-            return [] as T[];
+            return [];
         }
     };
 
-    return { fetchData, addDocument };
+    return { fetchData, addDocument, fetchLoading, creatingLoading };
 }
 export default useFirestore;

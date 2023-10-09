@@ -35,6 +35,10 @@ export default defineConfig({
                 find: '~contexts',
                 replacement: path.resolve(__dirname, 'src/contexts'),
             },
+            {
+                find: '~constants',
+                replacement: path.resolve(__dirname, 'src/constants'),
+            },
         ],
     },
 });

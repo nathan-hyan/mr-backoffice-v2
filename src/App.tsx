@@ -1,7 +1,9 @@
-import { Box, Button } from '@mui/material';
-import LogoBlack from '~assets/logo_black.png';
-import styles from './styles.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
+
+import styles from './styles.module.scss';
+
+import LogoBlack from '~assets/logo_black.png';
 
 function App() {
     const navigate = useNavigate();
@@ -22,7 +24,11 @@ function App() {
                 minHeight: '30rem',
             }}
         >
-            <img src={LogoBlack} className={styles.image} />
+            <img
+                src={LogoBlack}
+                className={styles.image}
+                alt="Mundo Regalo Logo"
+            />
 
             <Button variant="contained" onClick={handleNavigate}>
                 Inicie sesión para continuar

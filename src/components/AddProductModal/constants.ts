@@ -25,7 +25,7 @@ interface Form<T> {
     id: number;
     label: string;
     name: T;
-    required?: boolean;
+    required: boolean;
     multiline?: boolean;
     type: InputType;
 }
@@ -58,12 +58,14 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
         label: 'Stock',
         name: 'stock',
         type: InputType.Number,
+        required: false,
     },
     {
         id: 2,
         label: 'Código de barras',
         name: 'barcode',
         type: InputType.Text,
+        required: false,
     },
 ];
 
@@ -73,24 +75,28 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
         label: 'Precio de costo',
         name: 'cost',
         type: InputType.Number,
+        required: true,
     },
     {
         id: 2,
         label: 'Precio de lista',
         name: 'list',
         type: InputType.Number,
+        required: true,
     },
     {
         id: 3,
         label: 'Precio online',
         name: 'web',
         type: InputType.Number,
+        required: true,
     },
     {
         id: 4,
         label: 'Precio de contado',
         name: 'cash',
         type: InputType.Number,
+        required: true,
     },
 ];
 
@@ -100,12 +106,14 @@ export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
         label: 'Marca',
         name: 'brand',
         type: InputType.Text,
+        required: true,
     },
     {
         id: 2,
         label: 'Dueño de negocio',
         name: 'businessOwner',
         type: InputType.Text,
+        required: true,
     },
     // {
     //     id: 4,
@@ -118,12 +126,14 @@ export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
         label: 'Ubicación dentro de sucursal',
         name: 'storePosition',
         type: InputType.Text,
+        required: true,
     },
     {
         id: 6,
         label: 'Peso (kg)',
         name: 'weight',
         type: InputType.Number,
+        required: false,
     },
 ];
 
@@ -133,18 +143,21 @@ export const DIMENSIONS_FORM: Form<DimensionsInputName>[] = [
         label: 'Altura',
         name: 'height',
         type: InputType.Number,
+        required: false,
     },
     {
         id: 2,
         label: 'Ancho',
         name: 'width',
         type: InputType.Number,
+        required: false,
     },
     {
         id: 3,
         label: 'Largo',
         name: 'depth',
         type: InputType.Number,
+        required: false,
     },
 ];
 
@@ -154,12 +167,14 @@ export const SPECIFICATIONS_FORM: Form<DescriptionInputName>[] = [
         label: 'Titulo',
         name: 'title',
         type: InputType.Text,
+        required: false,
     },
     {
         id: 2,
         label: 'Descripcion',
         name: 'description',
         type: InputType.Text,
+        required: false,
     },
 ];
 
@@ -169,18 +184,21 @@ export const VARIANTS_FORM: Form<VariantsInputName>[] = [
         label: 'Color',
         name: 'color',
         type: InputType.Text,
+        required: false,
     },
     {
         id: 2,
         label: 'Barcode',
         name: 'barcode',
         type: InputType.Text,
+        required: false,
     },
     {
         id: 3,
         label: 'Stock',
         name: 'stock',
         type: InputType.Number,
+        required: false,
     },
 ];
 

@@ -11,9 +11,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
+import ProductProvider from '~contexts/Products';
+import { UserContextProvider } from '~contexts/User';
 import Login from '~screens/Login';
 import ProductList from '~screens/ProductList';
-import { UserContextProvider } from '~contexts/User';
 
 const root = document.getElementById('root');
 
@@ -22,7 +23,9 @@ const router = createBrowserRouter([
         path: '/',
         element: (
             <UserContextProvider>
-                <NavbarWrapper />
+                <ProductProvider>
+                    <NavbarWrapper />
+                </ProductProvider>
             </UserContextProvider>
         ),
         children: [

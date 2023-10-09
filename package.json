@@ -9,12 +9,12 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-"overrides": {
-  "glob-parent": "^5.1.2",
-  "trim": "^0.0.3",
-  "trim-newlines": "^3.0.1",
-  "yargs-parser": "^13.1.2"
-},
+  "overrides": {
+    "glob-parent": "^5.1.2",
+    "trim": "^0.0.3",
+    "trim-newlines": "^3.0.1",
+    "yargs-parser": "^13.1.2"
+  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -49,6 +49,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-testing-library": "^6.0.2",
     "prettier": "^3.0.3",
     "stylelint": "^15.10.3",
     "stylelint-config-prettier-scss": "^1.0.0",
