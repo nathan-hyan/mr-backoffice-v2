@@ -30,7 +30,7 @@ function CustomTable({ products }: Props) {
     return (
         <>
             <AddProductModal show={showModal} onClose={toggleModal} />
-            <TableContainer component={Paper} sx={{ mb: 3, maxHeight: 440 }}>
+            <TableContainer component={Paper} sx={{ mb: 3, minHeight: 440, height: "30vh" }}>
                 <Table stickyHeader>
                     <TableHead>
                         <Row header="show" />

@@ -17,25 +17,8 @@ function useFirestore<T>(collectionName: string) {
     const { enqueueSnackbar } = useSnackbar();
     const collectionRef = collection(database, collectionName);
 
-    const fetchData = async (
-        filterBy: SortBy,
-        searchQuery: string | undefined
-    ) => {
-        const sorting = {
-            [SortBy.Name]: 'name',
-            [SortBy.LastModified]: 'prices.cost.lastModified',
-            [SortBy.InternalId]: 'internalId',
-        };
-
-        const regexpQuery = new RegExp(`/${searchQuery}/`, 'i');
-
-        const filtered = query(
-            collectionRef,
-            where('name', '>=', regexpQuery),
-            where('name', '<=', regexpQuery + '~')
-        );
-
-        const q = query(filtered, orderBy(sorting[filterBy], 'asc'));
+    const fetchData = async () => {
+        const q = query(collectionRef);
 
         try {
             const res = await getDocs(q);

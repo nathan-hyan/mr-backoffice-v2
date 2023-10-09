@@ -13,6 +13,11 @@
 				"dsznajder.es7-react-js-snippets"
 			]
 		}
+	},
+	"portsAttributes": {
+		"5173": {
+			"label": "Vite App"
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
