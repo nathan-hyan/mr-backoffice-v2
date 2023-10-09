@@ -52,3 +52,10 @@ if (root) {
         </React.StrictMode>
     );
 }
+
+window.confirm(
+    `Estas en el ambiente de prueba de la aplicacion, cualquier cambio que se haga en este entorno puede ser borrado como consecuencia de pruebas aleatorias, El ambiente de produccion estara listo dentro de poco :)
+
+clickear un par de veces en ok o cancel para continuar :D
+                    `
+);
