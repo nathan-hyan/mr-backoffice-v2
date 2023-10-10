@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { red } from '@mui/material/colors';
 
 import App from './App';
 
@@ -18,15 +20,37 @@ import ProductList from '~screens/ProductList';
 
 const root = document.getElementById('root');
 
+const theme = createTheme({
+    components: {
+        // Name of the component
+        MuiTableRow: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    '&.Mui-selected': {
+                        backgroundColor: red[300],
+
+                        '&:hover': {
+                            backgroundColor: red[500],
+                        },
+                    },
+                },
+            },
+        },
+    },
+});
+
 const router = createBrowserRouter([
     {
         path: '/',
         element: (
-            <UserContextProvider>
-                <ProductProvider>
-                    <NavbarWrapper />
-                </ProductProvider>
-            </UserContextProvider>
+            <ThemeProvider theme={theme}>
+                <UserContextProvider>
+                    <ProductProvider>
+                        <NavbarWrapper />
+                    </ProductProvider>
+                </UserContextProvider>
+            </ThemeProvider>
         ),
         children: [
             {
@@ -52,10 +76,3 @@ if (root) {
         </React.StrictMode>
     );
 }
-
-window.confirm(
-    `Estas en el ambiente de prueba de la aplicacion, cualquier cambio que se haga en este entorno puede ser borrado como consecuencia de pruebas aleatorias, El ambiente de produccion estara listo dentro de poco :)
-
-clickear un par de veces en ok o cancel para continuar :D
-                    `
-);

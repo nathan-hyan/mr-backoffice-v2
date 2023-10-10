@@ -1,18 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
     createContext,
     ReactNode,
+    useCallback,
     useContext,
-    useEffect,
     useMemo,
     useState,
 } from 'react';
 import { Product } from 'types/data';
 
-import { INITIAL_CONTEXT } from './constants';
-
-import { FirebaseCollections } from '~constants/firebase';
-import useFirestore from '~hooks/useFirestore';
+import {
+    INITIAL_CONTEXT,
+    mockProducts,
+    SearchCriteria,
+    SortBy,
+} from './constants';
+import { compare } from './utils';
 
 interface Props {
     children: ReactNode;
@@ -21,19 +23,78 @@ interface Props {
 const ProductContext = createContext(INITIAL_CONTEXT);
 
 export default function ProductProvider({ children }: Props) {
-    const [productList, setProductList] = useState<Product[]>([]);
-    const { fetchData } = useFirestore<Product>(FirebaseCollections.Products);
+    const [productList, setProductList] = useState<Product[]>(mockProducts);
+    const [productListCopy, setProductListCopy] =
+        useState<Product[]>(mockProducts);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>(
+        SearchCriteria.ProductName
+    );
+    const [sortBy, setSortBy] = useState<SortBy>(SortBy.Name);
+
+    const saveProducts = useCallback((products: Product[]) => {
+        setProductList(products);
+        setProductListCopy(products);
+    }, []);
+
+    const performSearch = useCallback(
+        (query: string, criteria: SearchCriteria) => {
+            setSearchQuery(query);
+            setSearchCriteria(criteria);
+
+            const filteredProducts = productListCopy.filter(
+                ({ name, barcode }) =>
+                    criteria === SearchCriteria.ProductName
+                        ? name.toLowerCase().includes(query.toLocaleLowerCase())
+                        : barcode
+                              .toLowerCase()
+                              .includes(query.toLocaleLowerCase())
+            );
+
+            setProductList(filteredProducts);
+        },
+        [productListCopy]
+    );
+
+    const clearSearch = useCallback(() => {
+        setSearchQuery('');
+        setSearchCriteria(SearchCriteria.ProductName);
+        setProductList(productListCopy);
+    }, [productListCopy]);
+
+    const handleSort = useCallback(
+        (newSorting: SortBy) => {
+            setSortBy(newSorting);
+
+            const sortedItems = productList.sort(compare(newSorting));
+
+            setProductList(sortedItems);
+        },
+        [productList]
+    );
 
     const value = useMemo(
         () => ({
             productList,
+            saveProducts,
+            performSearch,
+            searchQuery,
+            clearSearch,
+            searchCriteria,
+            sortBy,
+            handleSort,
         }),
-        [productList]
+        [
+            productList,
+            saveProducts,
+            performSearch,
+            searchQuery,
+            clearSearch,
+            searchCriteria,
+            sortBy,
+            handleSort,
+        ]
     );
-
-    useEffect(() => {
-        fetchData().then((res) => setProductList(res));
-    }, [fetchData]);
 
     return (
         <ProductContext.Provider value={value}>

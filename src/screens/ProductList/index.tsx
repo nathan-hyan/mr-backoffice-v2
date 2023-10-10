@@ -1,21 +1,30 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { Product } from 'types/data';
 
 import CustomTable from '~components/CustomTable';
 import SearchBox from '~components/SearchBox';
 import SortByBox from '~components/SortByBox';
-import { SortBy } from '~components/SortByBox/constants';
+import { FirebaseCollections } from '~constants/firebase';
+import { useProducts } from '~contexts/Products';
+import useFirestore from '~hooks/useFirestore';
 
 function ProductList() {
-    const [sortBy, setSortBy] = useState<SortBy>(SortBy.Name);
-    const [searchQuery, setSearchQuery] = useState('');
+    const { saveProducts } = useProducts();
+    const { fetchData } = useFirestore<Product>(FirebaseCollections.Products);
+
+    useEffect(() => {
+        fetchData()
+            .then((res) => {
+                // saveProducts(res);
+                console.log(res);
+            })
+            .catch((err) => console.log(err));
+    }, [fetchData, saveProducts]);
 
     return (
         <>
-            <SearchBox
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-            />
-            <SortByBox setSortBy={setSortBy} sortBy={sortBy} />
+            <SearchBox />
+            <SortByBox />
             <CustomTable />
         </>
     );

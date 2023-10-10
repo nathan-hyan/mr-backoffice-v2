@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEvent, useState } from 'react';
+import { ChangeEventHandler, MouseEvent } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
@@ -9,33 +9,33 @@ import {
     ToggleButton,
     ToggleButtonGroup,
 } from '@mui/material';
-import { StateDispatch } from '~config/globalConstants';
+import { Nullable } from 'vite-env';
 
-interface Props {
-    searchQuery: string;
-    setSearchQuery: StateDispatch<string>;
-}
+import { useProducts } from '~contexts/Products';
 
-function SearchBox({ searchQuery, setSearchQuery }: Props) {
-    const [searchCriteria, setSearchCriteria] = useState(0);
+function SearchBox() {
+    const { performSearch, searchQuery, clearSearch, searchCriteria } =
+        useProducts();
 
     const handleChangeValue: ChangeEventHandler<
         HTMLInputElement | HTMLTextAreaElement
     > = (e) => {
         const { value } = e.target;
 
-        setSearchQuery(value);
+        performSearch(value, searchCriteria);
     };
 
     const handleClearInput = () => {
-        setSearchQuery('');
+        clearSearch();
     };
 
     const handleChangeSearch: (
         event: MouseEvent<HTMLElement, globalThis.MouseEvent>,
-        value: number
+        value: Nullable<number>
     ) => void = (_, newValue) => {
-        setSearchCriteria(newValue);
+        if (typeof newValue === 'number') {
+            performSearch(searchQuery, newValue);
+        }
     };
 
     return (
