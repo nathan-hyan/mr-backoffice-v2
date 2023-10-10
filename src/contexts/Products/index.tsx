@@ -8,12 +8,7 @@ import {
 } from 'react';
 import { Product } from 'types/data';
 
-import {
-    INITIAL_CONTEXT,
-    mockProducts,
-    SearchCriteria,
-    SortBy,
-} from './constants';
+import { INITIAL_CONTEXT, SearchCriteria, SortBy } from './constants';
 import { compare } from './utils';
 
 interface Props {
@@ -23,9 +18,8 @@ interface Props {
 const ProductContext = createContext(INITIAL_CONTEXT);
 
 export default function ProductProvider({ children }: Props) {
-    const [productList, setProductList] = useState<Product[]>(mockProducts);
-    const [productListCopy, setProductListCopy] =
-        useState<Product[]>(mockProducts);
+    const [productList, setProductList] = useState<Product[]>([]);
+    const [productListCopy, setProductListCopy] = useState<Product[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>(
         SearchCriteria.ProductName

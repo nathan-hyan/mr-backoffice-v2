@@ -15,7 +15,7 @@ function ProductList() {
     useEffect(() => {
         fetchData()
             .then((res) => {
-                // saveProducts(res);
+                saveProducts(res);
                 console.log(res);
             })
             .catch((err) => console.log(err));
