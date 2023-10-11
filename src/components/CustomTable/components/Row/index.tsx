@@ -14,6 +14,12 @@ function Row(props: Props) {
     if (header === 'hidden' && props.data) {
         const { internalId, name, stock, prices, category, barcode } =
             props.data;
+
+        const date = prices.cost.lastModified
+            ? // ? Timestamp.date(prices.cost.lastModified).toDate()
+              prices.cost.lastModified.toDate()
+            : null;
+
         return (
             <TableRow
                 selected={stock <= 0}
@@ -41,9 +47,7 @@ function Row(props: Props) {
                 <TableCell>{category}</TableCell>
                 <TableCell>{barcode}</TableCell>
                 <TableCell>
-                    {prices.cost.lastModified
-                        ? String(prices.cost.lastModified)
-                        : '-'}
+                    {date ? date.toLocaleDateString('es-ES') : '-'}
                 </TableCell>
             </TableRow>
         );

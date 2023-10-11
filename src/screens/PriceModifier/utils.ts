@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { Product } from 'types/data';
 
 import { PriceModifierForm } from './constants';
@@ -35,19 +36,19 @@ export const batchUpdateData = (
             prices: {
                 cost: {
                     value: newCostPrice,
-                    lastModified: new Date(),
+                    lastModified: Timestamp.fromDate(new Date()),
                 },
                 list: {
                     value: newListPrice,
-                    lastModified: new Date(),
+                    lastModified: Timestamp.fromDate(new Date()),
                 },
                 cash: {
                     value: newCashPrice,
-                    lastModified: new Date(),
+                    lastModified: Timestamp.fromDate(new Date()),
                 },
                 web: {
                     value: newWebPrice,
-                    lastModified: new Date(),
+                    lastModified: Timestamp.fromDate(new Date()),
                 },
             },
         };

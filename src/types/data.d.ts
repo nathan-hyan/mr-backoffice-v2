@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 interface Variants {
     color: string;
     barCode: string;
@@ -6,7 +8,7 @@ interface Variants {
 
 interface Price {
     value: number;
-    lastModified?: Date;
+    lastModified?: Timestamp;
 }
 
 interface Prices {
