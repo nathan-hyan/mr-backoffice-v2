@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { Product } from 'types/data';
 
 export enum SearchCriteria {
@@ -56,7 +57,7 @@ export const mockProducts: Product[] = [
             cost: { value: 50 },
             cash: { value: 60 },
             list: { value: 70 },
-            web: { value: 65, lastModified: new Date() },
+            web: { value: 65, lastModified: Timestamp.fromDate(new Date()) },
         },
         internalId: 101,
         imageURL: 'https://example.com/product1.jpg',
@@ -85,7 +86,7 @@ export const mockProducts: Product[] = [
             cost: { value: 40 },
             cash: { value: 45 },
             list: { value: 55 },
-            web: { value: 50, lastModified: new Date() },
+            web: { value: 50, lastModified: Timestamp.fromDate(new Date()) },
         },
         internalId: 102,
         imageURL: 'https://example.com/product2.jpg',
@@ -114,7 +115,7 @@ export const mockProducts: Product[] = [
             cost: { value: 60 },
             cash: { value: 70 },
             list: { value: 80 },
-            web: { value: 75, lastModified: new Date() },
+            web: { value: 75, lastModified: Timestamp.fromDate(new Date()) },
         },
         internalId: 103,
         imageURL: 'https://example.com/product3.jpg',

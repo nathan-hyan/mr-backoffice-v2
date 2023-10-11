@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
     readonly VITE_APP_TITLE: string;
-    readonly VITE_ALLOWED_PUBLIC_ROUTES: string[];
+    readonly VITE_ALLOWED_PUBLIC_ROUTES: string;
     readonly VITE_FIREBASE_API_KEY: string;
     readonly VITE_FIREBASE_AUTH_DOMAIN: string;
     readonly VITE_FIREBASE_PROJECT_ID: string;
