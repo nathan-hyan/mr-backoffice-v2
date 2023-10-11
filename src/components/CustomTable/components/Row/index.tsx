@@ -26,10 +26,18 @@ function Row(props: Props) {
                 <TableCell>{internalId}</TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{stock}</TableCell>
-                <TableCell>${prices.cost.value.toFixed(2)}</TableCell>
-                <TableCell>${prices.cash.value.toFixed(2)}</TableCell>
-                <TableCell>${prices.list.value.toFixed(2)}</TableCell>
-                <TableCell>${prices.web.value.toFixed(2)}</TableCell>
+                <TableCell>
+                    ${(Number(prices.cost.value) || 0).toFixed(2)}
+                </TableCell>
+                <TableCell>
+                    ${(Number(prices.cash.value) || 0).toFixed(2)}
+                </TableCell>
+                <TableCell>
+                    ${(Number(prices.list.value) || 0).toFixed(2)}
+                </TableCell>
+                <TableCell>
+                    ${(Number(prices.web.value) || 0).toFixed(2)}
+                </TableCell>
                 <TableCell>{category}</TableCell>
                 <TableCell>{barcode}</TableCell>
                 <TableCell>

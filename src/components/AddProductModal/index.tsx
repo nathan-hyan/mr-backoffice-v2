@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { faker } from '@faker-js/faker';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import {
     Box,
@@ -28,12 +29,11 @@ interface Props {
 }
 
 function AddProductModal({ show, onClose }: Props) {
-    const { handleSubmit, control, watch, reset, formState } = useForm<Product>(
-        {
+    const { handleSubmit, control, watch, reset, formState, setValue } =
+        useForm<Product>({
             defaultValues: EMPTY_FORM,
             mode: 'onChange',
-        }
-    );
+        });
 
     const { errors } = formState;
 
@@ -53,8 +53,61 @@ function AddProductModal({ show, onClose }: Props) {
         onClose();
     };
 
+    const fillFakeData = () => {
+        setValue('name', faker.commerce.productName());
+        setValue('description', faker.commerce.productDescription());
+        setValue('internalId', faker.number.int(100));
+        setValue('stock', faker.number.int({ min: 0, max: 50 }));
+        setValue(
+            'barcode',
+            String(faker.number.int({ min: 11111111111, max: 99999999999 }))
+        );
+        setValue(
+            'category',
+            [
+                'libreria',
+                'imprenta',
+                'servicios',
+                'regaleria',
+                'biju-cosmetica',
+                'electronica',
+                'cotillon',
+            ][faker.number.int({ min: 1, max: 7 })]
+        );
+        setValue('subCategory', faker.commerce.department());
+
+        setValue(
+            'prices.cash.value',
+            Number(faker.commerce.price({ min: 5, max: 300 }))
+        );
+        setValue(
+            'prices.list.value',
+            Number(faker.commerce.price({ min: 5, max: 300 }))
+        );
+        setValue(
+            'prices.web.value',
+            Number(faker.commerce.price({ min: 5, max: 300 }))
+        );
+        setValue(
+            'prices.cost.value',
+            Number(faker.commerce.price({ min: 5, max: 300 }))
+        );
+
+        setValue('brand', faker.commerce.product());
+        setValue('businessOwner', faker.person.fullName());
+        setValue('storePosition', faker.location.countryCode());
+        setValue('weight', faker.number.int({ min: 2, max: 10 }));
+
+        setValue('dimensions.width', faker.number.int({ min: 2, max: 10 }));
+        setValue('dimensions.height', faker.number.int({ min: 2, max: 10 }));
+        setValue('dimensions.depth', faker.number.int({ min: 2, max: 10 }));
+    };
+
     return (
         <Dialog open={show} onClose={handleCancel} fullWidth maxWidth="lg">
+            {import.meta.env.VITE_LOCAL_ENV && (
+                <Button onClick={fillFakeData}>Fill with fake data</Button>
+            )}
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
                 <DialogTitle>Crear producto</DialogTitle>
 

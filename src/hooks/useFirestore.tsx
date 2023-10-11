@@ -6,6 +6,7 @@ import {
     DocumentData,
     DocumentReference,
     getDocs,
+    onSnapshot,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
 
@@ -46,6 +47,65 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
             }
         }, [collectionName, enqueueSnackbar]);
 
+    type Callback = (data: ({ id: string } & T)[]) => void;
+
+    const subscribeToData = useCallback(
+        (callback: Callback) => {
+            const collectionRef = collection(database, collectionName);
+
+            return onSnapshot(collectionRef, (snapshot) => {
+                try {
+                    setFetchLoading(false);
+
+                    const response = snapshot.docs.map((item) => ({
+                        id: item.id,
+                        ...(item.data() as T),
+                    }));
+
+                    callback(response);
+                } catch (err: unknown) {
+                    setFetchLoading(false);
+
+                    if (err instanceof FirebaseError) {
+                        enqueueSnackbar(err.message, { variant: 'error' });
+                    }
+
+                    enqueueSnackbar('Ocurrió un error inesperado.', {
+                        variant: 'error',
+                    });
+
+                    // callback([]);
+                }
+            });
+
+            // let data:  = [];
+
+            // (snapshot) => {
+            //             try {
+            //                 setFetchLoading(false);
+
+            //                 return snapshot.docs.map((item) => ({
+            //                     id: item.id,
+            //                     ...(item.data() as T),
+            //                 }));
+            //             } catch (err: unknown) {
+            //                 setFetchLoading(false);
+
+            //                 if (err instanceof FirebaseError) {
+            //                     enqueueSnackbar(err.message, { variant: 'error' });
+            //                     return [];
+            //                 }
+
+            //                 enqueueSnackbar('Ocurrió un error inesperado.', {
+            //                     variant: 'error',
+            //                 });
+
+            //                 return [];
+            //             }
+        },
+        [collectionName, enqueueSnackbar]
+    );
+
     const addDocument: (
         newDocument: T
     ) => Promise<
@@ -79,6 +139,12 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
         }
     };
 
-    return { fetchData, addDocument, fetchLoading, creatingLoading };
+    return {
+        fetchData,
+        addDocument,
+        fetchLoading,
+        creatingLoading,
+        subscribeToData,
+    };
 }
 export default useFirestore;

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { AttachMoney } from '@mui/icons-material';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import PrintIcon from '@mui/icons-material/Print';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -63,6 +64,14 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
                             <PrintIcon />
                         </ListItemIcon>
                         <ListItemText primary="Imprimir list. productos" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton onClick={handleNavigate('/priceModifier')}>
+                        <ListItemIcon>
+                            <AttachMoney />
+                        </ListItemIcon>
+                        <ListItemText primary="Modificar precios en lote" />
                     </ListItemButton>
                 </ListItem>
             </List>

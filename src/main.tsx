@@ -16,6 +16,7 @@ import NavbarWrapper from '~components/NavbarWrapper';
 import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
 import Login from '~screens/Login';
+import PriceModifier from '~screens/PriceModifier';
 import ProductList from '~screens/ProductList';
 
 const root = document.getElementById('root');
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
             {
                 path: '/products',
                 element: <ProductList />,
+            },
+            {
+                path: '/priceModifier',
+                element: <PriceModifier />,
             },
         ],
     },

@@ -10,16 +10,19 @@ import useFirestore from '~hooks/useFirestore';
 
 function ProductList() {
     const { saveProducts } = useProducts();
-    const { fetchData } = useFirestore<Product>(FirebaseCollections.Products);
+    const { subscribeToData } = useFirestore<Product>(
+        FirebaseCollections.Products
+    );
 
     useEffect(() => {
-        fetchData()
-            .then((res) => {
-                saveProducts(res);
-                console.log(res);
-            })
-            .catch((err) => console.log(err));
-    }, [fetchData, saveProducts]);
+        const unsubscribe = subscribeToData((data) => {
+            saveProducts(data);
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [saveProducts, subscribeToData]);
 
     return (
         <>
