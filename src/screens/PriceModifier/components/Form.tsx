@@ -16,9 +16,10 @@ import { PriceModifierForm } from '../constants';
 interface Props {
     control: Control<PriceModifierForm, unknown>;
     errors: FieldErrors<PriceModifierForm>;
+    disabled: boolean;
 }
 
-function Form({ control, errors }: Props) {
+function Form({ control, errors, disabled }: Props) {
     return (
         <>
             <Controller
@@ -195,8 +196,15 @@ function Form({ control, errors }: Props) {
                     justifyContent: 'space-between',
                 }}
             >
-                <Button variant="outlined">Cancelar y volver</Button>
-                <Button variant="contained" color="error" type="submit">
+                <Button disabled={disabled} variant="outlined">
+                    Cancelar y volver
+                </Button>
+                <Button
+                    disabled={disabled}
+                    variant="contained"
+                    color="error"
+                    type="submit"
+                >
                     Cambiar todos los precios
                 </Button>
             </Box>

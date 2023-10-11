@@ -3,10 +3,11 @@ import { FirebaseError } from 'firebase/app';
 import {
     addDoc,
     collection,
+    doc,
     DocumentData,
     DocumentReference,
-    getDocs,
     onSnapshot,
+    updateDoc,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
 
@@ -14,43 +15,16 @@ import { database } from '~config/firebase';
 import { FirebaseCollections } from '~constants/firebase';
 
 function useFirestore<T>(collectionName: FirebaseCollections) {
+    type DataWithId = { id: string } & T;
+    type Callback = (data: DataWithId[]) => void;
+
     const { enqueueSnackbar } = useSnackbar();
     const [fetchLoading, setFetchLoading] = useState(true);
     const [creatingLoading, setCreatingLoading] = useState(false);
 
-    const fetchData: () => Promise<({ id: string } & T)[]> =
-        useCallback(async () => {
-            const collectionRef = collection(database, collectionName);
-            setFetchLoading(true);
-            try {
-                const res = await getDocs(collectionRef);
-
-                setFetchLoading(false);
-
-                return res.docs.map((item) => ({
-                    id: item.id,
-                    ...(item.data() as T),
-                }));
-            } catch (err: unknown) {
-                setFetchLoading(false);
-
-                if (err instanceof FirebaseError) {
-                    enqueueSnackbar(err.message, { variant: 'error' });
-                    return [];
-                }
-
-                enqueueSnackbar('Ocurrió un error inesperado.', {
-                    variant: 'error',
-                });
-
-                return [];
-            }
-        }, [collectionName, enqueueSnackbar]);
-
-    type Callback = (data: ({ id: string } & T)[]) => void;
-
     const subscribeToData = useCallback(
         (callback: Callback) => {
+            setFetchLoading(true);
             const collectionRef = collection(database, collectionName);
 
             return onSnapshot(collectionRef, (snapshot) => {
@@ -58,8 +32,8 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
                     setFetchLoading(false);
 
                     const response = snapshot.docs.map((item) => ({
-                        id: item.id,
                         ...(item.data() as T),
+                        id: item.id,
                     }));
 
                     callback(response);
@@ -73,35 +47,8 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
                     enqueueSnackbar('Ocurrió un error inesperado.', {
                         variant: 'error',
                     });
-
-                    // callback([]);
                 }
             });
-
-            // let data:  = [];
-
-            // (snapshot) => {
-            //             try {
-            //                 setFetchLoading(false);
-
-            //                 return snapshot.docs.map((item) => ({
-            //                     id: item.id,
-            //                     ...(item.data() as T),
-            //                 }));
-            //             } catch (err: unknown) {
-            //                 setFetchLoading(false);
-
-            //                 if (err instanceof FirebaseError) {
-            //                     enqueueSnackbar(err.message, { variant: 'error' });
-            //                     return [];
-            //                 }
-
-            //                 enqueueSnackbar('Ocurrió un error inesperado.', {
-            //                     variant: 'error',
-            //                 });
-
-            //                 return [];
-            //             }
         },
         [collectionName, enqueueSnackbar]
     );
@@ -139,8 +86,18 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
         }
     };
 
+    const updateDocument = (
+        documentId: string,
+        newData: DataWithId,
+        callback?: (arg0: void) => void
+    ) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        updateDoc(docRef, newData).then(callback);
+    };
+
     return {
-        fetchData,
+        updateDocument,
         addDocument,
         fetchLoading,
         creatingLoading,
