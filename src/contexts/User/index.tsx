@@ -1,15 +1,16 @@
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { useSnackbar } from 'notistack';
 import {
-    ReactNode,
     createContext,
+    ReactNode,
     useContext,
     useEffect,
     useMemo,
     useState,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { useSnackbar } from 'notistack';
 import { Nullable } from 'vite-env';
+
 import LoadingScreen from '~components/LoadingScreen';
 import { auth } from '~config/firebase';
 
