@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 
 import App from './App';
 
@@ -28,15 +28,16 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: (
-            <ThemeProvider theme={theme}>
-                <HelmetProvider>
-                    <UserContextProvider>
+            <HelmetProvider>
+                <UserContextProvider>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline enableColorScheme />
                         <ProductProvider>
                             <NavbarWrapper />
                         </ProductProvider>
-                    </UserContextProvider>
-                </HelmetProvider>
-            </ThemeProvider>
+                    </ThemeProvider>
+                </UserContextProvider>
+            </HelmetProvider>
         ),
         children: [
             {

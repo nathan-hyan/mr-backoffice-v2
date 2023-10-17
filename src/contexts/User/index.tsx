@@ -71,6 +71,7 @@ export function UserContextProvider({ children }: Props) {
                 navigate('/products');
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
     const value = useMemo(() => ({ loadingUser, user }), [loadingUser, user]);

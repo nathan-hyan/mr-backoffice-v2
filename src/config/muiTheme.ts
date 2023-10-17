@@ -1,6 +1,10 @@
+import { ThemeOptions } from '@mui/material';
 import { red } from '@mui/material/colors';
 
-export const THEME = {
+export const THEME: ThemeOptions = {
+    palette: {
+        mode: 'dark',
+    },
     components: {
         MuiTableRow: {
             styleOverrides: {
