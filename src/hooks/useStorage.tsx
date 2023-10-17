@@ -6,7 +6,7 @@ function useStorage() {
     const uploadImage = (imageUpload: Blob, path: string) => {
         const imageRef = ref(
             storage,
-            `${path}/${imageUpload.name + crypto.randomUUID()}`
+            `${path}/${imageUpload.size + crypto.randomUUID()}`
         );
         return uploadBytes(imageRef, imageUpload);
     };
