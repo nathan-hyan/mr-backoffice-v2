@@ -3,6 +3,7 @@ import { Product } from 'types/data';
 
 import CustomTable from '~components/CustomTable';
 import SearchBox from '~components/SearchBox';
+import SEO from '~components/SEO';
 import SortByBox from '~components/SortByBox';
 import { FirebaseCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
@@ -26,6 +27,10 @@ function ProductList() {
 
     return (
         <>
+            <SEO
+                title="Lista de productos"
+                description="Listado de todos los productos a la venta"
+            />
             <SearchBox />
             <SortByBox />
             <CustomTable />

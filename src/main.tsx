@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
-import { red } from '@mui/material/colors';
 
 import App from './App';
 
@@ -13,6 +13,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
+import { THEME } from '~config/muiTheme';
 import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
 import Login from '~screens/Login';
@@ -21,36 +22,20 @@ import ProductList from '~screens/ProductList';
 
 const root = document.getElementById('root');
 
-const theme = createTheme({
-    components: {
-        // Name of the component
-        MuiTableRow: {
-            styleOverrides: {
-                // Name of the slot
-                root: {
-                    '&.Mui-selected': {
-                        backgroundColor: red[300],
-
-                        '&:hover': {
-                            backgroundColor: red[500],
-                        },
-                    },
-                },
-            },
-        },
-    },
-});
+const theme = createTheme(THEME);
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: (
             <ThemeProvider theme={theme}>
-                <UserContextProvider>
-                    <ProductProvider>
-                        <NavbarWrapper />
-                    </ProductProvider>
-                </UserContextProvider>
+                <HelmetProvider>
+                    <UserContextProvider>
+                        <ProductProvider>
+                            <NavbarWrapper />
+                        </ProductProvider>
+                    </UserContextProvider>
+                </HelmetProvider>
             </ThemeProvider>
         ),
         children: [

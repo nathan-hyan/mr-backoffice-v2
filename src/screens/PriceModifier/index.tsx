@@ -9,6 +9,7 @@ import Form from './components/Form';
 import { PriceModifierForm } from './constants';
 import { batchUpdateData } from './utils';
 
+import SEO from '~components/SEO';
 import { FirebaseCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
@@ -65,6 +66,10 @@ function PriceModifier() {
 
     return (
         <>
+            <SEO
+                title="Modificador de precios"
+                description="Aumenta o baja los precios de todos los productos"
+            />
             <Alert
                 onClick={modifyPrices}
                 open={showAlert}
