@@ -10,10 +10,10 @@ export const THEME: ThemeOptions = {
             styleOverrides: {
                 root: {
                     '&.Mui-selected': {
-                        backgroundColor: red[300],
+                        backgroundColor: red[500],
 
                         '&:hover': {
-                            backgroundColor: red[500],
+                            backgroundColor: red[700],
                         },
                     },
                 },
