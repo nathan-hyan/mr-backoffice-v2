@@ -10,6 +10,7 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
+import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 
 import Dimensions from './components/Dimensions';
@@ -42,6 +43,14 @@ function AddProductModal({ show, onClose }: Props) {
     );
 
     const onSubmit = (data: Product) => {
+        if (data.imageURL.length < 1) {
+            enqueueSnackbar(`Elija una imágen antes de continuar`, {
+                variant: 'error',
+            });
+
+            return;
+        }
+
         addDocument(data).then(() => {
             reset();
             onClose();
@@ -125,6 +134,7 @@ function AddProductModal({ show, onClose }: Props) {
                         }}
                     >
                         <Information
+                            setValue={setValue}
                             control={control}
                             watch={watch}
                             errors={errors}

@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { ChangeEventHandler, useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
+import { getDownloadURL } from 'firebase/storage';
 import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 
@@ -12,6 +13,7 @@ function useFileUpload(watch: UseFormWatch<Product>) {
     const { getPercentage, currentPercentage, clearCurrentTimeout } =
         usePercentage();
     const [isUploading, setIsUploading] = useState(false);
+    const [imageURL, setImageURL] = useState<string[]>([]);
 
     const handleFileUpload: ChangeEventHandler<HTMLInputElement> = async (
         event
@@ -44,7 +46,10 @@ function useFileUpload(watch: UseFormWatch<Product>) {
             }
 
             await uploadImage(current, watch('name'))
-                .then(() => {
+                .then((imageReference) => {
+                    getDownloadURL(imageReference.ref).then((url) =>
+                        setImageURL((prevState) => [url, ...prevState])
+                    );
                     clearCurrentTimeout();
                     if (i + 1 === files.length) {
                         enqueueSnackbar('Imagenes subidas correctamente', {
@@ -54,9 +59,6 @@ function useFileUpload(watch: UseFormWatch<Product>) {
                         setIsUploading(false);
                     }
 
-                    // GetPercentage gets called with files.length
-                    // and the current index beign processed.
-
                     getPercentage(files.length, i);
                 })
                 .catch((err) => {
@@ -65,9 +67,13 @@ function useFileUpload(watch: UseFormWatch<Product>) {
                     });
                 });
         }
-        // console.log(files.item(0));
     };
 
-    return { handleFileUpload, isUploading, uploadProgress: currentPercentage };
+    return {
+        handleFileUpload,
+        isUploading,
+        uploadProgress: currentPercentage,
+        imageURL,
+    };
 }
 export default useFileUpload;

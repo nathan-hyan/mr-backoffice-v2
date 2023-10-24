@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import {
     Control,
     Controller,
     FieldErrors,
+    UseFormSetValue,
     UseFormWatch,
 } from 'react-hook-form';
 import {
+    Box,
     Button,
     Divider,
     FormControl,
@@ -15,7 +18,10 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { Product } from 'types/data';
+
+import styles from './styles.module.scss';
 
 import { InputType, PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
@@ -25,11 +31,16 @@ interface Props {
     control: Control<Product, unknown>;
     watch: UseFormWatch<Product>;
     errors: FieldErrors<Product>;
+    setValue: UseFormSetValue<Product>;
 }
 
-function Information({ control, watch, errors }: Props) {
-    const { handleFileUpload, isUploading, uploadProgress } =
+function Information({ control, watch, errors, setValue }: Props) {
+    const { handleFileUpload, isUploading, uploadProgress, imageURL } =
         useFileUpload(watch);
+
+    useEffect(() => {
+        setValue('imageURL', imageURL);
+    }, [imageURL, setValue]);
 
     return (
         <>
@@ -125,6 +136,29 @@ function Information({ control, watch, errors }: Props) {
             />
 
             <Divider sx={{ mt: 3 }} />
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                {watch('imageURL').length > 0 ? (
+                    watch('imageURL').map((image) => (
+                        <img
+                            src={image}
+                            alt="Product"
+                            key={image}
+                            className={styles.image}
+                        />
+                    ))
+                ) : (
+                    <Typography
+                        variant="subtitle1"
+                        color="error"
+                        sx={{
+                            width: '100%',
+                            textAlign: 'center',
+                        }}
+                    >
+                        No hay imagenes subidas, por favor ingrese una imágen
+                    </Typography>
+                )}
+            </Box>
             <label htmlFor="upload-image">
                 <Button
                     variant="contained"

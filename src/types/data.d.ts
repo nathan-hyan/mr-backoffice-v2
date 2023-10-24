@@ -35,10 +35,10 @@ interface ProviderProductCode {
 }
 
 export interface Category {
-    internalId: string;
+    internalId: string; // 0
     name: string;
     subCategory: {
-        internalId: string;
+        internalId: string; // 0
         name: string;
     }[];
 }
@@ -49,24 +49,25 @@ export interface Brand {
 }
 
 export interface Product {
-    id: string;
+    id: string; // cbfjhisasdCSDFAs32432
     name: string;
+    description: string;
     stock: number;
+    category: Category;
     barcode: string;
-    category: string;
-    subCategory?: string;
     brand: string;
     businessOwner: string;
-    dimensions: Dimensions;
+    dimensions?: Dimensions;
     weight: number;
     storePosition: string;
     providerProductCode: ProviderProductCode[];
-    description: string;
     specifications: Specifications[];
     variants: Variants[];
     prices: Prices;
-    internalId: number;
-    imageURL: string;
+    internalId: number; // 0
+    imageURL: string[];
     createdAt: Date;
     updatedAt: Date;
+    // stars: 5;
+    // votes: 1234;
 }

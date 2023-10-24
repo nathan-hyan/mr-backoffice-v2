@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 
 import styles from './styles.module.scss';
 
-import LogoBlack from '~assets/logo-black.svg';
+import LogoWhite from '~assets/logo-white.svg';
 import SEO from '~components/SEO';
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
                 }}
             >
                 <img
-                    src={LogoBlack}
+                    src={LogoWhite}
                     alt="Mundo Regalo"
                     className={styles.image}
                 />
