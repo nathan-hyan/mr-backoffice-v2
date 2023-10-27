@@ -19,6 +19,7 @@ import { UserContextProvider } from '~contexts/User';
 import Login from '~screens/Login';
 import PriceModifier from '~screens/PriceModifier';
 import ProductList from '~screens/ProductList';
+import UserInfo from '~screens/UserInfo';
 
 const root = document.getElementById('root');
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: '/priceModifier',
                 element: <PriceModifier />,
+            },
+            {
+                path: '/profile',
+                element: <UserInfo />,
             },
         ],
     },

@@ -20,7 +20,8 @@
 				"hex-ci.stylelint-plus",
 				"meganrogge.template-string-converter",
 				"rangav.vscode-thunder-client",
-				"Gruntfuggly.todo-tree"
+				"Gruntfuggly.todo-tree",
+				"ChFlick.firecode"
 			]
 		}
 	},

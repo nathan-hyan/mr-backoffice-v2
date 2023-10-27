@@ -6,6 +6,7 @@ import {
     doc,
     DocumentData,
     DocumentReference,
+    getDoc,
     onSnapshot,
     updateDoc,
 } from 'firebase/firestore';
@@ -96,9 +97,18 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
         updateDoc(docRef, newData).then(callback);
     };
 
+    const getDocument = async (documentId: string) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        const response = await getDoc(docRef);
+
+        return response.data() as T;
+    };
+
     return {
         updateDocument,
         addDocument,
+        getDocument,
         fetchLoading,
         creatingLoading,
         subscribeToData,
