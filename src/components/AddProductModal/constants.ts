@@ -226,7 +226,7 @@ export enum SearchType {
 export const EMPTY_FORM: Product = {
     description: '',
     internalId: 0,
-    imageURL: '',
+    imageURL: [''],
     createdAt: new Date(),
     updatedAt: new Date(),
     id: '',
@@ -236,7 +236,11 @@ export const EMPTY_FORM: Product = {
     name: '',
     stock: 0,
     barcode: '',
-    category: '',
+    category: {
+        internalId: '0',
+        name: '',
+        subCategories: [],
+    },
     prices: {
         cost: { value: 0 },
         list: { value: 0 },
