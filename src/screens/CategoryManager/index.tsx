@@ -11,6 +11,9 @@ import {
     Typography,
 } from '@mui/material';
 import { Category } from 'types/data';
+import { Nullable } from 'vite-env';
+
+import CategoryList from './components/CategoryList';
 
 import SEO from '~components/SEO';
 import { FirestoreCollections } from '~constants/firebase';
@@ -22,6 +25,12 @@ function CategoryManager() {
     );
 
     const [data, setData] = useState<Category[]>([]);
+    const [currentCategory, setCurrentCategory] =
+        useState<Nullable<Category>>(null);
+
+    const handleSelectCategory = (category: Category) => {
+        setCurrentCategory(category);
+    };
 
     useEffect(() => {
         const unsubscribe = subscribeToData((response) => {
@@ -41,35 +50,48 @@ function CategoryManager() {
             />
             <Paper sx={{ p: 3 }}>
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <Paper elevation={2} sx={{ p: 3 }}>
-                            <Typography variant="button">
-                                Lista de Categorias
-                            </Typography>
-                            <List>
-                                {data.map((category, index) => (
-                                    <Fragment key={category.internalId}>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                <ArrowForward />
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                {category.name}
-                                            </ListItemText>
-                                        </ListItemButton>
-                                        {index + 1 !== data.length && (
-                                            <Divider />
-                                        )}
-                                    </Fragment>
-                                ))}
-                            </List>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={8}>
-                        <Paper elevation={4} sx={{ p: 3 }}>
-                            Lista de categorias
-                        </Paper>
-                    </Grid>
+                    <CategoryList
+                        clearCurrentCategory={setCurrentCategory}
+                        data={data}
+                        currentCategory={currentCategory}
+                        handleSelectCategory={handleSelectCategory}
+                    />
+                    {currentCategory && (
+                        <Grid item xs={8}>
+                            <Paper elevation={4} sx={{ p: 3 }}>
+                                <Typography variant="button">
+                                    Subcategorias disponibles en{' '}
+                                    {currentCategory.name}
+                                </Typography>
+                                <List
+                                    sx={{
+                                        mt: 3,
+                                        maxHeight: '30rem',
+                                        overflow: 'hidden scroll',
+                                    }}
+                                >
+                                    {currentCategory.subCategories.map(
+                                        (category, index) => (
+                                            <Fragment key={category.internalId}>
+                                                <ListItemButton>
+                                                    <ListItemIcon>
+                                                        <ArrowForward />
+                                                    </ListItemIcon>
+                                                    <ListItemText>
+                                                        {category.name}
+                                                    </ListItemText>
+                                                </ListItemButton>
+                                                {index + 1 !==
+                                                    currentCategory
+                                                        .subCategories
+                                                        .length && <Divider />}
+                                            </Fragment>
+                                        )
+                                    )}
+                                </List>
+                            </Paper>
+                        </Grid>
+                    )}
                 </Grid>
             </Paper>
         </>

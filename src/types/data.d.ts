@@ -35,9 +35,10 @@ interface ProviderProductCode {
 }
 
 export interface Category {
+    id?: string;
     internalId: string;
     name: string;
-    subCategory: {
+    subCategories: {
         internalId: string;
         name: string;
     }[];

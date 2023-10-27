@@ -3,6 +3,7 @@ import { FirebaseError } from 'firebase/app';
 import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     DocumentData,
     DocumentReference,
@@ -87,6 +88,15 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
         }
     };
 
+    const removeDocument = (
+        documentId: string,
+        callback?: (arg0: void) => void
+    ) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        deleteDoc(docRef).then(callback);
+    };
+
     const updateDocument = (
         documentId: string,
         newData: DataWithId,
@@ -109,6 +119,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
         updateDocument,
         addDocument,
         getDocument,
+        removeDocument,
         fetchLoading,
         creatingLoading,
         subscribeToData,
