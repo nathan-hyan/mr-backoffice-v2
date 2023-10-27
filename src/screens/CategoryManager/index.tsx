@@ -70,24 +70,28 @@ function CategoryManager() {
                                         overflow: 'hidden scroll',
                                     }}
                                 >
-                                    {currentCategory.subCategories.map(
-                                        (category, index) => (
-                                            <Fragment key={category.internalId}>
-                                                <ListItemButton>
-                                                    <ListItemIcon>
-                                                        <ArrowForward />
-                                                    </ListItemIcon>
-                                                    <ListItemText>
-                                                        {category.name}
-                                                    </ListItemText>
-                                                </ListItemButton>
-                                                {index + 1 !==
-                                                    currentCategory
-                                                        .subCategories
-                                                        .length && <Divider />}
-                                            </Fragment>
-                                        )
-                                    )}
+                                    {currentCategory.subCategories &&
+                                        currentCategory.subCategories.map(
+                                            (category, index) => (
+                                                <Fragment
+                                                    key={category.internalId}
+                                                >
+                                                    <ListItemButton>
+                                                        <ListItemIcon>
+                                                            <ArrowForward />
+                                                        </ListItemIcon>
+                                                        <ListItemText>
+                                                            {category.name}
+                                                        </ListItemText>
+                                                    </ListItemButton>
+                                                    {index + 1 !==
+                                                        currentCategory.subCategories!
+                                                            .length && (
+                                                        <Divider />
+                                                    )}
+                                                </Fragment>
+                                            )
+                                        )}
                                 </List>
                             </Paper>
                         </Grid>
