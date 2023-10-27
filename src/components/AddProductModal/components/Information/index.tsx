@@ -18,7 +18,6 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { red } from '@mui/material/colors';
 import { Product } from 'types/data';
 
 import styles from './styles.module.scss';
@@ -83,7 +82,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                 />
             ))}
             <Controller
-                name="category"
+                name="category.name"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -120,8 +119,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                     </FormControl>
                 )}
             />
-            <Controller
-                name="subCategory"
+            {/* <Controller
+                name="category.subCategory[0].name"
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
@@ -129,11 +128,11 @@ function Information({ control, watch, errors, setValue }: Props) {
                         {...field}
                         label="Subcategoria"
                         variant="standard"
-                        error={!!errors.subCategory}
-                        helperText={errors.subCategory?.message}
+                        error={!!errors.category?.subCategory}
+                        helperText={errors.category?.subCategory?.message}
                     />
                 )}
-            />
+            /> */}
 
             <Divider sx={{ mt: 3 }} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

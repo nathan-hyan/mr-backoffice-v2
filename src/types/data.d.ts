@@ -35,10 +35,10 @@ interface ProviderProductCode {
 }
 
 export interface Category {
-    internalId: string; // 0
+    internalId: string;
     name: string;
     subCategory: {
-        internalId: string; // 0
+        internalId: string;
         name: string;
     }[];
 }
@@ -49,7 +49,7 @@ export interface Brand {
 }
 
 export interface Product {
-    id: string; // cbfjhisasdCSDFAs32432
+    id: string;
     name: string;
     description: string;
     stock: number;

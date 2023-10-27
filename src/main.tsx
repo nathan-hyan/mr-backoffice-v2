@@ -16,6 +16,7 @@ import NavbarWrapper from '~components/NavbarWrapper';
 import { THEME } from '~config/muiTheme';
 import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
+import CategoryManager from '~screens/CategoryManager';
 import Login from '~screens/Login';
 import PriceModifier from '~screens/PriceModifier';
 import ProductList from '~screens/ProductList';
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
             {
                 path: '/profile',
                 element: <UserInfo />,
+            },
+            {
+                path: '/categoryManager',
+                element: <CategoryManager />,
             },
         ],
     },

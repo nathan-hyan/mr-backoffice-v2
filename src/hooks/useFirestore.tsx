@@ -13,9 +13,9 @@ import {
 import { useSnackbar } from 'notistack';
 
 import { database } from '~config/firebase';
-import { FirebaseCollections } from '~constants/firebase';
+import { FirestoreCollections } from '~constants/firebase';
 
-function useFirestore<T>(collectionName: FirebaseCollections) {
+function useFirestore<T>(collectionName: FirestoreCollections) {
     type DataWithId = { id: string } & T;
     type Callback = (data: DataWithId[]) => void;
 

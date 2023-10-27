@@ -8,7 +8,7 @@ function Row(props: Props) {
     const { header } = props;
 
     const handleOnClick = (id: number) => () => {
-        console.log(id);
+        return id;
     };
 
     if (header === 'hidden' && props.data) {
@@ -16,8 +16,7 @@ function Row(props: Props) {
             props.data;
 
         const date = prices.cost.lastModified
-            ? // ? Timestamp.date(prices.cost.lastModified).toDate()
-              prices.cost.lastModified.toDate()
+            ? prices.cost.lastModified.toDate()
             : null;
 
         return (
@@ -44,7 +43,7 @@ function Row(props: Props) {
                 <TableCell>
                     ${(Number(prices.web.value) || 0).toFixed(2)}
                 </TableCell>
-                <TableCell>{category}</TableCell>
+                <TableCell>{category.name}</TableCell>
                 <TableCell>{barcode}</TableCell>
                 <TableCell>
                     {date ? date.toLocaleDateString('es-ES') : '-'}

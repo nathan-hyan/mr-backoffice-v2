@@ -10,7 +10,7 @@ import { PriceModifierForm } from './constants';
 import { batchUpdateData } from './utils';
 
 import SEO from '~components/SEO';
-import { FirebaseCollections } from '~constants/firebase';
+import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
 
@@ -20,7 +20,7 @@ function PriceModifier() {
     const [customPercent, setCustomPercent] = useState(0);
 
     const { productList } = useProducts();
-    const { updateDocument } = useFirestore(FirebaseCollections.Products);
+    const { updateDocument } = useFirestore(FirestoreCollections.Products);
 
     const {
         handleSubmit,

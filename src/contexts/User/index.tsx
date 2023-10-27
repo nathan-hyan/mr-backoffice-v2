@@ -13,7 +13,7 @@ import { Nullable } from 'vite-env';
 
 import LoadingScreen from '~components/LoadingScreen';
 import { auth } from '~config/firebase';
-import { FirebaseCollections, UserRoles } from '~constants/firebase';
+import { FirestoreCollections, UserRoles } from '~constants/firebase';
 import useFirestore from '~hooks/useFirestore';
 
 interface UserWithRole extends User {
@@ -35,7 +35,7 @@ interface Props {
 
 export function UserContextProvider({ children }: Props) {
     const { getDocument } = useFirestore<{ role: UserRoles }>(
-        FirebaseCollections.Users
+        FirestoreCollections.Users
     );
 
     const navigate = useNavigate();

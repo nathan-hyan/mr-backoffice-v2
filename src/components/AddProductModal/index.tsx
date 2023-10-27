@@ -21,7 +21,7 @@ import Specifications from './components/Specifications';
 import Variants from './components/Variants';
 import { EMPTY_FORM } from './constants';
 
-import { FirebaseCollections } from '~constants/firebase';
+import { FirestoreCollections } from '~constants/firebase';
 import useFirestore from '~hooks/useFirestore';
 
 interface Props {
@@ -39,7 +39,7 @@ function AddProductModal({ show, onClose }: Props) {
     const { errors } = formState;
 
     const { addDocument, creatingLoading } = useFirestore<Product>(
-        FirebaseCollections.Products
+        FirestoreCollections.Products
     );
 
     const onSubmit = (data: Product) => {

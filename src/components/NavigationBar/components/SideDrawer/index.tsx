@@ -1,18 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { AttachMoney } from '@mui/icons-material';
-import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
-import PrintIcon from '@mui/icons-material/Print';
-import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import {
-    Divider,
-    Drawer,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
+import { Divider, Drawer, List, Typography } from '@mui/material';
+
+import Option from './components/Option';
+import { OPTIONS } from './constants';
 
 interface Props {
     drawer: boolean;
@@ -42,38 +32,14 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
                 </Typography>
                 <Divider />
 
-                <ListItem disablePadding>
-                    <ListItemButton onClick={handleNavigate('/products')}>
-                        <ListItemIcon>
-                            <FormatListNumberedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Listado de Productos" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={handleNavigate('/cart')}>
-                        <ListItemIcon>
-                            <ShoppingCartCheckoutIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Carrito" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={handleNavigate('/printList')}>
-                        <ListItemIcon>
-                            <PrintIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Imprimir list. productos" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton onClick={handleNavigate('/priceModifier')}>
-                        <ListItemIcon>
-                            <AttachMoney />
-                        </ListItemIcon>
-                        <ListItemText primary="Modificar precios en lote" />
-                    </ListItemButton>
-                </ListItem>
+                {OPTIONS.map(({ id, whereTo, title, icon }) => (
+                    <Option
+                        key={id}
+                        handleNavigate={handleNavigate(whereTo)}
+                        icon={icon}
+                        title={title}
+                    />
+                ))}
             </List>
         </Drawer>
     );

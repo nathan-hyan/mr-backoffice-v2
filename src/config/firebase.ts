@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 // import { getAnalytics } from 'firebase/analytics';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
