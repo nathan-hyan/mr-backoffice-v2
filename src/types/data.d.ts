@@ -38,7 +38,7 @@ export interface Category {
     id?: string;
     internalId: string;
     name: string;
-    subCategories: {
+    subCategories?: {
         internalId: string;
         name: string;
     }[];
@@ -54,7 +54,8 @@ export interface Product {
     name: string;
     description: string;
     stock: number;
-    category: Category;
+    category: string; // Reference to categories.id
+    subCategory: string; // Reference to categories.subCategories[n].id
     barcode: string;
     brand: string;
     businessOwner: string;

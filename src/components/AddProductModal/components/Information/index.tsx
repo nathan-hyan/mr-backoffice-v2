@@ -24,6 +24,7 @@ import styles from './styles.module.scss';
 
 import { InputType, PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
+import { useProducts } from '~contexts/Products';
 import useFileUpload from '~hooks/useFileUpload';
 
 interface Props {
@@ -36,6 +37,8 @@ interface Props {
 function Information({ control, watch, errors, setValue }: Props) {
     const { handleFileUpload, isUploading, uploadProgress, imageURL } =
         useFileUpload(watch);
+
+    const { categories, getSubcategories } = useProducts();
 
     useEffect(() => {
         setValue('imageURL', imageURL);
@@ -82,7 +85,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                 />
             ))}
             <Controller
-                name="category.name"
+                name="category"
                 control={control}
                 defaultValue=""
                 rules={{
@@ -101,15 +104,11 @@ function Information({ control, watch, errors, setValue }: Props) {
                             Categoria
                         </InputLabel>
                         <Select {...field} labelId="category">
-                            <MenuItem value="libreria">Librería</MenuItem>
-                            <MenuItem value="imprenta">Imprenta</MenuItem>
-                            <MenuItem value="servicios">Servicios</MenuItem>
-                            <MenuItem value="regaleria">Regalería</MenuItem>
-                            <MenuItem value="biju-cosmetica">
-                                Bijú / Cosmética
-                            </MenuItem>
-                            <MenuItem value="electronica">Electrónica</MenuItem>
-                            <MenuItem value="cotillon">Cotillón</MenuItem>
+                            {categories.map(({ name, id }) => (
+                                <MenuItem key={id} value={id}>
+                                    {name}
+                                </MenuItem>
+                            ))}
                         </Select>
                         {!!errors.category && (
                             <FormHelperText>
@@ -119,20 +118,51 @@ function Information({ control, watch, errors, setValue }: Props) {
                     </FormControl>
                 )}
             />
-            {/* <Controller
-                name="category.subCategory[0].name"
+            <Controller
+                name="subCategory"
                 control={control}
                 defaultValue=""
+                rules={{
+                    required: {
+                        value: true,
+                        message: 'Por favor, elija una sub-categoria',
+                    },
+                }}
                 render={({ field }) => (
-                    <TextField
-                        {...field}
-                        label="Subcategoria"
+                    <FormControl
+                        fullWidth
                         variant="standard"
-                        error={!!errors.category?.subCategory}
-                        helperText={errors.category?.subCategory?.message}
-                    />
+                        error={!!errors.category}
+                    >
+                        <InputLabel id="demo-simple-select-label">
+                            Sub-Categoria
+                        </InputLabel>
+                        <Select
+                            {...field}
+                            labelId="subCategory"
+                            disabled={
+                                getSubcategories(watch('category')).length === 0
+                            }
+                        >
+                            {getSubcategories(watch('category')).map(
+                                ({ name, internalId }) => (
+                                    <MenuItem
+                                        key={internalId}
+                                        value={internalId}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                )
+                            )}
+                        </Select>
+                        {!!errors.category && (
+                            <FormHelperText>
+                                {errors.category?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
                 )}
-            /> */}
+            />
 
             <Divider sx={{ mt: 3 }} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

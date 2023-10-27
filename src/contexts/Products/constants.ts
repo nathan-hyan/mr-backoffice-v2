@@ -1,4 +1,4 @@
-import { Product } from 'types/data';
+import { Category, Product } from 'types/data';
 
 export enum SearchCriteria {
     ProductName = 0,
@@ -13,7 +13,10 @@ export enum SortBy {
 
 interface ProductContextProps {
     productList: Product[];
+    categories: Category[];
     saveProducts: (products: Product[]) => void;
+    saveCategories: (categories: Category[]) => void;
+    getSubcategories: (arg0: string) => Category[];
     searchQuery: string;
     performSearch: (arg0: string, arg1: SearchCriteria) => void;
     clearSearch: () => void;
@@ -24,7 +27,10 @@ interface ProductContextProps {
 
 export const INITIAL_CONTEXT: ProductContextProps = {
     productList: [],
+    categories: [],
     saveProducts: () => {},
+    saveCategories: () => {},
+    getSubcategories: () => [],
     searchQuery: '',
     performSearch: () => {},
     clearSearch: () => {},

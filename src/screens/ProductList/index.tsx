@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Product } from 'types/data';
+import { Category, Product } from 'types/data';
 
 import CustomTable from '~components/CustomTable';
 import SearchBox from '~components/SearchBox';
@@ -10,20 +10,28 @@ import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
 
 function ProductList() {
-    const { saveProducts } = useProducts();
-    const { subscribeToData } = useFirestore<Product>(
+    const { saveProducts, saveCategories } = useProducts();
+    const { subscribeToData: productDataSub } = useFirestore<Product>(
         FirestoreCollections.Products
+    );
+    const { subscribeToData: categoryDataSub } = useFirestore<Category>(
+        FirestoreCollections.Categories
     );
 
     useEffect(() => {
-        const unsubscribe = subscribeToData((data) => {
+        const productsUnsubscribe = productDataSub((data) => {
             saveProducts(data);
         });
 
+        const categoriesUnsubscribe = categoryDataSub((data) => {
+            saveCategories(data);
+        });
+
         return () => {
-            unsubscribe();
+            productsUnsubscribe();
+            categoriesUnsubscribe();
         };
-    }, [saveProducts, subscribeToData]);
+    }, [categoryDataSub, productDataSub, saveCategories, saveProducts]);
 
     return (
         <>

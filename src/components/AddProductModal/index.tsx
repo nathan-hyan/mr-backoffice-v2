@@ -71,9 +71,9 @@ function AddProductModal({ show, onClose }: Props) {
             'barcode',
             String(faker.number.int({ min: 11111111111, max: 99999999999 }))
         );
-        setValue('category', {
-            internalId: String(faker.number.int(100)),
-            name: [
+        setValue(
+            'category',
+            [
                 'libreria',
                 'imprenta',
                 'servicios',
@@ -81,22 +81,20 @@ function AddProductModal({ show, onClose }: Props) {
                 'biju-cosmetica',
                 'electronica',
                 'cotillon',
-            ][faker.number.int({ min: 1, max: 7 })],
-            subCategories: [
-                {
-                    internalId: String(faker.number.int(100)),
-                    name: [
-                        'libreria',
-                        'imprenta',
-                        'servicios',
-                        'regaleria',
-                        'biju-cosmetica',
-                        'electronica',
-                        'cotillon',
-                    ][faker.number.int({ min: 1, max: 7 })],
-                },
-            ],
-        });
+            ][faker.number.int({ min: 1, max: 7 })]
+        );
+        setValue(
+            'subCategory',
+            [
+                'libreria',
+                'imprenta',
+                'servicios',
+                'regaleria',
+                'biju-cosmetica',
+                'electronica',
+                'cotillon',
+            ][faker.number.int({ min: 1, max: 7 })]
+        );
 
         setValue(
             'prices.cash.value',

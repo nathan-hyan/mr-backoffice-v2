@@ -236,11 +236,8 @@ export const EMPTY_FORM: Product = {
     name: '',
     stock: 0,
     barcode: '',
-    category: {
-        internalId: '0',
-        name: '',
-        subCategories: [],
-    },
+    category: '',
+    subCategory: '',
     prices: {
         cost: { value: 0 },
         list: { value: 0 },
