@@ -20,7 +20,7 @@ const ProductContext = createContext(INITIAL_CONTEXT);
 export default function ProductProvider({ children }: Props) {
     const [productList, setProductList] = useState<Product[]>([]);
     const [productListCopy, setProductListCopy] = useState<Product[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [categories, saveCategories] = useState<Category[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>(
         SearchCriteria.ProductName
@@ -85,7 +85,7 @@ export default function ProductProvider({ children }: Props) {
             productList,
             categories,
             saveProducts,
-            saveCategories: setCategories,
+            saveCategories,
             getSubcategories,
             performSearch,
             searchQuery,

@@ -72,6 +72,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            disabled={item.disabled}
                             multiline={item.multiline}
                             label={item.label}
                             type={item.type}

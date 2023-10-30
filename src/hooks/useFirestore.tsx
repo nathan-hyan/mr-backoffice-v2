@@ -68,7 +68,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
                 collectionRef,
                 newDocument as Record<string, unknown>
             );
-            enqueueSnackbar('Producto creado correctamente', {
+            enqueueSnackbar('Item creado correctamente', {
                 variant: 'success',
             });
             setCreatingLoading(false);
@@ -94,7 +94,23 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     ) => {
         const docRef = doc(database, collectionName, documentId);
 
-        deleteDoc(docRef).then(callback);
+        deleteDoc(docRef)
+            .then(callback)
+            .finally(() =>
+                enqueueSnackbar('Item eliminado correctamente', {
+                    variant: 'success',
+                })
+            )
+            .catch((err) =>
+                enqueueSnackbar(
+                    `Ocurrió un error inesperado (${JSON.stringify(
+                        err.message
+                    )})`,
+                    {
+                        variant: 'error',
+                    }
+                )
+            );
     };
 
     const updateDocument = (
@@ -104,7 +120,23 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     ) => {
         const docRef = doc(database, collectionName, documentId);
 
-        updateDoc(docRef, newData).then(callback);
+        updateDoc(docRef, newData)
+            .then(callback)
+            .finally(() =>
+                enqueueSnackbar('Item editado correctamente', {
+                    variant: 'info',
+                })
+            )
+            .catch((err) =>
+                enqueueSnackbar(
+                    `Ocurrió un error inesperado (${JSON.stringify(
+                        err.message
+                    )})`,
+                    {
+                        variant: 'error',
+                    }
+                )
+            );
     };
 
     const getDocument = async (documentId: string) => {

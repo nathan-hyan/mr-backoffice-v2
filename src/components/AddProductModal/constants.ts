@@ -28,6 +28,7 @@ interface Form<T> {
     required: boolean;
     multiline?: boolean;
     type: InputType;
+    disabled?: boolean;
 }
 
 export const PRODUCT_FORM: Form<keyof Product>[] = [
@@ -52,6 +53,7 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
         name: 'internalId',
         type: InputType.Number,
         required: true,
+        disabled: true,
     },
     {
         id: 1,

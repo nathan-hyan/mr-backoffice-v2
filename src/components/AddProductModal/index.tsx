@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { faker } from '@faker-js/faker';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
@@ -22,7 +23,9 @@ import Variants from './components/Variants';
 import { EMPTY_FORM } from './constants';
 
 import { FirestoreCollections } from '~constants/firebase';
+import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
+import getLatestInternalId from '~utils/getLatestInternalId';
 
 interface Props {
     show: boolean;
@@ -37,6 +40,8 @@ function AddProductModal({ show, onClose }: Props) {
         });
 
     const { errors } = formState;
+
+    const { productList } = useProducts();
 
     const { addDocument, creatingLoading } = useFirestore<Product>(
         FirestoreCollections.Products
@@ -65,7 +70,6 @@ function AddProductModal({ show, onClose }: Props) {
     const fillFakeData = () => {
         setValue('name', faker.commerce.productName());
         setValue('description', faker.commerce.productDescription());
-        setValue('internalId', faker.number.int(100));
         setValue('stock', faker.number.int({ min: 0, max: 50 }));
         setValue(
             'barcode',
@@ -122,6 +126,12 @@ function AddProductModal({ show, onClose }: Props) {
         setValue('dimensions.height', faker.number.int({ min: 2, max: 10 }));
         setValue('dimensions.depth', faker.number.int({ min: 2, max: 10 }));
     };
+
+    useEffect(() => {
+        if (show) {
+            setValue('internalId', getLatestInternalId(productList) + 1);
+        }
+    }, [productList, setValue, show]);
 
     return (
         <Dialog open={show} onClose={handleCancel} fullWidth maxWidth="lg">

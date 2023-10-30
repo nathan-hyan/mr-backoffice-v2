@@ -1,135 +1,144 @@
 import { Fragment, useState } from 'react';
-import { faker } from '@faker-js/faker';
-import { ArrowForward, MoreVert } from '@mui/icons-material';
+import { ArrowForward } from '@mui/icons-material';
 import {
     Box,
+    Button,
     Divider,
     Grid,
-    IconButton,
     List,
     ListItemButton,
     ListItemIcon,
     ListItemText,
-    Menu,
     MenuItem,
     Paper,
     Typography,
 } from '@mui/material';
-import { enqueueSnackbar } from 'notistack';
 import { Category } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import { FirestoreCollections } from '~constants/firebase';
-import useFirestore from '~hooks/useFirestore';
+import DeleteAlert from '../DeleteAlert';
+
+import CustomMenu from '~components/CustomMenu';
 
 interface Props {
+    removeDocument: (
+        documentId: string,
+        callback?: (arg0: void) => void
+    ) => void;
     data: Category[];
-    currentCategory: Nullable<Category>;
+    selectedCategory: {
+        internalId: Nullable<number>;
+        firebaseId: string | undefined;
+    };
     clearCurrentCategory: StateDispatch<Category>;
-    handleSelectCategory: (arg0: Category) => void;
+    handleSelectCategory: (arg0: number) => void;
+    openModal: () => void;
 }
 
 function CategoryList({
+    removeDocument,
     data,
-    currentCategory,
+    selectedCategory,
     handleSelectCategory,
     clearCurrentCategory,
+    openModal,
 }: Props) {
-    const { addDocument, removeDocument } = useFirestore<Category>(
-        FirestoreCollections.Categories
-    );
-
-    const [anchorElement, setAnchorElement] =
-        useState<Nullable<HTMLElement>>(null);
-
-    const toggleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElement(event.currentTarget);
-    };
+    const [markedForDeletion, setMarkedForDeletion] =
+        useState<Nullable<string>>(null);
 
     const handleDeleteCategory = () => {
-        if (!currentCategory?.id) {
-            enqueueSnackbar({
-                message: 'Primero elija una categoria para ser borrada',
-                variant: 'error',
-            });
-            return;
-        }
-
-        removeDocument(currentCategory?.id, () => {
-            enqueueSnackbar({
-                message: 'Categoria eliminada',
-                variant: 'success',
-            });
-
+        removeDocument(markedForDeletion!, () => {
             clearCurrentCategory(null);
-            setAnchorElement(null);
         });
     };
 
-    const fakeAddCategory = () => {
-        const array = [...Array(faker.number.int(24))].map(() => ({
-            name: faker.commerce.department(),
-            internalId: String(faker.number.int()),
-        }));
-
-        const fakeData: Category = {
-            internalId: String(faker.number.int(100)),
-            name: faker.commerce.department(),
-            subCategories: array,
-        };
-
-        addDocument(fakeData);
-        setAnchorElement(null);
+    const toggleAddCategoryModal = () => {
+        openModal();
     };
 
     return (
-        <Grid item xs={4}>
-            <Paper elevation={2} sx={{ p: 3 }}>
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <Typography variant="button">
-                        Lista de Categorias
-                    </Typography>
-                    <Menu
-                        anchorEl={anchorElement}
-                        open={Boolean(anchorElement)}
-                        onClose={() => setAnchorElement(null)}
+        <>
+            <DeleteAlert
+                open={Boolean(markedForDeletion)}
+                onClose={() => setMarkedForDeletion(null)}
+                onDelete={handleDeleteCategory}
+                categoryToDelete={
+                    data.filter(({ id }) => id === markedForDeletion)[0]
+                }
+            />
+            <Grid item xs={4}>
+                <Paper elevation={2} sx={{ p: 3 }}>
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="center"
                     >
-                        <MenuItem onClick={fakeAddCategory}>
-                            Agregar una categoría
-                        </MenuItem>
-                        <MenuItem onClick={handleDeleteCategory}>
-                            Quitar una categoría
-                        </MenuItem>
-                    </Menu>
-                    <IconButton onClick={toggleMenuOpen}>
-                        <MoreVert />
-                    </IconButton>
-                </Box>
-                <List>
-                    {data.map((category, index) => (
-                        <Fragment key={category.internalId}>
-                            <ListItemButton
-                                selected={
-                                    category.internalId ===
-                                    currentCategory?.internalId
-                                }
-                                onClick={() => handleSelectCategory(category)}
-                            >
-                                <ListItemIcon>
-                                    <ArrowForward />
-                                </ListItemIcon>
-                                <ListItemText>{category.name}</ListItemText>
-                            </ListItemButton>
-                            {index + 1 !== data.length && <Divider />}
-                        </Fragment>
-                    ))}
-                </List>
-            </Paper>
-        </Grid>
+                        <Typography variant="button">
+                            Lista de Categorias
+                        </Typography>
+                        <CustomMenu>
+                            <MenuItem onClick={toggleAddCategoryModal}>
+                                Agregar una categoría
+                            </MenuItem>
+                            {data.length > 0 && selectedCategory.firebaseId && (
+                                <MenuItem
+                                    onClick={() =>
+                                        setMarkedForDeletion(
+                                            selectedCategory.firebaseId!
+                                        )
+                                    }
+                                >
+                                    Quitar una categoría
+                                </MenuItem>
+                            )}
+                        </CustomMenu>
+                    </Box>
+                    <List>
+                        {data.length > 0 ? (
+                            data.map((category, index) => (
+                                <Fragment key={category.internalId}>
+                                    <ListItemButton
+                                        selected={
+                                            category.internalId ===
+                                            selectedCategory.internalId
+                                        }
+                                        onClick={() =>
+                                            handleSelectCategory(
+                                                category.internalId
+                                            )
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            <ArrowForward />
+                                        </ListItemIcon>
+                                        <ListItemText>
+                                            {category.name}
+                                        </ListItemText>
+                                    </ListItemButton>
+                                    {index + 1 !== data.length && <Divider />}
+                                </Fragment>
+                            ))
+                        ) : (
+                            <>
+                                <ListItemText
+                                    sx={{ textAlign: 'center', mb: 3 }}
+                                >
+                                    No se encontraron sub-categorias
+                                </ListItemText>
+                                <ListItemText sx={{ textAlign: 'center' }}>
+                                    <Button
+                                        variant="contained"
+                                        onClick={openModal}
+                                    >
+                                        Agregar una categoría
+                                    </Button>
+                                </ListItemText>
+                            </>
+                        )}
+                    </List>
+                </Paper>
+            </Grid>
+        </>
     );
 }
 
