@@ -17,7 +17,7 @@ function Row(props: Props) {
     const translateCategories = (category: string, subCategory: string) => {
         const translatedCategory = categories.find(({ id }) => category === id);
         const translatedSubCategory = getSubcategories(category).find(
-            ({ internalId }) => internalId === subCategory
+            ({ internalId }) => internalId === Number(subCategory)
         );
 
         return { translatedCategory, translatedSubCategory };
