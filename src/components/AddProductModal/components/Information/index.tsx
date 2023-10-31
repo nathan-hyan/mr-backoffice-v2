@@ -41,7 +41,9 @@ function Information({ control, watch, errors, setValue }: Props) {
     const { categories, getSubcategories } = useProducts();
 
     useEffect(() => {
-        setValue('imageURL', imageURL);
+        if (imageURL.length) {
+            setValue('imageURL', imageURL);
+        }
     }, [imageURL, setValue]);
 
     return (

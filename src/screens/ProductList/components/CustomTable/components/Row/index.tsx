@@ -11,6 +11,7 @@ import {
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
+import AddProductModal from '~components/AddProductModal';
 import CustomMenu from '~components/CustomMenu';
 import DeleteAlert from '~components/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
@@ -29,6 +30,7 @@ function Row(props: Props) {
 
     const [markedForDeletion, setMarkedForDeletion] =
         useState<Nullable<Product>>(null);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     const { getSubcategories, categories } = useProducts();
     const { removeDocument } = useFirestore(FirestoreCollections.Products);
@@ -73,6 +75,10 @@ function Row(props: Props) {
             });
         };
 
+        const toggleModal = () => {
+            setShowEditModal((prevState) => !prevState);
+        };
+
         return (
             <>
                 <DeleteAlert
@@ -81,6 +87,15 @@ function Row(props: Props) {
                     onDelete={deleteProduct}
                     stringToMatch={markedForDeletion ? name : ''}
                 />
+
+                {showEditModal && (
+                    <AddProductModal
+                        show={showEditModal}
+                        productToEdit={props.data}
+                        onClose={toggleModal}
+                    />
+                )}
+
                 <TableRow
                     selected={stock <= 0}
                     hover
@@ -113,7 +128,7 @@ function Row(props: Props) {
                     </TableCell>
                     <TableCell>
                         <CustomMenu>
-                            <MenuItem>
+                            <MenuItem onClick={toggleModal}>
                                 <ListItemIcon>
                                     <Edit />
                                 </ListItemIcon>

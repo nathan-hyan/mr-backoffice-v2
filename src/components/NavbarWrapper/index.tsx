@@ -23,6 +23,7 @@ function NavbarWrapper() {
         >
             <NavigationBar />
             <Container
+                maxWidth="xl"
                 sx={{
                     display: 'flex',
                     gap: 3,

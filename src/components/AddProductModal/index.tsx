@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { faker } from '@faker-js/faker';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import {
     Box,
@@ -13,6 +12,7 @@ import {
 } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
+import { Nullable } from 'vite-env';
 
 import Dimensions from './components/Dimensions';
 import Information from './components/Information';
@@ -21,6 +21,7 @@ import Prices from './components/Prices';
 import Specifications from './components/Specifications';
 import Variants from './components/Variants';
 import { EMPTY_FORM } from './constants';
+import { fabricateFakeData } from './utils';
 
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
@@ -30,9 +31,10 @@ import getLatestInternalId from '~utils/getLatestInternalId';
 interface Props {
     show: boolean;
     onClose: () => void;
+    productToEdit: Nullable<Product>;
 }
 
-function AddProductModal({ show, onClose }: Props) {
+function AddProductModal({ show, onClose, productToEdit }: Props) {
     const { handleSubmit, control, watch, reset, formState, setValue } =
         useForm<Product>({
             defaultValues: EMPTY_FORM,
@@ -43,11 +45,19 @@ function AddProductModal({ show, onClose }: Props) {
 
     const { productList } = useProducts();
 
-    const { addDocument, creatingLoading } = useFirestore<Product>(
-        FirestoreCollections.Products
-    );
+    const { addDocument, updateDocument, creatingLoading } =
+        useFirestore<Product>(FirestoreCollections.Products);
 
     const onSubmit = (data: Product) => {
+        if (productToEdit) {
+            updateDocument(productToEdit.id, data, () => {
+                reset();
+                onClose();
+            });
+
+            return;
+        }
+
         if (data.imageURL.length < 1) {
             enqueueSnackbar(`Elija una imágen antes de continuar`, {
                 variant: 'error',
@@ -68,70 +78,24 @@ function AddProductModal({ show, onClose }: Props) {
     };
 
     const fillFakeData = () => {
-        setValue('name', faker.commerce.productName());
-        setValue('description', faker.commerce.productDescription());
-        setValue('stock', faker.number.int({ min: 0, max: 50 }));
-        setValue(
-            'barcode',
-            String(faker.number.int({ min: 11111111111, max: 99999999999 }))
-        );
-        setValue(
-            'category',
-            [
-                'libreria',
-                'imprenta',
-                'servicios',
-                'regaleria',
-                'biju-cosmetica',
-                'electronica',
-                'cotillon',
-            ][faker.number.int({ min: 1, max: 7 })]
-        );
-        setValue(
-            'subCategory',
-            [
-                'libreria',
-                'imprenta',
-                'servicios',
-                'regaleria',
-                'biju-cosmetica',
-                'electronica',
-                'cotillon',
-            ][faker.number.int({ min: 1, max: 7 })]
-        );
-
-        setValue(
-            'prices.cash.value',
-            Number(faker.commerce.price({ min: 5, max: 300 }))
-        );
-        setValue(
-            'prices.list.value',
-            Number(faker.commerce.price({ min: 5, max: 300 }))
-        );
-        setValue(
-            'prices.web.value',
-            Number(faker.commerce.price({ min: 5, max: 300 }))
-        );
-        setValue(
-            'prices.cost.value',
-            Number(faker.commerce.price({ min: 5, max: 300 }))
-        );
-
-        setValue('brand', faker.commerce.product());
-        setValue('businessOwner', faker.person.fullName());
-        setValue('storePosition', faker.location.countryCode());
-        setValue('weight', faker.number.int({ min: 2, max: 10 }));
-
-        setValue('dimensions.width', faker.number.int({ min: 2, max: 10 }));
-        setValue('dimensions.height', faker.number.int({ min: 2, max: 10 }));
-        setValue('dimensions.depth', faker.number.int({ min: 2, max: 10 }));
+        fabricateFakeData().forEach(({ field, value }) => {
+            setValue(field as keyof Product, value);
+        });
     };
 
     useEffect(() => {
-        if (show) {
+        if (show && !productToEdit) {
             setValue('internalId', getLatestInternalId(productList) + 1);
         }
-    }, [productList, setValue, show]);
+
+        if (productToEdit) {
+            const keys = Object.keys(productToEdit) as (keyof Product)[];
+
+            keys.forEach((field) => {
+                setValue(field, productToEdit[field]);
+            });
+        }
+    }, [productList, productToEdit, setValue, show]);
 
     return (
         <Dialog open={show} onClose={handleCancel} fullWidth maxWidth="lg">
