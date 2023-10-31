@@ -31,7 +31,7 @@ import getLatestInternalId from '~utils/getLatestInternalId';
 interface Props {
     show: boolean;
     onClose: () => void;
-    productToEdit: Nullable<Product>;
+    productToEdit?: Nullable<Product>;
 }
 
 function AddProductModal({ show, onClose, productToEdit }: Props) {
@@ -155,4 +155,9 @@ function AddProductModal({ show, onClose, productToEdit }: Props) {
         </Dialog>
     );
 }
+
+AddProductModal.defaultProps = {
+    productToEdit: null,
+};
+
 export default AddProductModal;
