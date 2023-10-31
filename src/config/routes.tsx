@@ -3,7 +3,6 @@ import {
     AttachMoney,
     FormatListNumbered,
     LocalOffer,
-    Login,
     // Print,
     // ShoppingCartCheckout,
 } from '@mui/icons-material';
@@ -12,6 +11,7 @@ import App from '../App';
 
 import BrandManager from '~screens/BrandManager';
 import CategoryManager from '~screens/CategoryManager';
+import Login from '~screens/Login';
 import PriceModifier from '~screens/PriceModifier';
 import ProductList from '~screens/ProductList';
 import UserInfo from '~screens/UserInfo';
