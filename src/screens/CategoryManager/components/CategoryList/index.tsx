@@ -16,7 +16,7 @@ import {
 import { Category } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import DeleteAlert from '../DeleteAlert';
+import DeleteAlert from '../../../../components/DeleteAlert';
 
 import CustomMenu from '~components/CustomMenu';
 
@@ -50,6 +50,7 @@ function CategoryList({
         removeDocument(markedForDeletion!, () => {
             clearCurrentCategory(null);
         });
+        setMarkedForDeletion(null);
     };
 
     const toggleAddCategoryModal = () => {
@@ -62,8 +63,11 @@ function CategoryList({
                 open={Boolean(markedForDeletion)}
                 onClose={() => setMarkedForDeletion(null)}
                 onDelete={handleDeleteCategory}
-                categoryToDelete={
-                    data.filter(({ id }) => id === markedForDeletion)[0]
+                stringToMatch={
+                    markedForDeletion
+                        ? data.filter(({ id }) => id === markedForDeletion)[0]
+                              .name
+                        : ''
                 }
             />
             <Grid item xs={4}>

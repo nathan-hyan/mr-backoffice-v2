@@ -17,7 +17,7 @@ import { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import CustomMenu from '~components/CustomMenu';
-import DeleteAlert from '~screens/CategoryManager/components/DeleteAlert';
+import DeleteAlert from '~components/DeleteAlert';
 
 interface Props {
     currentCategory: Category;
@@ -41,12 +41,15 @@ function CurrentCategory({
         setMarkedForDelete(null);
     };
 
-    const deleteSubCategory = (internalIdToDelete: number) => {
+    const deleteSubCategory = () => {
         let newArray: typeof currentCategory.subCategories = [];
+        const idToDelete = currentCategory.subCategories?.filter(
+            ({ internalId }) => internalId === markedForDelete
+        )[0].internalId;
 
         if (currentCategory.subCategories) {
             newArray = currentCategory.subCategories.filter(
-                ({ internalId }) => internalId !== internalIdToDelete
+                ({ internalId }) => internalId !== idToDelete
             );
         }
 
@@ -61,10 +64,13 @@ function CurrentCategory({
                     open={Boolean(markedForDelete)}
                     onClose={handleClose}
                     onDelete={deleteSubCategory}
-                    categoryToDelete={
-                        currentCategory.subCategories?.filter(
-                            ({ internalId }) => internalId === markedForDelete
-                        )[0]
+                    stringToMatch={
+                        markedForDelete
+                            ? currentCategory.subCategories?.filter(
+                                  ({ internalId }) =>
+                                      internalId === markedForDelete
+                              )[0].name || ''
+                            : ''
                     }
                 />
                 <Grid item xs={8}>

@@ -8,16 +8,15 @@ import {
     DialogTitle,
     TextField,
 } from '@mui/material';
-import { Category } from 'types/data';
 
 interface Props {
     open: boolean;
     onClose: () => void;
-    onDelete: (arg0: number) => void;
-    categoryToDelete: Category | undefined;
+    onDelete: () => void;
+    stringToMatch: string;
 }
 
-function DeleteAlert({ open, onClose, onDelete, categoryToDelete }: Props) {
+function DeleteAlert({ open, onClose, onDelete, stringToMatch }: Props) {
     const [categoryName, setCategoryName] = useState('');
 
     const handleClose = () => {
@@ -27,27 +26,27 @@ function DeleteAlert({ open, onClose, onDelete, categoryToDelete }: Props) {
 
     const handleDelete = () => {
         setCategoryName('');
-        onDelete(categoryToDelete!.internalId);
+        onDelete();
     };
 
-    return categoryToDelete ? (
+    return stringToMatch ? (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle id="alert-dialog-title">
-                Seguro desea eliminar la categoría?
+                Seguro desea eliminar {stringToMatch}?
             </DialogTitle>
             <DialogContent>
                 <DialogContentText sx={{ mb: 3 }}>
-                    Al ejecutar esta acción, eliminaria la categoria de manera
+                    Al ejecutar esta acción, eliminaria el item de manera
                     permanente. Para prevenir errores, por favor, escriba el
-                    nombre de la categoria debajo para continuar
+                    nombre de el item debajo para continuar
                 </DialogContentText>
                 <TextField
                     fullWidth
-                    label="Nombre de la categoria"
-                    error={categoryToDelete.name !== categoryName}
+                    label={`Ingrese aqui el texto: ${stringToMatch}`}
+                    error={stringToMatch !== categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
                     value={categoryName}
-                    placeholder={categoryToDelete.name}
+                    placeholder={stringToMatch}
                 />
             </DialogContent>
             <DialogActions>
@@ -55,7 +54,7 @@ function DeleteAlert({ open, onClose, onDelete, categoryToDelete }: Props) {
                 <Button
                     onClick={handleDelete}
                     autoFocus
-                    disabled={categoryToDelete.name !== categoryName}
+                    disabled={stringToMatch !== categoryName}
                 >
                     Eliminar
                 </Button>
