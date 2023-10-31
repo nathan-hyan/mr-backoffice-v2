@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Divider, Drawer, List, Typography } from '@mui/material';
 
 import Option from './components/Option';
-import { OPTIONS } from './constants';
+
+import { ROUTES } from '~config/routes';
 
 interface Props {
     drawer: boolean;
@@ -32,14 +33,17 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
                 </Typography>
                 <Divider />
 
-                {OPTIONS.map(({ id, whereTo, title, icon }) => (
-                    <Option
-                        key={id}
-                        handleNavigate={handleNavigate(whereTo)}
-                        icon={icon}
-                        title={title}
-                    />
-                ))}
+                {ROUTES.map(
+                    ({ id, path, title, icon }) =>
+                        icon && (
+                            <Option
+                                key={id}
+                                handleNavigate={handleNavigate(path)}
+                                icon={icon}
+                                title={title}
+                            />
+                        )
+                )}
             </List>
         </Drawer>
     );

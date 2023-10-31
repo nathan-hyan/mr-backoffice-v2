@@ -4,8 +4,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 
-import App from './App';
-
 import './index.scss';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -14,13 +12,9 @@ import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
 import { THEME } from '~config/muiTheme';
+import { ROUTES } from '~config/routes';
 import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
-import CategoryManager from '~screens/CategoryManager';
-import Login from '~screens/Login';
-import PriceModifier from '~screens/PriceModifier';
-import ProductList from '~screens/ProductList';
-import UserInfo from '~screens/UserInfo';
 
 const root = document.getElementById('root');
 
@@ -41,32 +35,7 @@ const router = createBrowserRouter([
                 </UserContextProvider>
             </HelmetProvider>
         ),
-        children: [
-            {
-                path: '/',
-                element: <App />,
-            },
-            {
-                path: '/login',
-                element: <Login />,
-            },
-            {
-                path: '/products',
-                element: <ProductList />,
-            },
-            {
-                path: '/priceModifier',
-                element: <PriceModifier />,
-            },
-            {
-                path: '/profile',
-                element: <UserInfo />,
-            },
-            {
-                path: '/categoryManager',
-                element: <CategoryManager />,
-            },
-        ],
+        children: ROUTES.map(({ path, element }) => ({ path, element })),
     },
 ]);
 

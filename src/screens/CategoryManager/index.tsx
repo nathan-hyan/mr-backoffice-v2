@@ -8,7 +8,6 @@ import AddSubCategory from './components/AddSubCategory';
 import CategoryList from './components/CategoryList';
 import CurrentCategory from './components/CurrentCategory';
 
-import SEO from '~components/SEO';
 import { FirestoreCollections } from '~constants/firebase';
 import useFirestore from '~hooks/useFirestore';
 import getLatestInternalId from '~utils/getLatestInternalId';
@@ -117,11 +116,6 @@ function CategoryManager() {
 
     return (
         <>
-            <SEO
-                title="Administrador de Categorias"
-                description="Creación y edición de categorias para los productos"
-            />
-
             <AddCategory
                 show={showAddCategoryModal}
                 handleClose={toggleModals('addCategory')}

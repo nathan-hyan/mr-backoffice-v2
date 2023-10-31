@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Category, Product } from 'types/data';
 
-import SEO from '~components/SEO';
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
@@ -35,10 +34,6 @@ function ProductList() {
 
     return (
         <>
-            <SEO
-                title="Lista de productos"
-                description="Listado de todos los productos a la venta"
-            />
             <SearchBox />
             <SortByBox />
             <CustomTable />
