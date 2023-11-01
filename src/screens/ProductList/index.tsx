@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Category, Product } from 'types/data';
+import { Brand, Category, Product } from 'types/data';
 
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
@@ -9,12 +9,17 @@ import SearchBox from '~screens/ProductList/components/SearchBox';
 import SortByBox from '~screens/ProductList/components/SortByBox';
 
 function ProductList() {
-    const { saveProducts, saveCategories } = useProducts();
+    const { saveProducts, saveCategories, saveBrands } = useProducts();
+
     const { subscribeToData: productDataSub } = useFirestore<Product>(
         FirestoreCollections.Products
     );
     const { subscribeToData: categoryDataSub } = useFirestore<Category>(
         FirestoreCollections.Categories
+    );
+
+    const { subscribeToData: brandDataSub } = useFirestore<Brand>(
+        FirestoreCollections.Brands
     );
 
     useEffect(() => {
@@ -26,11 +31,23 @@ function ProductList() {
             saveCategories(data);
         });
 
+        const brandsUnsubscribe = brandDataSub((data) => {
+            saveBrands(data);
+        });
+
         return () => {
             productsUnsubscribe();
             categoriesUnsubscribe();
+            brandsUnsubscribe();
         };
-    }, [categoryDataSub, productDataSub, saveCategories, saveProducts]);
+    }, [
+        brandDataSub,
+        categoryDataSub,
+        productDataSub,
+        saveBrands,
+        saveCategories,
+        saveProducts,
+    ]);
 
     return (
         <>

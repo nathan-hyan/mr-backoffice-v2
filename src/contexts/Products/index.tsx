@@ -6,7 +6,7 @@ import {
     useMemo,
     useState,
 } from 'react';
-import { Category, Product } from 'types/data';
+import { Brand, Category, Product } from 'types/data';
 
 import { INITIAL_CONTEXT, SearchCriteria, SortBy } from './constants';
 import { compare } from './utils';
@@ -20,7 +20,11 @@ const ProductContext = createContext(INITIAL_CONTEXT);
 export default function ProductProvider({ children }: Props) {
     const [productList, setProductList] = useState<Product[]>([]);
     const [productListCopy, setProductListCopy] = useState<Product[]>([]);
+
     const [categories, saveCategories] = useState<Category[]>([]);
+
+    const [brands, saveBrands] = useState<Brand[]>([]);
+
     const [searchQuery, setSearchQuery] = useState('');
     const [searchCriteria, setSearchCriteria] = useState<SearchCriteria>(
         SearchCriteria.ProductName
@@ -84,6 +88,8 @@ export default function ProductProvider({ children }: Props) {
         () => ({
             productList,
             categories,
+            brands,
+            saveBrands,
             saveProducts,
             saveCategories,
             getSubcategories,
@@ -97,6 +103,8 @@ export default function ProductProvider({ children }: Props) {
         [
             productList,
             categories,
+            brands,
+            saveBrands,
             saveProducts,
             getSubcategories,
             performSearch,

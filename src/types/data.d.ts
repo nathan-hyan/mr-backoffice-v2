@@ -45,6 +45,7 @@ export interface Category {
 }
 
 export interface Brand {
+    id?: string;
     internalId: number;
     name: string;
 }

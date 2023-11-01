@@ -103,13 +103,13 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
 ];
 
 export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
-    {
-        id: 1,
-        label: 'Marca',
-        name: 'brand',
-        type: InputType.Text,
-        required: true,
-    },
+    // {
+    //     id: 1,
+    //     label: 'Marca',
+    //     name: 'brand',
+    //     type: InputType.Text,
+    //     required: true,
+    // },
     {
         id: 2,
         label: 'Dueño de negocio',
