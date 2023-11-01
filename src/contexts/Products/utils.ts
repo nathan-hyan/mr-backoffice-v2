@@ -6,7 +6,9 @@ export const compare =
     (sortBy: SortBy) => (first: Product, second: Product) => {
         switch (sortBy) {
             case 0:
-                return first.name > second.name ? 1 : -1;
+                return first.name.toLowerCase() > second.name.toLowerCase()
+                    ? 1
+                    : -1;
 
             case 1:
                 return (first.prices.list.lastModified || 0) >

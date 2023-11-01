@@ -169,7 +169,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
             <Divider sx={{ mt: 3 }} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-                {watch('imageURL').length > 0 ? (
+                {watch('imageURL').filter(Boolean).length > 0 ? (
                     watch('imageURL').map((image) => (
                         <img
                             src={image}
