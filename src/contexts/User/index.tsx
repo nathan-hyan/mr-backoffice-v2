@@ -1,21 +1,28 @@
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { useSnackbar } from 'notistack';
 import {
-    ReactNode,
     createContext,
+    ReactNode,
     useContext,
     useEffect,
     useMemo,
     useState,
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { useSnackbar } from 'notistack';
 import { Nullable } from 'vite-env';
+
 import LoadingScreen from '~components/LoadingScreen';
 import { auth } from '~config/firebase';
+import { FirestoreCollections, UserRoles } from '~constants/firebase';
+import useFirestore from '~hooks/useFirestore';
+
+interface UserWithRole extends User {
+    role: UserRoles;
+}
 
 interface Context {
     loadingUser: boolean;
-    user: Nullable<User>;
+    user: Nullable<UserWithRole>;
 }
 export const UserContext = createContext<Context>({
     loadingUser: false,
@@ -27,12 +34,16 @@ interface Props {
 }
 
 export function UserContextProvider({ children }: Props) {
+    const { getDocument } = useFirestore<{ role: UserRoles }>(
+        FirestoreCollections.Users
+    );
+
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
     const { pathname } = useLocation();
     const [hasUser, setHasUser] = useState(false);
     const [loadingUser, setLoadingUser] = useState(true);
-    const [user, setUser] = useState<Nullable<User>>(null);
+    const [user, setUser] = useState<Nullable<UserWithRole>>(null);
 
     let allowedPaths: string[];
 
@@ -49,9 +60,10 @@ export function UserContextProvider({ children }: Props) {
             if (!hasUser && !firebaseUser) {
                 setLoadingUser(false);
             }
+
             if (!hasUser && firebaseUser) {
                 setLoadingUser(false);
-                setUser(firebaseUser);
+                setUser({ ...firebaseUser, role: UserRoles.Customer });
                 setHasUser(true);
             }
 
@@ -65,11 +77,22 @@ export function UserContextProvider({ children }: Props) {
 
                 navigate('/login');
             }
+
             if (firebaseUser && allowedPaths.includes(pathname)) {
-                setUser(firebaseUser);
+                setUser({ ...firebaseUser, role: UserRoles.Customer });
                 navigate('/products');
             }
+
+            if (firebaseUser?.uid) {
+                getDocument(firebaseUser.uid).then(({ role }) => {
+                    setUser((prevState) => ({
+                        ...prevState!,
+                        role,
+                    }));
+                });
+            }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
     const value = useMemo(() => ({ loadingUser, user }), [loadingUser, user]);

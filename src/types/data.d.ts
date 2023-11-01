@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 interface Variants {
     color: string;
     barCode: string;
@@ -6,7 +8,7 @@ interface Variants {
 
 interface Price {
     value: number;
-    lastModified?: Date;
+    lastModified?: Timestamp;
 }
 
 interface Prices {
@@ -32,25 +34,43 @@ interface ProviderProductCode {
     name: string;
 }
 
+export interface Category {
+    id?: string;
+    internalId: number;
+    name: string;
+    subCategories?: {
+        internalId: number;
+        name: string;
+    }[];
+}
+
+export interface Brand {
+    id?: string;
+    internalId: number;
+    name: string;
+}
+
 export interface Product {
     id: string;
     name: string;
+    description: string;
     stock: number;
+    category: string; // Reference to categories.id
+    subCategory: string; // Reference to categories.subCategories[n].id
     barcode: string;
-    category: string;
-    subCategory?: string;
     brand: string;
     businessOwner: string;
-    dimensions: Dimensions;
+    dimensions?: Dimensions;
     weight: number;
     storePosition: string;
     providerProductCode: ProviderProductCode[];
-    description: string;
     specifications: Specifications[];
     variants: Variants[];
     prices: Prices;
-    internalId: number;
-    imageURL: string;
+    internalId: number; // 0
+    imageURL: string[];
     createdAt: Date;
     updatedAt: Date;
+    // stars: 5;
+    // votes: 1234;
 }

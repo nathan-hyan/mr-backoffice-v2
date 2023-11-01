@@ -6,19 +6,17 @@ import {
     Select,
     SelectChangeEvent,
 } from '@mui/material';
-import { SortBy } from './constants';
-import { StateDispatch } from '~config/globalConstants';
 
-interface Props {
-    sortBy: SortBy;
-    setSortBy: StateDispatch<SortBy>;
-}
+import { useProducts } from '~contexts/Products';
+import { SortBy } from '~contexts/Products/constants';
 
-function SortByBox({ sortBy, setSortBy }: Props) {
+function SortByBox() {
+    const { sortBy, handleSort } = useProducts();
+
     const handleSortBy = (event: SelectChangeEvent<SortBy>) => {
         const { value } = event.target;
 
-        setSortBy(value as SortBy);
+        handleSort(value as SortBy);
     };
 
     return (

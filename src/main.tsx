@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import App from './App';
+import { HelmetProvider } from 'react-helmet-async';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 
 import './index.scss';
 import '@fontsource/roboto/300.css';
@@ -11,37 +11,31 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
+import { THEME } from '~config/muiTheme';
+import { ROUTES } from '~config/routes';
 import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
-import Login from '~screens/Login';
-import ProductList from '~screens/ProductList';
 
 const root = document.getElementById('root');
 
-const router = createBrowserRouter([
+const theme = createTheme(THEME);
+
+const router = createHashRouter([
     {
         path: '/',
         element: (
-            <UserContextProvider>
-                <ProductProvider>
-                    <NavbarWrapper />
-                </ProductProvider>
-            </UserContextProvider>
+            <HelmetProvider>
+                <UserContextProvider>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline enableColorScheme />
+                        <ProductProvider>
+                            <NavbarWrapper />
+                        </ProductProvider>
+                    </ThemeProvider>
+                </UserContextProvider>
+            </HelmetProvider>
         ),
-        children: [
-            {
-                path: '/',
-                element: <App />,
-            },
-            {
-                path: '/login',
-                element: <Login />,
-            },
-            {
-                path: '/products',
-                element: <ProductList />,
-            },
-        ],
+        children: ROUTES.map(({ path, element }) => ({ path, element })),
     },
 ]);
 

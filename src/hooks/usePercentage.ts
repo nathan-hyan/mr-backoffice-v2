@@ -8,14 +8,14 @@ function usePercentage() {
     // and make the progress be more convincing
 
     let timeToResolve = Math.ceil(Math.random() * 1000);
-    
+
     const [currentPercentage, setCurrentPercentage] = useState(0);
-    
+
     // We use timeouts for the updating of
     // the percentage value
     let doTimeout: NodeJS.Timeout;
 
-    // Global clearCurrentTimeout for 
+    // Global clearCurrentTimeout for
     // it to be called when a new file is uploading.
 
     const clearCurrentTimeout = () => {
@@ -59,18 +59,16 @@ function usePercentage() {
                 // condition is false
 
                 updatePercentage(percentageValue, nextValue);
-            
             } else {
                 // In that case, just wait with
                 // the nextValue until the function
                 // gets called with a newValue
                 percentageValue = nextValue;
-            
             }
         }, timeToResolve);
 
         // Update state so the app re-renders
-        
+
         setCurrentPercentage(percentageValue);
         return percentageValue;
     };
@@ -80,7 +78,7 @@ function usePercentage() {
         // seems more convincing
 
         timeToResolve = Math.ceil(Math.random() * 1000);
-        
+
         // Lets add a random small value to the
         // current percentage to fake progress
         // this, of course, can cause the value to
@@ -95,8 +93,6 @@ function usePercentage() {
         if (updatedValue >= nextValue) {
             return;
         }
-
-        console.log(`${currentValue}% in ${timeToResolve}ms`);
 
         // If none of the previous conditions are
         // true, repeat the process!

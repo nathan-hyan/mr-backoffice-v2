@@ -9,7 +9,12 @@ import {
     Box,
     Button,
     Divider,
+    FormControl,
+    FormHelperText,
     IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField,
     Typography,
 } from '@mui/material';
@@ -20,6 +25,7 @@ import {
     LOCAL_INFO_FORM,
     PROVIDER_PRODUCT_CODE_FORM_EMPTY,
 } from '~components/AddProductModal/constants';
+import { useProducts } from '~contexts/Products';
 
 interface Props {
     control: Control<Product, unknown>;
@@ -32,6 +38,8 @@ function KioskInformation({ control, errors }: Props) {
         remove: providerProductCodeRemove,
         append: providerProductCodeAppend,
     } = useFieldArray({ control, name: 'providerProductCode' });
+
+    const { brands } = useProducts();
 
     return (
         <>
@@ -157,6 +165,41 @@ function KioskInformation({ control, errors }: Props) {
                     &quot;Agregar&quot; para comenzar
                 </Typography>
             )}
+            <Controller
+                name="brand"
+                control={control}
+                defaultValue=""
+                rules={{
+                    required: {
+                        value: true,
+                        message: 'Por favor, elija una marca',
+                    },
+                }}
+                render={({ field }) => (
+                    <FormControl
+                        fullWidth
+                        variant="standard"
+                        required
+                        error={!!errors.brand}
+                    >
+                        <InputLabel id="demo-simple-select-label">
+                            Marca
+                        </InputLabel>
+                        <Select {...field} labelId="brand">
+                            {brands.map(({ name, id }) => (
+                                <MenuItem key={id} value={id}>
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        {!!errors.brand && (
+                            <FormHelperText>
+                                {errors.brand?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
+                )}
+            />
             {LOCAL_INFO_FORM.map((item) => (
                 <Controller
                     key={item.id}

@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 
 import styles from './styles.module.scss';
 
-import LogoBlack from '~assets/logo_black.png';
+import LogoWhite from '~assets/logo-white.svg';
 
 function App() {
     const navigate = useNavigate();
@@ -24,11 +24,7 @@ function App() {
                 minHeight: '30rem',
             }}
         >
-            <img
-                src={LogoBlack}
-                className={styles.image}
-                alt="Mundo Regalo Logo"
-            />
+            <img src={LogoWhite} alt="Mundo Regalo" className={styles.image} />
 
             <Button variant="contained" onClick={handleNavigate}>
                 Inicie sesión para continuar

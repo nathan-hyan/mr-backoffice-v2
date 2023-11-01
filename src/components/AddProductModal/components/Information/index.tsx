@@ -1,10 +1,13 @@
+import { useEffect } from 'react';
 import {
     Control,
     Controller,
     FieldErrors,
+    UseFormSetValue,
     UseFormWatch,
 } from 'react-hook-form';
 import {
+    Box,
     Button,
     Divider,
     FormControl,
@@ -17,19 +20,31 @@ import {
 } from '@mui/material';
 import { Product } from 'types/data';
 
+import styles from './styles.module.scss';
+
 import { InputType, PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
+import { useProducts } from '~contexts/Products';
 import useFileUpload from '~hooks/useFileUpload';
 
 interface Props {
     control: Control<Product, unknown>;
     watch: UseFormWatch<Product>;
     errors: FieldErrors<Product>;
+    setValue: UseFormSetValue<Product>;
 }
 
-function Information({ control, watch, errors }: Props) {
-    const { handleFileUpload, isUploading, uploadProgress } =
+function Information({ control, watch, errors, setValue }: Props) {
+    const { handleFileUpload, isUploading, uploadProgress, imageURL } =
         useFileUpload(watch);
+
+    const { categories, getSubcategories } = useProducts();
+
+    useEffect(() => {
+        if (imageURL.length) {
+            setValue('imageURL', imageURL);
+        }
+    }, [imageURL, setValue]);
 
     return (
         <>
@@ -59,6 +74,7 @@ function Information({ control, watch, errors }: Props) {
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            disabled={item.disabled}
                             multiline={item.multiline}
                             label={item.label}
                             type={item.type}
@@ -91,15 +107,11 @@ function Information({ control, watch, errors }: Props) {
                             Categoria
                         </InputLabel>
                         <Select {...field} labelId="category">
-                            <MenuItem value="libreria">Librería</MenuItem>
-                            <MenuItem value="imprenta">Imprenta</MenuItem>
-                            <MenuItem value="servicios">Servicios</MenuItem>
-                            <MenuItem value="regaleria">Regalería</MenuItem>
-                            <MenuItem value="biju-cosmetica">
-                                Bijú / Cosmética
-                            </MenuItem>
-                            <MenuItem value="electronica">Electrónica</MenuItem>
-                            <MenuItem value="cotillon">Cotillón</MenuItem>
+                            {categories.map(({ name, id }) => (
+                                <MenuItem key={id} value={id}>
+                                    {name}
+                                </MenuItem>
+                            ))}
                         </Select>
                         {!!errors.category && (
                             <FormHelperText>
@@ -113,18 +125,72 @@ function Information({ control, watch, errors }: Props) {
                 name="subCategory"
                 control={control}
                 defaultValue=""
+                rules={{
+                    required: {
+                        value: true,
+                        message: 'Por favor, elija una sub-categoria',
+                    },
+                }}
                 render={({ field }) => (
-                    <TextField
-                        {...field}
-                        label="Subcategoria"
+                    <FormControl
+                        fullWidth
                         variant="standard"
-                        error={!!errors.subCategory}
-                        helperText={errors.subCategory?.message}
-                    />
+                        error={!!errors.category}
+                    >
+                        <InputLabel id="demo-simple-select-label">
+                            Sub-Categoria
+                        </InputLabel>
+                        <Select
+                            {...field}
+                            labelId="subCategory"
+                            disabled={
+                                getSubcategories(watch('category')).length === 0
+                            }
+                        >
+                            {getSubcategories(watch('category')).map(
+                                ({ name, internalId }) => (
+                                    <MenuItem
+                                        key={internalId}
+                                        value={internalId}
+                                    >
+                                        {name}
+                                    </MenuItem>
+                                )
+                            )}
+                        </Select>
+                        {!!errors.category && (
+                            <FormHelperText>
+                                {errors.category?.message}
+                            </FormHelperText>
+                        )}
+                    </FormControl>
                 )}
             />
 
             <Divider sx={{ mt: 3 }} />
+            <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                {watch('imageURL').filter(Boolean).length > 0 ? (
+                    watch('imageURL').map((image) => (
+                        <img
+                            src={image}
+                            alt="Product"
+                            key={image}
+                            className={styles.image}
+                        />
+                    ))
+                ) : (
+                    <Typography
+                        variant="subtitle1"
+                        color="error"
+                        sx={{
+                            width: '100%',
+                            textAlign: 'center',
+                        }}
+                    >
+                        No hay imagenes subidas, por favor ingrese una imágen
+                    </Typography>
+                )}
+            </Box>
             <label htmlFor="upload-image">
                 <Button
                     variant="contained"

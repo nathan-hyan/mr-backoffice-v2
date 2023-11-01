@@ -28,6 +28,7 @@ interface Form<T> {
     required: boolean;
     multiline?: boolean;
     type: InputType;
+    disabled?: boolean;
 }
 
 export const PRODUCT_FORM: Form<keyof Product>[] = [
@@ -52,6 +53,7 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
         name: 'internalId',
         type: InputType.Number,
         required: true,
+        disabled: true,
     },
     {
         id: 1,
@@ -101,13 +103,13 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
 ];
 
 export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
-    {
-        id: 1,
-        label: 'Marca',
-        name: 'brand',
-        type: InputType.Text,
-        required: true,
-    },
+    // {
+    //     id: 1,
+    //     label: 'Marca',
+    //     name: 'brand',
+    //     type: InputType.Text,
+    //     required: true,
+    // },
     {
         id: 2,
         label: 'Dueño de negocio',
@@ -226,7 +228,7 @@ export enum SearchType {
 export const EMPTY_FORM: Product = {
     description: '',
     internalId: 0,
-    imageURL: '',
+    imageURL: [''],
     createdAt: new Date(),
     updatedAt: new Date(),
     id: '',
@@ -237,6 +239,7 @@ export const EMPTY_FORM: Product = {
     stock: 0,
     barcode: '',
     category: '',
+    subCategory: '',
     prices: {
         cost: { value: 0 },
         list: { value: 0 },

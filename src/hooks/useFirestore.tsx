@@ -3,48 +3,57 @@ import { FirebaseError } from 'firebase/app';
 import {
     addDoc,
     collection,
+    deleteDoc,
+    doc,
     DocumentData,
     DocumentReference,
-    getDocs,
+    getDoc,
+    onSnapshot,
+    updateDoc,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
 
 import { database } from '~config/firebase';
-import { FirebaseCollections } from '~constants/firebase';
+import { FirestoreCollections } from '~constants/firebase';
 
-function useFirestore<T>(collectionName: FirebaseCollections) {
+function useFirestore<T>(collectionName: FirestoreCollections) {
+    type DataWithId = { id: string } & T;
+    type Callback = (data: DataWithId[]) => void;
+
     const { enqueueSnackbar } = useSnackbar();
     const [fetchLoading, setFetchLoading] = useState(true);
     const [creatingLoading, setCreatingLoading] = useState(false);
 
-    const fetchData: () => Promise<({ id: string } & T)[]> =
-        useCallback(async () => {
-            const collectionRef = collection(database, collectionName);
+    const subscribeToData = useCallback(
+        (callback: Callback) => {
             setFetchLoading(true);
-            try {
-                const res = await getDocs(collectionRef);
+            const collectionRef = collection(database, collectionName);
 
-                setFetchLoading(false);
+            return onSnapshot(collectionRef, (snapshot) => {
+                try {
+                    setFetchLoading(false);
 
-                return res.docs.map((item) => ({
-                    id: item.id,
-                    ...(item.data() as T),
-                }));
-            } catch (err: unknown) {
-                setFetchLoading(false);
+                    const response = snapshot.docs.map((item) => ({
+                        ...(item.data() as T),
+                        id: item.id,
+                    }));
 
-                if (err instanceof FirebaseError) {
-                    enqueueSnackbar(err.message, { variant: 'error' });
-                    return [];
+                    callback(response);
+                } catch (err: unknown) {
+                    setFetchLoading(false);
+
+                    if (err instanceof FirebaseError) {
+                        enqueueSnackbar(err.message, { variant: 'error' });
+                    }
+
+                    enqueueSnackbar('Ocurrió un error inesperado.', {
+                        variant: 'error',
+                    });
                 }
-
-                enqueueSnackbar('Ocurrió un error inesperado.', {
-                    variant: 'error',
-                });
-
-                return [];
-            }
-        }, [collectionName, enqueueSnackbar]);
+            });
+        },
+        [collectionName, enqueueSnackbar]
+    );
 
     const addDocument: (
         newDocument: T
@@ -59,7 +68,7 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
                 collectionRef,
                 newDocument as Record<string, unknown>
             );
-            enqueueSnackbar('Producto creado correctamente', {
+            enqueueSnackbar('Item creado correctamente', {
                 variant: 'success',
             });
             setCreatingLoading(false);
@@ -79,6 +88,73 @@ function useFirestore<T>(collectionName: FirebaseCollections) {
         }
     };
 
-    return { fetchData, addDocument, fetchLoading, creatingLoading };
+    const removeDocument = (
+        documentId: string,
+        callback?: (arg0: void) => void
+    ) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        deleteDoc(docRef)
+            .then(callback)
+            .finally(() =>
+                enqueueSnackbar('Item eliminado correctamente', {
+                    variant: 'success',
+                })
+            )
+            .catch((err) =>
+                enqueueSnackbar(
+                    `Ocurrió un error inesperado (${JSON.stringify(
+                        err.message
+                    )})`,
+                    {
+                        variant: 'error',
+                    }
+                )
+            );
+    };
+
+    const updateDocument = (
+        documentId: string,
+        newData: DataWithId,
+        callback?: (arg0: void) => void
+    ) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        updateDoc(docRef, newData)
+            .then(callback)
+            .finally(() =>
+                enqueueSnackbar('Item editado correctamente', {
+                    variant: 'info',
+                })
+            )
+            .catch((err) =>
+                enqueueSnackbar(
+                    `Ocurrió un error inesperado (${JSON.stringify(
+                        err.message
+                    )})`,
+                    {
+                        variant: 'error',
+                    }
+                )
+            );
+    };
+
+    const getDocument = async (documentId: string) => {
+        const docRef = doc(database, collectionName, documentId);
+
+        const response = await getDoc(docRef);
+
+        return response.data() as T;
+    };
+
+    return {
+        updateDocument,
+        addDocument,
+        getDocument,
+        removeDocument,
+        fetchLoading,
+        creatingLoading,
+        subscribeToData,
+    };
 }
 export default useFirestore;
