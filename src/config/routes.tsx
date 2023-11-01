@@ -3,8 +3,6 @@ import {
     AttachMoney,
     FormatListNumbered,
     LocalOffer,
-    // Print,
-    // ShoppingCartCheckout,
 } from '@mui/icons-material';
 
 import App from '../App';

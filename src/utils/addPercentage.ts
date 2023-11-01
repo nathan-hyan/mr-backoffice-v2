@@ -4,7 +4,7 @@ function calculateNumberWithPercentage(
     type: 'incr' | 'decr'
 ) {
     return type === 'incr'
-        ? number + number * (percent / 100)
-        : number - number * (percent / 100);
+        ? Number(number) + Number(number) * (Number(percent) / 100)
+        : Number(number) - Number(number) * (Number(percent) / 100);
 }
 export default calculateNumberWithPercentage;

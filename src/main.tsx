@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 
 import './index.scss';
@@ -20,7 +20,7 @@ const root = document.getElementById('root');
 
 const theme = createTheme(THEME);
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path: '/',
         element: (
