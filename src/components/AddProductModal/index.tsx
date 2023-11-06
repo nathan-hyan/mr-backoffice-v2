@@ -51,24 +51,24 @@ function AddProductModal({ show, onClose, productToEdit }: Props) {
     const checkForErrors = () => {
         const errorsArray = Object.keys(errors);
 
-        if (watch('imageURL').filter(Boolean).length === 0) {
-            const imageButton = document.getElementById('upload-button');
+        if (errorsArray.length !== 0) {
+            const input =
+                document.querySelector(`input[name=${errorsArray[0]}]`) ||
+                document.querySelector(`textarea[name=${errorsArray[0]}]`);
 
-            imageButton?.scrollIntoView({
+            input?.scrollIntoView({
                 behavior: 'smooth',
-                block: 'center',
+                block: 'start',
                 inline: 'start',
             });
 
             return;
         }
 
-        if (errorsArray.length !== 0) {
-            const input = document.querySelector(
-                `input[name=${errorsArray[0]}]`
-            );
+        if (watch('imageURL').filter(Boolean).length === 0) {
+            const imageButton = document.getElementById('upload-button');
 
-            input?.scrollIntoView({
+            imageButton?.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
                 inline: 'start',

@@ -79,6 +79,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                                     ? field.value?.toString()
                                     : field.value
                             }
+                            name={item.name}
                             disabled={item.disabled}
                             multiline={item.multiline}
                             label={item.label}
