@@ -51,6 +51,14 @@ function Prices({ control, errors }: Props) {
                                     ? errors.prices[item.name]?.value?.message
                                     : undefined
                             }
+                            onChange={({ target: { value } }) =>
+                                field.onChange(
+                                    Number.isNaN(value)
+                                        ? 0
+                                        : parseInt(value, 10)
+                                )
+                            }
+                            value={field.value?.toString()}
                             fullWidth
                             variant="standard"
                         />

@@ -105,6 +105,14 @@ function KioskInformation({ control, errors }: Props) {
                                                   ?.id?.message
                                             : false
                                     }
+                                    onChange={({ target: { value } }) =>
+                                        field.onChange(
+                                            Number.isNaN(value)
+                                                ? 0
+                                                : parseInt(value, 10)
+                                        )
+                                    }
+                                    value={field.value?.toString()}
                                     label="Id del producto"
                                     type={InputType.Number}
                                     required
@@ -228,6 +236,21 @@ function KioskInformation({ control, errors }: Props) {
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            onChange={
+                                item.type === 'number'
+                                    ? ({ target: { value } }) =>
+                                          field.onChange(
+                                              Number.isNaN(value)
+                                                  ? 0
+                                                  : parseInt(value, 10)
+                                          )
+                                    : field.onChange
+                            }
+                            value={
+                                item.type === 'number'
+                                    ? field.value?.toString()
+                                    : field.value
+                            }
                             label={item.label}
                             type={item.type}
                             required={item.required}

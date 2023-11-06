@@ -39,9 +39,12 @@ function Dimensions({ control, errors }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value) ? 0 : Number(value)
+                                    Number.isNaN(value)
+                                        ? 0
+                                        : parseInt(value, 10)
                                 )
                             }
+                            value={field.value.toString()}
                             label={item.label}
                             type={InputType.Number}
                             variant="standard"

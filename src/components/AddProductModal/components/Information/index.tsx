@@ -20,9 +20,11 @@ import {
 } from '@mui/material';
 import { Product } from 'types/data';
 
+import { INFORMATION_RULES, isRequiredRule } from './constants';
+
 import styles from './styles.module.scss';
 
-import { InputType, PRODUCT_FORM } from '~components/AddProductModal/constants';
+import { PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
 import { useProducts } from '~contexts/Products';
 import useFileUpload from '~hooks/useFileUpload';
@@ -57,23 +59,25 @@ function Information({ control, watch, errors, setValue }: Props) {
                     key={item.id}
                     name={item.name}
                     control={control}
-                    rules={{
-                        required: {
-                            value: item.required,
-                            message: 'Este campo es obligatorio',
-                        },
-                        validate: {
-                            positive:
-                                item.type === InputType.Number
-                                    ? (val) =>
-                                          Number(val) > 0 ||
-                                          'El numero no puede ser cero o negativo'
-                                    : () => true,
-                        },
-                    }}
+                    rules={INFORMATION_RULES(item.required, item.type)}
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            onChange={
+                                item.type === 'number'
+                                    ? ({ target: { value } }) =>
+                                          field.onChange(
+                                              Number.isNaN(value)
+                                                  ? 0
+                                                  : parseInt(value, 10)
+                                          )
+                                    : field.onChange
+                            }
+                            value={
+                                item.type === 'number'
+                                    ? field.value?.toString()
+                                    : field.value
+                            }
                             disabled={item.disabled}
                             multiline={item.multiline}
                             label={item.label}
@@ -91,12 +95,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                 name="category"
                 control={control}
                 defaultValue=""
-                rules={{
-                    required: {
-                        value: true,
-                        message: 'Por favor, elija una categoria',
-                    },
-                }}
+                rules={isRequiredRule}
                 render={({ field }) => (
                     <FormControl
                         fullWidth
@@ -125,12 +124,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                 name="subCategory"
                 control={control}
                 defaultValue=""
-                rules={{
-                    required: {
-                        value: true,
-                        message: 'Por favor, elija una sub-categoria',
-                    },
-                }}
+                rules={isRequiredRule}
                 render={({ field }) => (
                     <FormControl
                         fullWidth

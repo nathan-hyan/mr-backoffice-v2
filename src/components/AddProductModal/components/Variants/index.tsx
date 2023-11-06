@@ -113,10 +113,11 @@ function Variants({ control, errors }: Props) {
                                         field.onChange(
                                             Number.isNaN(value)
                                                 ? 0
-                                                : Number(value)
+                                                : parseInt(value, 10)
                                         )
                                     }
                                     label="Stock"
+                                    value={field.value.toString()}
                                     required
                                     type={InputType.Number}
                                     fullWidth
