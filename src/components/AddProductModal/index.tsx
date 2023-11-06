@@ -48,6 +48,34 @@ function AddProductModal({ show, onClose, productToEdit }: Props) {
     const { addDocument, updateDocument, creatingLoading } =
         useFirestore<Product>(FirestoreCollections.Products);
 
+    const checkForErrors = () => {
+        const errorsArray = Object.keys(errors);
+
+        if (watch('imageURL').filter(Boolean).length === 0) {
+            const imageButton = document.getElementById('upload-button');
+
+            imageButton?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+            });
+
+            return;
+        }
+
+        if (errorsArray.length !== 0) {
+            const input = document.querySelector(
+                `input[name=${errorsArray[0]}]`
+            );
+
+            input?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'start',
+            });
+        }
+    };
+
     const onSubmit = (data: Product) => {
         if (productToEdit) {
             updateDocument(productToEdit.id, data, () => {
@@ -147,6 +175,7 @@ function AddProductModal({ show, onClose, productToEdit }: Props) {
                         variant="contained"
                         startIcon={<SaveAltRounded />}
                         disabled={creatingLoading}
+                        onClick={checkForErrors}
                     >
                         Guardar
                     </Button>

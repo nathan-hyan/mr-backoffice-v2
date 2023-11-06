@@ -190,6 +190,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                 <Button
                     variant="contained"
                     component="span"
+                    id="upload-button"
                     fullWidth
                     disabled={isUploading}
                     startIcon={
