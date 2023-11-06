@@ -24,6 +24,19 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     const [fetchLoading, setFetchLoading] = useState(true);
     const [creatingLoading, setCreatingLoading] = useState(false);
 
+    const throwError = useCallback(
+        (err: unknown) => {
+            if (err instanceof FirebaseError) {
+                enqueueSnackbar(err.message, { variant: 'error' });
+            } else {
+                enqueueSnackbar('Ocurrió un error inesperado.', {
+                    variant: 'error',
+                });
+            }
+        },
+        [enqueueSnackbar]
+    );
+
     const subscribeToData = useCallback(
         (callback: Callback) => {
             setFetchLoading(true);
@@ -41,18 +54,11 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
                     callback(response);
                 } catch (err: unknown) {
                     setFetchLoading(false);
-
-                    if (err instanceof FirebaseError) {
-                        enqueueSnackbar(err.message, { variant: 'error' });
-                    }
-
-                    enqueueSnackbar('Ocurrió un error inesperado.', {
-                        variant: 'error',
-                    });
+                    throwError(err);
                 }
             });
         },
-        [collectionName, enqueueSnackbar]
+        [collectionName, throwError]
     );
 
     const addDocument: (
@@ -76,14 +82,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
             return res;
         } catch (err: unknown) {
             setCreatingLoading(false);
-            if (err instanceof FirebaseError) {
-                enqueueSnackbar(err.message, { variant: 'error' });
-                return [];
-            }
-
-            enqueueSnackbar('Ocurrió un error inesperado.', {
-                variant: 'error',
-            });
+            throwError(err);
             return [];
         }
     };
@@ -95,22 +94,16 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
         const docRef = doc(database, collectionName, documentId);
 
         deleteDoc(docRef)
-            .then(callback)
-            .finally(() =>
+            .then((data) => {
                 enqueueSnackbar('Item eliminado correctamente', {
                     variant: 'success',
-                })
-            )
-            .catch((err) =>
-                enqueueSnackbar(
-                    `Ocurrió un error inesperado (${JSON.stringify(
-                        err.message
-                    )})`,
-                    {
-                        variant: 'error',
-                    }
-                )
-            );
+                });
+
+                if (callback) {
+                    callback(data);
+                }
+            })
+            .catch((err) => throwError(err));
     };
 
     const updateDocument = (
@@ -121,22 +114,16 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
         const docRef = doc(database, collectionName, documentId);
 
         updateDoc(docRef, newData)
-            .then(callback)
-            .finally(() =>
+            .then((data) => {
                 enqueueSnackbar('Item editado correctamente', {
                     variant: 'info',
-                })
-            )
-            .catch((err) =>
-                enqueueSnackbar(
-                    `Ocurrió un error inesperado (${JSON.stringify(
-                        err.message
-                    )})`,
-                    {
-                        variant: 'error',
-                    }
-                )
-            );
+                });
+
+                if (callback) {
+                    callback(data);
+                }
+            })
+            .catch((err) => throwError(err));
     };
 
     const getDocument = async (documentId: string) => {
