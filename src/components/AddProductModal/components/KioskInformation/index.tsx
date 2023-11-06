@@ -113,6 +113,7 @@ function KioskInformation({ control, errors }: Props) {
                                                 : parseInt(value, 10)
                                         )
                                     }
+                                    onFocus={(e) => e.target.select()}
                                     value={field.value?.toString()}
                                     label="Id del producto"
                                     type={InputType.Number}
@@ -237,6 +238,11 @@ function KioskInformation({ control, errors }: Props) {
                     render={({ field }) => (
                         <TextField
                             {...field}
+                            onFocus={(e) =>
+                                item.type === 'number'
+                                    ? e.target.select()
+                                    : undefined
+                            }
                             onChange={
                                 item.type === 'number'
                                     ? ({ target: { value } }) =>

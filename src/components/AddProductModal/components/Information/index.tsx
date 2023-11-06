@@ -79,6 +79,11 @@ function Information({ control, watch, errors, setValue }: Props) {
                                     ? field.value?.toString()
                                     : field.value
                             }
+                            onFocus={(e) =>
+                                item.type === 'number'
+                                    ? e.target.select()
+                                    : undefined
+                            }
                             name={item.name}
                             disabled={item.disabled}
                             multiline={item.multiline}

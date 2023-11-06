@@ -73,6 +73,7 @@ function Form({ control, errors, disabled }: Props) {
                                         : Number(value)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             defaultValue={defaultValues?.cost}
                             error={!!errors.cost}
                             helperText={errors.cost?.message}
@@ -109,6 +110,7 @@ function Form({ control, errors, disabled }: Props) {
                                         : Number(value)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             error={!!errors.list}
                             helperText={errors.list?.message}
                             defaultValue={defaultValues?.list}
@@ -145,6 +147,7 @@ function Form({ control, errors, disabled }: Props) {
                                         : Number(value)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             error={!!errors.cash}
                             helperText={errors.cash?.message}
                             defaultValue={defaultValues?.cash}
@@ -181,6 +184,7 @@ function Form({ control, errors, disabled }: Props) {
                                         : Number(value)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             error={!!errors.web}
                             helperText={errors.web?.message}
                             defaultValue={defaultValues?.web}

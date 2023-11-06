@@ -44,6 +44,7 @@ function Dimensions({ control, errors }: Props) {
                                         : parseInt(value, 10)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             value={field.value.toString()}
                             label={item.label}
                             type={InputType.Number}

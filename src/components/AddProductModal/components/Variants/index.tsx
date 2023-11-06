@@ -91,6 +91,7 @@ function Variants({ control, errors }: Props) {
                                         errors.variants &&
                                         errors.variants[index]?.barCode?.message
                                     }
+                                    onFocus={(e) => e.target.select()}
                                     onChange={({ target: { value } }) =>
                                         field.onChange(
                                             Number.isNaN(value) ||
@@ -132,6 +133,7 @@ function Variants({ control, errors }: Props) {
                                                 : parseInt(value, 10)
                                         )
                                     }
+                                    onFocus={(e) => e.target.select()}
                                     label="Stock"
                                     value={field.value.toString()}
                                     required

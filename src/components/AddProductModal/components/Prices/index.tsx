@@ -58,6 +58,7 @@ function Prices({ control, errors }: Props) {
                                         : parseInt(value, 10)
                                 )
                             }
+                            onFocus={(e) => e.target.select()}
                             value={field.value?.toString()}
                             fullWidth
                             variant="standard"
