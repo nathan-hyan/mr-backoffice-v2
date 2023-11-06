@@ -66,7 +66,7 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
         id: 2,
         label: 'Código de barras',
         name: 'barcode',
-        type: InputType.Text,
+        type: InputType.Number,
         required: false,
     },
 ];

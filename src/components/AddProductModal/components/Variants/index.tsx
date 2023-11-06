@@ -70,6 +70,11 @@ function Variants({ control, errors }: Props) {
                                     value: true,
                                     message: 'Este campo es obligatorio',
                                 },
+                                validate: {
+                                    positive: (val) =>
+                                        Number(val) > 0 ||
+                                        'El numero no puede ser cero o negativo',
+                                },
                             }}
                             render={({ field }) => (
                                 <TextField
@@ -77,6 +82,7 @@ function Variants({ control, errors }: Props) {
                                     label="Cod. Barra"
                                     fullWidth
                                     required
+                                    type={InputType.Number}
                                     error={
                                         errors.variants &&
                                         !!errors.variants[index]?.barCode
@@ -85,6 +91,14 @@ function Variants({ control, errors }: Props) {
                                         errors.variants &&
                                         errors.variants[index]?.barCode?.message
                                     }
+                                    onChange={({ target: { value } }) =>
+                                        field.onChange(
+                                            Number.isNaN(value)
+                                                ? 0
+                                                : parseInt(value, 10)
+                                        )
+                                    }
+                                    value={field.value?.toString()}
                                 />
                             )}
                         />
