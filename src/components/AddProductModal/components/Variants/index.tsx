@@ -93,7 +93,8 @@ function Variants({ control, errors }: Props) {
                                     }
                                     onChange={({ target: { value } }) =>
                                         field.onChange(
-                                            Number.isNaN(value)
+                                            Number.isNaN(value) ||
+                                                Number(value) < 0
                                                 ? 0
                                                 : parseInt(value, 10)
                                         )
@@ -125,7 +126,8 @@ function Variants({ control, errors }: Props) {
                                     {...field}
                                     onChange={({ target: { value } }) =>
                                         field.onChange(
-                                            Number.isNaN(value)
+                                            Number.isNaN(value) ||
+                                                Number(value) < 0
                                                 ? 0
                                                 : parseInt(value, 10)
                                         )

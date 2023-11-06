@@ -39,7 +39,7 @@ function Dimensions({ control, errors }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value)
+                                    Number.isNaN(value) || Number(value) < 0
                                         ? 0
                                         : parseInt(value, 10)
                                 )

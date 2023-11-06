@@ -68,7 +68,9 @@ function Form({ control, errors, disabled }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value) ? 0 : Number(value)
+                                    Number.isNaN(value) || Number(value) < 0
+                                        ? 0
+                                        : Number(value)
                                 )
                             }
                             defaultValue={defaultValues?.cost}
@@ -102,7 +104,9 @@ function Form({ control, errors, disabled }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value) ? 0 : Number(value)
+                                    Number.isNaN(value) || Number(value) < 0
+                                        ? 0
+                                        : Number(value)
                                 )
                             }
                             error={!!errors.list}
@@ -136,7 +140,9 @@ function Form({ control, errors, disabled }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value) ? 0 : Number(value)
+                                    Number.isNaN(value) || Number(value) < 0
+                                        ? 0
+                                        : Number(value)
                                 )
                             }
                             error={!!errors.cash}
@@ -170,7 +176,9 @@ function Form({ control, errors, disabled }: Props) {
                             {...field}
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value) ? 0 : Number(value)
+                                    Number.isNaN(value) || Number(value) < 0
+                                        ? 0
+                                        : Number(value)
                                 )
                             }
                             error={!!errors.web}

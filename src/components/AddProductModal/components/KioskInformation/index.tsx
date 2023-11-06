@@ -107,7 +107,8 @@ function KioskInformation({ control, errors }: Props) {
                                     }
                                     onChange={({ target: { value } }) =>
                                         field.onChange(
-                                            Number.isNaN(value)
+                                            Number.isNaN(value) ||
+                                                Number(value) < 0
                                                 ? 0
                                                 : parseInt(value, 10)
                                         )
@@ -240,7 +241,8 @@ function KioskInformation({ control, errors }: Props) {
                                 item.type === 'number'
                                     ? ({ target: { value } }) =>
                                           field.onChange(
-                                              Number.isNaN(value)
+                                              Number.isNaN(value) ||
+                                                  Number(value) < 0
                                                   ? 0
                                                   : parseInt(value, 10)
                                           )

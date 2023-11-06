@@ -67,7 +67,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                                 item.type === 'number'
                                     ? ({ target: { value } }) =>
                                           field.onChange(
-                                              Number.isNaN(value)
+                                              Number.isNaN(value) ||
+                                                  Number(value) < 0
                                                   ? 0
                                                   : parseInt(value, 10)
                                           )

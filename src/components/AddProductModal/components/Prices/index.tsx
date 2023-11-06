@@ -53,7 +53,7 @@ function Prices({ control, errors }: Props) {
                             }
                             onChange={({ target: { value } }) =>
                                 field.onChange(
-                                    Number.isNaN(value)
+                                    Number.isNaN(value) || Number(value) < 0
                                         ? 0
                                         : parseInt(value, 10)
                                 )
