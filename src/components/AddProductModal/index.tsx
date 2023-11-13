@@ -14,12 +14,14 @@ import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import Dimensions from './components/Dimensions';
-import Information from './components/Information';
-import KioskInformation from './components/KioskInformation';
-import Prices from './components/Prices';
-import Specifications from './components/Specifications';
-import Variants from './components/Variants';
+import Information from './components/Information/Information';
+import {
+    Dimensions,
+    KioskInformation,
+    Prices,
+    Specifications,
+    Variants,
+} from './components';
 import { EMPTY_FORM } from './constants';
 import { fabricateFakeData } from './utils';
 

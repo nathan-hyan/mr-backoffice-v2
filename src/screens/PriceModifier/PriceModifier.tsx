@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, LinearProgress, Paper, Typography } from '@mui/material';
+import { LinearProgress, Paper, Typography } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
 import { Product } from 'types/data';
 
@@ -71,16 +71,14 @@ function PriceModifier() {
                 handleClose={toggleShowAlert}
             />
             <Paper elevation={3} sx={{ padding: '1rem 2rem' }}>
-                <Typography variant="body1">Price modifier!</Typography>
-                <Box sx={{ my: '3rem' }}>
-                    <form noValidate onSubmit={handleSubmit(onSubmit)}>
-                        <Form
-                            control={control}
-                            errors={errors}
-                            disabled={customPercent > 0 && customPercent < 100}
-                        />
-                    </form>
-                </Box>
+                <form noValidate onSubmit={handleSubmit(onSubmit)}>
+                    <Form
+                        control={control}
+                        errors={errors}
+                        disabled={customPercent > 0 && customPercent < 100}
+                    />
+                </form>
+
                 {customPercent === 100 && (
                     <Typography
                         color={grey[100]}

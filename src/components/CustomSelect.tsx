@@ -13,9 +13,10 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    SelectChangeEvent,
 } from '@mui/material';
 
-interface Props<T, K> {
+interface Props<T> {
     control?: Control<T & FieldValues, unknown>;
     error?: FieldError;
     label: string;
@@ -23,10 +24,13 @@ interface Props<T, K> {
     required?: boolean;
     defaultValue?: PathValue<T, Path<T>>;
     rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
-    data: K & Array<{ id?: string; name: string }>;
+    variant?: 'outlined' | 'standard';
+    data: { value: string | number; optionName: string }[];
+    value?: string | number;
+    onChange?: (e: SelectChangeEvent) => void;
 }
 
-function CustomSelect<T extends FieldValues, K>({
+function CustomSelect<T extends FieldValues>({
     name,
     control,
     defaultValue,
@@ -34,8 +38,10 @@ function CustomSelect<T extends FieldValues, K>({
     label,
     error,
     rules,
+    variant,
     data,
-}: Props<T, K>) {
+    onChange,
+}: Props<T>) {
     return (
         <Controller
             name={name}
@@ -46,18 +52,22 @@ function CustomSelect<T extends FieldValues, K>({
                 <FormControl
                     fullWidth
                     required={required}
-                    variant="standard"
+                    variant={variant}
                     error={Boolean(error)}
+                    id={name}
                 >
                     <InputLabel id={name}>{label}</InputLabel>
-                    <Select {...field} labelId={name}>
-                        {data.map((options) =>
-                            options ? (
-                                <MenuItem key={options.id} value={options.id}>
-                                    {options.name}
-                                </MenuItem>
-                            ) : null
-                        )}
+                    <Select
+                        {...field}
+                        labelId={name}
+                        label={label}
+                        onChange={onChange ?? field.onChange}
+                    >
+                        {data.map(({ value, optionName }) => (
+                            <MenuItem key={value} value={value}>
+                                {optionName}
+                            </MenuItem>
+                        ))}
                     </Select>
                     {error && <FormHelperText>{error.message}</FormHelperText>}
                 </FormControl>
@@ -72,6 +82,9 @@ CustomSelect.defaultProps = {
     rules: {},
     error: undefined,
     defaultValue: undefined,
+    variant: 'outlined',
+    value: undefined,
+    onChange: undefined,
 };
 
 export default CustomSelect;

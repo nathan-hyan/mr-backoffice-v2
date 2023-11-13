@@ -1,21 +1,11 @@
-import {
-    Control,
-    Controller,
-    FieldErrors,
-    useFieldArray,
-} from 'react-hook-form';
+import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    Divider,
-    IconButton,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
 import { SPECIFICATIONS_FORM_EMPTY } from '~components/AddProductModal/constants';
+import { InputType } from '~components/CustomInput/constants';
+import CustomInput from '~components/CustomInput/CustomInput';
 
 interface Props {
     control: Control<Product, unknown>;
@@ -61,61 +51,29 @@ function Specifications({ control, errors }: Props) {
                             alignItems: 'center',
                         }}
                     >
-                        <Controller
+                        <CustomInput
+                            type={InputType.Text}
                             name={`specifications.${index}.title`}
                             control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: 'Este campo es obligatorio',
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    label="Título"
-                                    fullWidth
-                                    required
-                                    error={
-                                        errors.specifications &&
-                                        !!errors.specifications[index]?.title
-                                    }
-                                    helperText={
-                                        errors.specifications &&
-                                        errors.specifications[index]?.title
-                                            ?.message
-                                    }
-                                />
-                            )}
+                            label="Título"
+                            required
+                            error={
+                                errors.specifications &&
+                                errors.specifications[index]?.title
+                            }
                         />
-                        <Controller
+                        <CustomInput
+                            type={InputType.Text}
                             name={`specifications.${index}.description`}
                             control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: 'Este campo es obligatorio',
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    label="Descripción"
-                                    fullWidth
-                                    required
-                                    error={
-                                        errors.specifications &&
-                                        !!errors.specifications[index]
-                                            ?.description
-                                    }
-                                    helperText={
-                                        errors.specifications &&
-                                        errors.specifications[index]
-                                            ?.description?.message
-                                    }
-                                />
-                            )}
+                            label="Descripción"
+                            required
+                            error={
+                                errors.specifications &&
+                                errors.specifications[index]?.description
+                            }
                         />
+
                         <IconButton
                             size="small"
                             color="error"

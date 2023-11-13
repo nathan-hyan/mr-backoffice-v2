@@ -1,17 +1,10 @@
-import { Control, Controller, FieldErrors } from 'react-hook-form';
-import {
-    Box,
-    Button,
-    FormControl,
-    FormHelperText,
-    InputAdornment,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-} from '@mui/material';
+import { Control, FieldErrors } from 'react-hook-form';
+import { Box, Button, InputAdornment } from '@mui/material';
 
-import { PriceModifierForm } from '../constants';
+import { PRICE_INPUTS, PriceModifierForm } from '../constants';
+
+import CustomInput from '~components/CustomInput/CustomInput';
+import CustomSelect from '~components/CustomSelect';
 
 interface Props {
     control: Control<PriceModifierForm, unknown>;
@@ -22,28 +15,15 @@ interface Props {
 function Form({ control, errors, disabled }: Props) {
     return (
         <>
-            <Controller
+            <CustomSelect
                 name="type"
                 control={control}
-                render={({ field, formState: { defaultValues } }) => (
-                    <FormControl fullWidth error={!!errors.type}>
-                        <InputLabel id="type">Tipo de modificacion</InputLabel>
-                        <Select
-                            {...field}
-                            defaultValue={defaultValues?.type}
-                            labelId="type"
-                            label="Tipo de modificacion"
-                        >
-                            <MenuItem value="incr">Aumentar</MenuItem>
-                            <MenuItem value="decr">Bajar</MenuItem>
-                        </Select>
-                        {!!errors.type && (
-                            <FormHelperText>
-                                {errors.type?.message}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
-                )}
+                label="Tipo de modificacion"
+                error={errors.type && errors.type}
+                data={[
+                    { optionName: 'Aumentar', value: 'incr' },
+                    { optionName: 'Bajar', value: 'decr' },
+                ]}
             />
 
             <Box
@@ -51,155 +31,25 @@ function Form({ control, errors, disabled }: Props) {
                     mt: '1.5rem',
                     display: 'flex',
                     justifyContent: 'space-between',
+                    gap: '1.5rem',
                 }}
             >
-                <Controller
-                    name="cost"
-                    control={control}
-                    rules={{
-                        validate: {
-                            positive: (val) =>
-                                Number(val) >= 0 ||
-                                'El numero no puede ser negativo',
-                        },
-                    }}
-                    render={({ field, formState: { defaultValues } }) => (
-                        <TextField
-                            {...field}
-                            onChange={({ target: { value } }) =>
-                                field.onChange(
-                                    Number.isNaN(value) || Number(value) < 0
-                                        ? 0
-                                        : Number(value)
-                                )
-                            }
-                            onFocus={(e) => e.target.select()}
-                            defaultValue={defaultValues?.cost}
-                            error={!!errors.cost}
-                            helperText={errors.cost?.message}
-                            label="Costo"
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        %
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    )}
-                />
-
-                <Controller
-                    name="list"
-                    control={control}
-                    rules={{
-                        validate: {
-                            positive: (val) =>
-                                Number(val) >= 0 ||
-                                'El numero no puede ser negativo',
-                        },
-                    }}
-                    render={({ field, formState: { defaultValues } }) => (
-                        <TextField
-                            {...field}
-                            onChange={({ target: { value } }) =>
-                                field.onChange(
-                                    Number.isNaN(value) || Number(value) < 0
-                                        ? 0
-                                        : Number(value)
-                                )
-                            }
-                            onFocus={(e) => e.target.select()}
-                            error={!!errors.list}
-                            helperText={errors.list?.message}
-                            defaultValue={defaultValues?.list}
-                            label="Lista"
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        %
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    )}
-                />
-
-                <Controller
-                    name="cash"
-                    control={control}
-                    rules={{
-                        validate: {
-                            positive: (val) =>
-                                Number(val) >= 0 ||
-                                'El numero no puede ser negativo',
-                        },
-                    }}
-                    render={({ field, formState: { defaultValues } }) => (
-                        <TextField
-                            {...field}
-                            onChange={({ target: { value } }) =>
-                                field.onChange(
-                                    Number.isNaN(value) || Number(value) < 0
-                                        ? 0
-                                        : Number(value)
-                                )
-                            }
-                            onFocus={(e) => e.target.select()}
-                            error={!!errors.cash}
-                            helperText={errors.cash?.message}
-                            defaultValue={defaultValues?.cash}
-                            label="Contado"
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        %
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    )}
-                />
-
-                <Controller
-                    name="web"
-                    control={control}
-                    rules={{
-                        validate: {
-                            positive: (val) =>
-                                Number(val) >= 0 ||
-                                'El numero no puede ser negativo',
-                        },
-                    }}
-                    render={({ field, formState: { defaultValues } }) => (
-                        <TextField
-                            {...field}
-                            onChange={({ target: { value } }) =>
-                                field.onChange(
-                                    Number.isNaN(value) || Number(value) < 0
-                                        ? 0
-                                        : Number(value)
-                                )
-                            }
-                            onFocus={(e) => e.target.select()}
-                            error={!!errors.web}
-                            helperText={errors.web?.message}
-                            defaultValue={defaultValues?.web}
-                            label="Web"
-                            type="number"
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        %
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    )}
-                />
+                {PRICE_INPUTS.map(({ id, label, name, type }) => (
+                    <CustomInput
+                        key={id}
+                        control={control}
+                        inputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    %
+                                </InputAdornment>
+                            ),
+                        }}
+                        label={label}
+                        type={type}
+                        name={name as keyof PriceModifierForm}
+                    />
+                ))}
             </Box>
             <Box
                 sx={{

@@ -7,14 +7,19 @@ import {
     PathValue,
     RegisterOptions,
 } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import {
+    FilledInputProps,
+    InputProps,
+    OutlinedInputProps,
+    TextField,
+} from '@mui/material';
 
 import { InputType } from './constants';
 import { parseOnlyNumbers } from './utils';
 
 interface Props<T> {
     control?: Control<T & FieldValues, unknown>;
-    error?: FieldError;
+    error?: Partial<FieldError>;
     label: string;
     name: Path<T>;
     required?: boolean;
@@ -22,6 +27,11 @@ interface Props<T> {
     type: InputType;
     rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
     multiline?: boolean;
+    variant?: 'standard' | 'outlined';
+    inputProps?:
+        | Partial<FilledInputProps>
+        | Partial<OutlinedInputProps>
+        | Partial<InputProps>;
 }
 
 function CustomInput<T extends FieldValues>({
@@ -34,6 +44,8 @@ function CustomInput<T extends FieldValues>({
     error,
     rules,
     multiline,
+    inputProps,
+    variant,
 }: Props<T>) {
     return (
         <Controller
@@ -51,6 +63,12 @@ function CustomInput<T extends FieldValues>({
                             ? Number(val) > 0 ||
                               'El numero no puede ser cero o negativo'
                             : true,
+                    positiveWithNoRequired:
+                        type === InputType.Number && !required
+                            ? (val) =>
+                                  Number(val) >= 0 ||
+                                  'El numero no puede ser negativo'
+                            : () => true,
                 },
                 ...rules,
             }}
@@ -80,12 +98,13 @@ function CustomInput<T extends FieldValues>({
                     }
                     id="standard-basic"
                     label={label}
-                    variant="standard"
+                    variant={variant}
                     required={required}
                     type={type}
                     error={Boolean(error)}
                     multiline={multiline}
                     helperText={error ? error.message : undefined}
+                    InputProps={inputProps}
                 />
             )}
         />
@@ -99,6 +118,8 @@ CustomInput.defaultProps = {
     multiline: false,
     error: undefined,
     defaultValue: undefined,
+    inputProps: undefined,
+    variant: 'outlined',
 };
 
 export default CustomInput;
