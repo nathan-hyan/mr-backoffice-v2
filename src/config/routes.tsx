@@ -7,12 +7,15 @@ import {
 
 import App from '../App';
 
-import BrandManager from '~screens/BrandManager';
-import CategoryManager from '~screens/CategoryManager';
-import Login from '~screens/Login';
-import PriceModifier from '~screens/PriceModifier';
-import ProductList from '~screens/ProductList';
-import UserInfo from '~screens/UserInfo';
+import {
+    BrandManager,
+    CategoryManager,
+    Login,
+    Playground,
+    PriceModifier,
+    ProductList,
+    UserInfo,
+} from '~screens/index';
 
 export const ROUTES = [
     {
@@ -21,6 +24,13 @@ export const ROUTES = [
         title: 'Bienvenid@',
         description: '',
         element: <App />,
+    },
+    {
+        id: 99,
+        title: 'Playground',
+        description: 'Youre not supposed to be here',
+        path: '/playground',
+        element: <Playground />,
     },
     {
         id: 1,
@@ -69,39 +79,3 @@ export const ROUTES = [
         element: <BrandManager />,
     },
 ];
-
-/** {
-        id: 0,
-        title: 'Listado de Productos',
-        description: '',
-        icon: <FormatListNumbered />,
-        whereTo: '/products',
-    },
-    {
-        id: 1,
-        title: 'Punto de venta',
-        description: '',
-        icon: <ShoppingCartCheckout />,
-        whereTo: '/cart',
-    },
-    {
-        id: 2,
-        title: 'Imprimir list. productos',
-        description: '',
-        icon: <Print />,
-        whereTo: '/printProducts',
-    },
-    {
-        id: 3,
-        title: 'Modif. precios en lote',
-        description: '',
-        icon: <AttachMoney />,
-        whereTo: '/priceModifier',
-    },
-    {
-        id: 3,
-        title: 'Administrador de Categorias',
-        description: '',
-        icon: <AllInbox />,
-        whereTo: '/categoryManager',
-    }, */
