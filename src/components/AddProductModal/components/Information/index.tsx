@@ -15,17 +15,17 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    TextField,
     Typography,
 } from '@mui/material';
 import { Product } from 'types/data';
 
-import { INFORMATION_RULES, isRequiredRule } from './constants';
-
+// import { isRequiredRule } from './constants';
 import styles from './styles.module.scss';
 
 import { PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
+import CustomInput from '~components/CustomInput/CustomInput';
+import CustomSelect from '~components/CustomSelect';
 import { useProducts } from '~contexts/Products';
 import useFileUpload from '~hooks/useFileUpload';
 
@@ -55,54 +55,38 @@ function Information({ control, watch, errors, setValue }: Props) {
             </Typography>
             <Divider sx={{ my: 2 }} />
             {PRODUCT_FORM.map((item) => (
-                <Controller
+                <CustomInput
                     key={item.id}
                     name={item.name}
                     control={control}
-                    rules={INFORMATION_RULES(item.required, item.type)}
-                    render={({ field }) => (
-                        <TextField
-                            {...field}
-                            onChange={
-                                item.type === 'number'
-                                    ? ({ target: { value } }) =>
-                                          field.onChange(
-                                              Number.isNaN(value) ||
-                                                  Number(value) < 0
-                                                  ? 0
-                                                  : parseInt(value, 10)
-                                          )
-                                    : field.onChange
-                            }
-                            value={
-                                item.type === 'number'
-                                    ? field.value?.toString()
-                                    : field.value
-                            }
-                            onFocus={(e) =>
-                                item.type === 'number'
-                                    ? e.target.select()
-                                    : undefined
-                            }
-                            name={item.name}
-                            disabled={item.disabled}
-                            multiline={item.multiline}
-                            label={item.label}
-                            type={item.type}
-                            required={item.required}
-                            error={!!errors[item.name]}
-                            helperText={errors[item.name]?.message}
-                            fullWidth
-                            variant="standard"
-                        />
-                    )}
+                    multiline={item.multiline}
+                    label={item.label}
+                    type={item.type}
                 />
             ))}
-            <Controller
+            <CustomSelect
+                data={categories}
+                label="Categoria"
                 name="category"
                 control={control}
                 defaultValue=""
-                rules={isRequiredRule}
+                error={errors.category}
+                required
+            />
+            <CustomSelect
+                data={getSubcategories(watch('category'))}
+                label="Sub-Categoria"
+                name="subCategory"
+                control={control}
+                defaultValue=""
+                error={errors.subCategory}
+                required
+            />
+            {/* <Controller
+                name="category"
+                control={control}
+                defaultValue=""
+                // rules={isRequiredRule}
                 render={({ field }) => (
                     <FormControl
                         fullWidth
@@ -126,12 +110,12 @@ function Information({ control, watch, errors, setValue }: Props) {
                         )}
                     </FormControl>
                 )}
-            />
-            <Controller
+            /> */}
+            {/* <Controller
                 name="subCategory"
                 control={control}
                 defaultValue=""
-                rules={isRequiredRule}
+                // rules={isRequiredRule}
                 render={({ field }) => (
                     <FormControl
                         fullWidth
@@ -166,7 +150,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                         )}
                     </FormControl>
                 )}
-            />
+            /> */}
 
             <Divider sx={{ mt: 3 }} />
             <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>

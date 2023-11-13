@@ -5,9 +5,11 @@ import {
     FieldValues,
     Path,
     PathValue,
+    RegisterOptions,
 } from 'react-hook-form';
 import { TextField } from '@mui/material';
 
+import { InputType } from './constants';
 import { parseOnlyNumbers } from './utils';
 
 interface Props<T> {
@@ -16,8 +18,10 @@ interface Props<T> {
     label: string;
     name: Path<T>;
     required?: boolean;
-    defaultValue: PathValue<T, Path<T>>;
-    type: 'text' | 'number';
+    defaultValue?: PathValue<T, Path<T>>;
+    type: InputType;
+    rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
+    multiline?: boolean;
 }
 
 function CustomInput<T extends FieldValues>({
@@ -28,6 +32,8 @@ function CustomInput<T extends FieldValues>({
     type,
     label,
     error,
+    rules,
+    multiline,
 }: Props<T>) {
     return (
         <Controller
@@ -46,6 +52,7 @@ function CustomInput<T extends FieldValues>({
                               'El numero no puede ser cero o negativo'
                             : true,
                 },
+                ...rules,
             }}
             render={({ field }) => (
                 <TextField
@@ -77,6 +84,7 @@ function CustomInput<T extends FieldValues>({
                     required={required}
                     type={type}
                     error={Boolean(error)}
+                    multiline={multiline}
                     helperText={error ? error.message : undefined}
                 />
             )}
@@ -87,7 +95,10 @@ function CustomInput<T extends FieldValues>({
 CustomInput.defaultProps = {
     control: undefined,
     required: false,
+    rules: {},
+    multiline: false,
     error: undefined,
+    defaultValue: undefined,
 };
 
 export default CustomInput;

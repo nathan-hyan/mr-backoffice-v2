@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 
+import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 
 interface Form {
@@ -13,7 +14,12 @@ function Playground() {
         watch,
         handleSubmit,
         formState: { errors },
-    } = useForm<Form>();
+    } = useForm<Form>({
+        defaultValues: {
+            test: 'Testing',
+            test_two: 12,
+        },
+    });
 
     const onSubmit = (data: Form) => {
         alert(JSON.stringify(data));
@@ -28,7 +34,7 @@ function Playground() {
                     name="test"
                     required
                     defaultValue=""
-                    type="text"
+                    type={InputType.Text}
                     error={errors.test}
                 />
                 <CustomInput
@@ -37,7 +43,7 @@ function Playground() {
                     name="test_two"
                     required
                     defaultValue={0}
-                    type="number"
+                    type={InputType.Number}
                     error={errors.test_two}
                 />
                 <button type="submit">Submit</button>

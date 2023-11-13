@@ -1,10 +1,6 @@
 import { Product } from 'types/data';
 
-export enum InputType {
-    Text = 'text',
-    Email = 'email',
-    Number = 'number',
-}
+import { InputType } from '~components/CustomInput/constants';
 
 export type PriceInputName = 'cost' | 'list' | 'web' | 'cash';
 
