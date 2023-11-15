@@ -12,6 +12,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
+import GoogleTagManager from '~config/GoogleTagManager';
 import { THEME } from '~config/muiTheme';
 import { ROUTES } from '~config/routes';
 import ProductProvider from '~contexts/Products';
@@ -35,6 +36,7 @@ const router = createHashRouter([
                     </ThemeProvider>
                 </UserContextProvider>
                 <Analytics />
+                <GoogleTagManager />
             </HelmetProvider>
         ),
         children: ROUTES.map(({ path, element }) => ({ path, element })),
