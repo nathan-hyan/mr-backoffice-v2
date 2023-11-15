@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+import ReactGA from 'react-ga4';
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 
 interface Props {
     title: string;
@@ -8,6 +11,16 @@ interface Props {
 }
 
 export default function SEO({ title, description, name, type }: Props) {
+    const location = useLocation();
+
+    useEffect(() => {
+        ReactGA.send({
+            hitType: 'pageview',
+            page: location.pathname,
+            title,
+        });
+    }, [location.pathname, title]);
+
     return (
         <Helmet>
             <title>{`StockOS // ${title}`}</title>

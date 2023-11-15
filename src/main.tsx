@@ -5,6 +5,8 @@ import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Analytics } from '@vercel/analytics/react';
 
+import '~config/ReactGAConfig';
+
 import './index.scss';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -12,7 +14,6 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import NavbarWrapper from '~components/NavbarWrapper';
-import GoogleTagManager from '~config/GoogleTagManager';
 import { THEME } from '~config/muiTheme';
 import { ROUTES } from '~config/routes';
 import ProductProvider from '~contexts/Products';
@@ -36,7 +37,6 @@ const router = createHashRouter([
                     </ThemeProvider>
                 </UserContextProvider>
                 <Analytics />
-                <GoogleTagManager />
             </HelmetProvider>
         ),
         children: ROUTES.map(({ path, element }) => ({ path, element })),
