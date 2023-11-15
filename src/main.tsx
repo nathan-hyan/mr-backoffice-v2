@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ReactGA from 'react-ga4';
 import { HelmetProvider } from 'react-helmet-async';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { Analytics } from '@vercel/analytics/react';
-
-import '~config/ReactGAConfig';
 
 import './index.scss';
 import '@fontsource/roboto/300.css';
@@ -22,6 +21,9 @@ import { UserContextProvider } from '~contexts/User';
 const root = document.getElementById('root');
 
 const theme = createTheme(THEME);
+ReactGA.initialize(import.meta.env.VITE_FIREBASE_MESSAGING_MEASURAMENT_ID, {
+    gaOptions: { send_page_view: false },
+});
 
 const router = createHashRouter([
     {
