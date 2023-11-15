@@ -24,6 +24,7 @@
         "@fontsource/roboto": "^5.0.8",
         "@mui/icons-material": "^5.14.16",
         "@mui/material": "^5.14.16",
+        "@vercel/analytics": "^1.1.1",
         "firebase": "^10.5.2",
         "notistack": "^3.0.1",
         "path": "^0.12.7",

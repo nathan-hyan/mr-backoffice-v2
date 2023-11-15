@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { Analytics } from '@vercel/analytics/react';
 
 import './index.scss';
 import '@fontsource/roboto/300.css';
@@ -33,6 +34,7 @@ const router = createHashRouter([
                         </ProductProvider>
                     </ThemeProvider>
                 </UserContextProvider>
+                <Analytics />
             </HelmetProvider>
         ),
         children: ROUTES.map(({ path, element }) => ({ path, element })),
