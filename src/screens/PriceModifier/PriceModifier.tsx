@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { LinearProgress, Paper, Typography } from '@mui/material';
 import { green, grey } from '@mui/material/colors';
@@ -10,13 +10,16 @@ import { PriceModifierForm } from './constants';
 import { batchUpdateData } from './utils';
 
 import { FirestoreCollections } from '~constants/firebase';
+import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
+import useGATag from '~hooks/useGATag';
 
 function PriceModifier() {
     const [showAlert, setShowAlert] = useState(false);
     const [newData, setNewData] = useState<Product[]>([]);
     const [customPercent, setCustomPercent] = useState(0);
+    const { tagPageView, tagAction } = useGATag();
 
     const { productList } = useProducts();
     const { updateDocument } = useFirestore(FirestoreCollections.Products);
@@ -40,6 +43,12 @@ function PriceModifier() {
     };
 
     const onSubmit = (e: PriceModifierForm) => {
+        console.log('wot');
+        tagAction(
+            GACategories.Prices,
+            GATypes.SubmittedForm,
+            `${e.type === 'incr' ? 'Incremented' : 'Decremented'} prices`
+        );
         const result = batchUpdateData(e, productList);
         setNewData(result);
 
@@ -62,6 +71,10 @@ function PriceModifier() {
 
         toggleShowAlert();
     };
+
+    useEffect(() => {
+        tagPageView();
+    }, [tagPageView]);
 
     return (
         <>

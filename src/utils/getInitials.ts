@@ -1,4 +1,4 @@
-function stringToColor(string?: string | null) {
+export function stringToColor(string?: string | null) {
     if (!string || string.length === 0) {
         return '#333';
     }

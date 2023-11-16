@@ -34,6 +34,7 @@ import CustomMenu from '~components/CustomMenu';
 import DeleteAlert from '~components/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
 import useFirestore from '~hooks/useFirestore';
+import useGATag from '~hooks/useGATag';
 import getLatestInternalId from '~utils/getLatestInternalId';
 
 type BrandType = Nullable<Brand & { id: string }>;
@@ -47,6 +48,7 @@ function BrandManager() {
     const [latestId, setLatestId] = useState(0);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const { tagPageView } = useGATag();
 
     const {
         control,
@@ -123,6 +125,8 @@ function BrandManager() {
     };
 
     useEffect(() => {
+        tagPageView();
+
         const unsubscribe = subscribeToData((response) => {
             setData(response);
             setDataCopy(response);
@@ -132,7 +136,7 @@ function BrandManager() {
         return () => {
             unsubscribe();
         };
-    }, [subscribeToData]);
+    }, [subscribeToData, tagPageView]);
 
     return (
         <>
