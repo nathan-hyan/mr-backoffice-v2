@@ -9,52 +9,52 @@ import SearchBox from '~screens/ProductList/components/SearchBox';
 import SortByBox from '~screens/ProductList/components/SortByBox';
 
 function ProductList() {
-    const { saveProducts, saveCategories, saveBrands } = useProducts();
+  const { saveProducts, saveCategories, saveBrands } = useProducts();
 
-    const { subscribeToData: productDataSub } = useFirestore<Product>(
-        FirestoreCollections.Products
-    );
-    const { subscribeToData: categoryDataSub } = useFirestore<Category>(
-        FirestoreCollections.Categories
-    );
+  const { subscribeToData: productDataSub } = useFirestore<Product>(
+    FirestoreCollections.Products
+  );
+  const { subscribeToData: categoryDataSub } = useFirestore<Category>(
+    FirestoreCollections.Categories
+  );
 
-    const { subscribeToData: brandDataSub } = useFirestore<Brand>(
-        FirestoreCollections.Brands
-    );
+  const { subscribeToData: brandDataSub } = useFirestore<Brand>(
+    FirestoreCollections.Brands
+  );
 
-    useEffect(() => {
-        const productsUnsubscribe = productDataSub((data) => {
-            saveProducts(data);
-        });
+  useEffect(() => {
+    const productsUnsubscribe = productDataSub((data) => {
+      saveProducts(data);
+    });
 
-        const categoriesUnsubscribe = categoryDataSub((data) => {
-            saveCategories(data);
-        });
+    const categoriesUnsubscribe = categoryDataSub((data) => {
+      saveCategories(data);
+    });
 
-        const brandsUnsubscribe = brandDataSub((data) => {
-            saveBrands(data);
-        });
+    const brandsUnsubscribe = brandDataSub((data) => {
+      saveBrands(data);
+    });
 
-        return () => {
-            productsUnsubscribe();
-            categoriesUnsubscribe();
-            brandsUnsubscribe();
-        };
-    }, [
-        brandDataSub,
-        categoryDataSub,
-        productDataSub,
-        saveBrands,
-        saveCategories,
-        saveProducts,
-    ]);
+    return () => {
+      productsUnsubscribe();
+      categoriesUnsubscribe();
+      brandsUnsubscribe();
+    };
+  }, [
+    brandDataSub,
+    categoryDataSub,
+    productDataSub,
+    saveBrands,
+    saveCategories,
+    saveProducts,
+  ]);
 
-    return (
-        <>
-            <SearchBox />
-            <SortByBox />
-            <CustomTable />
-        </>
-    );
+  return (
+    <>
+      <SearchBox />
+      <SortByBox />
+      <CustomTable />
+    </>
+  );
 }
 export default ProductList;

@@ -7,11 +7,11 @@ import ProductList from './ProductList/ProductList';
 import UserInfo from './UserInfo/UserInfo';
 
 export {
-    BrandManager,
-    CategoryManager,
-    Login,
-    Playground,
-    PriceModifier,
-    ProductList,
-    UserInfo,
+  BrandManager,
+  CategoryManager,
+  Login,
+  Playground,
+  PriceModifier,
+  ProductList,
+  UserInfo,
 };
