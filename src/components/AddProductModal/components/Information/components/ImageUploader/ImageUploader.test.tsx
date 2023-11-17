@@ -1,8 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { File } from 'buffer';
-import { blob, buffer } from 'stream/consumers';
-
-import { renderWithRouter } from '~config/renderWithRouter';
+import { render, screen } from '@testing-library/react';
 
 import ImageUploader from './ImageUploader';
 
