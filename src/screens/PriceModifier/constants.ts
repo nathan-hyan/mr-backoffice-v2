@@ -34,3 +34,11 @@ export const PRICE_INPUTS = [
     type: InputType.Number,
   },
 ];
+
+export const DEFAULT_VALUES: PriceModifierForm = {
+  type: 'incr',
+  cost: 0,
+  list: 0,
+  cash: 0,
+  web: 0,
+};

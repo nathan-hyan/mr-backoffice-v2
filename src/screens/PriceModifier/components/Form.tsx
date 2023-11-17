@@ -10,12 +10,14 @@ interface Props {
   control: Control<PriceModifierForm, unknown>;
   errors: FieldErrors<PriceModifierForm>;
   disabled: boolean;
+  handleCancel: () => void;
 }
 
-function Form({ control, errors, disabled }: Props) {
+function Form({ control, errors, disabled, handleCancel }: Props) {
   return (
     <>
       <CustomSelect
+        disabled={disabled}
         name='type'
         control={control}
         label='Tipo de modificacion'
@@ -45,6 +47,8 @@ function Form({ control, errors, disabled }: Props) {
             }}
             label={label}
             type={type}
+            disabled={disabled}
+            error={errors[name as keyof PriceModifierForm]}
             name={name as keyof PriceModifierForm}
           />
         ))}
@@ -56,7 +60,7 @@ function Form({ control, errors, disabled }: Props) {
           justifyContent: 'space-between',
         }}
       >
-        <Button disabled={disabled} variant='outlined'>
+        <Button disabled={disabled} variant='outlined' onClick={handleCancel}>
           Cancelar y volver
         </Button>
         <Button
