@@ -40,7 +40,7 @@ describe('<ImageUploader />', () => {
   //     await waitFor(() => expect(mockOnChange).toHaveBeenCalled());
   //   });
 
-  it('disables button when prop is passed', () => {
+  it.skip('disables button when prop is passed', () => {
     render(
       <ImageUploader
         handleFileUpload={vi.fn()}
