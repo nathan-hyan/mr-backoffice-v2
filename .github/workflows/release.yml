@@ -4,9 +4,7 @@ on:
   push:
     branches: [ master, development ]
 
-permissions: 
-  contents: read
-  actions: write
+permissions: write-all
 
 
 jobs:
