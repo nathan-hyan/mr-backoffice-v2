@@ -1,17 +1,18 @@
-name: Bump version
+name: Node Continuous Integration
+
 on:
-  push:
-    branches:
-      - main
-      - development
+  pull_request:
+    branches: [ master ]
+
+
 jobs:
-  build:
+  test_pull_request:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Install Dependencies'
-        run: npm install
-      - name: 'Perform test'
-        run: npx vitest --coverage
-      - name: 'Report Coverage'
-        if: always() # Also generate the report if tests are failing
-        uses:  davelosert/vitest-coverage-report-action@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
