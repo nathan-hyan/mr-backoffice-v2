@@ -1,8 +1,8 @@
 name: Node Continuous Integration
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches: [ master, development ]
 
 
 jobs:
