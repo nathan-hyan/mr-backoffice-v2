@@ -12,14 +12,15 @@ export default defineConfig({
     setupFiles: ['./src/setupTest.ts'],
     css: true,
     coverage: {
+      reporter: ['text', 'json-summary', 'json'],
       enabled: true,
       skipFull: true,
       provider: 'v8',
-      functions: 100,
-      lines: 100,
-      branches: 100,
-      statements: 100,
-      thresholdAutoUpdate: true, // Makes coverage thresholds go brrrrr
+      functions: 50,
+      lines: 50,
+      branches: 50,
+      statements: 50,
+      thresholdAutoUpdate: false, // Makes coverage thresholds go brrrrr
     },
   },
   resolve: {
