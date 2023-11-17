@@ -18,6 +18,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+
   semVer_bump:
     runs-on: ubuntu-latest
     steps:
@@ -27,15 +28,17 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          pre_release_branches: development
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
+
   test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: 'Install Node'
