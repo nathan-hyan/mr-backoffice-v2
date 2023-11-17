@@ -4,6 +4,9 @@ on:
   push:
     branches: [ master, development ]
 
+permissions: 
+  actions: write
+
 
 jobs:
   build_app:
