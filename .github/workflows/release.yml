@@ -8,10 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Vitest Coverage Report
-        uses: davelosert/vitest-coverage-report-action@v2.1.1
-      - uses: actions/checkout@master
-      - name: Bump version and push tag
-        uses: hennejg/github-tag-action@v4.1.jh1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}\
+      - name: 'Install Dependencies'
+        run: npm install
+      - name: 'Perform test'
+        run: npx vitest --coverage
+      - name: 'Report Coverage'
+        if: always() # Also generate the report if tests are failing
+        uses:  davelosert/vitest-coverage-report-action@v2
