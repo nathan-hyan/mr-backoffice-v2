@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
+import { Nullable } from 'vite-env';
 
 import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
 
 interface Props {
   isUploading: boolean;
-  uploadProgress: number;
+  uploadProgress: Nullable<number>;
   handleFileUpload: React.ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -34,6 +35,7 @@ function ImageUploader({
         hidden
         accept='image/*'
         type='file'
+        title='actual-input'
         multiple
         onChange={handleFileUpload}
       />

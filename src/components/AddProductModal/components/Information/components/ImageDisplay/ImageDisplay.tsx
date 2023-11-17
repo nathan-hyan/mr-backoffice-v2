@@ -7,7 +7,7 @@ interface Props {
 }
 
 function ImageDisplay({ data }: Props) {
-  return data ? (
+  return data.length > 0 ? (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
       {data.map((image) => (
         <img src={image} alt='Product' key={image} className={styles.image} />
