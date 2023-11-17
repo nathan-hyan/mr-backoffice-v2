@@ -11,9 +11,12 @@ import {
 } from '@mui/material';
 import { Nullable } from 'vite-env';
 
+import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
+import useGATag from '~hooks/useGATag';
 
 function SearchBox() {
+  const { tagAction } = useGATag(true);
   const { performSearch, searchQuery, clearSearch, searchCriteria } =
     useProducts();
 
@@ -26,6 +29,7 @@ function SearchBox() {
   };
 
   const handleClearInput = () => {
+    tagAction(GACategories.Event, GATypes.Click, 'Cleared search box');
     clearSearch();
   };
 
@@ -34,6 +38,11 @@ function SearchBox() {
     value: Nullable<number>
   ) => void = (_, newValue) => {
     if (typeof newValue === 'number') {
+      tagAction(
+        GACategories.Event,
+        GATypes.Changed,
+        `Search type: ${newValue === 0 ? 'nombre producto' : 'codigo barras'}}`
+      );
       performSearch(searchQuery, newValue);
     }
   };

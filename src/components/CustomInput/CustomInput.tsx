@@ -21,6 +21,7 @@ interface Props<T> {
   control?: Control<T & FieldValues, unknown>;
   error?: Partial<FieldError>;
   label: string;
+  disabled?: boolean;
   name: Path<T>;
   required?: boolean;
   defaultValue?: PathValue<T, Path<T>>;
@@ -38,6 +39,7 @@ function CustomInput<T extends FieldValues>({
   name,
   control,
   defaultValue,
+  disabled,
   required,
   type,
   label,
@@ -50,6 +52,7 @@ function CustomInput<T extends FieldValues>({
   return (
     <Controller
       control={control}
+      disabled={disabled}
       name={name}
       defaultValue={defaultValue}
       rules={{
@@ -59,7 +62,7 @@ function CustomInput<T extends FieldValues>({
         },
         validate: {
           positive: (val) =>
-            type === 'number'
+            type === 'number' && required
               ? Number(val) > 0 || 'El numero no puede ser cero o negativo'
               : true,
           positiveWithNoRequired:
@@ -87,11 +90,12 @@ function CustomInput<T extends FieldValues>({
           label={label}
           variant={variant}
           required={required}
-          type={type}
+          type={type ?? 'text'}
+          disabled={disabled}
           error={Boolean(error)}
           multiline={multiline}
           helperText={error ? error.message : undefined}
-          InputProps={inputProps}
+          InputProps={{ ...inputProps, disabled }}
         />
       )}
     />
@@ -101,6 +105,7 @@ function CustomInput<T extends FieldValues>({
 CustomInput.defaultProps = {
   control: undefined,
   required: false,
+  disabled: false,
   rules: {},
   multiline: false,
   error: undefined,

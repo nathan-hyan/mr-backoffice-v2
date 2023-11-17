@@ -6,6 +6,8 @@ import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useSnackbar } from 'notistack';
 
 import { auth, googleProvider } from '~config/firebase';
+import { GACategories, GATypes } from '~constants/gaTagTypes';
+import useGATag from '~hooks/useGATag';
 
 interface IFormInputs {
   email: string;
@@ -13,6 +15,7 @@ interface IFormInputs {
 }
 
 function Login() {
+  const { tagAction, tagError } = useGATag();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const {
@@ -28,8 +31,18 @@ function Login() {
   });
 
   const handleSignIn = (data: IFormInputs) => {
+    tagAction(
+      GACategories.Event,
+      GATypes.SubmittedForm,
+      'Logging in with email'
+    );
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(({ user }) => {
+        tagAction(
+          GACategories.Event,
+          GATypes.Success,
+          'User logged in with email'
+        );
         enqueueSnackbar(
           `Bienvenid@${user.displayName ? ` ${user.displayName}` : '!'}`,
           {
@@ -39,6 +52,10 @@ function Login() {
         navigate('/products');
       })
       .catch((err) => {
+        tagError(
+          GATypes.SubmittedForm,
+          `Error logging in ${err.message} (email)`
+        );
         enqueueSnackbar(`Occurio un error (${err.message})`, {
           variant: 'error',
         });
@@ -46,8 +63,15 @@ function Login() {
   };
 
   const handleGoogleSignIn = () => {
+    tagAction(GACategories.Event, GATypes.Click, 'Logging in with google');
+
     signInWithPopup(auth, googleProvider)
       .then(({ user }) => {
+        tagAction(
+          GACategories.Event,
+          GATypes.Success,
+          'User logged in with google'
+        );
         enqueueSnackbar(
           `Bienvenid@${user.displayName ? ` ${user.displayName}` : '!'}`,
           {
@@ -57,6 +81,10 @@ function Login() {
         navigate('/products');
       })
       .catch((err) => {
+        tagError(
+          GATypes.SubmittedForm,
+          `Error logging in ${err.message} (google)`
+        );
         enqueueSnackbar(`Occurio un error (${err.message})`, {
           variant: 'error',
         });

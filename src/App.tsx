@@ -2,13 +2,16 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 
 import LogoWhite from '~assets/logo-white.svg';
+import { GACategories, GATypes } from '~constants/gaTagTypes';
+import useGATag from '~hooks/useGATag';
 
 import styles from './styles.module.scss';
 
 function App() {
   const navigate = useNavigate();
-
+  const { tagAction } = useGATag();
   const handleNavigate = () => {
+    tagAction(GACategories.Redirect, GATypes.Click, 'Redirected to login');
     navigate('/login');
   };
 

@@ -7,15 +7,19 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 
+import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
 import { SortBy } from '~contexts/Products/constants';
+import useGATag from '~hooks/useGATag';
 
 function SortByBox() {
+  const { tagAction } = useGATag(true);
   const { sortBy, handleSort } = useProducts();
 
   const handleSortBy = (event: SelectChangeEvent<SortBy>) => {
     const { value } = event.target;
 
+    tagAction(GACategories.Event, GATypes.SubmittedForm, `Sorted by ${value}`);
     handleSort(value as SortBy);
   };
 

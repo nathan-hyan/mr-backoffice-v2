@@ -1,8 +1,12 @@
 export enum GATypes {
   Click = 'click',
+  Changed = 'changed',
   Cancel = 'cancel',
   CreateProduct = 'createProduct',
   SubmittedForm = 'submittedForm',
+  Success = 'success',
+  Error = 'error',
+  Alert = 'alert',
 }
 
 export enum GACategories {
@@ -11,4 +15,5 @@ export enum GACategories {
   Brand = 'brand',
   Category = 'category',
   Prices = 'prices',
+  Event = 'event',
 }

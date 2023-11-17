@@ -4,11 +4,14 @@ import { Brand, Category, Product } from 'types/data';
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
+import useGATag from '~hooks/useGATag';
 import CustomTable from '~screens/ProductList/components/CustomTable';
 import SearchBox from '~screens/ProductList/components/SearchBox';
 import SortByBox from '~screens/ProductList/components/SortByBox';
 
 function ProductList() {
+  useGATag();
+
   const { saveProducts, saveCategories, saveBrands } = useProducts();
 
   const { subscribeToData: productDataSub } = useFirestore<Product>(

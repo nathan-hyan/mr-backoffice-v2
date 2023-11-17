@@ -12,11 +12,14 @@ import {
 } from '@mui/material';
 
 import AddProductModal from '~components/AddProductModal';
+import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
+import useGATag from '~hooks/useGATag';
 
 import Row from './components/Row';
 
 function CustomTable() {
+  const { tagAction } = useGATag(true);
   const [showModal, setShowModal] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -24,15 +27,22 @@ function CustomTable() {
   const { productList } = useProducts();
 
   const handleChangePage = (_event: unknown, newPage: number) => {
+    tagAction(GACategories.Event, GATypes.Click, `Changed to page ${newPage}`);
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+    tagAction(
+      GACategories.Event,
+      GATypes.Click,
+      `Changed rows per page to ${+event.target.value}`
+    );
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
   const toggleModal = () => {
+    tagAction(GACategories.Event, GATypes.Click, 'Toggled creation modal');
     setShowModal((prevState) => !prevState);
   };
 

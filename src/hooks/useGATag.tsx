@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import ga4 from 'react-ga4';
 import { useLocation } from 'react-router-dom';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 
-function useGATag() {
+function useGATag(dontTrackView = false) {
   const location = useLocation();
 
   const tagPageView = useCallback(() => {
@@ -19,12 +19,22 @@ function useGATag() {
     (category: GACategories, action: GATypes, label: string) => {
       ga4.event({
         category,
-        action,
-        label,
+        action: `${action} - ${label}`,
       });
     },
     []
   );
-  return { tagPageView, tagAction };
+
+  const tagError = useCallback((action: GATypes, label: string) => {
+    ga4.event({ category: 'Error', action: `Error - ${action}`, label });
+  }, []);
+
+  useEffect(() => {
+    if (!dontTrackView) {
+      tagPageView();
+    }
+  }, [dontTrackView, tagPageView]);
+
+  return { tagAction, tagError };
 }
 export default useGATag;

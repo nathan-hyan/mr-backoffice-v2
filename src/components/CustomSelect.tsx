@@ -22,6 +22,7 @@ interface Props<T> {
   label: string;
   name: Path<T>;
   required?: boolean;
+  disabled?: boolean;
   defaultValue?: PathValue<T, Path<T>>;
   rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
   variant?: 'outlined' | 'standard';
@@ -36,6 +37,7 @@ function CustomSelect<T extends FieldValues>({
   defaultValue,
   required,
   label,
+  disabled,
   error,
   rules,
   variant,
@@ -48,9 +50,11 @@ function CustomSelect<T extends FieldValues>({
       control={control}
       defaultValue={defaultValue}
       rules={{ ...rules }}
+      disabled={disabled}
       render={({ field }) => (
         <FormControl
           fullWidth
+          disabled={disabled}
           required={required}
           variant={variant}
           error={Boolean(error)}
@@ -59,6 +63,7 @@ function CustomSelect<T extends FieldValues>({
           <InputLabel id={name}>{label}</InputLabel>
           <Select
             {...field}
+            disabled={disabled}
             labelId={name}
             label={label}
             onChange={onChange ?? field.onChange}
@@ -85,6 +90,7 @@ CustomSelect.defaultProps = {
   variant: 'outlined',
   value: undefined,
   onChange: undefined,
+  disabled: false,
 };
 
 export default CustomSelect;

@@ -109,15 +109,18 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
   const updateDocument = (
     documentId: string,
     newData: DataWithId,
-    callback?: (arg0: void) => void
+    callback?: (arg0: void) => void,
+    silent?: boolean
   ) => {
     const docRef = doc(database, collectionName, documentId);
 
     updateDoc(docRef, newData)
       .then((data) => {
-        enqueueSnackbar('Item editado correctamente', {
-          variant: 'info',
-        });
+        if (!silent) {
+          enqueueSnackbar('Item editado correctamente', {
+            variant: 'info',
+          });
+        }
 
         if (callback) {
           callback(data);
