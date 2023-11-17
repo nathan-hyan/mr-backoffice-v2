@@ -8,6 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Vitest Coverage Report
+        uses: davelosert/vitest-coverage-report-action@v2.1.1
       - uses: actions/checkout@master
       - name: Bump version and push tag
         uses: hennejg/github-tag-action@v4.1.jh1
