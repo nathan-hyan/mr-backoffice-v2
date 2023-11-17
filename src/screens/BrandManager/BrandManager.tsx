@@ -40,6 +40,7 @@ import AddBrandModal from './components/AddBrandModal';
 type BrandType = Nullable<Brand & { id: string }>;
 
 function BrandManager() {
+  useGATag();
   const [markedForDeletion, setMarkedForDeletion] = useState<BrandType>(null);
   const [markedForUpdate, setMarkedForUpdate] = useState<BrandType>(null);
   const [showModal, setShowModal] = useState(false);
@@ -48,7 +49,6 @@ function BrandManager() {
   const [latestId, setLatestId] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { tagPageView } = useGATag();
 
   const {
     control,
@@ -125,8 +125,6 @@ function BrandManager() {
   };
 
   useEffect(() => {
-    tagPageView();
-
     const unsubscribe = subscribeToData((response) => {
       setData(response);
       setDataCopy(response);
@@ -136,7 +134,7 @@ function BrandManager() {
     return () => {
       unsubscribe();
     };
-  }, [subscribeToData, tagPageView]);
+  }, [subscribeToData]);
 
   return (
     <>
