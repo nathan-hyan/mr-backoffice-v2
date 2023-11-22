@@ -220,7 +220,7 @@ function BrandManager() {
                         <ListItemIcon>
                           <DeleteOutline />
                         </ListItemIcon>
-                        <ListItemText>Eliminar Producto</ListItemText>
+                        <ListItemText>Eliminar Marca</ListItemText>
                       </MenuItem>
                     </CustomMenu>
                   </TableCell>
