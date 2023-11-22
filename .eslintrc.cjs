@@ -10,7 +10,7 @@ module.exports = {
     'airbnb',
     'airbnb-typescript',
     'airbnb/hooks',
-    'plugin:jest-dom/recommended',
+    'plugin:vitest/recommended',
     'plugin:prettier/recommended',
   ],
   overrides: [
@@ -25,7 +25,7 @@ module.exports = {
     },
     {
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-      extends: ['plugin:testing-library/react'],
+      extends: ['plugin:testing-library/react', 'plugin:vitest/recommended'],
     },
     {
       files: ['*.js', '*.jsx', '*.ts', '*.tsx'],
@@ -61,34 +61,25 @@ module.exports = {
   plugins: [
     '@typescript-eslint',
     'react',
-    'jest-dom',
+    'vitest',
     'testing-library',
     'simple-import-sort',
     'prettier',
   ],
   rules: {
+    'react/react-in-jsx-scope': 'off',
     'import/extensions': [
       'error',
-      'never',
+      'ignorePackages',
       {
+        '': 'never',
         js: 'never',
-        svg: 'always',
-        scss: 'always',
-        png: 'always',
-        css: 'always',
-        json: 'always',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
       },
     ],
-    'react/react-in-jsx-scope': 'off',
-    'import/prefer-default-export': 0,
-    'react/jsx-props-no-spreading': 0,
-    'no-unused-vars': [
-      'error',
-      { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
-    ],
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
-    ],
+    'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
 };

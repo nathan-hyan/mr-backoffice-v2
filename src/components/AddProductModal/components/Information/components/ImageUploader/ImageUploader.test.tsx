@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+
+import { renderWithRouter } from '~config/renderWithRouter';
 
 import ImageUploader from './ImageUploader';
 
@@ -20,25 +22,25 @@ describe('<ImageUploader />', () => {
   });
 
   // TODO: Finish it when documentation is available
-  //   it('calls function when clicked on button', async () => {
-  //     const mockOnChange = vi.fn();
+  it.skip('calls function when clicked on button', async () => {
+    const mockOnChange = vi.fn();
 
-  //     const { user } = renderWithRouter(
-  //       <ImageUploader
-  //         handleFileUpload={mockOnChange}
-  //         isUploading={false}
-  //         uploadProgress={0}
-  //       />
-  //     );
+    const { user } = renderWithRouter(
+      <ImageUploader
+        handleFileUpload={mockOnChange}
+        isUploading={false}
+        uploadProgress={0}
+      />
+    );
 
-  //     const imageInput = screen.getByTitle('actual-input');
+    const imageInput = screen.getByTitle('actual-input');
 
-  //     expect(imageInput).toBeInTheDocument();
+    expect(imageInput).toBeInTheDocument();
 
-  //     await user.upload(imageInput, new File([], 'filename'));
+    await user.upload(imageInput, new File([], 'filename'));
 
-  //     await waitFor(() => expect(mockOnChange).toHaveBeenCalled());
-  //   });
+    await waitFor(() => expect(mockOnChange).toHaveBeenCalled());
+  });
 
   it.skip('disables button when prop is passed', () => {
     render(
