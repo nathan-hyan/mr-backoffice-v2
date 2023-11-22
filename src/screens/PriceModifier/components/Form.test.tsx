@@ -103,4 +103,27 @@ describe('<Form />', () => {
 
     await waitFor(() => expect(mockSubmit).toHaveBeenCalled());
   });
+
+  it('displays errors when present', () => {
+    const mockSubmit = vi.fn();
+
+    const { result } = renderHook(() =>
+      useForm<PriceModifierForm>({ defaultValues: DEFAULT_VALUES })
+    );
+
+    renderWithRouter(
+      <form onSubmit={mockSubmit}>
+        <Form
+          control={result.current.control}
+          disabled={false}
+          errors={{ type: { message: 'Error!', type: 'min' } }}
+          handleCancel={vi.fn()}
+        />
+      </form>
+    );
+
+    const errorMessage = screen.getByTitle('error-message');
+
+    expect(errorMessage).toHaveTextContent('Error!');
+  });
 });

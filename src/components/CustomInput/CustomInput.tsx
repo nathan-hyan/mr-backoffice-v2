@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { InputType } from './constants';
-import { parseOnlyNumbers } from './utils';
+import { parseOnlyNumbers, validate } from './utils';
 
 interface Props<T> {
   control?: Control<T & FieldValues, unknown>;
@@ -60,16 +60,7 @@ function CustomInput<T extends FieldValues>({
           value: Boolean(required),
           message: 'Este campo es obligatorio',
         },
-        validate: {
-          positive: (val) =>
-            type === 'number' && required
-              ? Number(val) > 0 || 'El numero no puede ser cero o negativo'
-              : true,
-          positiveWithNoRequired:
-            type === InputType.Number && !required
-              ? (val) => Number(val) >= 0 || 'El numero no puede ser negativo'
-              : () => true,
-        },
+        validate: validate(type, required),
         ...rules,
       }}
       render={({ field }) => (

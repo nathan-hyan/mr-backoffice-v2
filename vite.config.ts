@@ -14,7 +14,7 @@ export default defineConfig({
     coverage: {
       reporter: ['text', 'json-summary', 'json'],
       enabled: true,
-      skipFull: true,
+      skipFull: false,
       provider: 'v8',
       functions: 50,
       lines: 50,

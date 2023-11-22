@@ -5,6 +5,12 @@ import { renderWithRouter } from '~config/renderWithRouter';
 import ImageUploader from './ImageUploader';
 
 describe('<ImageUploader />', () => {
+  let file: File;
+
+  beforeEach(() => {
+    file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
+  });
+
   it('renders correctly', () => {
     render(
       <ImageUploader
@@ -13,7 +19,7 @@ describe('<ImageUploader />', () => {
         uploadProgress={0}
       />
     );
-    const button = screen.getByRole('button', { name: 'Subir imágenes' });
+    const button = screen.getByRole('button');
     const imageInput = screen.getByTitle('actual-input');
 
     expect(button).toBeInTheDocument();
@@ -21,8 +27,7 @@ describe('<ImageUploader />', () => {
     expect(imageInput).not.toBeVisible();
   });
 
-  // TODO: Finish it when documentation is available
-  it.skip('calls function when clicked on button', async () => {
+  it('calls function when clicked on button', async () => {
     const mockOnChange = vi.fn();
 
     const { user } = renderWithRouter(
@@ -37,12 +42,12 @@ describe('<ImageUploader />', () => {
 
     expect(imageInput).toBeInTheDocument();
 
-    await user.upload(imageInput, new File([], 'filename'));
+    await user.upload(imageInput, file);
 
     await waitFor(() => expect(mockOnChange).toHaveBeenCalled());
   });
 
-  it.skip('disables button when prop is passed', () => {
+  it('disables button when prop is passed', () => {
     render(
       <ImageUploader
         handleFileUpload={vi.fn()}

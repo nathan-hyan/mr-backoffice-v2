@@ -74,7 +74,11 @@ function CustomSelect<T extends FieldValues>({
               </MenuItem>
             ))}
           </Select>
-          {error && <FormHelperText>{error.message}</FormHelperText>}
+          {error && (
+            <FormHelperText title='error-message'>
+              {error.message}
+            </FormHelperText>
+          )}
         </FormControl>
       )}
     />

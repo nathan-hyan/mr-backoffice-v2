@@ -24,7 +24,12 @@ export default function CircularProgressWithLabel(
           justifyContent: 'center',
         }}
       >
-        <Typography variant='caption' component='div' color='text.secondary'>
+        <Typography
+          variant='caption'
+          component='div'
+          color='text.secondary'
+          title='progress'
+        >
           {value}%
         </Typography>
       </Box>

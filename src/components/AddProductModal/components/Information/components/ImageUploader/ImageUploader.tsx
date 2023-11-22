@@ -18,7 +18,6 @@ function ImageUploader({
     <label htmlFor='upload-image'>
       <Button
         variant='contained'
-        component='span'
         id='upload-button'
         fullWidth
         disabled={isUploading}
@@ -31,6 +30,7 @@ function ImageUploader({
         Subir imágenes
       </Button>
       <input
+        disabled={isUploading}
         id='upload-image'
         hidden
         accept='image/*'
