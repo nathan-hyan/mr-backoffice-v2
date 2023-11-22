@@ -83,9 +83,13 @@ function CustomInput<T extends FieldValues>({
           }
           onFocus={type === 'number' ? (e) => e.target.select() : undefined}
           value={type === 'number' ? field.value?.toString() : field.value}
-          onKeyDown={(event) =>
-            type === 'number' && event.code === 'KeyE' && event.preventDefault()
-          }
+          onKeyDown={(event) => {
+            return (
+              type === 'number' &&
+              (event.code === 'KeyE' || event.code === 'Period') &&
+              event.preventDefault()
+            );
+          }}
           id='standard-basic'
           label={label}
           variant={variant}

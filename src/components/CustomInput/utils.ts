@@ -12,10 +12,3 @@ export function parseOnlyNumbers({
     ? 0
     : parseFloat(sanitizedValue);
 }
-
-// ({ target: { value } }) =>
-//                         type === 'number'
-//                             ? field.onChange(
-//                                   Number.isNaN(value) ? 0 : parseInt(value, 10)
-//                               )
-//                             : field.onChange(value)
