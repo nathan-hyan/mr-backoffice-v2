@@ -18,6 +18,7 @@ function ImageUploader({
     <label htmlFor='upload-image'>
       <Button
         variant='contained'
+        component='span'
         id='upload-button'
         fullWidth
         disabled={isUploading}

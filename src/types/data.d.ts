@@ -69,8 +69,8 @@ export interface Product {
   prices: Prices;
   internalId: number; // 0
   imageURL: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
   // stars: 5;
   // votes: 1234;
 }

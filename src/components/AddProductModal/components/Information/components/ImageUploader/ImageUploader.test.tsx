@@ -55,9 +55,9 @@ describe('<ImageUploader />', () => {
         uploadProgress={15}
       />
     );
-    const button = screen.getByRole('button');
+    const input = screen.getByTitle('actual-input');
 
-    expect(button).toBeInTheDocument();
-    expect(button).toBeDisabled();
+    expect(input).toBeInTheDocument();
+    expect(input).toBeDisabled();
   });
 });

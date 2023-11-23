@@ -4,18 +4,13 @@ import { DeleteOutline, Edit } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
-  Box,
-  Breadcrumbs,
   Collapse,
   IconButton,
-  ImageList,
-  ImageListItem,
   ListItemIcon,
   ListItemText,
   MenuItem,
   TableCell,
   TableRow,
-  Typography,
 } from '@mui/material';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
@@ -26,6 +21,8 @@ import DeleteAlert from '~components/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
 import useCategoryTranslator from '~hooks/useCategoryTranslator';
 import useFirestore from '~hooks/useFirestore';
+
+import ProductDetail from './components/ProductDetail';
 
 type Props =
   | {
@@ -144,29 +141,11 @@ function Row(props: Props) {
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
             <Collapse in={open} timeout='auto' unmountOnExit>
-              <Box sx={{ margin: 1 }}>
-                <ImageList cols={2} sx={{ width: 500 }}>
-                  {props.data?.imageURL.map((image) => (
-                    <ImageListItem key={image}>
-                      <img alt={props.data?.name} src={image} loading='lazy' />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
-                <Breadcrumbs separator='>'>
-                  {[
-                    <Typography>{category?.name}</Typography>,
-                    <Typography>{subCategory?.name}</Typography>,
-                  ]}
-                </Breadcrumbs>
-                {Object.keys(props.data).map((field) => (
-                  <Typography>
-                    {field}:{' '}
-                    {JSON.stringify(
-                      props.data ? props.data[field as keyof Product] : '{}'
-                    )}
-                  </Typography>
-                ))}
-              </Box>
+              <ProductDetail
+                data={props.data}
+                category={category?.name}
+                subCategory={subCategory?.name}
+              />
             </Collapse>
           </TableCell>
         </TableRow>
