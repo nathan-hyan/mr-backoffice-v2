@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase/firestore';
 import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
@@ -225,8 +226,8 @@ export const EMPTY_FORM: Product = {
   description: '',
   internalId: 0,
   imageURL: [''],
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: new Timestamp(0, 0),
+  updatedAt: new Timestamp(0, 0),
   id: '',
   specifications: [],
   variants: [],

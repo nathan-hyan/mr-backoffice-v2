@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { Timestamp } from 'firebase/firestore';
 import {
   Dimensions,
   Prices,
@@ -12,7 +13,7 @@ export function fabricateFakeData(): {
   value:
     | string
     | number
-    | Date
+    | Timestamp
     | Dimensions
     | ProviderProductCode[]
     | Specifications[]
