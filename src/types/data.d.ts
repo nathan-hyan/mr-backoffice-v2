@@ -71,6 +71,9 @@ export interface Product {
   imageURL: string[];
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  // stars: 5;
-  // votes: 1234;
+  userFeedback: {
+    id: number;
+    comment: string;
+    rating: number;
+  }[];
 }
