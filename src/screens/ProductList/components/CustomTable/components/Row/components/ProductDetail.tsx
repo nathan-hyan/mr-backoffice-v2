@@ -2,12 +2,14 @@ import { useState } from 'react';
 import {
   Box,
   Breadcrumbs,
+  Divider,
   FormControlLabel,
   FormGroup,
   ImageList,
   ImageListItem,
   List,
   Paper,
+  Rating,
   Switch,
   Table,
   TableBody,
@@ -26,7 +28,11 @@ import useFirestore from '~hooks/useFirestore';
 import { objectIterator } from '~utils/objectIterator';
 import { timestampTranslator } from '~utils/timestampTranslator';
 
-import { prepareDataForDisplay, translatePrices } from './ProductDetail.utils';
+import {
+  getAverageRating,
+  prepareDataForDisplay,
+  translatePrices,
+} from './ProductDetail.utils';
 
 interface Props {
   data: Product;
@@ -78,6 +84,52 @@ function ProductDetail({ data, category, subCategory }: Props) {
             label='Mostrar en tienda'
           />
         </FormGroup>
+        <Divider sx={{ my: 3 }} />
+        {data.userFeedback && data.userFeedback.length > 0 ? (
+          <>
+            <Box>
+              <Typography component='legend'>Rating de los clientes</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  gap: 1,
+                }}
+              >
+                <Rating
+                  name='simple-controlled'
+                  value={getAverageRating(data.userFeedback)}
+                  readOnly
+                  precision={0.25}
+                />
+                <Typography variant='caption' m={0} p={0}>
+                  ({getAverageRating(data.userFeedback)},{' '}
+                  {data.userFeedback.length}{' '}
+                  {data.userFeedback.length > 1 ? 'comentarios' : 'comentario'})
+                </Typography>
+              </Box>
+            </Box>
+            <Divider sx={{ my: 3 }} />
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 3,
+                flexDirection: 'column',
+                maxHeight: '15rem',
+                p: 1,
+                mb: 3,
+                overflowY: 'scroll',
+              }}
+            >
+              {data.userFeedback.map(({ comment }) => (
+                <Paper sx={{ p: 3 }} elevation={3}>
+                  <Typography>{comment}</Typography>
+                </Paper>
+              ))}
+            </Box>
+          </>
+        ) : null}
       </Box>
       <Box sx={{ width: '75%' }}>
         <Breadcrumbs separator='>'>

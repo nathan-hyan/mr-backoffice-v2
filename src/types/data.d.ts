@@ -50,6 +50,12 @@ export interface Brand {
   name: string;
 }
 
+export interface UserFeedback {
+  id: number;
+  comment: string;
+  rating: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -72,9 +78,5 @@ export interface Product {
   createdAt: Timestamp;
   updatedAt: Timestamp;
   showInStore: boolean;
-  userFeedback: {
-    id: number;
-    comment: string;
-    rating: number;
-  }[];
+  userFeedback: UserFeedback[];
 }

@@ -1,4 +1,4 @@
-import { Product } from 'types/data';
+import { Product, UserFeedback } from 'types/data';
 
 export const translatePrices = (field: keyof Product['prices']) => {
   switch (field) {
@@ -76,6 +76,7 @@ export const prepareDataForDisplay = (
   delete copy.variants;
   delete copy.id;
   delete copy.showInStore;
+  delete copy.userFeedback;
 
   Object.keys(copy).forEach((field) => {
     if (field === 'weight') {
@@ -112,4 +113,12 @@ export const prepareDataForDisplay = (
   });
 
   return result;
+};
+
+export const getAverageRating = (array: UserFeedback[]) => {
+  const ratingSum = array.reduce((prev, curr) => {
+    return prev + curr.rating;
+  }, 0);
+
+  return ratingSum / array.length;
 };
