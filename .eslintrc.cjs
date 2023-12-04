@@ -24,6 +24,12 @@ module.exports = {
       },
     },
     {
+      files: ['release.config.js'],
+      rules: {
+        'no-template-curly-in-string': 'off',
+      },
+    },
+    {
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
       extends: ['plugin:testing-library/react', 'plugin:vitest/recommended'],
     },
@@ -56,7 +62,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json'],
+    project: ['./tsconfig.json', 'release.config.js'],
   },
   plugins: [
     '@typescript-eslint',
