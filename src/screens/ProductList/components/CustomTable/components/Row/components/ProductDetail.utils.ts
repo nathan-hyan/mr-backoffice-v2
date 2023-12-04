@@ -75,6 +75,7 @@ export const prepareDataForDisplay = (
   delete copy.specifications;
   delete copy.variants;
   delete copy.id;
+  delete copy.showInStore;
 
   Object.keys(copy).forEach((field) => {
     if (field === 'weight') {

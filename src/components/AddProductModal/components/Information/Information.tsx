@@ -51,6 +51,7 @@ function Information({ control, watch, errors, setValue }: Props) {
           multiline={item.multiline}
           label={item.label}
           type={item.type}
+          disabled={item.disabled}
         />
       ))}
       <CustomSelect

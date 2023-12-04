@@ -23,6 +23,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
   const { enqueueSnackbar } = useSnackbar();
   const [fetchLoading, setFetchLoading] = useState(true);
   const [creatingLoading, setCreatingLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const throwError = useCallback(
     (err: unknown) => {
@@ -112,6 +113,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     callback?: (arg0: void) => void,
     silent?: boolean
   ) => {
+    setUpdateLoading(true);
     const docRef = doc(database, collectionName, documentId);
 
     updateDoc(docRef, newData)
@@ -125,8 +127,12 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
         if (callback) {
           callback(data);
         }
+        setUpdateLoading(false);
       })
-      .catch((err) => throwError(err));
+      .catch((err) => {
+        throwError(err);
+        setUpdateLoading(false);
+      });
   };
 
   const getDocument = async (documentId: string) => {
@@ -142,9 +148,10 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     addDocument,
     getDocument,
     removeDocument,
+    subscribeToData,
     fetchLoading,
     creatingLoading,
-    subscribeToData,
+    updateLoading,
   };
 }
 export default useFirestore;

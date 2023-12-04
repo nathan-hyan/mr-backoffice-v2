@@ -225,6 +225,8 @@ export enum SearchType {
 export const EMPTY_FORM: Product = {
   description: '',
   internalId: 0,
+  showInStore: false,
+  userFeedback: [],
   imageURL: [''],
   createdAt: new Timestamp(0, 0),
   updatedAt: new Timestamp(0, 0),

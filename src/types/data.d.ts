@@ -71,6 +71,7 @@ export interface Product {
   imageURL: string[];
   createdAt: Timestamp;
   updatedAt: Timestamp;
+  showInStore: boolean;
   userFeedback: {
     id: number;
     comment: string;

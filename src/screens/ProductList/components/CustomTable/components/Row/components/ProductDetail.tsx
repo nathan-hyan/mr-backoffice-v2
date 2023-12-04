@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import {
   Box,
   Breadcrumbs,
+  FormControlLabel,
+  FormGroup,
   ImageList,
   ImageListItem,
   List,
   Paper,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -16,7 +20,9 @@ import {
 import { Product } from 'types/data';
 
 import CustomListItem from '~components/CustomListItem';
+import { FirestoreCollections } from '~constants/firebase';
 import useBrandTranslator from '~hooks/useBrandTranslator';
+import useFirestore from '~hooks/useFirestore';
 import { objectIterator } from '~utils/objectIterator';
 import { timestampTranslator } from '~utils/timestampTranslator';
 
@@ -30,6 +36,18 @@ interface Props {
 
 function ProductDetail({ data, category, subCategory }: Props) {
   const { translateBrand } = useBrandTranslator();
+  const { updateDocument, updateLoading } = useFirestore<Product>(
+    FirestoreCollections.Products
+  );
+  const [showInStore, setShowInStore] = useState(data.showInStore || false);
+
+  const handleShowInStoreToggle = () => {
+    setShowInStore((prevState) => {
+      updateDocument(data.id, { ...data, showInStore: !prevState });
+      return !prevState;
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -40,13 +58,27 @@ function ProductDetail({ data, category, subCategory }: Props) {
         justifyItems: 'flex-start',
       }}
     >
-      <ImageList cols={2} sx={{ width: '25%', height: 300 }}>
-        {data.imageURL.map((image) => (
-          <ImageListItem key={image + new Date()}>
-            <img alt={data.name} src={image} loading='lazy' />
-          </ImageListItem>
-        ))}
-      </ImageList>
+      <Box sx={{ width: '25%' }}>
+        <ImageList cols={2} sx={{ height: 300 }}>
+          {data.imageURL.map((image) => (
+            <ImageListItem key={image + new Date()}>
+              <img alt={data.name} src={image} loading='lazy' />
+            </ImageListItem>
+          ))}
+        </ImageList>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                disabled={updateLoading}
+                onChange={handleShowInStoreToggle}
+                checked={showInStore}
+              />
+            }
+            label='Mostrar en tienda'
+          />
+        </FormGroup>
+      </Box>
       <Box sx={{ width: '75%' }}>
         <Breadcrumbs separator='>'>
           {[
@@ -71,6 +103,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
           <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
             {objectIterator(data.prices).map(({ key, value: { value } }) => (
               <CustomListItem
+                key={key}
                 width='calc(25% - 24px)'
                 title={translatePrices(key as keyof Product['prices'])}
                 value={`$${(Number(value) || 0).toFixed(2)}`}
