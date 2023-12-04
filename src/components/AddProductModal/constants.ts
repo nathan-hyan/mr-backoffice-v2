@@ -49,7 +49,7 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     label: 'ID Interno',
     name: 'internalId',
     type: InputType.Number,
-    required: true,
+    required: false,
     disabled: true,
   },
   {

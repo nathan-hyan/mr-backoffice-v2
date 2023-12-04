@@ -1,6 +1,7 @@
 import {
   AllInbox,
   AttachMoney,
+  AutoFixHigh,
   FormatListNumbered,
   LocalOffer,
 } from '@mui/icons-material';
@@ -11,6 +12,7 @@ import {
   Login,
   Playground,
   PriceModifier,
+  PriceTagGenerator,
   ProductList,
   UserInfo,
 } from '~screens/index';
@@ -77,5 +79,13 @@ export const ROUTES = [
     description: '',
     path: '/brandManager',
     element: <BrandManager />,
+  },
+  {
+    id: 7,
+    icon: <AutoFixHigh />,
+    title: 'Generador de etiquetas de precio',
+    description: '',
+    path: '/pricetaggenerator',
+    element: <PriceTagGenerator />,
   },
 ];
