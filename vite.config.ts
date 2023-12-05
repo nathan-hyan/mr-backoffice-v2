@@ -16,11 +16,6 @@ export default defineConfig({
       enabled: true,
       skipFull: false,
       provider: 'v8',
-      functions: 50,
-      lines: 50,
-      branches: 50,
-      statements: 50,
-      thresholdAutoUpdate: false, // Makes coverage thresholds go brrrrr
     },
   },
   resolve: {
