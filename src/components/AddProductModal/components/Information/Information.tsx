@@ -52,6 +52,7 @@ function Information({ control, watch, errors, setValue }: Props) {
           label={item.label}
           type={item.type}
           disabled={item.disabled}
+          required={item.required}
         />
       ))}
       <CustomSelect

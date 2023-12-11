@@ -1,3 +1,4 @@
+import { DevTool } from '@hookform/devtools';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import {
   Box,
@@ -96,6 +97,7 @@ function AddProductModal({ show, onClose, productToEdit }: Props) {
           </Button>
         </DialogActions>
       </form>
+      <DevTool control={control} />
     </Dialog>
   );
 }
