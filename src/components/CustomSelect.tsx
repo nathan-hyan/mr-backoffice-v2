@@ -15,6 +15,7 @@ import {
   Select,
   SelectChangeEvent,
   SxProps,
+  Theme,
 } from '@mui/material';
 
 interface Props<T> {
@@ -30,7 +31,7 @@ interface Props<T> {
   data: { value: string | number; optionName: string }[];
   value?: string | number;
   onChange?: (e: SelectChangeEvent) => void;
-  sx: SxProps;
+  sx?: SxProps<Theme>;
 }
 
 function CustomSelect<T extends FieldValues>({
@@ -99,6 +100,7 @@ CustomSelect.defaultProps = {
   value: undefined,
   onChange: undefined,
   disabled: false,
+  sx: undefined,
 };
 
 export default CustomSelect;
