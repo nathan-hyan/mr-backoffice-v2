@@ -1,45 +1,30 @@
-import { useEffect, useState } from 'react';
-import {
-  Autocomplete,
-  Box,
-  Divider,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material';
+import { useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { useReactToPrint } from 'react-to-print';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import { Product } from 'types/data';
+import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
 
-import PriceTag from './components/PriceTag/PriceTag';
+import ControlPanel from './components/ControlPanel';
+import PriceTag from './components/PriceTag';
+import { ControlPanelValues, FORM_CONFIG } from './constants';
 
 function PriceTagGenerator() {
+  const { control, watch } = useForm<ControlPanelValues>(FORM_CONFIG);
+  const { productList, saveProducts } = useProducts();
   const { fetchLoading, subscribeToData } = useFirestore<Product>(
     FirestoreCollections.Products
   );
-  const { productList, saveProducts } = useProducts();
-  const [generatorType, setGeneratorType] = useState<'all' | 'individual'>(
-    'all'
-  );
-  const [individualProducts, setIndividualProducts] = useState<Product[]>([]);
 
-  const handleTypeChange = (
-    _event: React.MouseEvent<HTMLElement>,
-    newAlignment: 'all' | 'individual'
-  ) => {
-    setGeneratorType(newAlignment);
-    setIndividualProducts([]);
-  };
+  const printable = useRef<Nullable<HTMLDivElement>>(null);
 
-  const handleProductChange = (
-    _event: React.SyntheticEvent<Element>,
-    selectedProducts: Product[]
-  ) => {
-    setIndividualProducts(selectedProducts);
-  };
+  const handlePrint = useReactToPrint({
+    content: () => printable.current,
+  });
 
   useEffect(() => {
     if (productList && productList.length > 0) {
@@ -55,75 +40,46 @@ function PriceTagGenerator() {
     };
   }, [productList, saveProducts, subscribeToData]);
 
+  const map =
+    watch('generatorType') === 'all'
+      ? productList
+      : watch('individualProducts');
+
   return (
     <>
-      <ToggleButtonGroup
-        color='primary'
-        value={generatorType}
-        exclusive
-        onChange={handleTypeChange}
-      >
-        <ToggleButton value='all'>Todos los productos</ToggleButton>
-        <ToggleButton value='individual'>Productos individuales</ToggleButton>
-      </ToggleButtonGroup>
-
-      {generatorType === 'individual' ? (
-        <>
-          <Divider />
-          <Autocomplete
-            multiple
-            onChange={handleProductChange}
-            id='tags-standard'
-            value={individualProducts}
-            options={productList}
-            getOptionLabel={(product) => product.name}
-            loading={fetchLoading}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant='standard'
-                label='Productos para incluir'
-              />
-            )}
-          />
-        </>
-      ) : null}
+      <ControlPanel
+        generatorType={watch('generatorType')}
+        fetchLoading={fetchLoading}
+        productList={productList}
+        control={control}
+      />
 
       <Divider />
 
-      <Typography variant='h6'>Previsualización:</Typography>
+      <Typography variant='h6'>Previsualización</Typography>
+      <Button variant='contained' onClick={handlePrint}>
+        Imprimir etiquetas
+      </Button>
       <Box
+        ref={printable}
         sx={{
+          width: '100%',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 3,
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: 0.5,
         }}
       >
-        {generatorType === 'all'
-          ? productList.map(
-              ({ name, barcode, internalId, prices: { cash, list } }) => (
-                <PriceTag
-                  key={internalId}
-                  barCode={barcode}
-                  cashPrice={cash.value}
-                  internalId={internalId}
-                  listPrice={list.value}
-                  name={name}
-                />
-              )
-            )
-          : individualProducts.map(
-              ({ name, barcode, internalId, prices: { cash, list } }) => (
-                <PriceTag
-                  key={internalId}
-                  barCode={barcode}
-                  cashPrice={cash.value}
-                  internalId={internalId}
-                  listPrice={list.value}
-                  name={name}
-                />
-              )
-            )}
+        {map.map(({ name, barcode, internalId, prices: { cash } }) => (
+          <PriceTag
+            key={internalId}
+            barCode={barcode}
+            cashPrice={cash.value}
+            internalId={internalId}
+            name={name}
+            showPrices={watch('showPrices')}
+            variant={watch('variant')}
+          />
+        ))}
       </Box>
     </>
   );

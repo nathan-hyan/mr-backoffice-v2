@@ -14,6 +14,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  SxProps,
 } from '@mui/material';
 
 interface Props<T> {
@@ -29,6 +30,7 @@ interface Props<T> {
   data: { value: string | number; optionName: string }[];
   value?: string | number;
   onChange?: (e: SelectChangeEvent) => void;
+  sx: SxProps;
 }
 
 function CustomSelect<T extends FieldValues>({
@@ -42,6 +44,7 @@ function CustomSelect<T extends FieldValues>({
   rules,
   variant,
   data,
+  sx,
   onChange,
 }: Props<T>) {
   return (
@@ -59,6 +62,7 @@ function CustomSelect<T extends FieldValues>({
           variant={variant}
           error={Boolean(error)}
           id={name}
+          sx={sx}
         >
           <InputLabel id={name}>{label}</InputLabel>
           <Select
