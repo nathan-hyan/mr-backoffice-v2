@@ -22,10 +22,12 @@ export const infoSide: SxProps<Theme> = {
 export const productName: SxProps<Theme> = {
   overflow: 'hidden',
   display: '-webkit-box',
-  WebkitLineClamp: '2',
-  lineClamp: '2',
+  WebkitLineClamp: '4',
+  lineClamp: '4',
   WebkitBoxOrient: 'vertical',
-  height: 'calc(1.5`rem * 2)',
+  height: 'calc(1.5rem * 2)',
+  lineHeight: '0.8rem',
+  fontWeight: '700',
 };
 
 export const priceSide: (
