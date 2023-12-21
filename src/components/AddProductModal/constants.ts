@@ -45,14 +45,6 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     required: true,
   },
   {
-    id: 4,
-    label: 'ID Interno',
-    name: 'internalId',
-    type: InputType.Number,
-    required: false,
-    disabled: true,
-  },
-  {
     id: 1,
     label: 'Stock',
     name: 'stock',

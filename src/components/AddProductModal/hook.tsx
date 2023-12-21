@@ -19,6 +19,7 @@ interface Props {
 }
 
 function useProductModal({ show, onClose, productToEdit }: Props) {
+  const { productList } = useProducts();
   const { handleSubmit, control, watch, reset, formState, setValue } =
     useForm<Product>({
       defaultValues: EMPTY_FORM,
@@ -26,8 +27,6 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
     });
 
   const { errors } = formState;
-
-  const { productList } = useProducts();
 
   const { addDocument, updateDocument, creatingLoading } =
     useFirestore<Product>(FirestoreCollections.Products);
@@ -78,7 +77,10 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
       return;
     }
 
-    addDocument(data).then(() => {
+    addDocument({
+      ...data,
+      internalId: getLatestInternalId(productList) + 1,
+    }).then(() => {
       reset();
       onClose();
     });
@@ -96,10 +98,6 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
   };
 
   useEffect(() => {
-    if (show && !productToEdit) {
-      setValue('internalId', getLatestInternalId(productList) + 1);
-    }
-
     if (productToEdit) {
       const keys = Object.keys(productToEdit) as (keyof Product)[];
 
