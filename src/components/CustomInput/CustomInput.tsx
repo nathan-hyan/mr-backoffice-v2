@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useRef } from 'react';
 import {
   Control,
   Controller,
@@ -49,6 +51,24 @@ function CustomInput<T extends FieldValues>({
   inputProps,
   variant,
 }: Props<T>) {
+  const numberFieldRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+    };
+
+    if (type === InputType.Number) {
+      numberFieldRef.current?.addEventListener('wheel', handleWheel);
+    }
+
+    return () => {
+      if (type === InputType.Number) {
+        numberFieldRef.current?.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [type]);
+
   return (
     <Controller
       control={control}
@@ -91,6 +111,7 @@ function CustomInput<T extends FieldValues>({
           multiline={multiline}
           helperText={error ? error.message : undefined}
           InputProps={{ ...inputProps, disabled }}
+          ref={numberFieldRef}
         />
       )}
     />
