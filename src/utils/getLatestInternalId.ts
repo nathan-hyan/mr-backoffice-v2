@@ -13,7 +13,8 @@ function getLatestInternalId<T>(collectionWithInternalId: (Props & T)[]) {
     return 0;
   })[0];
 
-  return Number.isNaN(sortedList.internalId)
+  return Number.isNaN(sortedList.internalId) ||
+    !Number.isInteger(sortedList.internalId)
     ? 0
     : Number(sortedList.internalId);
 }
