@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
+import { ROUTES } from '~config/routes';
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
@@ -19,6 +21,7 @@ interface Props {
 }
 
 function useProductModal({ show, onClose, productToEdit }: Props) {
+  const navigate = useNavigate();
   const { productList } = useProducts();
   const { handleSubmit, control, watch, reset, formState, setValue } =
     useForm<Product>({
@@ -33,22 +36,27 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
 
   const checkForErrors = () => {
     const errorsArray = Object.keys(errors);
-
     if (errorsArray.length !== 0) {
       const input =
         document.querySelector(`input[name=${errorsArray[0]}]`) ||
         document.querySelector(`textarea[name=${errorsArray[0]}]`);
 
-      input?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'start',
-      });
+      if (input) {
+        input?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      }
 
       return;
     }
 
     if (watch('imageURL').filter(Boolean).length === 0) {
+      enqueueSnackbar(`Elija una imágen antes de continuar`, {
+        variant: 'error',
+      });
+
       const imageButton = document.getElementById('upload-button');
 
       imageButton?.scrollIntoView({
@@ -69,7 +77,7 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
       return;
     }
 
-    if (data.imageURL.length < 1) {
+    if (data.imageURL.filter(Boolean).length < 1) {
       enqueueSnackbar(`Elija una imágen antes de continuar`, {
         variant: 'error',
       });
@@ -82,13 +90,13 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
       internalId: getLatestInternalId(productList) + 1,
     }).then(() => {
       reset();
-      onClose();
+      navigate(ROUTES[4].path);
     });
   };
 
   const handleCancel = () => {
     reset();
-    onClose();
+    navigate(ROUTES[4].path);
   };
 
   const fillFakeData = () => {

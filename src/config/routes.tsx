@@ -4,9 +4,11 @@ import {
   AutoFixHigh,
   FormatListNumbered,
   LocalOffer,
+  PlusOne,
 } from '@mui/icons-material';
 
 import {
+  AddEditProduct,
   BrandManager,
   CategoryManager,
   Login,
@@ -55,6 +57,14 @@ export const ROUTES = [
     icon: <FormatListNumbered />,
     path: '/products',
     element: <ProductList />,
+  },
+  {
+    id: 8,
+    title: 'Agregar Producto',
+    description: '',
+    icon: <PlusOne />,
+    path: '/add',
+    element: <AddEditProduct />,
   },
   {
     id: 4,

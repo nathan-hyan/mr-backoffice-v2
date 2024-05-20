@@ -28,7 +28,7 @@ function NavigationBar() {
     <>
       <SideDrawer drawer={drawer} handleDrawer={handleDrawer} />
       <AppBar
-        position='static'
+        position='fixed'
         sx={{
           mb: 3,
         }}

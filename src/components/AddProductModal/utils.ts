@@ -48,7 +48,7 @@ export function fabricateFakeData(): {
       field: 'prices.cost.value',
       value: Number(faker.commerce.price({ min: 5, max: 300 })),
     },
-    { field: 'brand', value: faker.commerce.product() },
+    { field: 'brand', value: 'number' },
     { field: 'businessOwner', value: faker.person.fullName() },
     { field: 'storePosition', value: faker.location.countryCode() },
     { field: 'weight', value: faker.number.int({ min: 2, max: 10 }) },

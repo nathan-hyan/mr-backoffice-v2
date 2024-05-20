@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import {
   Control,
@@ -54,17 +53,18 @@ function CustomInput<T extends FieldValues>({
   const numberFieldRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const numberRef = numberFieldRef.current;
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
     };
 
     if (type === InputType.Number) {
-      numberFieldRef.current?.addEventListener('wheel', handleWheel);
+      numberRef?.addEventListener('wheel', handleWheel);
     }
 
     return () => {
       if (type === InputType.Number) {
-        numberFieldRef.current?.removeEventListener('wheel', handleWheel);
+        numberRef?.removeEventListener('wheel', handleWheel);
       }
     };
   }, [type]);
