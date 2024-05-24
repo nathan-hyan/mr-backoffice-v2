@@ -34,6 +34,7 @@ import {
   translatePrices,
   translateStock,
 } from './ProductDetail.utils';
+import { styles } from './ProductDetails.styles';
 
 interface Props {
   data: Product;
@@ -55,16 +56,18 @@ function ProductDetail({ data, category, subCategory }: Props) {
     });
   };
 
+  const stockInfo = objectIterator(data.stock).filter(
+    ({ key }) => key !== 'noPhysicalStock'
+  );
+
+  const hasUserFeedback = data.userFeedback && data.userFeedback.length > 0;
+  const comentariosText =
+    data.userFeedback.length > 1 ? 'comentarios' : 'comentario';
+  const hasPhysicalStock = !data.stock.noPhysicalStock;
+  const hasProviderProductCode = data.providerProductCode.length > 0;
+
   return (
-    <Box
-      sx={{
-        margin: 1,
-        display: 'flex',
-        gap: 3,
-        alignItems: 'flex-start',
-        justifyItems: 'flex-start',
-      }}
-    >
+    <Box sx={styles.container}>
       <Box sx={{ width: '25%' }}>
         <ImageList cols={2} sx={{ height: 300 }}>
           {data.imageURL.map((image) => (
@@ -73,6 +76,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
             </ImageListItem>
           ))}
         </ImageList>
+
         <FormGroup>
           <FormControlLabel
             control={
@@ -85,19 +89,13 @@ function ProductDetail({ data, category, subCategory }: Props) {
             label='Mostrar en tienda'
           />
         </FormGroup>
+
         <Divider sx={{ my: 3 }} />
-        {data.userFeedback && data.userFeedback.length > 0 ? (
+        {hasUserFeedback ? (
           <>
             <Box>
               <Typography component='legend'>Rating de los clientes</Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                  gap: 1,
-                }}
-              >
+              <Box sx={styles.ratingBox}>
                 <Rating
                   name='simple-controlled'
                   value={getAverageRating(data.userFeedback)}
@@ -106,23 +104,14 @@ function ProductDetail({ data, category, subCategory }: Props) {
                 />
                 <Typography variant='caption' m={0} p={0}>
                   ({getAverageRating(data.userFeedback)},{' '}
-                  {data.userFeedback.length}{' '}
-                  {data.userFeedback.length > 1 ? 'comentarios' : 'comentario'})
+                  {data.userFeedback.length} {comentariosText})
                 </Typography>
               </Box>
             </Box>
+
             <Divider sx={{ my: 3 }} />
-            <Box
-              sx={{
-                display: 'flex',
-                gap: 3,
-                flexDirection: 'column',
-                maxHeight: '15rem',
-                p: 1,
-                mb: 3,
-                overflowY: 'scroll',
-              }}
-            >
+
+            <Box sx={styles.userFeedback}>
               {data.userFeedback.map(({ comment }) => (
                 <Paper sx={{ p: 3 }} elevation={3}>
                   <Typography>{comment}</Typography>
@@ -132,6 +121,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
           </>
         ) : null}
       </Box>
+
       <Box sx={{ width: '75%' }}>
         <Breadcrumbs separator='>'>
           {[
@@ -145,15 +135,8 @@ function ProductDetail({ data, category, subCategory }: Props) {
           {data.description}
         </Typography>
 
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            gap: 3,
-          }}
-        >
-          <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
+        <List sx={styles.descriptionContainer}>
+          <List sx={styles.fullWidthCard}>
             {objectIterator(data.prices).map(({ key, value: { value } }) => (
               <CustomListItem
                 key={key}
@@ -164,18 +147,16 @@ function ProductDetail({ data, category, subCategory }: Props) {
             ))}
           </List>
 
-          <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
-            {!data.stock.noPhysicalStock ? (
-              objectIterator(data.stock)
-                .filter(({ key }) => key !== 'noPhysicalStock')
-                .map(({ key, value }) => (
-                  <CustomListItem
-                    key={key}
-                    width={`calc((100% / ${objectIterator(data.stock).length - 1}) - 24px)`}
-                    title={translateStock(key as keyof Product['stock'])}
-                    value={String(value)}
-                  />
-                ))
+          <List sx={styles.fullWidthCard}>
+            {hasPhysicalStock ? (
+              stockInfo.map(({ key, value }) => (
+                <CustomListItem
+                  key={key}
+                  width={`calc((100% / ${stockInfo.length}) - 24px)`}
+                  title={translateStock(key as keyof Product['stock'])}
+                  value={String(value)}
+                />
+              ))
             ) : (
               <CustomListItem
                 width='calc(100% - 24px)'
@@ -185,7 +166,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
             )}
           </List>
 
-          <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
+          <List sx={styles.fullWidthCard}>
             <CustomListItem
               width='calc(50% - 24px)'
               title='Fecha de creación'
@@ -233,7 +214,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
             </TableContainer>
           ) : null}
 
-          {data.providerProductCode.length > 0 ? (
+          {hasProviderProductCode ? (
             <TableContainer component={Paper}>
               <Table aria-label='simple table' size='small'>
                 <TableHead>
@@ -261,6 +242,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
     </Box>
   );
 }
+
 ProductDetail.defaultProps = {
   category: 'Error',
   subCategory: 'Error',
