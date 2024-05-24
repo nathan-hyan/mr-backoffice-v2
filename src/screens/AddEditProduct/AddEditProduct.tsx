@@ -52,7 +52,7 @@ function AddEditProduct() {
               watch={watch}
               errors={errors}
             />
-            <Stock control={control} errors={errors} />
+            <Stock control={control} errors={errors} watch={watch} />
             <Prices control={control} errors={errors} />
             <Variants control={control} errors={errors} />
             <Specifications control={control} errors={errors} />

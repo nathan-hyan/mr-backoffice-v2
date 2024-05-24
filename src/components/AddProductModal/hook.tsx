@@ -68,6 +68,8 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
   };
 
   const onSubmit = (data: Product) => {
+    let stock = { ...data.stock };
+
     if (productToEdit) {
       updateDocument(productToEdit.id, data, () => {
         reset();
@@ -75,6 +77,15 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
       });
 
       return;
+    }
+
+    if (data.stock.noPhysicalStock) {
+      stock = {
+        current: 0,
+        maxStock: 0,
+        minStock: 0,
+        noPhysicalStock: true,
+      };
     }
 
     if (data.imageURL.filter(Boolean).length < 1) {
@@ -87,6 +98,7 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
 
     addDocument({
       ...data,
+      stock,
       internalId: getLatestInternalId(productList) + 1,
     }).then(() => {
       reset();

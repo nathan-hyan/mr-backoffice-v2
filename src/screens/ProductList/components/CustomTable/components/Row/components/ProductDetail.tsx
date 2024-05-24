@@ -165,14 +165,24 @@ function ProductDetail({ data, category, subCategory }: Props) {
           </List>
 
           <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
-            {objectIterator(data.stock).map(({ key, value }) => (
+            {!data.stock.noPhysicalStock ? (
+              objectIterator(data.stock)
+                .filter(({ key }) => key !== 'noPhysicalStock')
+                .map(({ key, value }) => (
+                  <CustomListItem
+                    key={key}
+                    width={`calc((100% / ${objectIterator(data.stock).length - 1}) - 24px)`}
+                    title={translateStock(key as keyof Product['stock'])}
+                    value={String(value)}
+                  />
+                ))
+            ) : (
               <CustomListItem
-                key={key}
-                width='calc(25% - 24px)'
-                title={translateStock(key as keyof Product['stock'])}
-                value={String(value)}
+                width='calc(100% - 24px)'
+                title='Sin stock físico'
+                value=''
               />
-            ))}
+            )}
           </List>
 
           <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>

@@ -49,6 +49,7 @@ function CustomInput<T extends FieldValues>({
   multiline,
   inputProps,
   variant,
+  ...props
 }: Props<T>) {
   const numberFieldRef = useRef<HTMLInputElement>(null);
 
@@ -86,6 +87,7 @@ function CustomInput<T extends FieldValues>({
       render={({ field }) => (
         <TextField
           {...field}
+          {...props}
           fullWidth
           onChange={(event) =>
             field.onChange(

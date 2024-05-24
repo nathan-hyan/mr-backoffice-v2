@@ -32,6 +32,8 @@ interface Form<T> {
   multiline?: boolean;
   type: InputType;
   disabled?: boolean;
+  min?: number;
+  max?: number;
 }
 
 export const PRODUCT_FORM: Form<keyof Product>[] = [
@@ -54,30 +56,6 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     id: 2,
     label: 'Código de barras',
     name: 'barcode',
-    type: InputType.Number,
-    required: false,
-  },
-];
-
-export const STOCK_FORM: Form<StockInputName>[] = [
-  {
-    id: 0,
-    label: 'Stock actual',
-    name: 'current',
-    type: InputType.Number,
-    required: true,
-  },
-  {
-    id: 1,
-    label: 'Stock mínimo',
-    name: 'minStock',
-    type: InputType.Number,
-    required: false,
-  },
-  {
-    id: 2,
-    label: 'Stock máximo',
-    name: 'maxStock',
     type: InputType.Number,
     required: false,
   },
