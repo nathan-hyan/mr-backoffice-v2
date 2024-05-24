@@ -18,6 +18,12 @@ export type DescriptionInputName = 'title' | 'description';
 
 export type VariantsInputName = 'color' | 'barcode' | 'stock';
 
+export type StockInputName =
+  | 'current'
+  | 'minStock'
+  | 'maxStock'
+  | 'noPhysicalStock';
+
 interface Form<T> {
   id: number;
   label: string;
@@ -45,16 +51,33 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     required: true,
   },
   {
+    id: 2,
+    label: 'Código de barras',
+    name: 'barcode',
+    type: InputType.Number,
+    required: false,
+  },
+];
+
+export const STOCK_FORM: Form<StockInputName>[] = [
+  {
+    id: 0,
+    label: 'Stock actual',
+    name: 'current',
+    type: InputType.Number,
+    required: true,
+  },
+  {
     id: 1,
-    label: 'Stock',
-    name: 'stock',
+    label: 'Stock mínimo',
+    name: 'minStock',
     type: InputType.Number,
     required: false,
   },
   {
     id: 2,
-    label: 'Código de barras',
-    name: 'barcode',
+    label: 'Stock máximo',
+    name: 'maxStock',
     type: InputType.Number,
     required: false,
   },
@@ -227,7 +250,12 @@ export const EMPTY_FORM: Product = {
   variants: [],
   providerProductCode: [],
   name: '',
-  stock: 0,
+  stock: {
+    current: 0,
+    minStock: 0,
+    maxStock: 0,
+    noPhysicalStock: false,
+  },
   barcode: '',
   category: '',
   subCategory: '',

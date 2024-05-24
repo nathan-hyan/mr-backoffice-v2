@@ -1,7 +1,7 @@
-import Dimensions from './Dimensions';
-import KioskInformation from './KioskInformation';
-import Prices from './Prices';
-import Specifications from './Specifications';
-import Variants from './Variants';
+import Dimensions from './Dimensions/Dimensions';
+import KioskInformation from './KioskInformation/KioskInformation';
+import Prices from './Prices/Prices';
+import Specifications from './Specifications/Specifications';
+import Variants from './Variants/Variants';
 
 export { Dimensions, KioskInformation, Prices, Specifications, Variants };

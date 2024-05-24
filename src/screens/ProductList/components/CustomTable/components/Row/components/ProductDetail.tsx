@@ -32,6 +32,7 @@ import {
   getAverageRating,
   prepareDataForDisplay,
   translatePrices,
+  translateStock,
 } from './ProductDetail.utils';
 
 interface Props {
@@ -159,6 +160,17 @@ function ProductDetail({ data, category, subCategory }: Props) {
                 width='calc(25% - 24px)'
                 title={translatePrices(key as keyof Product['prices'])}
                 value={`$${(Number(value) || 0).toFixed(2)}`}
+              />
+            ))}
+          </List>
+
+          <List sx={{ display: 'flex', width: '100%', gap: 3, p: 0 }}>
+            {objectIterator(data.stock).map(({ key, value }) => (
+              <CustomListItem
+                key={key}
+                width='calc(25% - 24px)'
+                title={translateStock(key as keyof Product['stock'])}
+                value={String(value)}
               />
             ))}
           </List>

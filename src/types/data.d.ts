@@ -56,11 +56,20 @@ export interface UserFeedback {
   rating: number;
 }
 
+export interface Stock {
+  current: number;
+  minStock: number;
+  maxStock: number;
+  noPhysicalStock: boolean;
+}
+
 export interface Product {
   id: string;
   name: string;
   description: string;
-  stock: number;
+
+  stock: Stock;
+
   category: string; // Reference to categories.id
   subCategory: string; // Reference to categories.subCategories[n].id
   barcode: string;

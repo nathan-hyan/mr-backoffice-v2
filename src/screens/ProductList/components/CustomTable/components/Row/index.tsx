@@ -93,7 +93,7 @@ function Row(props: Props) {
         )}
 
         <TableRow
-          selected={stock <= 0}
+          selected={stock.current <= stock.minStock && !stock.noPhysicalStock}
           hover
           onClick={handleOnClick(internalId)}
           sx={{
@@ -107,7 +107,7 @@ function Row(props: Props) {
           </TableCell>
           <TableCell>{internalId}</TableCell>
           <TableCell>{name}</TableCell>
-          <TableCell>{stock}</TableCell>
+          <TableCell>{stock.current}</TableCell>
           <TableCell>${(Number(prices.cost.value) || 0).toFixed(2)}</TableCell>
           <TableCell>${(Number(prices.cash.value) || 0).toFixed(2)}</TableCell>
           <TableCell>${(Number(prices.list.value) || 0).toFixed(2)}</TableCell>

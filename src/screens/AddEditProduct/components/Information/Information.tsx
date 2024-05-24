@@ -1,20 +1,18 @@
-import { useEffect } from 'react';
 import {
   Control,
   FieldErrors,
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import { Box, Divider, Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
 import { PRODUCT_FORM } from '~components/AddProductModal/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import CustomSelect from '~components/CustomSelect';
 import { useProducts } from '~contexts/Products';
-import useFileUpload from '~hooks/useFileUpload';
 
-import { ImageDisplay, ImageUploader } from './components';
+import ImageSelection from './components/ImageSelection/ImageSelection';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -24,37 +22,22 @@ interface Props {
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { handleFileUpload, isUploading, uploadProgress, imageURL } =
-    useFileUpload(watch);
-
   const { categories, getSubcategories } = useProducts();
   const subCategories = getSubcategories(watch('category'));
   const images = watch('imageURL').filter(Boolean);
-
-  useEffect(() => {
-    if (imageURL.length) {
-      setValue('imageURL', imageURL);
-    }
-  }, [imageURL, setValue]);
 
   return (
     <>
       <Typography sx={{ mt: 5 }} fontWeight='bold'>
         Información
       </Typography>
+
       <Divider sx={{ my: 2 }} />
+
       {PRODUCT_FORM.map((item) => (
-        <CustomInput
-          key={item.id}
-          name={item.name}
-          control={control}
-          multiline={item.multiline}
-          label={item.label}
-          type={item.type}
-          disabled={item.disabled}
-          required={item.required}
-        />
+        <CustomInput key={item.id} control={control} {...item} />
       ))}
+
       <CustomSelect
         data={categories.map(({ id, name }) => ({
           value: id || '',
@@ -67,6 +50,7 @@ function Information({ control, watch, errors, setValue }: Props) {
         error={errors.category}
         required
       />
+
       <CustomSelect
         data={subCategories.map(({ internalId, name }) => ({
           value: internalId,
@@ -82,14 +66,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
       <Divider sx={{ mt: 3 }} />
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <ImageDisplay data={images} />
-        <ImageUploader
-          isUploading={isUploading}
-          uploadProgress={uploadProgress}
-          handleFileUpload={handleFileUpload}
-        />
-      </Box>
+      <ImageSelection data={images} setValue={setValue} watch={watch} />
     </>
   );
 }
