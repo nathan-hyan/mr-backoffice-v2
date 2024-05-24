@@ -58,10 +58,6 @@ function Row(props: Props) {
       barcode,
     } = props.data;
 
-    const date = prices.cost.lastModified
-      ? prices.cost.lastModified.toDate()
-      : null;
-
     const { translatedCategory: category, translatedSubCategory: subCategory } =
       translateCategories(untranslatedCategory, untranslatedSubCategory);
 
@@ -74,6 +70,10 @@ function Row(props: Props) {
     const toggleModal = () => {
       setShowEditModal((prevState) => !prevState);
     };
+
+    const date = prices.cost.lastModified
+      ? prices.cost.lastModified.toDate()
+      : null;
 
     return (
       <>
