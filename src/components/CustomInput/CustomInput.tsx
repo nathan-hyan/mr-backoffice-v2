@@ -30,6 +30,7 @@ interface Props<T> {
   rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
   multiline?: boolean;
   variant?: 'standard' | 'outlined';
+  endAdornment?: React.ReactNode;
   inputProps?:
     | Partial<FilledInputProps>
     | Partial<OutlinedInputProps>
@@ -49,6 +50,7 @@ function CustomInput<T extends FieldValues>({
   multiline,
   inputProps,
   variant,
+  endAdornment,
   ...props
 }: Props<T>) {
   const numberFieldRef = useRef<HTMLInputElement>(null);
@@ -129,6 +131,7 @@ CustomInput.defaultProps = {
   error: undefined,
   defaultValue: undefined,
   inputProps: undefined,
+  endAdornment: undefined,
   variant: 'outlined',
 };
 

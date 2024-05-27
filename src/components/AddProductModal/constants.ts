@@ -52,13 +52,6 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     multiline: true,
     required: true,
   },
-  {
-    id: 2,
-    label: 'Código de barras',
-    name: 'barcode',
-    type: InputType.Number,
-    required: false,
-  },
 ];
 
 export const PRICE_FORM: Form<PriceInputName>[] = [
