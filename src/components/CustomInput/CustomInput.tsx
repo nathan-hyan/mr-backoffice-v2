@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import {
   Control,
   Controller,
@@ -29,6 +30,7 @@ interface Props<T> {
   rules?: RegisterOptions<T & FieldValues, Path<T & FieldValues>>;
   multiline?: boolean;
   variant?: 'standard' | 'outlined';
+  endAdornment?: React.ReactNode;
   inputProps?:
     | Partial<FilledInputProps>
     | Partial<OutlinedInputProps>
@@ -48,7 +50,28 @@ function CustomInput<T extends FieldValues>({
   multiline,
   inputProps,
   variant,
+  endAdornment,
+  ...props
 }: Props<T>) {
+  const numberFieldRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const numberRef = numberFieldRef.current;
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+    };
+
+    if (type === InputType.Number) {
+      numberRef?.addEventListener('wheel', handleWheel);
+    }
+
+    return () => {
+      if (type === InputType.Number) {
+        numberRef?.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [type]);
+
   return (
     <Controller
       control={control}
@@ -66,6 +89,7 @@ function CustomInput<T extends FieldValues>({
       render={({ field }) => (
         <TextField
           {...field}
+          {...props}
           fullWidth
           onChange={(event) =>
             field.onChange(
@@ -91,6 +115,7 @@ function CustomInput<T extends FieldValues>({
           multiline={multiline}
           helperText={error ? error.message : undefined}
           InputProps={{ ...inputProps, disabled }}
+          ref={numberFieldRef}
         />
       )}
     />
@@ -106,6 +131,7 @@ CustomInput.defaultProps = {
   error: undefined,
   defaultValue: undefined,
   inputProps: undefined,
+  endAdornment: undefined,
   variant: 'outlined',
 };
 

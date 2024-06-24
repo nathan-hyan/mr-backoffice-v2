@@ -19,6 +19,25 @@ export const translatePrices = (field: keyof Product['prices']) => {
   }
 };
 
+export const translateStock = (field: keyof Product['stock']) => {
+  switch (field) {
+    case 'minStock':
+      return 'Stock minimo';
+
+    case 'current':
+      return 'Stock actual';
+
+    case 'maxStock':
+      return 'Stock maximo';
+
+    case 'noPhysicalStock':
+      return 'Sin stock fisico';
+
+    default:
+      return `ERROR: ${field}`;
+  }
+};
+
 export const translateFields = (field: keyof Product) => {
   switch (field) {
     case 'barcode':
@@ -77,6 +96,7 @@ export const prepareDataForDisplay = (
   delete copy.id;
   delete copy.showInStore;
   delete copy.userFeedback;
+  delete copy.stock;
 
   Object.keys(copy).forEach((field) => {
     if (field === 'weight') {
@@ -105,6 +125,15 @@ export const prepareDataForDisplay = (
 
       return;
     }
+
+    // if (field === 'stock') {
+    //   result.push({
+    //     title: translateFields('stock'),
+    //     value: `Disponible: ${copy.stock?.current}, Minimo: ${copy.stock?.minStock}, Maximo: ${copy.stock?.maxStock}, Sin stock fisico: ${copy.stock?.noPhysicalStock ? 'Si' : 'No'}`,
+    //   });
+
+    //   return;
+    // }
 
     result.push({
       title: translateFields(field as keyof Product),

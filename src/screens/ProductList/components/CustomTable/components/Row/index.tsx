@@ -58,10 +58,6 @@ function Row(props: Props) {
       barcode,
     } = props.data;
 
-    const date = prices.cost.lastModified
-      ? prices.cost.lastModified.toDate()
-      : null;
-
     const { translatedCategory: category, translatedSubCategory: subCategory } =
       translateCategories(untranslatedCategory, untranslatedSubCategory);
 
@@ -74,6 +70,10 @@ function Row(props: Props) {
     const toggleModal = () => {
       setShowEditModal((prevState) => !prevState);
     };
+
+    const date = prices.cost.lastModified
+      ? prices.cost.lastModified.toDate()
+      : null;
 
     return (
       <>
@@ -93,7 +93,7 @@ function Row(props: Props) {
         )}
 
         <TableRow
-          selected={stock <= 0}
+          selected={stock.current <= stock.minStock && !stock.noPhysicalStock}
           hover
           onClick={handleOnClick(internalId)}
           sx={{
@@ -107,7 +107,7 @@ function Row(props: Props) {
           </TableCell>
           <TableCell>{internalId}</TableCell>
           <TableCell>{name}</TableCell>
-          <TableCell>{stock}</TableCell>
+          <TableCell>{stock.current}</TableCell>
           <TableCell>${(Number(prices.cost.value) || 0).toFixed(2)}</TableCell>
           <TableCell>${(Number(prices.cash.value) || 0).toFixed(2)}</TableCell>
           <TableCell>${(Number(prices.list.value) || 0).toFixed(2)}</TableCell>

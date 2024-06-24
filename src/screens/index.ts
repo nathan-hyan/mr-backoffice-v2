@@ -1,3 +1,4 @@
+import AddEditProduct from './AddEditProduct/AddEditProduct';
 import BrandManager from './BrandManager/BrandManager';
 import CategoryManager from './CategoryManager/CategoryManager';
 import Login from './Login/Login';
@@ -16,4 +17,5 @@ export {
   ProductList,
   UserInfo,
   PriceTagGenerator,
+  AddEditProduct,
 };

@@ -18,6 +18,12 @@ export type DescriptionInputName = 'title' | 'description';
 
 export type VariantsInputName = 'color' | 'barcode' | 'stock';
 
+export type StockInputName =
+  | 'current'
+  | 'minStock'
+  | 'maxStock'
+  | 'noPhysicalStock';
+
 interface Form<T> {
   id: number;
   label: string;
@@ -26,6 +32,8 @@ interface Form<T> {
   multiline?: boolean;
   type: InputType;
   disabled?: boolean;
+  min?: number;
+  max?: number;
 }
 
 export const PRODUCT_FORM: Form<keyof Product>[] = [
@@ -43,20 +51,6 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
     type: InputType.Text,
     multiline: true,
     required: true,
-  },
-  {
-    id: 1,
-    label: 'Stock',
-    name: 'stock',
-    type: InputType.Number,
-    required: false,
-  },
-  {
-    id: 2,
-    label: 'Código de barras',
-    name: 'barcode',
-    type: InputType.Number,
-    required: false,
   },
 ];
 
@@ -227,7 +221,12 @@ export const EMPTY_FORM: Product = {
   variants: [],
   providerProductCode: [],
   name: '',
-  stock: 0,
+  stock: {
+    current: 0,
+    minStock: 0,
+    maxStock: 0,
+    noPhysicalStock: false,
+  },
   barcode: '',
   category: '',
   subCategory: '',
