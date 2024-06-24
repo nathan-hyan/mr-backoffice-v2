@@ -12,7 +12,7 @@ export default defineConfig({
     setupFiles: ['./src/setupTest.ts'],
     css: true,
     coverage: {
-      reporter: ['json-summary'],
+      reporter: ['json-summary', 'json'],
       enabled: true,
       skipFull: false,
       provider: 'v8',
