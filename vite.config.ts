@@ -11,6 +11,12 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['./src/setupTest.ts'],
     css: true,
+    coverage: {
+      reporter: ['json-summary'],
+      enabled: true,
+      skipFull: false,
+      provider: 'v8',
+    },
   },
   resolve: {
     alias: [
