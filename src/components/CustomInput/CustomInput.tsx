@@ -39,18 +39,17 @@ interface Props<T> {
 
 function CustomInput<T extends FieldValues>({
   name,
-  control,
-  defaultValue,
-  disabled,
-  required,
+  control = undefined,
+  defaultValue = undefined,
+  disabled = false,
+  required = false,
   type,
   label,
-  error,
-  rules,
-  multiline,
-  inputProps,
-  variant,
-  endAdornment,
+  error = undefined,
+  rules = {},
+  multiline = false,
+  inputProps = undefined,
+  variant = 'outlined',
   ...props
 }: Props<T>) {
   const numberFieldRef = useRef<HTMLInputElement>(null);
@@ -90,7 +89,6 @@ function CustomInput<T extends FieldValues>({
         <TextField
           {...field}
           {...props}
-          fullWidth
           onChange={(event) =>
             field.onChange(
               type === 'number' ? parseOnlyNumbers(event) : event.target.value
@@ -98,13 +96,7 @@ function CustomInput<T extends FieldValues>({
           }
           onFocus={type === 'number' ? (e) => e.target.select() : undefined}
           value={type === 'number' ? field.value?.toString() : field.value}
-          onKeyDown={(event) => {
-            return (
-              type === 'number' &&
-              (event.code === 'KeyE' || event.code === 'Period') &&
-              event.preventDefault()
-            );
-          }}
+          fullWidth
           id='standard-basic'
           label={label}
           variant={variant}
@@ -121,18 +113,5 @@ function CustomInput<T extends FieldValues>({
     />
   );
 }
-
-CustomInput.defaultProps = {
-  control: undefined,
-  required: false,
-  disabled: false,
-  rules: {},
-  multiline: false,
-  error: undefined,
-  defaultValue: undefined,
-  inputProps: undefined,
-  endAdornment: undefined,
-  variant: 'outlined',
-};
 
 export default CustomInput;
