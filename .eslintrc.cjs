@@ -63,7 +63,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json', 'release.config.js'],
+    project: ['./tsconfig.json', 'release.config.js', './vite.config.ts'],
   },
   plugins: [
     '@typescript-eslint',
