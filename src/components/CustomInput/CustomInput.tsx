@@ -89,7 +89,7 @@ function CustomInput<T extends FieldValues>({
         <TextField
           {...field}
           {...props}
-          onChange={(event) =>
+          onBlur={(event) =>
             field.onChange(
               type === 'number' ? parseOnlyNumbers(event) : event.target.value
             )
