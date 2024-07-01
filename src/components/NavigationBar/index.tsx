@@ -27,12 +27,7 @@ function NavigationBar() {
   return (
     <>
       <SideDrawer drawer={drawer} handleDrawer={handleDrawer} />
-      <AppBar
-        position='fixed'
-        sx={{
-          mb: 3,
-        }}
-      >
+      <AppBar position='fixed'>
         <Toolbar
           sx={{
             display: 'flex',

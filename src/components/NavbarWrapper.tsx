@@ -42,6 +42,7 @@ function NavbarWrapper() {
           display: 'flex',
           gap: 3,
           flexDirection: 'column',
+          mt: 12,
         }}
       >
         <Outlet />

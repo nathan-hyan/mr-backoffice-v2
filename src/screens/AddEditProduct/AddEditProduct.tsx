@@ -33,7 +33,7 @@ function AddEditProduct() {
 
   return (
     <>
-      <Container sx={{ mt: 10 }}>
+      <Container>
         {import.meta.env.VITE_LOCAL_ENV && (
           <Button onClick={fillFakeData}>Fill with fake data</Button>
         )}

@@ -1,20 +1,28 @@
 import {
   Control,
+  Controller,
   FieldErrors,
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
 import CachedIcon from '@mui/icons-material/Cached';
-import { Divider, IconButton, InputAdornment, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Divider,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Product } from 'types/data';
 
 import { PRODUCT_FORM } from '~components/AddProductModal/constants';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
-import CustomSelect from '~components/CustomSelect';
 import { useProducts } from '~contexts/Products';
 
 import ImageSelection from './components/ImageSelection/ImageSelection';
+import { generateBarcode } from './utils';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -29,7 +37,7 @@ function Information({ control, watch, errors, setValue }: Props) {
   const images = watch('imageURL').filter(Boolean);
 
   const handleGenerateBarcode = () => {
-    const barcode = Math.floor(Math.random() * 1000000000000).toString();
+    const barcode = generateBarcode();
     setValue('barcode', barcode);
   };
 
@@ -65,7 +73,87 @@ function Information({ control, watch, errors, setValue }: Props) {
         }}
       />
 
-      <CustomSelect
+      <Controller
+        control={control}
+        name='category'
+        rules={{
+          required: {
+            value: true,
+            message: 'Este campo es requerido',
+          },
+        }}
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            onChange={(_, value) => {
+              field.onChange(value?.value);
+            }}
+            value={{
+              value: field.value,
+              label:
+                categories.find(({ id }) => id === field.value)?.name || '',
+            }}
+            disablePortal
+            id='combo-box-demo'
+            options={categories.map(({ id, name }) => ({
+              value: id || '',
+              label: name,
+            }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required
+                label='Categoría'
+                error={Boolean(errors.category)}
+                helperText={errors.category?.message}
+              />
+            )}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name='subCategory'
+        rules={{
+          required: {
+            value: true,
+            message: 'Este campo es requerido',
+          },
+        }}
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            onChange={(_, value) => {
+              field.onChange(value?.value);
+            }}
+            value={{
+              value: Number(field.value),
+              label:
+                subCategories.find(
+                  ({ internalId }) => internalId === Number(field.value)
+                )?.name || '',
+            }}
+            disablePortal
+            id='combo-box-demo'
+            options={subCategories.map(({ internalId, name }) => ({
+              value: internalId,
+              label: name,
+            }))}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required
+                label='Sub Categoría'
+                error={Boolean(errors.subCategory)}
+                helperText={errors.subCategory?.message}
+              />
+            )}
+          />
+        )}
+      />
+
+      {/* <CustomSelect
         data={categories.map(({ id, name }) => ({
           value: id || '',
           optionName: name,
@@ -89,7 +177,7 @@ function Information({ control, watch, errors, setValue }: Props) {
         defaultValue=''
         error={errors.subCategory}
         required
-      />
+      /> */}
 
       <Divider sx={{ mt: 3 }} />
 
