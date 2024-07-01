@@ -37,7 +37,7 @@ function KioskInformation({ control, errors }: Props) {
         }}
         fontWeight='bold'
       >
-        Información del local
+        Proveedores
         <Button
           onClick={() =>
             providerProductCodeAppend(PROVIDER_PRODUCT_CODE_FORM_EMPTY)

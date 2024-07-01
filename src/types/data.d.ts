@@ -74,7 +74,7 @@ export interface Product {
   subCategory: string; // Reference to categories.subCategories[n].id
   barcode: string;
   brand: string;
-  businessOwner: string;
+  stockOwner: string;
   dimensions?: Dimensions;
   weight: number;
   storePosition: string;

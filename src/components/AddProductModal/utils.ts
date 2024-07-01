@@ -52,7 +52,7 @@ export function fabricateFakeData(): {
       value: Number(faker.commerce.price({ min: 5, max: 300 })),
     },
     { field: 'brand', value: 'a2Cz7QoQVq1dVrKIpUm6' },
-    { field: 'businessOwner', value: faker.person.fullName() },
+    { field: 'stockOwner', value: faker.person.fullName() },
     { field: 'storePosition', value: faker.location.countryCode() },
     { field: 'weight', value: faker.number.int({ min: 2, max: 10 }) },
     {

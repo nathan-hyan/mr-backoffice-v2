@@ -7,7 +7,7 @@ export type PriceInputName = 'cost' | 'list' | 'web' | 'cash';
 
 export type LocalFormInputName =
   | 'brand'
-  | 'businessOwner'
+  | 'stockOwner'
   | 'weight'
   | 'storeBranch'
   | 'storePosition';
@@ -95,8 +95,8 @@ export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
   // },
   {
     id: 2,
-    label: 'Dueño de negocio',
-    name: 'businessOwner',
+    label: 'Dueño de stock',
+    name: 'stockOwner',
     type: InputType.Text,
     required: true,
   },
@@ -237,7 +237,7 @@ export const EMPTY_FORM: Product = {
     cash: { value: 0 },
   },
   brand: '',
-  businessOwner: '',
+  stockOwner: '',
   storePosition: '',
   weight: 0,
   dimensions: {

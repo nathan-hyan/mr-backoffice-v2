@@ -46,8 +46,8 @@ export const translateFields = (field: keyof Product) => {
     case 'brand':
       return 'Marca';
 
-    case 'businessOwner':
-      return 'Dueño de negocio';
+    case 'stockOwner':
+      return 'Dueño de stock';
 
     case 'internalId':
       return 'ID Interno';
