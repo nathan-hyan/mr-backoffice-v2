@@ -2,8 +2,8 @@ import { Control, FieldErrors } from 'react-hook-form';
 import { Divider, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
-import { PRICE_FORM } from '~components/AddProductModal/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
+import { PRICE_FORM } from '~screens/AddEditProduct/constants';
 
 interface Props {
   control: Control<Product, unknown>;

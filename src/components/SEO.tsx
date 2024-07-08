@@ -7,7 +7,12 @@ interface Props {
   type?: string;
 }
 
-export default function SEO({ title, description, name, type }: Props) {
+export default function SEO({
+  title,
+  description,
+  name = 'Mundo Regalo',
+  type = 'applet',
+}: Props) {
   return (
     <Helmet>
       <title>{`StockOS // ${title}`}</title>
@@ -22,8 +27,3 @@ export default function SEO({ title, description, name, type }: Props) {
     </Helmet>
   );
 }
-
-SEO.defaultProps = {
-  name: 'Mundo Regalo',
-  type: 'applet',
-};

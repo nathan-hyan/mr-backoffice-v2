@@ -15,12 +15,10 @@ import { EMPTY_FORM } from './constants';
 import { fabricateFakeData } from './utils';
 
 interface Props {
-  show: boolean;
-  onClose: () => void;
-  productToEdit?: Nullable<Product>;
+  productIdToEdit?: Nullable<string>;
 }
 
-function useProductModal({ show, onClose, productToEdit }: Props) {
+function useProductModal({ productIdToEdit }: Props) {
   const navigate = useNavigate();
   const { productList } = useProducts();
   const { handleSubmit, control, watch, reset, formState, setValue } =
@@ -70,10 +68,10 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
   const onSubmit = (data: Product) => {
     let stock = { ...data.stock };
 
-    if (productToEdit) {
-      updateDocument(productToEdit.id, data, () => {
+    if (productIdToEdit) {
+      updateDocument(productIdToEdit, data, () => {
         reset();
-        onClose();
+        navigate(ROUTES[4].path);
       });
 
       return;
@@ -118,14 +116,29 @@ function useProductModal({ show, onClose, productToEdit }: Props) {
   };
 
   useEffect(() => {
-    if (productToEdit) {
+    if (productIdToEdit) {
+      const productToEdit = productList.find(
+        (product) => product.id === productIdToEdit
+      );
+
+      if (!productToEdit) {
+        enqueueSnackbar(
+          `No se encontró el producto con id ${productIdToEdit}`,
+          {
+            variant: 'error',
+          }
+        );
+
+        return;
+      }
+
       const keys = Object.keys(productToEdit) as (keyof Product)[];
 
       keys.forEach((field) => {
         setValue(field, productToEdit[field]);
       });
     }
-  }, [productList, productToEdit, setValue, show]);
+  }, [productList, productIdToEdit, setValue]);
 
   return {
     fillFakeData,

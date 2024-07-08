@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DeleteOutline, Edit } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -15,7 +16,6 @@ import {
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import AddProductModal from '~components/AddProductModal';
 import CustomMenu from '~components/CustomMenu';
 import DeleteAlert from '~components/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
@@ -36,9 +36,8 @@ function Row(props: Props) {
 
   const [markedForDeletion, setMarkedForDeletion] =
     useState<Nullable<Product>>(null);
-  const [showEditModal, setShowEditModal] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
   const { removeDocument } = useFirestore(FirestoreCollections.Products);
   const { translateCategories } = useCategoryTranslator();
 
@@ -67,10 +66,6 @@ function Row(props: Props) {
       });
     };
 
-    const toggleModal = () => {
-      setShowEditModal((prevState) => !prevState);
-    };
-
     const date = prices.cost.lastModified
       ? prices.cost.lastModified.toDate()
       : null;
@@ -83,14 +78,6 @@ function Row(props: Props) {
           onDelete={deleteProduct}
           stringToMatch={markedForDeletion ? name : ''}
         />
-
-        {showEditModal && (
-          <AddProductModal
-            show={showEditModal}
-            productToEdit={props.data}
-            onClose={toggleModal}
-          />
-        )}
 
         <TableRow
           selected={stock.current <= stock.minStock && !stock.noPhysicalStock}
@@ -119,7 +106,11 @@ function Row(props: Props) {
           <TableCell>{date ? date.toLocaleDateString('es-ES') : '-'}</TableCell>
           <TableCell>
             <CustomMenu>
-              <MenuItem onClick={toggleModal}>
+              <MenuItem
+                onClick={() => {
+                  navigate(`/edit/${id}`);
+                }}
+              >
                 <ListItemIcon>
                   <Edit />
                 </ListItemIcon>
@@ -171,22 +162,5 @@ function Row(props: Props) {
     );
   }
 }
-
-Row.defaultProps = {
-  data: {
-    internalId: 'ID',
-    name: 'Nombre',
-    stock: 'Stock',
-    prices: {
-      cost: { value: 'Costo', lastModified: 'Ult. Mod. Precio Costo' },
-      cash: { value: 'Contado' },
-      list: { value: 'Lista' },
-      web: { value: 'Web' },
-    },
-    category: 'Categoria',
-    subCategory: 'Subcategoria',
-    barcode: 'Codigo de barras',
-  },
-};
 
 export default Row;

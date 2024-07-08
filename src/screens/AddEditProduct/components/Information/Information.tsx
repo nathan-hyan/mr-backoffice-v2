@@ -16,10 +16,10 @@ import {
 } from '@mui/material';
 import { Product } from 'types/data';
 
-import { PRODUCT_FORM } from '~components/AddProductModal/constants';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import { useProducts } from '~contexts/Products';
+import { PRODUCT_FORM } from '~screens/AddEditProduct/constants';
 
 import ImageSelection from './components/ImageSelection/ImageSelection';
 import { generateBarcode } from './utils';
@@ -95,10 +95,16 @@ function Information({ control, watch, errors, setValue }: Props) {
             }}
             disablePortal
             id='combo-box-demo'
-            options={categories.map(({ id, name }) => ({
-              value: id || '',
-              label: name,
-            }))}
+            options={[
+              { value: '', label: '' },
+              ...categories.map(({ id, name }) => ({
+                value: id || 0,
+                label: name || '',
+              })),
+            ]}
+            isOptionEqualToValue={(opt, value) => {
+              return JSON.stringify(opt) === JSON.stringify(value);
+            }}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -127,6 +133,9 @@ function Information({ control, watch, errors, setValue }: Props) {
             onChange={(_, value) => {
               field.onChange(value?.value);
             }}
+            isOptionEqualToValue={(opt, value) => {
+              return JSON.stringify(opt) === JSON.stringify(value);
+            }}
             value={{
               value: Number(field.value),
               label:
@@ -136,10 +145,16 @@ function Information({ control, watch, errors, setValue }: Props) {
             }}
             disablePortal
             id='combo-box-demo'
-            options={subCategories.map(({ internalId, name }) => ({
-              value: internalId,
-              label: name,
-            }))}
+            options={[
+              {
+                value: 0,
+                label: '',
+              },
+              ...subCategories.map(({ internalId, name }) => ({
+                value: internalId || 0,
+                label: name || '',
+              })),
+            ]}
             renderInput={(params) => (
               <TextField
                 {...params}

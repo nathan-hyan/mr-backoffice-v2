@@ -3,14 +3,14 @@ import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
-import {
-  LOCAL_INFO_FORM,
-  PROVIDER_PRODUCT_CODE_FORM_EMPTY,
-} from '~components/AddProductModal/constants';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import CustomSelect from '~components/CustomSelect';
 import { useProducts } from '~contexts/Products';
+import {
+  LOCAL_INFO_FORM,
+  PROVIDER_PRODUCT_CODE_FORM_EMPTY,
+} from '~screens/AddEditProduct/constants';
 
 interface Props {
   control: Control<Product, unknown>;

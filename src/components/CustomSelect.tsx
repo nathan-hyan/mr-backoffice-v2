@@ -36,17 +36,17 @@ interface Props<T> {
 
 function CustomSelect<T extends FieldValues>({
   name,
-  control,
-  defaultValue,
-  required,
+  control = undefined,
+  defaultValue = undefined,
+  required = false,
   label,
-  disabled,
-  error,
-  rules,
-  variant,
+  disabled = false,
+  error = undefined,
+  rules = {},
+  variant = 'outlined',
   data,
-  sx,
-  onChange,
+  sx = undefined,
+  onChange = undefined,
 }: Props<T>) {
   return (
     <Controller
@@ -89,18 +89,5 @@ function CustomSelect<T extends FieldValues>({
     />
   );
 }
-
-CustomSelect.defaultProps = {
-  control: undefined,
-  required: false,
-  rules: {},
-  error: undefined,
-  defaultValue: undefined,
-  variant: 'outlined',
-  value: undefined,
-  onChange: undefined,
-  disabled: false,
-  sx: undefined,
-};
 
 export default CustomSelect;

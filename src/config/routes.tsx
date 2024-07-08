@@ -2,6 +2,7 @@ import {
   AllInbox,
   AttachMoney,
   AutoFixHigh,
+  Edit,
   FormatListNumbered,
   LocalOffer,
   PlusOne,
@@ -32,7 +33,7 @@ export const ROUTES = [
   {
     id: 99,
     title: 'Playground',
-    description: 'Youre not supposed to be here',
+    description: "You're not supposed to be here",
     path: '/playground',
     element: <Playground />,
   },
@@ -65,6 +66,14 @@ export const ROUTES = [
     icon: <PlusOne />,
     path: '/add',
     element: <AddEditProduct />,
+  },
+  {
+    id: 9,
+    title: 'Editar Producto',
+    description: '',
+    icon: <Edit />,
+    path: '/edit/:id',
+    element: <AddEditProduct editMode />,
   },
   {
     id: 4,

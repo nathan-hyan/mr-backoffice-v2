@@ -3,9 +3,9 @@ import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
-import { SPECIFICATIONS_FORM_EMPTY } from '~components/AddProductModal/constants';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
+import { SPECIFICATIONS_FORM_EMPTY } from '~screens/AddEditProduct/constants';
 
 interface Props {
   control: Control<Product, unknown>;
