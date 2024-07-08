@@ -42,7 +42,11 @@ interface Props {
   subCategory?: string;
 }
 
-function ProductDetail({ data, category, subCategory }: Props) {
+function ProductDetail({
+  data,
+  category = 'Error',
+  subCategory = 'Error',
+}: Props) {
   const { translateBrand } = useBrandTranslator();
   const { updateDocument, updateLoading } = useFirestore<Product>(
     FirestoreCollections.Products
@@ -113,7 +117,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
 
             <Box sx={styles.userFeedback}>
               {data.userFeedback.map(({ comment }) => (
-                <Paper sx={{ p: 3 }} elevation={3}>
+                <Paper key={comment + new Date()} sx={{ p: 3 }} elevation={3}>
                   <Typography>{comment}</Typography>
                 </Paper>
               ))}
@@ -139,7 +143,7 @@ function ProductDetail({ data, category, subCategory }: Props) {
           <List sx={styles.fullWidthCard}>
             {objectIterator(data.prices).map(({ key, value: { value } }) => (
               <CustomListItem
-                key={key}
+                key={value + key}
                 width='calc(25% - 24px)'
                 title={translatePrices(key as keyof Product['prices'])}
                 value={`$${(Number(value) || 0).toFixed(2)}`}
@@ -242,10 +246,5 @@ function ProductDetail({ data, category, subCategory }: Props) {
     </Box>
   );
 }
-
-ProductDetail.defaultProps = {
-  category: 'Error',
-  subCategory: 'Error',
-};
 
 export default ProductDetail;

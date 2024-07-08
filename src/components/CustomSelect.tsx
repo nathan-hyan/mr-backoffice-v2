@@ -53,7 +53,13 @@ function CustomSelect<T extends FieldValues>({
       name={name}
       control={control}
       defaultValue={defaultValue}
-      rules={{ ...rules }}
+      rules={{
+        required: {
+          value: Boolean(required),
+          message: 'Este campo es obligatorio',
+        },
+        ...rules,
+      }}
       disabled={disabled}
       render={({ field }) => (
         <FormControl

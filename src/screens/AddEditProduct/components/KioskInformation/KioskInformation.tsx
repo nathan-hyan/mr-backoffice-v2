@@ -113,6 +113,25 @@ function KioskInformation({ control, errors }: Props) {
           value: id || '',
         }))}
       />
+
+      <CustomSelect
+        name='stockOwner'
+        required
+        control={control}
+        error={errors.stockOwner}
+        label='Dueño de stock'
+        data={[
+          {
+            optionName: 'Mundo Regalo',
+            value: 'Mundo Regalo',
+          },
+          {
+            optionName: 'mr Tienda',
+            value: 'mr Tienda',
+          },
+        ]}
+      />
+
       {LOCAL_INFO_FORM.map((item) => (
         <CustomInput
           key={item.id}

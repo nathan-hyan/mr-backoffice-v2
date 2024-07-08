@@ -6,16 +6,12 @@ interface Props {
   width?: string;
 }
 
-function CustomListItem({ title, value, width }: Props) {
+function CustomListItem({ title, value, width = undefined }: Props) {
   return (
     <ListItem sx={{ bgcolor: 'background.paper', width }}>
       <ListItemText primary={title} secondary={value} />
     </ListItem>
   );
 }
-
-CustomListItem.defaultProps = {
-  width: undefined,
-};
 
 export default CustomListItem;

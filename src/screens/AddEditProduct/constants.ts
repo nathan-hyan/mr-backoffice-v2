@@ -93,13 +93,6 @@ export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
   //     type: InputType.Text,
   //     required: true,
   // },
-  {
-    id: 2,
-    label: 'Dueño de stock',
-    name: 'stockOwner',
-    type: InputType.Text,
-    required: true,
-  },
   // {
   //     id: 4,
   //     label: 'Sucursal',

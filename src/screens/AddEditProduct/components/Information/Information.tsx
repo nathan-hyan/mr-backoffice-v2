@@ -50,7 +50,12 @@ function Information({ control, watch, errors, setValue }: Props) {
       <Divider sx={{ my: 2 }} />
 
       {PRODUCT_FORM.map((item) => (
-        <CustomInput key={item.id} control={control} {...item} />
+        <CustomInput
+          key={item.id}
+          control={control}
+          error={errors[item.name]}
+          {...item}
+        />
       ))}
 
       <CustomInput
