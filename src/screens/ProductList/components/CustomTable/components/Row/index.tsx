@@ -21,6 +21,7 @@ import DeleteAlert from '~components/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
 import useCategoryTranslator from '~hooks/useCategoryTranslator';
 import useFirestore from '~hooks/useFirestore';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import ProductDetail from './components/ProductDetail';
 
@@ -96,9 +97,30 @@ function Row(props: Props) {
           <TableCell>{name}</TableCell>
           <TableCell>{stock.current}</TableCell>
           <TableCell>${(Number(prices.cost.value) || 0).toFixed(2)}</TableCell>
-          <TableCell>${(Number(prices.cash.value) || 0).toFixed(2)}</TableCell>
-          <TableCell>${(Number(prices.list.value) || 0).toFixed(2)}</TableCell>
-          <TableCell>${(Number(prices.web.value) || 0).toFixed(2)}</TableCell>
+          <TableCell>
+            $
+            {(
+              Number(
+                calculateNumberWithPercentage(
+                  prices.cost?.value,
+                  prices.retail?.value,
+                  'incr'
+                )
+              ) || 0
+            ).toFixed(2)}
+          </TableCell>
+          <TableCell>
+            $
+            {(
+              Number(
+                calculateNumberWithPercentage(
+                  prices.cost?.value,
+                  prices.online?.value,
+                  'incr'
+                )
+              ) || 0
+            ).toFixed(2)}
+          </TableCell>
           <TableCell>
             {category?.name} / {subCategory?.name}
           </TableCell>
@@ -151,8 +173,7 @@ function Row(props: Props) {
         <TableCell>Nombre</TableCell>
         <TableCell>Stock</TableCell>
         <TableCell>Costo</TableCell>
-        <TableCell>Contado</TableCell>
-        <TableCell>Lista</TableCell>
+        <TableCell>Retail</TableCell>
         <TableCell>Web</TableCell>
         <TableCell>Categoria</TableCell>
         <TableCell>Codigo de barras</TableCell>

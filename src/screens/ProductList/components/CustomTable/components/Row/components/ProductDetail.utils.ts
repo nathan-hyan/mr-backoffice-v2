@@ -1,24 +1,5 @@
 import { Product, UserFeedback } from 'types/data';
 
-export const translatePrices = (field: keyof Product['prices']) => {
-  switch (field) {
-    case 'cash':
-      return 'Precio en efectivo';
-
-    case 'cost':
-      return 'Precio de costo';
-
-    case 'list':
-      return 'Precio de lista';
-
-    case 'web':
-      return 'Precio web';
-
-    default:
-      return `ERROR: ${field}`;
-  }
-};
-
 export const translateStock = (field: keyof Product['stock']) => {
   switch (field) {
     case 'minStock':

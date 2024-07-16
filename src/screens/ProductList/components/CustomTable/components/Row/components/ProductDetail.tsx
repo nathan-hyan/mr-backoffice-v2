@@ -5,6 +5,7 @@ import {
   Divider,
   FormControlLabel,
   FormGroup,
+  Grid,
   ImageList,
   ImageListItem,
   List,
@@ -25,13 +26,13 @@ import CustomListItem from '~components/CustomListItem';
 import { FirestoreCollections } from '~constants/firebase';
 import useBrandTranslator from '~hooks/useBrandTranslator';
 import useFirestore from '~hooks/useFirestore';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 import { objectIterator } from '~utils/objectIterator';
 import { timestampTranslator } from '~utils/timestampTranslator';
 
 import {
   getAverageRating,
   prepareDataForDisplay,
-  translatePrices,
   translateStock,
 } from './ProductDetail.utils';
 import { styles } from './ProductDetails.styles';
@@ -140,16 +141,154 @@ function ProductDetail({
         </Typography>
 
         <List sx={styles.descriptionContainer}>
-          <List sx={styles.fullWidthCard}>
-            {objectIterator(data.prices).map(({ key, value: { value } }) => (
-              <CustomListItem
-                key={value + key}
-                width='calc(25% - 24px)'
-                title={translatePrices(key as keyof Product['prices'])}
-                value={`$${(Number(value) || 0).toFixed(2)}`}
-              />
-            ))}
-          </List>
+          <Grid container sx={styles.fullWidthCard}>
+            <Grid
+              item
+              xs={12}
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>Precio Costo</Typography>
+              <Typography variant='body2' color='lightgray'>
+                ${data.prices.cost.value}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Retail ({data.prices.retail?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.retail?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Online ({data.prices.online?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.online?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Mayorista 1 ({data.prices.mayo1?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.mayo1?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Mayorista 2 ({data.prices.mayo2?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.mayo2?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Mayorista 3 ({data.prices.mayo3?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.mayo3?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Mayorista 4 ({data.prices.mayo4?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.mayo4?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                bgcolor: 'background.paper',
+                p: 2,
+              }}
+            >
+              <Typography variant='body1'>
+                Precio Revendedor ({data.prices.reseller?.value || 0}%)
+              </Typography>
+              <Typography variant='body2' color='lightgray'>
+                $
+                {calculateNumberWithPercentage(
+                  data.prices.cost?.value,
+                  data.prices.reseller?.value || 0,
+                  'incr'
+                ).toFixed(2)}
+              </Typography>
+            </Grid>
+          </Grid>
 
           <List sx={styles.fullWidthCard}>
             {hasPhysicalStock ? (

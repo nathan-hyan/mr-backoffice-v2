@@ -10,12 +10,25 @@ interface Price {
   value: number;
   lastModified?: Timestamp;
 }
+/*
+ | 'retail'
+  | 'online'
+  | 'mayo1'
+  | 'mayo2'
+  | 'mayo3'
+  | 'mayo4'
+  | 'reseller';
+  */
 
 interface Prices {
-  cost: Price;
-  cash: Price;
-  list: Price;
-  web: Price;
+  cost: Price; // Precio de costo
+  retail: Price;
+  online: Price;
+  mayo1: Price;
+  mayo2: Price;
+  mayo3: Price;
+  mayo4: Price;
+  reseller: Price;
 }
 
 interface Dimensions {

@@ -52,7 +52,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             errors={errors}
           />
           <Stock control={control} errors={errors} watch={watch} />
-          <Prices control={control} errors={errors} />
+          <Prices control={control} errors={errors} watch={watch} />
           <Variants control={control} errors={errors} />
           <Specifications control={control} errors={errors} />
           <KioskInformation control={control} errors={errors} />

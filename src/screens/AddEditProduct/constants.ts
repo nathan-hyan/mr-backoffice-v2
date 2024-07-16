@@ -3,7 +3,14 @@ import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 
-export type PriceInputName = 'cost' | 'list' | 'web' | 'cash';
+export type PriceInputName =
+  | 'retail'
+  | 'online'
+  | 'mayo1'
+  | 'mayo2'
+  | 'mayo3'
+  | 'mayo4'
+  | 'reseller';
 
 export type LocalFormInputName =
   | 'brand'
@@ -57,29 +64,50 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
 export const PRICE_FORM: Form<PriceInputName>[] = [
   {
     id: 1,
-    label: 'Precio de costo',
-    name: 'cost',
+    label: 'Retail',
+    name: 'retail',
     type: InputType.Number,
     required: true,
   },
   {
     id: 2,
-    label: 'Precio de lista',
-    name: 'list',
+    label: 'Online',
+    name: 'online',
     type: InputType.Number,
     required: true,
   },
   {
     id: 3,
-    label: 'Precio online',
-    name: 'web',
+    label: 'Mayorista 1',
+    name: 'mayo1',
     type: InputType.Number,
     required: true,
   },
   {
     id: 4,
-    label: 'Precio de contado',
-    name: 'cash',
+    label: 'Mayorista 2',
+    name: 'mayo2',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 5,
+    label: 'Mayorista 3',
+    name: 'mayo3',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 6,
+    label: 'Mayorista 4',
+    name: 'mayo4',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 7,
+    label: 'Reseller',
+    name: 'reseller',
     type: InputType.Number,
     required: true,
   },
@@ -225,9 +253,13 @@ export const EMPTY_FORM: Product = {
   subCategory: '',
   prices: {
     cost: { value: 0 },
-    list: { value: 0 },
-    web: { value: 0 },
-    cash: { value: 0 },
+    retail: { value: 80 },
+    online: { value: 65 },
+    mayo1: { value: 60 },
+    mayo2: { value: 50 },
+    mayo3: { value: 40 },
+    mayo4: { value: 35 },
+    reseller: { value: 20 },
   },
   brand: '',
   stockOwner: '',

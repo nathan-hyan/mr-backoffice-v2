@@ -23,7 +23,7 @@ export default defineConfig({
       {
         find: '~components',
         replacement: path.resolve(__dirname, 'src/components'),
-      },
+      }, 
       {
         find: '~screens',
         replacement: path.resolve(__dirname, 'src/screens'),
