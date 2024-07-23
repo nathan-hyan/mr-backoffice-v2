@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import capitalizePhrase from '~utils/capitalizePhrase';
@@ -6,8 +7,9 @@ import BarcodeGenerator from './BarcodeGenerator';
 import * as styles from './PriceTag.styles';
 
 interface Props {
+  id: string;
   name: string;
-  cashPrice: number;
+  cashPrice: number | 'Invalid';
   internalId: number;
   barCode: string;
   showPrices?: boolean;
@@ -15,12 +17,13 @@ interface Props {
 }
 
 function PriceTag({
+  id,
   name,
   cashPrice,
   internalId,
   barCode,
-  showPrices,
-  variant,
+  showPrices = true,
+  variant = 'yellow',
 }: Props) {
   return (
     <Box sx={styles.container}>
@@ -35,21 +38,16 @@ function PriceTag({
 
       <Box sx={styles.priceSide(variant)}>
         {showPrices ? (
-          <>
+          <Link to={`/edit/${id}`}>
             <Typography variant='caption'>Precio contado:</Typography>
             <Typography variant='h5' fontWeight={700}>
               ${Number(cashPrice).toFixed(2)}
             </Typography>
-          </>
+          </Link>
         ) : null}
       </Box>
     </Box>
   );
 }
-
-PriceTag.defaultProps = {
-  showPrices: true,
-  variant: 'yellow',
-};
 
 export default PriceTag;

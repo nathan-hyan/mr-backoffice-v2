@@ -61,7 +61,7 @@ export const ROUTES = [
   {
     id: 8,
     title: 'Agregar Producto',
-    description: '',
+    description: 'Agregando Producto',
     icon: <PlusOne />,
     path: '/add',
     element: <AddEditProduct />,
@@ -69,7 +69,7 @@ export const ROUTES = [
   {
     id: 9,
     title: 'Editar Producto',
-    description: '',
+    description: 'Editando Producto',
     path: '/edit/:id',
     element: <AddEditProduct editMode />,
   },

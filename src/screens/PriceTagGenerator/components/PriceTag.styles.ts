@@ -62,5 +62,9 @@ export const priceSide: (
     alignItems: 'flex-start',
     justifyContent: 'center',
     flexDirection: 'column',
+    a: {
+      color: common.black,
+      textDecoration: 'none',
+    },
   };
 };
