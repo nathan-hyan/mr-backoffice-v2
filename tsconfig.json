@@ -9,13 +9,23 @@
     "paths": {
       "~/*": ["./"],
       "~components/*": ["./components/*"],
+      "~components": ["./components"],
       "~screens/*": ["./screens/*"],
+      "~screens": ["./screens"],
       "~config/*": ["./config/*"],
+      "~config": ["./config"],
       "~utils/*": ["./utils/*"],
+      "~utils": ["./utils"],
       "~hooks/*": ["./hooks/*"],
+      "~hooks": ["./hooks"],
       "~assets/*": ["./assets/*"],
+      "~assets": ["./assets"],
       "~contexts/*": ["./contexts/*"],
-      "~constants/*": ["./constants/*"]
+      "~contexts": ["./contexts"],
+      "~constants/*": ["./constants/*"],
+      "~constants": ["./constants"],
+      "~services/*": ["./services/*"],
+      "~services": ["./services"]
     },
 
     /* Bundler mode */

@@ -16,7 +16,7 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import { Category } from 'types/data';
+import type { Category } from 'types/data';
 
 interface IAddSubCategories {
   subCategories: { name: string }[];

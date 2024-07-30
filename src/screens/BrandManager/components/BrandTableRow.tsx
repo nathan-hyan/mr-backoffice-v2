@@ -6,10 +6,10 @@ import {
   TableCell,
   TableRow,
 } from '@mui/material';
-import { Brand } from 'types/data';
+import type { Brand } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu';
+import CustomMenu from '~components/CustomMenu/CustomMenu';
 
 interface Props {
   brand: Nullable<Brand & { id: string }>;

@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { Brand, Category, Product } from 'types/data';
+import type { Brand, Category, Product } from 'types/data';
 
 import { INITIAL_CONTEXT, SearchCriteria, SortBy } from './constants';
 import { compare } from './utils';

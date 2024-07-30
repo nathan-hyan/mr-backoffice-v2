@@ -1,7 +1,7 @@
 import { MoreVert } from '@mui/icons-material';
 import { Box, IconButton, Menu } from '@mui/material';
 
-import useMenu from '~hooks/useMenu';
+import { useMenu} from '~hooks';
 
 interface Props {
   children: React.ReactNode;

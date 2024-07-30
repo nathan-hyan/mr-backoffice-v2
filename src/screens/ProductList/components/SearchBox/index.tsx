@@ -9,11 +9,11 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '@mui/material';
-import { Nullable } from 'vite-env';
+import type { Nullable } from 'vite-env';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
 function SearchBox() {
   const { tagAction } = useGATag(true);

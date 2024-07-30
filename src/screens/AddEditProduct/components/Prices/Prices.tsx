@@ -1,6 +1,6 @@
 import { Control, FieldErrors, UseFormWatch } from 'react-hook-form';
 import { Divider, Grid, InputAdornment, Typography } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';

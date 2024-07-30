@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Timestamp } from 'firebase/firestore';
-import {
+import type {
   Dimensions,
   Prices,
   ProviderProductCode,

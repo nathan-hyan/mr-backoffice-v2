@@ -1,7 +1,7 @@
 import { Controller, useForm } from 'react-hook-form';
 import { ArrowForward, HighlightOff } from '@mui/icons-material';
 import { IconButton, InputAdornment, Paper, TextField } from '@mui/material';
-import { Brand } from 'types/data';
+import type { Brand } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
 type BrandType = Nullable<Brand & { id: string }>;

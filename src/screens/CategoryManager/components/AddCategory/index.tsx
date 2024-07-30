@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Category } from 'types/data';
+import type { Category } from 'types/data';
 
 interface Props {
   show: boolean;

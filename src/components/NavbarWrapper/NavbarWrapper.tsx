@@ -1,13 +1,16 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useNavigation } from 'react-router-dom';
 import { Button, Container } from '@mui/material';
 import { closeSnackbar, SnackbarAction, SnackbarProvider } from 'notistack';
 
-import NavigationBar from '~components/NavigationBar';
-import SEO from '~components/SEO';
+import NavigationBar from '~components/NavigationBar/NavigationBar';
+import SEO from '~components/SEO/SEO';
+import LoadingScreen from '~components/LoadingScreen/LoadingScreen';
+
 import { ROUTES } from '~config/routes';
 
 function NavbarWrapper() {
-  const location = useLocation();
+  const { state, location } = useNavigation();
+
   const renderCloseButton: SnackbarAction = (snackbarId) => (
     <Button
       variant='text'
@@ -19,8 +22,8 @@ function NavbarWrapper() {
     </Button>
   );
 
-  const currentRouteInfo = ROUTES.find(
-    ({ path }) => path === location.pathname
+  const currentRouteInfo = ROUTES().find(
+    ({ path }) => path === location?.pathname
   );
 
   return (
@@ -45,7 +48,7 @@ function NavbarWrapper() {
           mt: 12,
         }}
       >
-        <Outlet />
+        {state === 'loading' ? <LoadingScreen /> : <Outlet />}
       </Container>
     </SnackbarProvider>
   );

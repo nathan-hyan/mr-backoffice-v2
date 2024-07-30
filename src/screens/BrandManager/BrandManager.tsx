@@ -12,33 +12,33 @@ import {
   TableRow,
 } from '@mui/material';
 
-import DeleteAlert from '~components/DeleteAlert';
-import useGATag from '~hooks/useGATag';
+import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
+import { useGATag, useModal } from '~hooks';
 
 import useBrandManager from './BrandManager.hooks';
+import type { BrandType } from './BrandManager.hooks';
 import AddBrandModal from './components/AddBrandModal';
 import BrandSearch from './components/BrandSearch';
 import BrandTableRow from './components/BrandTableRow';
+import { useLoaderData } from 'react-router-dom';
 
 function BrandManager() {
+  useGATag();
   const {
-    setData,
     setMarkedForDeletion,
     handleAddDocument,
     handleChangePage,
     handleChangeRowsPerPage,
     handleDeleteBrand,
     handleUpdateBrand,
-    toggleModal,
-    showModal,
-    data,
-    dataCopy,
     page,
     rowsPerPage,
     markedForDeletion,
     markedForUpdate,
   } = useBrandManager();
-  useGATag();
+
+  const data = useLoaderData() as BrandType[];
+  const [showAddBrandModal, toggleAddBrandModal] = useModal();
 
   return (
     <>
@@ -49,13 +49,13 @@ function BrandManager() {
         stringToMatch={markedForDeletion ? markedForDeletion.name : ''}
       />
       <AddBrandModal
-        show={showModal}
-        onCancel={toggleModal}
+        show={showAddBrandModal}
+        onCancel={toggleAddBrandModal}
         addDocument={handleAddDocument}
         updateDocument={handleUpdateBrand}
         documentToUpdate={markedForUpdate}
       />
-      <BrandSearch dataCopy={dataCopy} setData={setData} />
+      <BrandSearch dataCopy={[]} setData={[]} />
       <TableContainer component={Paper} sx={{ mb: 3 }}>
         <Table stickyHeader>
           <TableHead>
@@ -73,7 +73,7 @@ function BrandManager() {
                   key={brand?.id}
                   brand={brand}
                   setMarkedForDeletion={setMarkedForDeletion}
-                  toggleModal={toggleModal}
+                  toggleModal={toggleAddBrandModal}
                 />
               ))}
           </TableBody>
@@ -94,7 +94,7 @@ function BrandManager() {
           variant='contained'
           sx={{ m: 2 }}
           startIcon={<Add />}
-          onClick={() => toggleModal()}
+          onClick={toggleAddBrandModal}
         >
           Agregar una marca
         </Button>

@@ -1,4 +1,4 @@
-import { Brand, Category, Product } from 'types/data';
+import type { Brand, Category, Product } from 'types/data';
 
 export enum SearchCriteria {
   ProductName = 0,

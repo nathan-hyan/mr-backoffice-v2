@@ -1,45 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useReactToPrint } from 'react-to-print';
 import { Box, Button, Divider, Typography } from '@mui/material';
-import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import { FirestoreCollections } from '~constants/firebase';
-import { useProducts } from '~contexts/Products';
-import useFirestore from '~hooks/useFirestore';
 import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import ControlPanel from './components/ControlPanel';
 import PriceTag from './components/PriceTag';
 import { ControlPanelValues, FORM_CONFIG } from './constants';
+import type { Product } from 'types/data';
+import { useLoaderData, useNavigation } from 'react-router-dom';
 
 function PriceTagGenerator() {
+  const productList = useLoaderData() as Product[];
+  const { state } = useNavigation();
   const { control, watch } = useForm<ControlPanelValues>(FORM_CONFIG);
-  const { productList, saveProducts } = useProducts();
-  const { fetchLoading, subscribeToData } = useFirestore<Product>(
-    FirestoreCollections.Products
-  );
-
   const printable = useRef<Nullable<HTMLDivElement>>(null);
 
   const handlePrint = useReactToPrint({
     content: () => printable.current,
   });
-
-  useEffect(() => {
-    if (productList && productList.length > 0) {
-      return () => {};
-    }
-
-    const productsUnsubscribe = subscribeToData((data) => {
-      saveProducts(data);
-    });
-
-    return () => {
-      productsUnsubscribe();
-    };
-  }, [productList, saveProducts, subscribeToData]);
 
   const map =
     watch('generatorType') === 'all'
@@ -50,17 +31,23 @@ function PriceTagGenerator() {
     <>
       <ControlPanel
         generatorType={watch('generatorType')}
-        fetchLoading={fetchLoading}
+        fetchLoading={state === 'loading'}
         productList={productList}
         control={control}
       />
 
       <Divider />
 
-      <Typography variant='h6'>Previsualización</Typography>
-      <Button variant='contained' onClick={handlePrint}>
-        Imprimir etiquetas
-      </Button>
+      {map.length > 0 ? (
+        <>
+          <Typography variant='h6'>Previsualización</Typography>
+          <Button variant='contained' onClick={handlePrint}>
+            Imprimir etiquetas
+          </Button>
+        </>
+      ) : (
+        <Typography variant='body1' color={'red'} textAlign={'center'}>Elija un producto para continuar</Typography> 
+      )}
       <Box
         ref={printable}
         sx={{
@@ -74,7 +61,7 @@ function PriceTagGenerator() {
           ({ name, id, barcode, internalId, prices: { cost, retail } }) => (
             <PriceTag
               id={id}
-              key={internalId}
+              key={id}
               barCode={barcode}
               cashPrice={
                 !retail

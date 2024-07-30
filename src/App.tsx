@@ -3,7 +3,7 @@ import { Box, Button } from '@mui/material';
 
 import LogoWhite from '~assets/logo-white.svg';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
 import styles from './styles.module.scss';
 

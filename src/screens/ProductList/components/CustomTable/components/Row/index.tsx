@@ -13,14 +13,13 @@ import {
   TableCell,
   TableRow,
 } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu';
-import DeleteAlert from '~components/DeleteAlert';
+import CustomMenu from '~components/CustomMenu/CustomMenu';
+import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
 import { FirestoreCollections } from '~constants/firebase';
-import useCategoryTranslator from '~hooks/useCategoryTranslator';
-import useFirestore from '~hooks/useFirestore';
+import { useFirestore } from '~hooks';
 import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import ProductDetail from './components/ProductDetail';
@@ -40,7 +39,6 @@ function Row(props: Props) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { removeDocument } = useFirestore(FirestoreCollections.Products);
-  const { translateCategories } = useCategoryTranslator();
 
   const handleOnClick = (id: number) => () => {
     return id;
@@ -53,13 +51,10 @@ function Row(props: Props) {
       name,
       stock,
       prices,
-      category: untranslatedCategory,
-      subCategory: untranslatedSubCategory,
+      translatedCategory,
+      translatedSubCategory,
       barcode,
     } = props.data;
-
-    const { translatedCategory: category, translatedSubCategory: subCategory } =
-      translateCategories(untranslatedCategory, untranslatedSubCategory);
 
     const deleteProduct = () => {
       removeDocument(id, () => {
@@ -122,7 +117,7 @@ function Row(props: Props) {
             ).toFixed(2)}
           </TableCell>
           <TableCell>
-            {category?.name} / {subCategory?.name}
+            {translatedCategory?.name} / {translatedSubCategory?.name}
           </TableCell>
           <TableCell>{barcode}</TableCell>
           <TableCell>{date ? date.toLocaleDateString('es-ES') : '-'}</TableCell>
@@ -156,8 +151,8 @@ function Row(props: Props) {
             <Collapse in={open} timeout='auto' unmountOnExit>
               <ProductDetail
                 data={props.data}
-                category={category?.name}
-                subCategory={subCategory?.name}
+                category={translatedCategory?.name}
+                subCategory={translatedSubCategory?.name}
               />
             </Collapse>
           </TableCell>

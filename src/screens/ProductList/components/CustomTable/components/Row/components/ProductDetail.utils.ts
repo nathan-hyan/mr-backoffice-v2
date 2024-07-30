@@ -1,4 +1,4 @@
-import { Product, UserFeedback } from 'types/data';
+import type { Product, UserFeedback } from 'types/data';
 
 export const translateStock = (field: keyof Product['stock']) => {
   switch (field) {
@@ -58,7 +58,6 @@ export const translateFields = (field: keyof Product) => {
 
 export const prepareDataForDisplay = (
   data: Product,
-  translateBrand: (arg0: string) => string | undefined
 ) => {
   const copy: Partial<Product> = { ...data };
   const result: { title: string; value: string }[] = [];
@@ -92,7 +91,7 @@ export const prepareDataForDisplay = (
     if (field === 'brand') {
       result.push({
         title: translateFields('brand'),
-        value: translateBrand(copy.brand || '') || '',
+        value: copy.translatedBrand || '',
       });
 
       return;

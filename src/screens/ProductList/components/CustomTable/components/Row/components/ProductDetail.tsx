@@ -20,12 +20,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
-import CustomListItem from '~components/CustomListItem';
+import CustomListItem from '~components/CustomListItem/CustomListItem';
 import { FirestoreCollections } from '~constants/firebase';
-import useBrandTranslator from '~hooks/useBrandTranslator';
-import useFirestore from '~hooks/useFirestore';
+import { useFirestore } from '~hooks';
 import calculateNumberWithPercentage from '~utils/addPercentage';
 import { objectIterator } from '~utils/objectIterator';
 import { timestampTranslator } from '~utils/timestampTranslator';
@@ -48,7 +47,6 @@ function ProductDetail({
   category = 'Error',
   subCategory = 'Error',
 }: Props) {
-  const { translateBrand } = useBrandTranslator();
   const { updateDocument, updateLoading } = useFirestore<Product>(
     FirestoreCollections.Products
   );
@@ -323,15 +321,13 @@ function ProductDetail({
             />
           </List>
 
-          {prepareDataForDisplay(data, translateBrand).map(
-            ({ title, value }) => (
-              <CustomListItem
-                width='calc(50% - 24px)'
-                title={title}
-                value={value}
-              />
-            )
-          )}
+          {prepareDataForDisplay(data).map(({ title, value }) => (
+            <CustomListItem
+              width='calc(50% - 24px)'
+              title={title}
+              value={value}
+            />
+          ))}
 
           {data.specifications.length > 0 ? (
             <TableContainer component={Paper}>

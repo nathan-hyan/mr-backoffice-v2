@@ -1,12 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Brand } from 'types/data';
+import type { Brand } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
-import useFirestore from '~hooks/useFirestore';
+import { useFirestore } from '~hooks';
 import getLatestInternalId from '~utils/getLatestInternalId';
 
-type BrandType = Nullable<Brand & { id: string }>;
+export type BrandType = Nullable<Brand & { id: string }>;
 
 function useBrandManager() {
   const [markedForDeletion, setMarkedForDeletion] = useState<BrandType>(null);

@@ -13,12 +13,12 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { Category } from 'types/data';
+import type { Category } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu';
+import CustomMenu from '~components/CustomMenu/CustomMenu';
 
-import DeleteAlert from '../../../../components/DeleteAlert';
+import DeleteAlert from '../../../../components/DeleteAlert/DeleteAlert';
 
 interface Props {
   removeDocument: (documentId: string, callback?: (arg0: void) => void) => void;

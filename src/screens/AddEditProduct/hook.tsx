@@ -1,14 +1,16 @@
+// TODO: This file has to go
+
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { enqueueSnackbar } from 'notistack';
-import { Product } from 'types/data';
-import { Nullable } from 'vite-env';
+import type { Product } from 'types/data';
+import type { Nullable } from 'vite-env';
 
 import { ROUTES } from '~config/routes';
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
-import useFirestore from '~hooks/useFirestore';
+import { useFirestore } from '~hooks';
 import getLatestInternalId from '~utils/getLatestInternalId';
 
 import { EMPTY_FORM } from './constants';
@@ -71,7 +73,7 @@ function useProductModal({ productIdToEdit }: Props) {
     if (productIdToEdit) {
       updateDocument(productIdToEdit, data, () => {
         reset();
-        navigate(ROUTES[4].path);
+        navigate(ROUTES()[4].path);
       });
 
       return;
@@ -100,13 +102,13 @@ function useProductModal({ productIdToEdit }: Props) {
       internalId: getLatestInternalId(productList) + 1,
     }).then(() => {
       reset();
-      navigate(ROUTES[4].path);
+      navigate(ROUTES()[4].path);
     });
   };
 
   const handleCancel = () => {
     reset();
-    navigate(ROUTES[4].path);
+    navigate(ROUTES()[4].path);
   };
 
   const fillFakeData = () => {

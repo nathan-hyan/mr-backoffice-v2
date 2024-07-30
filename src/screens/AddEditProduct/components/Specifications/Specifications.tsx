@@ -1,7 +1,7 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';

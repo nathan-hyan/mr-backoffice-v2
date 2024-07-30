@@ -1,7 +1,7 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { AddRounded } from '@mui/icons-material';
 import { Button, Divider, Typography } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import FieldInputs from './components/FieldInputs/FieldInputs';
 import { VARIANTS_FORM_EMPTY } from './Variants.constants';

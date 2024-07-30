@@ -10,7 +10,7 @@ import {
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
 import { SortBy } from '~contexts/Products/constants';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
 function SortByBox() {
   const { tagAction } = useGATag(true);

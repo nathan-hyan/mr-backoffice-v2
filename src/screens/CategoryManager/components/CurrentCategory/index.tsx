@@ -13,11 +13,11 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { Category } from 'types/data';
+import type { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu';
-import DeleteAlert from '~components/DeleteAlert';
+import CustomMenu from '~components/CustomMenu/CustomMenu';
+import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
 
 interface Props {
   currentCategory: Category;

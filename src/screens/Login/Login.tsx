@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 
 import { auth, googleProvider } from '~config/firebase';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
 interface IFormInputs {
   email: string;

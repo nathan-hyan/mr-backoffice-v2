@@ -10,18 +10,22 @@ import {
 import {
   AddEditProduct,
   BrandManager,
+  brandManagerLoader,
   CategoryManager,
+  categoryManagerLoader,
   Login,
   Playground,
   PriceModifier,
   PriceTagGenerator,
   ProductList,
+  productListLoader,
   UserInfo,
-} from '~screens/index';
+} from '~screens';
 
 import App from '../App';
+import { QueryClient } from '@tanstack/react-query';
 
-export const ROUTES = [
+export const ROUTES = (queryClient?: QueryClient) => [
   {
     id: 0,
     path: '/',
@@ -56,6 +60,7 @@ export const ROUTES = [
     description: '',
     icon: <FormatListNumbered />,
     path: '/products',
+    loader: queryClient ? productListLoader(queryClient) : undefined,
     element: <ProductList />,
   },
   {
@@ -87,6 +92,7 @@ export const ROUTES = [
     title: 'Administrador de Categorias',
     description: '',
     path: '/categoryManager',
+    loader: queryClient ? categoryManagerLoader(queryClient) : undefined,
     element: <CategoryManager />,
   },
   {
@@ -95,12 +101,14 @@ export const ROUTES = [
     title: 'Administrador de Marcas',
     description: '',
     path: '/brandManager',
+    loader: queryClient ? brandManagerLoader(queryClient) : undefined,
     element: <BrandManager />,
   },
   {
     id: 7,
     icon: <AutoFixHigh />,
     title: 'Generador de etiquetas de precio',
+    loader: queryClient ? productListLoader(queryClient) : undefined,
     description: '',
     path: '/pricetaggenerator',
     element: <PriceTagGenerator />,

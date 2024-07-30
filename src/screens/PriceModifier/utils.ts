@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import calculateNumberWithPercentage from '~utils/addPercentage';
 

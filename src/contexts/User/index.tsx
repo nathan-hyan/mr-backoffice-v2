@@ -11,10 +11,10 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { useSnackbar } from 'notistack';
 import { Nullable } from 'vite-env';
 
-import LoadingScreen from '~components/LoadingScreen';
+import LoadingScreen from '~components/LoadingScreen/LoadingScreen';
 import { auth } from '~config/firebase';
 import { FirestoreCollections, UserRoles } from '~constants/firebase';
-import useFirestore from '~hooks/useFirestore';
+import { useFirestore } from '~hooks';
 
 interface UserWithRole extends User {
   role: UserRoles;

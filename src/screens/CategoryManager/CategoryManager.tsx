@@ -1,46 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Grid, Paper } from '@mui/material';
-import { Category } from 'types/data';
+import type { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
-import useFirestore from '~hooks/useFirestore';
+
 import getLatestInternalId from '~utils/getLatestInternalId';
 
 import AddCategory from './components/AddCategory';
 import AddSubCategory from './components/AddSubCategory';
 import CategoryList from './components/CategoryList';
 import CurrentCategory from './components/CurrentCategory';
+import { useLoaderData } from 'react-router-dom';
+import { useModal, useFirestore } from '~hooks';
 
 function CategoryManager() {
   const {
-    subscribeToData,
     removeDocument,
     addDocument,
     updateDocument,
     creatingLoading,
   } = useFirestore<Category>(FirestoreCollections.Categories);
 
-  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-  const [showAddSubCategoryModal, setShowAddSubCategoryModal] = useState(false);
-  const [data, setData] = useState<Category[]>([]);
+  const data = useLoaderData() as Category[];
+  const [showAddCategoryModal, toggleAddCategoryModal] = useModal();
+  const [showAddSubCategoryModal, toggleAddSubCategoryModal] = useModal();
   const [currentCategory, setCurrentCategory] =
     useState<Nullable<number>>(null);
 
   const handleSelectCategory = (internalId: number) => {
     setCurrentCategory(internalId);
   };
-
-  const toggleModals =
-    (modalToToggle: 'addCategory' | 'addSubCategory') => () => {
-      if (modalToToggle === 'addCategory') {
-        setShowAddCategoryModal((prevState) => !prevState);
-      }
-
-      if (modalToToggle === 'addSubCategory') {
-        setShowAddSubCategoryModal((prevState) => !prevState);
-      }
-    };
 
   const addCategory = (newData: Category) => {
     const newInternalId = getLatestInternalId(data) + 1;
@@ -101,28 +91,19 @@ function CategoryManager() {
     });
   };
 
-  useEffect(() => {
-    const unsubscribe = subscribeToData((response) => {
-      setData(response);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [subscribeToData]);
 
   return (
     <>
       <AddCategory
         show={showAddCategoryModal}
-        handleClose={toggleModals('addCategory')}
+        handleClose={toggleAddCategoryModal}
         submitCategory={addCategory}
         isLoading={creatingLoading}
       />
 
       <AddSubCategory
         show={showAddSubCategoryModal}
-        handleClose={toggleModals('addSubCategory')}
+        handleClose={toggleAddSubCategoryModal}
         isLoading={creatingLoading}
         addSubcategory={addSubcategory}
       />
@@ -138,13 +119,13 @@ function CategoryManager() {
               firebaseId: selectedCategory?.id,
             }}
             handleSelectCategory={handleSelectCategory}
-            openModal={toggleModals('addCategory')}
+            openModal={toggleAddCategoryModal}
           />
 
           {currentCategory && (
             <CurrentCategory
               currentCategory={selectedCategory}
-              openModal={toggleModals('addSubCategory')}
+              openModal={toggleAddSubCategoryModal}
               removeSubcategory={removeSubCategory}
             />
           )}

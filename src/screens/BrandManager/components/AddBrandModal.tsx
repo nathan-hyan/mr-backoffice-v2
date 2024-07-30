@@ -9,7 +9,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { Brand } from 'types/data';
+import type { Brand } from 'types/data';
 import { Nullable } from 'vite-env';
 
 interface Props {
