@@ -15,12 +15,8 @@ import { useLoaderData } from 'react-router-dom';
 import { useModal, useFirestore } from '~hooks';
 
 function CategoryManager() {
-  const {
-    removeDocument,
-    addDocument,
-    updateDocument,
-    creatingLoading,
-  } = useFirestore<Category>(FirestoreCollections.Categories);
+  const { removeDocument, addDocument, updateDocument, creatingLoading } =
+    useFirestore<Category>(FirestoreCollections.Categories);
 
   const data = useLoaderData() as Category[];
   const [showAddCategoryModal, toggleAddCategoryModal] = useModal();
@@ -90,7 +86,6 @@ function CategoryManager() {
       subCategories: newArray,
     });
   };
-
 
   return (
     <>

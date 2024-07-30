@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
+import CircularProgressWithLabel from './CircularProgressWithLabel';
 
 describe('CircularProgressWithLabel', () => {
   it('renders as expected', () => {

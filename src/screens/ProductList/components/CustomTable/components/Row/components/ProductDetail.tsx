@@ -323,6 +323,7 @@ function ProductDetail({
 
           {prepareDataForDisplay(data).map(({ title, value }) => (
             <CustomListItem
+              key={title}
               width='calc(50% - 24px)'
               title={title}
               value={value}

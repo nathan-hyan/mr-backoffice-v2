@@ -23,11 +23,10 @@ function BrandSearch({ dataCopy, setData }: Props) {
   });
 
   const performSearch = (criteria: { name: string }) => {
-    const newData = dataCopy.filter(
-      (currentBrand) =>
-        currentBrand?.name
-          .toLowerCase()
-          .includes(criteria.name.toLocaleLowerCase())
+    const newData = dataCopy.filter((currentBrand) =>
+      currentBrand?.name
+        .toLowerCase()
+        .includes(criteria.name.toLocaleLowerCase())
     );
 
     setData(newData);

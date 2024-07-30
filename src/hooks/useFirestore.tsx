@@ -45,7 +45,6 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
 
       return onSnapshot(collectionRef, (snapshot) => {
         try {
-
           setFetchLoading(false);
 
           const response = snapshot.docs.map((item) => ({
@@ -54,12 +53,9 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
           }));
 
           callback(response);
-
         } catch (err: unknown) {
-          
           setFetchLoading(false);
           throwError(err);
-        
         }
       });
     },

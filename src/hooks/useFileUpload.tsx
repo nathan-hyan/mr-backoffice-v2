@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop */
 import { ChangeEventHandler, useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
 import { getDownloadURL } from 'firebase/storage';

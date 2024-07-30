@@ -46,7 +46,9 @@ function PriceTagGenerator() {
           </Button>
         </>
       ) : (
-        <Typography variant='body1' color={'red'} textAlign={'center'}>Elija un producto para continuar</Typography> 
+        <Typography variant='body1' color={'red'} textAlign={'center'}>
+          Elija un producto para continuar
+        </Typography>
       )}
       <Box
         ref={printable}

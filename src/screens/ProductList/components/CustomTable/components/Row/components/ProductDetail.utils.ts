@@ -56,9 +56,7 @@ export const translateFields = (field: keyof Product) => {
   }
 };
 
-export const prepareDataForDisplay = (
-  data: Product,
-) => {
+export const prepareDataForDisplay = (data: Product) => {
   const copy: Partial<Product> = { ...data };
   const result: { title: string; value: string }[] = [];
 
