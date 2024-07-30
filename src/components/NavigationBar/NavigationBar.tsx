@@ -6,10 +6,10 @@ import { AppBar, Box, Button, IconButton, Toolbar } from '@mui/material';
 import LogoWhite from '~assets/logo-inline-stockos-white.svg';
 import useUserContext from '~contexts/User';
 
+import styles from './styles.module.scss';
+
 import SideDrawer from './components/SideDrawer';
 import UserMenu from './components/UserMenu';
-
-import styles from './styles.module.scss';
 
 function NavigationBar() {
   const [drawer, setDrawer] = useState(false);

@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+
 import { brandQuery } from '~services/brands';
 
 export const loader = (queryClient: QueryClient) => async () => {

@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLoaderData, useNavigation } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { Box, Button, Divider, Typography } from '@mui/material';
+import type { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import calculateNumberWithPercentage from '~utils/addPercentage';
@@ -9,8 +11,6 @@ import calculateNumberWithPercentage from '~utils/addPercentage';
 import ControlPanel from './components/ControlPanel';
 import PriceTag from './components/PriceTag';
 import { ControlPanelValues, FORM_CONFIG } from './constants';
-import type { Product } from 'types/data';
-import { useLoaderData, useNavigation } from 'react-router-dom';
 
 function PriceTagGenerator() {
   const productList = useLoaderData() as Product[];

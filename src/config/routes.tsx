@@ -6,6 +6,7 @@ import {
   LocalOffer,
   PlusOne,
 } from '@mui/icons-material';
+import { QueryClient } from '@tanstack/react-query';
 
 import {
   AddEditProduct,
@@ -23,7 +24,6 @@ import {
 } from '~screens';
 
 import App from '../App';
-import { QueryClient } from '@tanstack/react-query';
 
 export const ROUTES = (queryClient?: QueryClient) => [
   {

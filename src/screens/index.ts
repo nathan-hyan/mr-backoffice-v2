@@ -12,6 +12,7 @@ import { loader as productListLoader } from './ProductList/ProductList.loader';
 import UserInfo from './UserInfo/UserInfo';
 
 export {
+  AddEditProduct,
   BrandManager,
   brandManagerLoader,
   CategoryManager,
@@ -19,9 +20,8 @@ export {
   Login,
   Playground,
   PriceModifier,
+  PriceTagGenerator,
   ProductList,
   productListLoader,
   UserInfo,
-  PriceTagGenerator,
-  AddEditProduct,
 };

@@ -1,3 +1,4 @@
+import { useLoaderData } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import {
   Button,
@@ -15,12 +16,11 @@ import {
 import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
 import { useGATag, useModal } from '~hooks';
 
-import useBrandManager from './BrandManager.hooks';
 import type { BrandType } from './BrandManager.hooks';
+import useBrandManager from './BrandManager.hooks';
 import AddBrandModal from './components/AddBrandModal';
 import BrandSearch from './components/BrandSearch';
 import BrandTableRow from './components/BrandTableRow';
-import { useLoaderData } from 'react-router-dom';
 
 function BrandManager() {
   useGATag();

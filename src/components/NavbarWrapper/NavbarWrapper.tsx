@@ -2,10 +2,9 @@ import { Outlet, useNavigation } from 'react-router-dom';
 import { Button, Container } from '@mui/material';
 import { closeSnackbar, SnackbarAction, SnackbarProvider } from 'notistack';
 
+import LoadingScreen from '~components/LoadingScreen/LoadingScreen';
 import NavigationBar from '~components/NavigationBar/NavigationBar';
 import SEO from '~components/SEO/SEO';
-import LoadingScreen from '~components/LoadingScreen/LoadingScreen';
-
 import { ROUTES } from '~config/routes';
 
 function NavbarWrapper() {

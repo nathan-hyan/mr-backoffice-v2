@@ -11,12 +11,12 @@ import {
   TableHead,
   TablePagination,
 } from '@mui/material';
+import type { Product } from 'types/data';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useGATag } from '~hooks';
 
 import Row from './components/Row';
-import type { Product } from 'types/data';
 
 function CustomTable() {
   const navigate = useNavigate();

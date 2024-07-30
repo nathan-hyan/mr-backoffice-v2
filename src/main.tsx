@@ -4,14 +4,14 @@ import ReactGA from 'react-ga4';
 import { HelmetProvider } from 'react-helmet-async';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 
 import { NavbarWrapper } from '~components';
 import { THEME } from '~config/muiTheme';
 import { ROUTES } from '~config/routes';
 import { UserContextProvider } from '~contexts/User';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import './index.scss';
 import '@fontsource/roboto/300.css';

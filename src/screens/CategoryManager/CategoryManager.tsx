@@ -1,18 +1,17 @@
 import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Grid, Paper } from '@mui/material';
 import type { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
-
+import { useFirestore, useModal } from '~hooks';
 import getLatestInternalId from '~utils/getLatestInternalId';
 
 import AddCategory from './components/AddCategory';
 import AddSubCategory from './components/AddSubCategory';
 import CategoryList from './components/CategoryList';
 import CurrentCategory from './components/CurrentCategory';
-import { useLoaderData } from 'react-router-dom';
-import { useModal, useFirestore } from '~hooks';
 
 function CategoryManager() {
   const { removeDocument, addDocument, updateDocument, creatingLoading } =

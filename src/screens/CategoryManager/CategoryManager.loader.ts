@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+
 import { categoryQuery } from '~services/categories';
 
 export const loader = (queryClient: QueryClient) => async () => {
