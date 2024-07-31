@@ -1,6 +1,9 @@
-import { useParams } from 'react-router-dom';
+import { FormEventHandler } from 'react';
+import { useForm } from 'react-hook-form';
+import { Form, useParams } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import { Button, Container } from '@mui/material';
+import { Product } from 'types/data';
 
 import {
   Dimensions,
@@ -11,25 +14,44 @@ import {
 } from './components';
 import Information from './components/Information/Information';
 import Stock from './components/Stock/Stock';
+import { EMPTY_FORM } from './constants';
 import useProductModal from './hook';
+import { fabricateFakeData } from './utils';
 
 function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
   const { id } = useParams();
 
+  const { control, watch, formState, setValue } = useForm<Product>({
+    defaultValues: EMPTY_FORM,
+    mode: 'onChange',
+  });
+
+  const { errors } = formState;
+
+  const fillFakeData = () => {
+    fabricateFakeData().forEach(({ field, value }) => {
+      setValue(field as keyof Product, value);
+    });
+  };
+
   const {
-    fillFakeData,
+    // fillFakeData,
     handleCancel,
-    onSubmit,
+    // onSubmit,
     checkForErrors,
-    handleSubmit,
-    control,
+    // handleSubmit,
+    // control,
     creatingLoading,
-    errors,
-    setValue,
-    watch,
+    // errors,
+    // setValue,
+    // watch,
   } = useProductModal({
     productIdToEdit: editMode ? id : null,
   });
+
+  const onSubmit: FormEventHandler<HTMLFormElement> = (data) => {
+    console.log(data);
+  };
 
   return (
     <Container>
@@ -37,7 +59,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <Form noValidate onSubmit={onSubmit}>
         <Container
           sx={{
             display: 'flex',
@@ -79,7 +101,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             Guardar
           </Button>
         </Container>
-      </form>
+      </Form>
     </Container>
   );
 }

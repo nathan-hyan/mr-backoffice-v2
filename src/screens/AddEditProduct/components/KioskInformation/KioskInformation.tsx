@@ -1,4 +1,5 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
+import { useLoaderData } from 'react-router-dom';
 import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
 import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
 import type { Product } from 'types/data';
@@ -6,7 +7,7 @@ import type { Product } from 'types/data';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import CustomSelect from '~components/CustomSelect/CustomSelect';
-import { useProducts } from '~contexts/Products';
+import { LoaderData } from '~screens/AddEditProduct/AddEditProduct.loader';
 import {
   LOCAL_INFO_FORM,
   PROVIDER_PRODUCT_CODE_FORM_EMPTY,
@@ -24,7 +25,7 @@ function KioskInformation({ control, errors }: Props) {
     append: providerProductCodeAppend,
   } = useFieldArray({ control, name: 'providerProductCode' });
 
-  const { brands } = useProducts();
+  const { brand } = useLoaderData() as LoaderData;
 
   return (
     <>
@@ -108,7 +109,7 @@ function KioskInformation({ control, errors }: Props) {
         control={control}
         error={errors.brand}
         label='Marca'
-        data={brands.map(({ name, id }) => ({
+        data={brand.map(({ name, id }) => ({
           optionName: name,
           value: id || '',
         }))}

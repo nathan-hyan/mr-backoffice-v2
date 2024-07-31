@@ -16,7 +16,7 @@ import type { Product } from 'types/data';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useGATag } from '~hooks';
 
-import Row from './components/Row';
+import { Row } from './components';
 
 function CustomTable() {
   const navigate = useNavigate();

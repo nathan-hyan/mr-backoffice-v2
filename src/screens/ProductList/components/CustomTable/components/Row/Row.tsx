@@ -21,7 +21,7 @@ import { FirestoreCollections } from '~constants/firebase';
 import { useFirestore } from '~hooks';
 import calculateNumberWithPercentage from '~utils/addPercentage';
 
-import ProductDetail from './components/ProductDetail';
+import { ProductDetail } from './components';
 
 type Props =
   | {

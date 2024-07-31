@@ -10,6 +10,7 @@ import { QueryClient } from '@tanstack/react-query';
 
 import {
   AddEditProduct,
+  addEditProductLoader,
   BrandManager,
   brandManagerLoader,
   CategoryManager,
@@ -69,6 +70,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     description: 'Agregando Producto',
     icon: <PlusOne />,
     path: '/add',
+    loader: queryClient ? addEditProductLoader(queryClient) : undefined,
     element: <AddEditProduct />,
   },
   {
@@ -76,6 +78,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     title: 'Editar Producto',
     description: 'Editando Producto',
     path: '/edit/:id',
+    loader: queryClient ? addEditProductLoader(queryClient) : undefined,
     element: <AddEditProduct editMode />,
   },
   {

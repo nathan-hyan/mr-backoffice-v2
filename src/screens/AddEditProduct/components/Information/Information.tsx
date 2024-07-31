@@ -5,6 +5,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
+import { useLoaderData } from 'react-router-dom';
 import CachedIcon from '@mui/icons-material/Cached';
 import {
   Autocomplete,
@@ -18,11 +19,11 @@ import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
-import { useProducts } from '~contexts/Products';
+import type { LoaderData } from '~screens/AddEditProduct/AddEditProduct.loader';
 import { PRODUCT_FORM } from '~screens/AddEditProduct/constants';
 
 import ImageSelection from './components/ImageSelection/ImageSelection';
-import { generateBarcode } from './utils';
+import { generateBarcode, getSubcategories } from './utils';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -32,8 +33,9 @@ interface Props {
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { categories, getSubcategories } = useProducts();
-  const subCategories = getSubcategories(watch('category'));
+  const { category } = useLoaderData() as LoaderData;
+  const subCategories = getSubcategories(watch('category'), category);
+
   const images = watch('imageURL').filter(Boolean);
 
   const handleGenerateBarcode = () => {
@@ -95,14 +97,13 @@ function Information({ control, watch, errors, setValue }: Props) {
             }}
             value={{
               value: field.value,
-              label:
-                categories.find(({ id }) => id === field.value)?.name || '',
+              label: category.find(({ id }) => id === field.value)?.name || '',
             }}
             disablePortal
             id='combo-box-demo'
             options={[
               { value: '', label: '' },
-              ...categories.map(({ id, name }) => ({
+              ...category.map(({ id, name }) => ({
                 value: id || 0,
                 label: name || '',
               })),
