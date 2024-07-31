@@ -38,7 +38,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
     // fillFakeData,
     handleCancel,
     // onSubmit,
-    checkForErrors,
+    // checkForErrors,
     // handleSubmit,
     // control,
     creatingLoading,
@@ -86,7 +86,6 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             variant='contained'
             startIcon={<SaveAltRounded />}
             disabled={creatingLoading}
-            onClick={checkForErrors}
           >
             Guardar
           </Button>

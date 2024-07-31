@@ -1,4 +1,5 @@
 import AddEditProduct from './AddEditProduct/AddEditProduct';
+import { action as addEditProductAction } from './AddEditProduct/AddEditProduct.action';
 import { loader as addEditProductLoader } from './AddEditProduct/AddEditProduct.loader';
 import BrandManager from './BrandManager/BrandManager';
 import { loader as brandManagerLoader } from './BrandManager/BrandManager.loader';
@@ -14,6 +15,7 @@ import UserInfo from './UserInfo/UserInfo';
 
 export {
   AddEditProduct,
+  addEditProductAction,
   addEditProductLoader,
   BrandManager,
   brandManagerLoader,

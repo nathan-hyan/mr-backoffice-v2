@@ -105,3 +105,5 @@ export interface Product {
   showInStore: boolean;
   userFeedback: UserFeedback[];
 }
+
+

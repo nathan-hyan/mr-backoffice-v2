@@ -63,11 +63,13 @@ function ProductDetail({
     ({ key }) => key !== 'noPhysicalStock'
   );
 
-  const hasUserFeedback = data.userFeedback && data.userFeedback.length > 0;
+  const hasUserFeedback = data.userFeedback && data.userFeedback?.length > 0;
   const comentariosText =
-    data.userFeedback.length > 1 ? 'comentarios' : 'comentario';
+    data.userFeedback && data.userFeedback?.length > 1
+      ? 'comentarios'
+      : 'comentario';
   const hasPhysicalStock = !data.stock.noPhysicalStock;
-  const hasProviderProductCode = data.providerProductCode.length > 0;
+  const hasProviderProductCode = data.providerProductCode?.length > 0;
 
   return (
     <Box sx={styles.container}>
@@ -330,7 +332,7 @@ function ProductDetail({
             />
           ))}
 
-          {data.specifications.length > 0 ? (
+          {data.specifications && data.specifications?.length > 0 ? (
             <TableContainer component={Paper}>
               <Table aria-label='simple table' size='small'>
                 <TableHead>

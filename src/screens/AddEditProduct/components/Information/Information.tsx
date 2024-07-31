@@ -114,6 +114,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                name='category'
                 required
                 label='Categoría'
                 error={Boolean(errors.category)}
@@ -164,6 +165,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
+                name='subCategory'
                 required
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
@@ -174,35 +176,15 @@ function Information({ control, watch, errors, setValue }: Props) {
         )}
       />
 
-      {/* <CustomSelect
-        data={categories.map(({ id, name }) => ({
-          value: id || '',
-          optionName: name,
-        }))}
-        label='Categoria'
-        name='category'
-        control={control}
-        defaultValue=''
-        error={errors.category}
-        required
-      />
-
-      <CustomSelect
-        data={subCategories.map(({ internalId, name }) => ({
-          value: internalId,
-          optionName: name,
-        }))}
-        label='Sub-Categoria'
-        name='subCategory'
-        control={control}
-        defaultValue=''
-        error={errors.subCategory}
-        required
-      /> */}
-
       <Divider sx={{ mt: 3 }} />
 
       <ImageSelection data={images} setValue={setValue} watch={watch} />
+      <input
+        type='text'
+        name='imageURL'
+        hidden
+        value={JSON.stringify(images)}
+      />
     </>
   );
 }

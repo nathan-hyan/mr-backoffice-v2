@@ -271,3 +271,69 @@ export const EMPTY_FORM: Product = {
     depth: 0,
   },
 };
+
+export const dummyProduct: Product = {
+  id: '',
+  name: '',
+  description: '',
+  stock: {
+    current: 0,
+    minStock: 0,
+    maxStock: 0,
+    noPhysicalStock: false,
+  },
+  category: '',
+  subCategory: '',
+  translatedCategory: { name: '', id: '', internalId: 0 },
+  translatedSubCategory: { name: '', id: '', internalId: 0 },
+  barcode: '',
+  brand: '',
+  translatedBrand: '',
+  stockOwner: '',
+  dimensions: { height: 0, width: 0, depth: 0 },
+  weight: 0,
+  storePosition: '',
+  providerProductCode: [],
+  specifications: [],
+  variants: [],
+  prices: {
+    cost: {
+      value: 0,
+      lastModified: undefined,
+    },
+    retail: {
+      value: 0,
+      lastModified: undefined,
+    },
+    online: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo1: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo2: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo3: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo4: {
+      value: 0,
+      lastModified: undefined,
+    },
+    reseller: {
+      value: 0,
+      lastModified: undefined,
+    },
+  },
+  internalId: 0,
+  imageURL: [],
+  createdAt: new Timestamp(0, 0),
+  updatedAt: new Timestamp(0, 0),
+  showInStore: false,
+  userFeedback: [],
+};

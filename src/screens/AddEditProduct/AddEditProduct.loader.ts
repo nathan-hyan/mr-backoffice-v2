@@ -16,7 +16,6 @@ export const loader =
   (queryClient: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
     const { id: productId } = params;
-    console.log({ productId });
 
     const brandData = await queryClient.ensureQueryData(brandQuery());
     const categoryData = await queryClient.ensureQueryData(categoryQuery());
@@ -26,8 +25,6 @@ export const loader =
       const allProducts = await queryClient.ensureQueryData(productQuery());
       productData = allProducts.find(({ id }) => id === productId);
     }
-
-    console.log({ productData, result: !productData && productId });
 
     if (!productData && productId) {
       throw new Error(`No se encontró el producto con id ${productId}`);

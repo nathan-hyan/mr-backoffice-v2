@@ -1,4 +1,3 @@
-import { ActionFunctionArgs } from 'react-router-dom';
 import {
   AllInbox,
   AttachMoney,
@@ -8,10 +7,10 @@ import {
   PlusOne,
 } from '@mui/icons-material';
 import { QueryClient } from '@tanstack/react-query';
-import { Product } from 'types/data';
 
 import {
   AddEditProduct,
+  addEditProductAction,
   addEditProductLoader,
   BrandManager,
   brandManagerLoader,
@@ -77,27 +76,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     children: [
       {
         path: 'addProduct',
-        action: async ({ request }: ActionFunctionArgs) => {
-          const formData = await request.formData();
-          let body: Product = {} as Product;
-          formData.forEach((value, key) => {
-            body = { ...body, [key]: value };
-          });
-
-          let stock = { ...body.stock };
-
-          if (body.stock.noPhysicalStock) {
-            stock = {
-              current: 0,
-              maxStock: 0,
-              minStock: 0,
-              noPhysicalStock: true,
-            };
-          }
-
-          console.log({ ...body, stock });
-          return null;
-        },
+        action: queryClient ? addEditProductAction(queryClient) : undefined,
       },
     ],
   },
