@@ -1,19 +1,19 @@
-import { FormEventHandler } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useParams } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import { Button, Container } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
+import { styles } from './AddEditProduct.styles';
 import {
   Dimensions,
+  Information,
   KioskInformation,
   Prices,
   Specifications,
+  Stock,
   Variants,
 } from './components';
-import Information from './components/Information/Information';
-import Stock from './components/Stock/Stock';
 import { EMPTY_FORM } from './constants';
 import useProductModal from './hook';
 import { fabricateFakeData } from './utils';
@@ -49,24 +49,14 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
     productIdToEdit: editMode ? id : null,
   });
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = (data) => {
-    console.log(data);
-  };
-
   return (
     <Container>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <Form noValidate onSubmit={onSubmit}>
-        <Container
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
+      <Form noValidate action='addProduct' method='post'>
+        <Container sx={styles.container}>
           <Information
             setValue={setValue}
             control={control}

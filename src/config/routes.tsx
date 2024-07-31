@@ -1,3 +1,4 @@
+import { ActionFunctionArgs } from 'react-router-dom';
 import {
   AllInbox,
   AttachMoney,
@@ -7,6 +8,7 @@ import {
   PlusOne,
 } from '@mui/icons-material';
 import { QueryClient } from '@tanstack/react-query';
+import { Product } from 'types/data';
 
 import {
   AddEditProduct,
@@ -38,21 +40,21 @@ export const ROUTES = (queryClient?: QueryClient) => [
     id: 99,
     title: 'Playground',
     description: "You're not supposed to be here",
-    path: '/playground',
+    path: 'playground',
     element: <Playground />,
   },
   {
     id: 1,
     title: 'Iniciar sesión',
     description: '',
-    path: '/login',
+    path: 'login',
     element: <Login />,
   },
   {
     id: 2,
     title: 'Perfil del usuario',
     description: '',
-    path: '/profile',
+    path: 'profile',
     element: <UserInfo />,
   },
   {
@@ -60,7 +62,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     title: 'Listado de Productos',
     description: '',
     icon: <FormatListNumbered />,
-    path: '/products',
+    path: 'products',
     loader: queryClient ? productListLoader(queryClient) : undefined,
     element: <ProductList />,
   },
@@ -69,15 +71,41 @@ export const ROUTES = (queryClient?: QueryClient) => [
     title: 'Agregar Producto',
     description: 'Agregando Producto',
     icon: <PlusOne />,
-    path: '/add',
+    path: 'add',
     loader: queryClient ? addEditProductLoader(queryClient) : undefined,
     element: <AddEditProduct />,
+    children: [
+      {
+        path: 'addProduct',
+        action: async ({ request }: ActionFunctionArgs) => {
+          const formData = await request.formData();
+          let body: Product = {} as Product;
+          formData.forEach((value, key) => {
+            body = { ...body, [key]: value };
+          });
+
+          let stock = { ...body.stock };
+
+          if (body.stock.noPhysicalStock) {
+            stock = {
+              current: 0,
+              maxStock: 0,
+              minStock: 0,
+              noPhysicalStock: true,
+            };
+          }
+
+          console.log({ ...body, stock });
+          return null;
+        },
+      },
+    ],
   },
   {
     id: 9,
     title: 'Editar Producto',
     description: 'Editando Producto',
-    path: '/edit/:id',
+    path: 'edit/:id',
     loader: queryClient ? addEditProductLoader(queryClient) : undefined,
     element: <AddEditProduct editMode />,
   },
@@ -86,7 +114,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     icon: <AttachMoney />,
     title: 'Modif. Precios en lote',
     description: '',
-    path: '/priceModifier',
+    path: 'priceModifier',
     element: <PriceModifier />,
   },
   {
@@ -94,7 +122,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     icon: <AllInbox />,
     title: 'Administrador de Categorias',
     description: '',
-    path: '/categoryManager',
+    path: 'categoryManager',
     loader: queryClient ? categoryManagerLoader(queryClient) : undefined,
     element: <CategoryManager />,
   },
@@ -103,7 +131,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     icon: <LocalOffer />,
     title: 'Administrador de Marcas',
     description: '',
-    path: '/brandManager',
+    path: 'brandManager',
     loader: queryClient ? brandManagerLoader(queryClient) : undefined,
     element: <BrandManager />,
   },
@@ -113,7 +141,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     title: 'Generador de etiquetas de precio',
     loader: queryClient ? productListLoader(queryClient) : undefined,
     description: '',
-    path: '/pricetaggenerator',
+    path: 'pricetaggenerator',
     element: <PriceTagGenerator />,
   },
 ];

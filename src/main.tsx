@@ -48,11 +48,14 @@ const router = createHashRouter([
         <Analytics />
       </HelmetProvider>
     ),
-    children: ROUTES(queryClient).map(({ path, element, loader }) => ({
-      path,
-      element,
-      loader,
-    })),
+    children: ROUTES(queryClient).map(
+      ({ path, element, loader, children }) => ({
+        path,
+        element,
+        loader,
+        children,
+      })
+    ),
   },
 ]);
 
