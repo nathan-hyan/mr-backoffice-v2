@@ -1,5 +1,6 @@
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useParams } from 'react-router-dom';
+import { Form, useParams, useSubmit } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import { Button, Container } from '@mui/material';
 import type { Product } from 'types/data';
@@ -20,11 +21,14 @@ import { fabricateFakeData } from './utils';
 
 function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
   const { id } = useParams();
+  const ref = useRef<HTMLFormElement>(null);
+  const submit = useSubmit();
 
-  const { control, watch, formState, setValue } = useForm<Product>({
-    defaultValues: EMPTY_FORM,
-    mode: 'onChange',
-  });
+  const { control, watch, formState, setValue, handleSubmit } =
+    useForm<Product>({
+      defaultValues: EMPTY_FORM,
+      mode: 'onChange',
+    });
 
   const { errors } = formState;
 
@@ -49,13 +53,50 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
     productIdToEdit: editMode ? id : null,
   });
 
+  const checkForErrors = () => {
+    const errorsArray = Object.keys(errors);
+    if (errorsArray.length !== 0) {
+      const input =
+        document.querySelector(`input[name=${errorsArray[0]}]`) ||
+        document.querySelector(`textarea[name=${errorsArray[0]}]`);
+
+      if (input) {
+        input?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      }
+
+      return;
+    }
+
+    if (watch('imageURL').filter(Boolean).length === 0) {
+      const imageButton = document.getElementById('upload-button');
+
+      imageButton?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'start',
+      });
+    }
+
+    submit(ref.current);
+  };
+
   return (
     <Container>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <Form action='addProduct' method='post'>
+      <Form
+        noValidate
+        action='addProduct'
+        method='post'
+        ref={ref}
+        onSubmit={handleSubmit(checkForErrors)}
+      >
         <Container sx={styles.container}>
           <Information
             setValue={setValue}

@@ -37,6 +37,7 @@ function Information({ control, watch, errors, setValue }: Props) {
   const subCategories = getSubcategories(watch('category'), category);
 
   const images = watch('imageURL').filter(Boolean);
+  console.log(watch('translatedCategory'), watch('translatedSubCategory'));
 
   const handleGenerateBarcode = () => {
     const barcode = generateBarcode();
@@ -82,7 +83,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
       <Controller
         control={control}
-        name='category'
+        name='translatedCategory'
         rules={{
           required: {
             value: true,
@@ -96,7 +97,7 @@ function Information({ control, watch, errors, setValue }: Props) {
               field.onChange(value?.value);
             }}
             value={{
-              value: field.value,
+              value: field.value?.id || '',
               label: category.find(({ id }) => id === field.value)?.name || '',
             }}
             disablePortal
@@ -114,7 +115,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='category'
+                name='translatedCategory'
                 required
                 label='Categoría'
                 error={Boolean(errors.category)}
@@ -127,7 +128,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
       <Controller
         control={control}
-        name='subCategory'
+        name='translatedSubCategory'
         rules={{
           required: {
             value: true,
@@ -165,7 +166,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='subCategory'
+                name='translatedSubCategory'
                 required
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
@@ -183,7 +184,22 @@ function Information({ control, watch, errors, setValue }: Props) {
         type='text'
         name='imageURL'
         hidden
+        readOnly
         value={JSON.stringify(images)}
+      />
+      <input
+        type='text'
+        name='category'
+        hidden
+        readOnly
+        value={String(watch('translatedCategory'))}
+      />
+      <input
+        type='text'
+        name='subCategory'
+        hidden
+        readOnly
+        value={String(watch('translatedSubCategory'))}
       />
     </>
   );
