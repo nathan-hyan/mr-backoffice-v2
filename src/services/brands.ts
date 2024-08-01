@@ -25,5 +25,5 @@ export const fetchBrands = async () => {
 export const brandQuery = () =>
   queryOptions({
     queryKey: ['brands'],
-    queryFn: () => fetchBrands(),
+    queryFn: fetchBrands,
   });

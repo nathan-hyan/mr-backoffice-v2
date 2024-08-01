@@ -7,11 +7,29 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import { enqueueSnackbar } from 'notistack';
-import type { Product } from 'types/data';
+import type { Brand, Category, Product } from 'types/data';
 
 import { database } from '~config/firebase';
+import {
+  filterProducts,
+  sortProducts,
+} from '~screens/ProductList/ProductList.utils';
 
-export const fetchProducts = async () => {
+export interface ProductQuery {
+  searchTerm?: string;
+  searchCriteria?: string;
+  sortBy?: string;
+  categoryData?: Category[];
+  brandData?: Brand[];
+}
+
+export const fetchProducts = async ({
+  searchTerm,
+  searchCriteria,
+  sortBy,
+  categoryData,
+  brandData,
+}: ProductQuery) => {
   const querySnap = await getDocs(collection(database, 'products'));
   const data: Product[] = [];
 
@@ -26,7 +44,22 @@ export const fetchProducts = async () => {
     })
   );
 
-  return data;
+  const filteredProducts = filterProducts(data, searchTerm, searchCriteria);
+  const sortedProducts = sortProducts(filteredProducts, sortBy);
+
+  sortedProducts.forEach((product) => {
+    const category = categoryData?.find(({ id }) => id === product.category);
+    const subCategory = category?.subCategories?.find(
+      ({ internalId }) => internalId === Number(product.subCategory)
+    );
+    const brand = brandData?.find(({ id }) => id === product.brand);
+
+    product.translatedBrand = brand?.name || '';
+    product.translatedCategory = category;
+    product.translatedSubCategory = subCategory;
+  });
+
+  return sortedProducts;
 };
 
 export const addProduct: (
@@ -49,8 +82,22 @@ export const addProduct: (
   }
 };
 
-export const productQuery = () =>
+export const productQuery = ({
+  searchTerm,
+  searchCriteria,
+  sortBy,
+  categoryData = [],
+  brandData = [],
+}: ProductQuery) =>
   queryOptions({
-    queryKey: ['products'],
-    queryFn: () => fetchProducts(),
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: ['products', { searchTerm, searchCriteria, sortBy }],
+    queryFn: () =>
+      fetchProducts({
+        searchTerm,
+        searchCriteria,
+        sortBy,
+        categoryData,
+        brandData,
+      }),
   });

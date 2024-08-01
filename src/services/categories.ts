@@ -25,5 +25,5 @@ export const fetchCategories = async () => {
 export const categoryQuery = () =>
   queryOptions({
     queryKey: ['categories'],
-    queryFn: () => fetchCategories(),
+    queryFn: fetchCategories,
   });

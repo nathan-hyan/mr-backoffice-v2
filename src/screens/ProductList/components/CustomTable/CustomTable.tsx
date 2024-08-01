@@ -11,10 +11,13 @@ import {
   TableHead,
   TablePagination,
 } from '@mui/material';
-import type { Product } from 'types/data';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useGATag } from '~hooks';
+import { brandQuery } from '~services/brands';
+import { categoryQuery } from '~services/categories';
+import { ProductQuery, productQuery } from '~services/products';
 
 import { Row } from './components';
 
@@ -23,8 +26,19 @@ function CustomTable() {
   const { tagAction } = useGATag(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const data = useLoaderData() as Product[];
+  const { searchCriteria, searchTerm, sortBy } =
+    useLoaderData() as ProductQuery;
+  const { data: brandData } = useSuspenseQuery(brandQuery());
+  const { data: categoryData } = useSuspenseQuery(categoryQuery());
+  const { data: productData } = useSuspenseQuery(
+    productQuery({
+      searchCriteria,
+      searchTerm,
+      sortBy,
+      categoryData,
+      brandData,
+    })
+  );
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     tagAction(GACategories.Event, GATypes.Click, `Changed to page ${newPage}`);
@@ -47,9 +61,9 @@ function CustomTable() {
         <TableHead>
           <Row header='show' />
         </TableHead>
-        {data ? (
+        {productData ? (
           <TableBody>
-            {data
+            {productData
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((product) => (
                 <Row
@@ -64,7 +78,7 @@ function CustomTable() {
       <TablePagination
         rowsPerPageOptions={[3, 5, 10, 25]}
         component='div'
-        count={data?.length || -1}
+        count={productData?.length || -1}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

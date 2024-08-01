@@ -55,7 +55,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <Form noValidate action='addProduct' method='post'>
+      <Form action='addProduct' method='post'>
         <Container sx={styles.container}>
           <Information
             setValue={setValue}

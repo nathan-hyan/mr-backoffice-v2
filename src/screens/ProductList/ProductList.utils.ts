@@ -1,10 +1,6 @@
 import { Product } from 'types/data';
-import { Nullable } from 'vite-env';
 
-export const sortProducts = (
-  products: Product[],
-  sortBy: Nullable<string> = 'name'
-) => {
+export const sortProducts = (products: Product[], sortBy: string = 'name') => {
   switch (sortBy) {
     case 'name':
       return products.sort((a, b) => a.name.localeCompare(b.name));
@@ -24,8 +20,8 @@ export const sortProducts = (
 
 export const filterProducts = (
   products: Product[],
-  searchTerm: Nullable<string>,
-  searchCriteria: Nullable<string>
+  searchTerm?: string,
+  searchCriteria?: string
 ) => {
   return products.filter((product) => {
     if (!searchTerm) {
