@@ -71,6 +71,8 @@ function ProductDetail({
   const hasPhysicalStock = !data.stock.noPhysicalStock;
   const hasProviderProductCode = data.providerProductCode?.length > 0;
 
+  console.log(data.imageURL);
+
   return (
     <Box sx={styles.container}>
       <Box sx={{ width: '25%' }}>

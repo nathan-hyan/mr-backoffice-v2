@@ -5,7 +5,6 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
-import { useLoaderData } from 'react-router-dom';
 import CachedIcon from '@mui/icons-material/Cached';
 import {
   Autocomplete,
@@ -15,12 +14,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
-import type { LoaderData } from '~screens/AddEditProduct/AddEditProduct.loader';
 import { PRODUCT_FORM } from '~screens/AddEditProduct/constants';
+import { categoryQuery } from '~services/categories';
 
 import ImageSelection from './components/ImageSelection/ImageSelection';
 import { generateBarcode, getSubcategories } from './utils';
@@ -30,10 +30,11 @@ interface Props {
   watch: UseFormWatch<Product>;
   errors: FieldErrors<Product>;
   setValue: UseFormSetValue<Product>;
+  data?: Product;
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { category } = useLoaderData() as LoaderData;
+  const { data: category } = useSuspenseQuery(categoryQuery());
   const subCategories = getSubcategories(watch('category'), category);
 
   const images = watch('imageURL').filter(Boolean);

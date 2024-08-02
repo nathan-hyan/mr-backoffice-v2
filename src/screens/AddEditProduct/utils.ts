@@ -1,3 +1,4 @@
+import { SubmitOptions } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import { Timestamp } from 'firebase/firestore';
 import type {
@@ -68,4 +69,10 @@ export function fabricateFakeData(): {
       value: faker.number.int({ min: 2, max: 10 }),
     },
   ];
+}
+
+export function getSubmitMode(editMode: boolean): SubmitOptions {
+  return editMode
+    ? { action: 'editProduct', method: 'put' }
+    : { action: 'addProduct', method: 'post' };
 }

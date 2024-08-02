@@ -1,38 +1,36 @@
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { Timestamp } from 'firebase/firestore';
-import { enqueueSnackbar } from 'notistack';
+// import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 
-import { flattenToNested } from '~config/configUtils';
-import { addProduct } from '~services/products';
+import { addProduct, updateProduct } from '~services/products';
+import { prepareFormData } from '~utils/prepareFormData';
 
 import { dummyProduct } from './constants';
 
 export const action =
   (queryClient: QueryClient) =>
-  async ({ request }: ActionFunctionArgs) => {
-    const formData = await request.formData();
-    let body: Product = {} as Product;
+  async ({ request, params }: ActionFunctionArgs) => {
+    const body = (await prepareFormData<Product>({
+      request,
+      params,
+    })) as Product;
 
-    formData.forEach((value, key) => {
-      body = { ...body, [key]: value };
-    });
+    // TODO: Re-enable when testing is ready
 
-    const flattenedBody = flattenToNested(body) as Product;
+    // if (
+    //   !JSON.parse(String(flattenedBody.imageURL) || 'undefined') ||
+    //   JSON.parse(String(flattenedBody.imageURL))?.length < 1
+    // ) {
+    //   enqueueSnackbar(`No se puede crear un producto sin imagen`, {
+    //     variant: 'error',
+    //   });
 
-    if (
-      !JSON.parse(String(flattenedBody.imageURL) || 'undefined') ||
-      JSON.parse(String(flattenedBody.imageURL))?.length < 1
-    ) {
-      enqueueSnackbar(`No se puede crear un producto sin imagen`, {
-        variant: 'error',
-      });
+    //   return null;
+    // }
 
-      return null;
-    }
-
-    let stock = { ...flattenedBody.stock };
+    let stock = { ...body.stock };
 
     if (stock.noPhysicalStock) {
       stock = {
@@ -45,8 +43,8 @@ export const action =
 
     await addProduct({
       ...dummyProduct,
-      ...flattenedBody,
-      imageURL: JSON.parse(String(flattenedBody.imageURL)),
+      ...body,
+      imageURL: JSON.parse(String(body.imageURL)),
       createdAt: new Timestamp(
         new Date().getSeconds(),
         new Date().getMilliseconds()
@@ -56,6 +54,27 @@ export const action =
         new Date().getMilliseconds()
       ),
       stock,
+    });
+
+    await queryClient?.invalidateQueries({ queryKey: ['products'] });
+    return redirect('/products');
+  };
+
+export const editAction =
+  (queryClient: QueryClient) =>
+  async ({ request, params }: ActionFunctionArgs) => {
+    const body = (await prepareFormData<Product>({
+      request,
+      params,
+    })) as Product;
+
+    await updateProduct({
+      ...body,
+      imageURL: JSON.parse(String(body.imageURL)),
+      updatedAt: new Timestamp(
+        new Date().getSeconds(),
+        new Date().getMilliseconds()
+      ),
     });
 
     await queryClient?.invalidateQueries({ queryKey: ['products'] });

@@ -2,12 +2,15 @@ import { queryOptions } from '@tanstack/react-query';
 import {
   addDoc,
   collection,
+  doc,
   DocumentData,
   DocumentReference,
   getDocs,
+  updateDoc,
 } from 'firebase/firestore';
 import { enqueueSnackbar } from 'notistack';
 import type { Brand, Category, Product } from 'types/data';
+import { Nullable } from 'vite-env';
 
 import { database } from '~config/firebase';
 import {
@@ -16,17 +19,17 @@ import {
 } from '~screens/ProductList/ProductList.utils';
 
 export interface ProductQuery {
-  searchTerm?: string;
-  searchCriteria?: string;
-  sortBy?: string;
-  categoryData?: Category[];
-  brandData?: Brand[];
+  searchTerm: Nullable<string>;
+  searchCriteria: Nullable<string>;
+  sortBy: Nullable<string>;
+  productId?: string;
 }
 
 export const fetchProducts = async ({
-  searchTerm,
-  searchCriteria,
-  sortBy,
+  searchTerm = null,
+  searchCriteria = null,
+  sortBy = null,
+  productId,
 }: ProductQuery) => {
   const querySnapProducts = await getDocs(collection(database, 'products'));
   const querySnapBrands = await getDocs(collection(database, 'brands'));
@@ -61,8 +64,12 @@ export const fetchProducts = async ({
     })
   );
 
-  const filteredProducts = filterProducts(data, searchTerm, searchCriteria);
-  const sortedProducts = sortProducts(filteredProducts, sortBy);
+  const filteredProducts = filterProducts(
+    data,
+    searchTerm || undefined,
+    searchCriteria || undefined
+  );
+  const sortedProducts = sortProducts(filteredProducts, sortBy || undefined);
 
   sortedProducts.forEach((product) => {
     const category = categories?.find(({ id }) => id === product.category);
@@ -76,7 +83,9 @@ export const fetchProducts = async ({
     product.translatedSubCategory = subCategory;
   });
 
-  return sortedProducts;
+  const product = sortedProducts.find(({ id }) => id === productId);
+
+  return productId ? product : sortedProducts;
 };
 
 export const addProduct: (
@@ -99,22 +108,34 @@ export const addProduct: (
   }
 };
 
+export const updateProduct = async (newData: Product) => {
+  const docRef = doc(database, 'products', newData.id);
+
+  await updateDoc(docRef, newData as Product & { [key: string]: string })
+    .then(() => {
+      enqueueSnackbar('Item editado correctamente', {
+        variant: 'info',
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      throw new Error('Ocurrió un error inesperado.');
+    });
+};
+
 export const productQuery = ({
   searchTerm,
   searchCriteria,
   sortBy,
-  categoryData = [],
-  brandData = [],
+  productId,
 }: ProductQuery) =>
   queryOptions({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['products', { searchTerm, searchCriteria, sortBy }],
+    queryKey: ['products', { searchTerm, searchCriteria, sortBy, productId }],
     queryFn: () =>
       fetchProducts({
         searchTerm,
         searchCriteria,
         sortBy,
-        categoryData,
-        brandData,
+        productId,
       }),
   });

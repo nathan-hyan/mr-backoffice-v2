@@ -22,8 +22,9 @@ export const loader =
     let productData;
 
     if (productId) {
-      const allProducts = await queryClient.ensureQueryData(productQuery());
-      productData = allProducts.find(({ id }) => id === productId);
+      productData = await queryClient.ensureQueryData(
+        productQuery({ productId })
+      );
     }
 
     if (!productData && productId) {

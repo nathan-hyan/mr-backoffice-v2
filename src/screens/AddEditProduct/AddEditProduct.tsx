@@ -1,12 +1,6 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  Form,
-  useNavigate,
-  useNavigation,
-  // useParams,
-  useSubmit,
-} from 'react-router-dom';
+import { Form, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import { Button, Container } from '@mui/material';
 import type { Product } from 'types/data';
@@ -22,18 +16,19 @@ import {
   Variants,
 } from './components';
 import { EMPTY_FORM } from './constants';
-import { fabricateFakeData } from './utils';
+import { useProductData } from './hooks';
+import { fabricateFakeData, getSubmitMode } from './utils';
 
 function AddEditProduct() {
   const submit = useSubmit();
   const navigate = useNavigate();
   const ref = useRef<HTMLFormElement>(null);
 
-  // const { id } = useParams();
+  const { editMode, data } = useProductData();
   const { state } = useNavigation();
   const { control, watch, formState, setValue, handleSubmit } =
     useForm<Product>({
-      defaultValues: EMPTY_FORM,
+      defaultValues: editMode ? data : EMPTY_FORM,
       mode: 'onChange',
     });
 
@@ -64,15 +59,17 @@ function AddEditProduct() {
       return;
     }
 
-    if (watch('imageURL').filter(Boolean).length === 0) {
-      const imageButton = document.getElementById('upload-button');
+    // TODO: Re-enable when testing is ready
 
-      imageButton?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'start',
-      });
-    }
+    // if (watch('imageURL').filter(Boolean).length === 0) {
+    //   const imageButton = document.getElementById('upload-button');
+
+    //   imageButton?.scrollIntoView({
+    //     behavior: 'smooth',
+    //     block: 'center',
+    //     inline: 'start',
+    //   });
+    // }
 
     const categoryId = watch('category');
     const subCategoryId = watch('subCategory');
@@ -83,7 +80,7 @@ function AddEditProduct() {
     form.set('category', categoryId);
     form.set('subCategory', subCategoryId);
 
-    submit(form, { action: 'addProduct', method: 'post' });
+    submit(form, getSubmitMode(editMode));
   };
 
   return (
@@ -95,6 +92,7 @@ function AddEditProduct() {
       <Form noValidate ref={ref} onSubmit={handleSubmit(checkForErrors)}>
         <Container sx={styles.container}>
           <Information
+            data={data}
             setValue={setValue}
             control={control}
             watch={watch}

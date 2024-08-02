@@ -10,12 +10,13 @@ import { QueryClient } from '@tanstack/react-query';
 
 import {
   AddEditProduct,
-  addEditProductAction,
   addEditProductLoader,
+  addProductAction,
   BrandManager,
   brandManagerLoader,
   CategoryManager,
   categoryManagerLoader,
+  editProductAction,
   Login,
   Playground,
   PriceModifier,
@@ -76,7 +77,7 @@ export const ROUTES = (queryClient?: QueryClient) => [
     children: [
       {
         path: 'addProduct',
-        action: queryClient ? addEditProductAction(queryClient) : undefined,
+        action: queryClient ? addProductAction(queryClient) : undefined,
       },
     ],
   },
@@ -86,7 +87,13 @@ export const ROUTES = (queryClient?: QueryClient) => [
     description: 'Editando Producto',
     path: 'edit/:id',
     loader: queryClient ? addEditProductLoader(queryClient) : undefined,
-    element: <AddEditProduct editMode />,
+    element: <AddEditProduct />,
+    children: [
+      {
+        path: 'editProduct',
+        action: queryClient ? editProductAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 4,
