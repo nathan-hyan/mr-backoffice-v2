@@ -15,8 +15,6 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useGATag } from '~hooks';
-import { brandQuery } from '~services/brands';
-import { categoryQuery } from '~services/categories';
 import { ProductQuery, productQuery } from '~services/products';
 
 import { Row } from './components';
@@ -26,17 +24,14 @@ function CustomTable() {
   const { tagAction } = useGATag(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const { searchCriteria, searchTerm, sortBy } =
     useLoaderData() as ProductQuery;
-  const { data: brandData } = useSuspenseQuery(brandQuery());
-  const { data: categoryData } = useSuspenseQuery(categoryQuery());
   const { data: productData } = useSuspenseQuery(
     productQuery({
       searchCriteria,
       searchTerm,
       sortBy,
-      categoryData,
-      brandData,
     })
   );
 

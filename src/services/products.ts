@@ -27,17 +27,34 @@ export const fetchProducts = async ({
   searchTerm,
   searchCriteria,
   sortBy,
-  categoryData,
-  brandData,
 }: ProductQuery) => {
-  const querySnap = await getDocs(collection(database, 'products'));
-  const data: Product[] = [];
+  const querySnapProducts = await getDocs(collection(database, 'products'));
+  const querySnapBrands = await getDocs(collection(database, 'brands'));
+  const querySnapCategories = await getDocs(collection(database, 'categories'));
 
-  if (querySnap.empty) {
+  const data: Product[] = [];
+  const brands: Brand[] = [];
+  const categories: Category[] = [];
+
+  if (querySnapProducts.empty) {
     return data;
   }
 
-  querySnap.forEach((doc) =>
+  querySnapBrands.forEach((doc) =>
+    brands.push({
+      ...(doc.data() as Product),
+      id: doc.id,
+    })
+  );
+
+  querySnapCategories.forEach((doc) =>
+    categories.push({
+      ...(doc.data() as Product),
+      id: doc.id,
+    })
+  );
+
+  querySnapProducts.forEach((doc) =>
     data.push({
       ...(doc.data() as Product),
       id: doc.id,
@@ -48,11 +65,11 @@ export const fetchProducts = async ({
   const sortedProducts = sortProducts(filteredProducts, sortBy);
 
   sortedProducts.forEach((product) => {
-    const category = categoryData?.find(({ id }) => id === product.category);
+    const category = categories?.find(({ id }) => id === product.category);
     const subCategory = category?.subCategories?.find(
       ({ internalId }) => internalId === Number(product.subCategory)
     );
-    const brand = brandData?.find(({ id }) => id === product.brand);
+    const brand = brands?.find(({ id }) => id === product.brand);
 
     product.translatedBrand = brand?.name || '';
     product.translatedCategory = category;

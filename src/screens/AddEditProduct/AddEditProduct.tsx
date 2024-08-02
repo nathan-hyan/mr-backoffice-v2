@@ -1,6 +1,12 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Form, useParams, useSubmit } from 'react-router-dom';
+import {
+  Form,
+  useNavigate,
+  useNavigation,
+  // useParams,
+  useSubmit,
+} from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
 import { Button, Container } from '@mui/material';
 import type { Product } from 'types/data';
@@ -16,20 +22,22 @@ import {
   Variants,
 } from './components';
 import { EMPTY_FORM } from './constants';
-import useProductModal from './hook';
 import { fabricateFakeData } from './utils';
 
-function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
-  const { id } = useParams();
-  const ref = useRef<HTMLFormElement>(null);
+function AddEditProduct() {
   const submit = useSubmit();
+  const navigate = useNavigate();
+  const ref = useRef<HTMLFormElement>(null);
 
+  // const { id } = useParams();
+  const { state } = useNavigation();
   const { control, watch, formState, setValue, handleSubmit } =
     useForm<Product>({
       defaultValues: EMPTY_FORM,
       mode: 'onChange',
     });
 
+  const creatingLoading = state === 'submitting';
   const { errors } = formState;
 
   const fillFakeData = () => {
@@ -37,21 +45,6 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
       setValue(field as keyof Product, value);
     });
   };
-
-  const {
-    // fillFakeData,
-    handleCancel,
-    // onSubmit,
-    // checkForErrors,
-    // handleSubmit,
-    // control,
-    creatingLoading,
-    // errors,
-    // setValue,
-    // watch,
-  } = useProductModal({
-    productIdToEdit: editMode ? id : null,
-  });
 
   const checkForErrors = () => {
     const errorsArray = Object.keys(errors);
@@ -81,7 +74,16 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
       });
     }
 
-    submit(ref.current);
+    const categoryId = watch('category');
+    const subCategoryId = watch('subCategory');
+
+    const form = new FormData(ref.current!);
+
+    // Append category id and subCategory id to form
+    form.set('category', categoryId);
+    form.set('subCategory', subCategoryId);
+
+    submit(form, { action: 'addProduct', method: 'post' });
   };
 
   return (
@@ -90,13 +92,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <Form
-        noValidate
-        action='addProduct'
-        method='post'
-        ref={ref}
-        onSubmit={handleSubmit(checkForErrors)}
-      >
+      <Form noValidate ref={ref} onSubmit={handleSubmit(checkForErrors)}>
         <Container sx={styles.container}>
           <Information
             setValue={setValue}
@@ -117,7 +113,7 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             variant='outlined'
             startIcon={<CancelRounded />}
             color='error'
-            onClick={handleCancel}
+            onClick={() => navigate(-1)}
             disabled={creatingLoading}
           >
             Cancelar

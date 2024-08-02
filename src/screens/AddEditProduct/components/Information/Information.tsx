@@ -37,7 +37,6 @@ function Information({ control, watch, errors, setValue }: Props) {
   const subCategories = getSubcategories(watch('category'), category);
 
   const images = watch('imageURL').filter(Boolean);
-  console.log(watch('translatedCategory'), watch('translatedSubCategory'));
 
   const handleGenerateBarcode = () => {
     const barcode = generateBarcode();
@@ -70,7 +69,7 @@ function Information({ control, watch, errors, setValue }: Props) {
           endAdornment: (
             <InputAdornment position='end'>
               <IconButton
-                aria-label='toggle password visibility'
+                aria-label='generate barcode'
                 onClick={handleGenerateBarcode}
                 edge='end'
               >
@@ -83,7 +82,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
       <Controller
         control={control}
-        name='translatedCategory'
+        name='category'
         rules={{
           required: {
             value: true,
@@ -97,7 +96,7 @@ function Information({ control, watch, errors, setValue }: Props) {
               field.onChange(value?.value);
             }}
             value={{
-              value: field.value?.id || '',
+              value: field.value,
               label: category.find(({ id }) => id === field.value)?.name || '',
             }}
             disablePortal
@@ -115,8 +114,9 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='translatedCategory'
+                name='category'
                 required
+                type={InputType.Text}
                 label='Categoría'
                 error={Boolean(errors.category)}
                 helperText={errors.category?.message}
@@ -128,7 +128,7 @@ function Information({ control, watch, errors, setValue }: Props) {
 
       <Controller
         control={control}
-        name='translatedSubCategory'
+        name='subCategory'
         rules={{
           required: {
             value: true,
@@ -166,7 +166,8 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='translatedSubCategory'
+                name='subCategory'
+                type={InputType.Text}
                 required
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
@@ -186,20 +187,6 @@ function Information({ control, watch, errors, setValue }: Props) {
         hidden
         readOnly
         value={JSON.stringify(images)}
-      />
-      <input
-        type='text'
-        name='category'
-        hidden
-        readOnly
-        value={String(watch('translatedCategory'))}
-      />
-      <input
-        type='text'
-        name='subCategory'
-        hidden
-        readOnly
-        value={String(watch('translatedSubCategory'))}
       />
     </>
   );

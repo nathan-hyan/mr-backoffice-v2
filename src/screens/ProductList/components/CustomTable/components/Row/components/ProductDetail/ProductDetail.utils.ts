@@ -75,6 +75,8 @@ export const prepareDataForDisplay = (data: Product) => {
   delete copy.showInStore;
   delete copy.userFeedback;
   delete copy.stock;
+  delete copy.translatedCategory;
+  delete copy.translatedSubCategory;
 
   Object.keys(copy).forEach((field) => {
     if (field === 'weight') {
@@ -83,6 +85,10 @@ export const prepareDataForDisplay = (data: Product) => {
         value: `${copy.weight}kg`,
       });
 
+      return;
+    }
+
+    if (field === 'translatedBrand') {
       return;
     }
 
