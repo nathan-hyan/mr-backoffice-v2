@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase/firestore';
 
-export const timestampTranslator = (firestoreTimestamp: Timestamp) => {
+const timestampTranslator = (firestoreTimestamp: Timestamp) => {
   const date = new Timestamp(
     firestoreTimestamp.seconds,
     firestoreTimestamp.nanoseconds
@@ -13,3 +13,5 @@ export const timestampTranslator = (firestoreTimestamp: Timestamp) => {
 
   return String(result);
 };
+
+export default timestampTranslator;

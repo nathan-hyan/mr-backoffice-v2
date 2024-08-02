@@ -1,4 +1,4 @@
-import { objectIterator } from './objectIterator';
+import objectIterator from './objectIterator';
 
 describe('objectIterator', () => {
   it('returns an empty array for an empty object', () => {

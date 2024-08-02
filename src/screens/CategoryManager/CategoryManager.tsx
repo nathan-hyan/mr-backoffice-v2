@@ -6,12 +6,14 @@ import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
 import { useFirestore, useModal } from '~hooks';
-import getLatestInternalId from '~utils/getLatestInternalId';
+import { getLatestInternalId } from '~utils';
 
-import AddCategory from './components/AddCategory';
-import AddSubCategory from './components/AddSubCategory';
-import CategoryList from './components/CategoryList';
-import CurrentCategory from './components/CurrentCategory';
+import {
+  AddCategory,
+  AddSubCategory,
+  CategoryList,
+  CurrentCategory,
+} from './components';
 
 function CategoryManager() {
   const { removeDocument, addDocument, updateDocument, creatingLoading } =

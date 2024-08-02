@@ -15,11 +15,10 @@ import {
 import type { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu/CustomMenu';
-import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
+import { CustomMenu, DeleteAlert } from '~components';
 import { FirestoreCollections } from '~constants/firebase';
 import { useFirestore } from '~hooks';
-import calculateNumberWithPercentage from '~utils/addPercentage';
+import { calculateNumberWithPercentage } from '~utils';
 
 import { ProductDetail } from './components';
 

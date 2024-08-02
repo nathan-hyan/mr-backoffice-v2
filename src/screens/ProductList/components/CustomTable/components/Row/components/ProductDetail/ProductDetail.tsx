@@ -25,9 +25,9 @@ import type { Product } from 'types/data';
 import CustomListItem from '~components/CustomListItem/CustomListItem';
 import { FirestoreCollections } from '~constants/firebase';
 import { useFirestore } from '~hooks';
-import calculateNumberWithPercentage from '~utils/addPercentage';
-import { objectIterator } from '~utils/objectIterator';
-import { timestampTranslator } from '~utils/timestampTranslator';
+import { calculateNumberWithPercentage } from '~utils';
+import { objectIterator } from '~utils';
+import { timestampTranslator } from '~utils';
 
 import {
   getAverageRating,

@@ -6,7 +6,7 @@ import { Box, Button, Divider, Typography } from '@mui/material';
 import type { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import calculateNumberWithPercentage from '~utils/addPercentage';
+import { calculateNumberWithPercentage } from '~utils';
 
 import ControlPanel from './components/ControlPanel';
 import PriceTag from './components/PriceTag';

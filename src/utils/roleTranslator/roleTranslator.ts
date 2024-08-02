@@ -1,6 +1,6 @@
 import { UserRoles } from '~constants/firebase';
 
-export function roleTranslator(role?: UserRoles) {
+function roleTranslator(role?: UserRoles) {
   switch (role) {
     case UserRoles.Admin:
       return 'Administrador';
@@ -13,3 +13,5 @@ export function roleTranslator(role?: UserRoles) {
       return 'Cliente';
   }
 }
+
+export default roleTranslator;

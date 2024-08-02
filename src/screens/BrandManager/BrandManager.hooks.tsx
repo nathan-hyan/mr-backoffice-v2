@@ -4,7 +4,7 @@ import { Nullable } from 'vite-env';
 
 import { FirestoreCollections } from '~constants/firebase';
 import { useFirestore } from '~hooks';
-import getLatestInternalId from '~utils/getLatestInternalId';
+import { getLatestInternalId } from '~utils';
 
 export type BrandType = Nullable<Brand & { id: string }>;
 

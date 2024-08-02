@@ -5,7 +5,7 @@ import type { Product } from 'types/data';
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import { PRICE_FORM } from '~screens/AddEditProduct/constants';
-import calculateNumberWithPercentage from '~utils/addPercentage';
+import { calculateNumberWithPercentage } from '~utils';
 
 interface Props {
   control: Control<Product, unknown>;

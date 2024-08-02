@@ -1,6 +1,6 @@
 import { UserRoles } from '~constants/firebase';
 
-import { roleTranslator } from './roleTranslator';
+import roleTranslator from './roleTranslator';
 
 describe.each([
   {

@@ -5,7 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 
 import { addProduct, updateProduct } from '~services/products';
-import { prepareFormData } from '~utils/prepareFormData';
+import { prepareFormData } from '~utils';
 
 import { dummyProduct } from './constants';
 

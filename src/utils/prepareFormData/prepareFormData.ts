@@ -2,7 +2,7 @@ import { ActionFunctionArgs } from 'react-router-dom';
 
 import { flattenToNested } from '~config/configUtils';
 
-export const prepareFormData = async <T extends object>({
+const prepareFormData = async <T extends object>({
   request,
   params,
 }: ActionFunctionArgs) => {
@@ -20,3 +20,5 @@ export const prepareFormData = async <T extends object>({
 
   return params.id ? flattenedBodyWithId : flattenToNested(body);
 };
+
+export default prepareFormData;
