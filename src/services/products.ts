@@ -124,10 +124,10 @@ export const updateProduct = async (newData: Product) => {
 };
 
 export const productQuery = ({
-  searchTerm,
-  searchCriteria,
-  sortBy,
-  productId,
+  searchTerm = null,
+  searchCriteria = null,
+  sortBy = null,
+  productId = undefined,
 }: ProductQuery) =>
   queryOptions({
     queryKey: ['products', { searchTerm, searchCriteria, sortBy, productId }],
