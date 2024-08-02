@@ -59,17 +59,15 @@ function AddEditProduct() {
       return;
     }
 
-    // TODO: Re-enable when testing is ready
+    if (watch('imageURL').filter(Boolean).length === 0) {
+      const imageButton = document.getElementById('upload-button');
 
-    // if (watch('imageURL').filter(Boolean).length === 0) {
-    //   const imageButton = document.getElementById('upload-button');
-
-    //   imageButton?.scrollIntoView({
-    //     behavior: 'smooth',
-    //     block: 'center',
-    //     inline: 'start',
-    //   });
-    // }
+      imageButton?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'start',
+      });
+    }
 
     const categoryId = watch('category');
     const subCategoryId = watch('subCategory');

@@ -1,7 +1,7 @@
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 import { Timestamp } from 'firebase/firestore';
-// import { enqueueSnackbar } from 'notistack';
+import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 
 import { addProduct, updateProduct } from '~services/products';
@@ -17,18 +17,16 @@ export const action =
       params,
     })) as Product;
 
-    // TODO: Re-enable when testing is ready
+    if (
+      !JSON.parse(String(body.imageURL) || 'undefined') ||
+      JSON.parse(String(body.imageURL))?.length < 1
+    ) {
+      enqueueSnackbar(`No se puede crear un producto sin imagen`, {
+        variant: 'error',
+      });
 
-    // if (
-    //   !JSON.parse(String(flattenedBody.imageURL) || 'undefined') ||
-    //   JSON.parse(String(flattenedBody.imageURL))?.length < 1
-    // ) {
-    //   enqueueSnackbar(`No se puede crear un producto sin imagen`, {
-    //     variant: 'error',
-    //   });
-
-    //   return null;
-    // }
+      return null;
+    }
 
     let stock = { ...body.stock };
 
