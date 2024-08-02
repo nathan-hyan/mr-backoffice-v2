@@ -8,15 +8,19 @@ export const loader =
   async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url);
 
-    const searchTerm = url.searchParams.get('q');
-    const searchCriteria = url.searchParams.get('sc');
-    const sortBy = url.searchParams.get('sb');
+    const term = url.searchParams.get('q');
+    const criteria = url.searchParams.get('sc');
+    const sort = url.searchParams.get('sb');
+
+    const searchCriteria = !criteria || criteria === '' ? 'name' : criteria;
+    const searchTerm = !term || term === '' ? null : term;
+    const sortBy = !sort || sort === '' ? 'name' : sort;
 
     await queryClient.ensureQueryData(
       productQuery({
-        searchCriteria: searchCriteria || undefined,
-        searchTerm: searchTerm || undefined,
-        sortBy: sortBy || undefined,
+        searchCriteria,
+        searchTerm,
+        sortBy,
       })
     );
 

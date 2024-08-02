@@ -30,7 +30,6 @@ interface Props {
   watch: UseFormWatch<Product>;
   errors: FieldErrors<Product>;
   setValue: UseFormSetValue<Product>;
-  data?: Product;
 }
 
 function Information({ control, watch, errors, setValue }: Props) {

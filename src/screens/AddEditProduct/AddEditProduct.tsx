@@ -23,12 +23,12 @@ function AddEditProduct() {
   const submit = useSubmit();
   const navigate = useNavigate();
   const ref = useRef<HTMLFormElement>(null);
-
   const { editMode, data } = useProductData();
+
   const { state } = useNavigation();
   const { control, watch, formState, setValue, handleSubmit } =
     useForm<Product>({
-      defaultValues: editMode ? data : EMPTY_FORM,
+      defaultValues: editMode ? (data as Product) : EMPTY_FORM,
       mode: 'onChange',
     });
 
@@ -90,7 +90,6 @@ function AddEditProduct() {
       <Form noValidate ref={ref} onSubmit={handleSubmit(checkForErrors)}>
         <Container sx={styles.container}>
           <Information
-            data={data}
             setValue={setValue}
             control={control}
             watch={watch}

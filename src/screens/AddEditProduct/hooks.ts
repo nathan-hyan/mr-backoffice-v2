@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { Product } from 'types/data';
 
 import { productQuery } from '~services/products';
 
@@ -9,13 +8,11 @@ export const useProductData = () => {
   const { data } = useSuspenseQuery(
     productQuery({
       productId: id,
-      searchCriteria: null,
+      searchCriteria: 'name',
       searchTerm: null,
-      sortBy: null,
+      sortBy: 'name',
     })
-  ) as {
-    data: Product;
-  };
+  );
 
   const editMode = id !== undefined;
 

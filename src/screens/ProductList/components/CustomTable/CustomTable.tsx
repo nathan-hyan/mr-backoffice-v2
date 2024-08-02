@@ -12,6 +12,7 @@ import {
   TablePagination,
 } from '@mui/material';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { Product } from 'types/data';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useGATag } from '~hooks';
@@ -33,7 +34,7 @@ function CustomTable() {
       searchTerm,
       sortBy,
     })
-  );
+  ) as { data: Product[] };
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     tagAction(GACategories.Event, GATypes.Click, `Changed to page ${newPage}`);

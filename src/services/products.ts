@@ -27,8 +27,8 @@ export interface ProductQuery {
 
 export const fetchProducts = async ({
   searchTerm = null,
-  searchCriteria = null,
-  sortBy = null,
+  searchCriteria = 'name',
+  sortBy = 'name',
   productId,
 }: ProductQuery) => {
   const querySnapProducts = await getDocs(collection(database, 'products'));
@@ -67,7 +67,7 @@ export const fetchProducts = async ({
   const filteredProducts = filterProducts(
     data,
     searchTerm || undefined,
-    searchCriteria || undefined
+    searchCriteria || 'name'
   );
   const sortedProducts = sortProducts(filteredProducts, sortBy || undefined);
 
@@ -85,7 +85,7 @@ export const fetchProducts = async ({
 
   const product = sortedProducts.find(({ id }) => id === productId);
 
-  return productId ? product : sortedProducts;
+  return productId && product ? product : sortedProducts;
 };
 
 export const addProduct: (
@@ -125,8 +125,8 @@ export const updateProduct = async (newData: Product) => {
 
 export const productQuery = ({
   searchTerm = null,
-  searchCriteria = null,
-  sortBy = null,
+  searchCriteria = 'name',
+  sortBy = 'name',
   productId = undefined,
 }: ProductQuery) =>
   queryOptions({
