@@ -16,6 +16,7 @@ export const loader =
   (queryClient: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
     const { id: productId } = params;
+    const searchParams = new URLSearchParams();
 
     const brandData = await queryClient.ensureQueryData(brandQuery());
     const categoryData = await queryClient.ensureQueryData(categoryQuery());
@@ -23,7 +24,12 @@ export const loader =
 
     if (productId) {
       productData = await queryClient.ensureQueryData(
-        productQuery({ productId })
+        productQuery({
+          productId,
+          searchCriteria: searchParams.get('searchCriteria') || 'name',
+          sortBy: searchParams.get('sortBy') || 'name',
+          searchTerm: searchParams.get('searchTerm') || null,
+        })
       );
     }
 
