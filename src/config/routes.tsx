@@ -22,6 +22,7 @@ import {
   PriceModifier,
   PriceTagGenerator,
   ProductList,
+  productListAction,
   productListLoader,
   UserInfo,
 } from '~screens';
@@ -65,6 +66,12 @@ export const ROUTES = (queryClient?: QueryClient) => [
     path: 'products',
     loader: queryClient ? productListLoader(queryClient) : undefined,
     element: <ProductList />,
+    children: [
+      {
+        path: 'tsis/:id',
+        action: queryClient ? productListAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 8,

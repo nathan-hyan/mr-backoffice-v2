@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
-import { Button, Container } from '@mui/material';
+import { Button, Container, Divider } from '@mui/material';
 import type { Product } from 'types/data';
 
 import { styles } from './AddEditProduct.styles';
@@ -82,7 +82,7 @@ function AddEditProduct() {
   };
 
   return (
-    <Container>
+    <Container sx={styles.mainContainer}>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
@@ -102,7 +102,7 @@ function AddEditProduct() {
           <KioskInformation control={control} errors={errors} />
           <Dimensions control={control} errors={errors} />
 
-          <hr />
+          <Divider sx={styles.divider} />
 
           <Button
             variant='outlined'

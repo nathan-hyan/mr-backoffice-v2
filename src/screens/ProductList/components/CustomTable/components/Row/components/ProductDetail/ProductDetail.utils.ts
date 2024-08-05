@@ -1,4 +1,4 @@
-import type { Product, UserFeedback } from 'types/data';
+import type { Product } from 'types/data';
 
 export const translateStock = (field: keyof Product['stock']) => {
   switch (field) {
@@ -126,12 +126,4 @@ export const prepareDataForDisplay = (data: Product) => {
   });
 
   return result;
-};
-
-export const getAverageRating = (array: UserFeedback[]) => {
-  const ratingSum = array.reduce((prev, curr) => {
-    return prev + curr.rating;
-  }, 0);
-
-  return ratingSum / array.length;
 };

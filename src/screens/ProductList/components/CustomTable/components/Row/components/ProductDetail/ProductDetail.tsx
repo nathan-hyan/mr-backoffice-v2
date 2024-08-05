@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigation, useSubmit } from 'react-router-dom';
 import {
   Box,
   Breadcrumbs,
@@ -10,7 +10,6 @@ import {
   ImageListItem,
   List,
   Paper,
-  Rating,
   Switch,
   Table,
   TableBody,
@@ -22,18 +21,15 @@ import {
 } from '@mui/material';
 import type { Product } from 'types/data';
 
-import CustomListItem from '~components/CustomListItem/CustomListItem';
-import { FirestoreCollections } from '~constants/firebase';
-import { useFirestore } from '~hooks';
-import { calculateNumberWithPercentage } from '~utils';
-import { objectIterator } from '~utils';
-import { timestampTranslator } from '~utils';
-
+import { CustomListItem } from '~components';
 import {
-  getAverageRating,
-  prepareDataForDisplay,
-  translateStock,
-} from './ProductDetail.utils';
+  calculateNumberWithPercentage,
+  objectIterator,
+  timestampTranslator,
+} from '~utils';
+
+import { UserFeedback } from './components';
+import { prepareDataForDisplay, translateStock } from './ProductDetail.utils';
 import { styles } from './ProductDetails.styles';
 
 interface Props {
@@ -47,31 +43,19 @@ function ProductDetail({
   category = 'Error',
   subCategory = 'Error',
 }: Props) {
-  const { updateDocument, updateLoading } = useFirestore<Product>(
-    FirestoreCollections.Products
-  );
-  const [showInStore, setShowInStore] = useState(data.showInStore || false);
+  const submit = useSubmit();
+  const { state } = useNavigation();
 
   const handleShowInStoreToggle = () => {
-    setShowInStore((prevState) => {
-      updateDocument(data.id, { ...data, showInStore: !prevState });
-      return !prevState;
-    });
+    submit(null, { action: `/products/tsis/${data.id}`, method: 'put' });
   };
 
   const stockInfo = objectIterator(data.stock).filter(
     ({ key }) => key !== 'noPhysicalStock'
   );
 
-  const hasUserFeedback = data.userFeedback && data.userFeedback?.length > 0;
-  const comentariosText =
-    data.userFeedback && data.userFeedback?.length > 1
-      ? 'comentarios'
-      : 'comentario';
   const hasPhysicalStock = !data.stock.noPhysicalStock;
   const hasProviderProductCode = data.providerProductCode?.length > 0;
-
-  console.log(data.imageURL);
 
   return (
     <Box sx={styles.container}>
@@ -88,9 +72,9 @@ function ProductDetail({
           <FormControlLabel
             control={
               <Switch
-                disabled={updateLoading}
+                disabled={state === 'submitting'}
                 onChange={handleShowInStoreToggle}
-                checked={showInStore}
+                defaultChecked={data.showInStore}
               />
             }
             label='Mostrar en tienda'
@@ -98,35 +82,7 @@ function ProductDetail({
         </FormGroup>
 
         <Divider sx={{ my: 3 }} />
-        {hasUserFeedback ? (
-          <>
-            <Box>
-              <Typography component='legend'>Rating de los clientes</Typography>
-              <Box sx={styles.ratingBox}>
-                <Rating
-                  name='simple-controlled'
-                  value={getAverageRating(data.userFeedback)}
-                  readOnly
-                  precision={0.25}
-                />
-                <Typography variant='caption' m={0} p={0}>
-                  ({getAverageRating(data.userFeedback)},{' '}
-                  {data.userFeedback.length} {comentariosText})
-                </Typography>
-              </Box>
-            </Box>
-
-            <Divider sx={{ my: 3 }} />
-
-            <Box sx={styles.userFeedback}>
-              {data.userFeedback.map(({ comment }) => (
-                <Paper key={comment + new Date()} sx={{ p: 3 }} elevation={3}>
-                  <Typography>{comment}</Typography>
-                </Paper>
-              ))}
-            </Box>
-          </>
-        ) : null}
+        <UserFeedback data={data} />
       </Box>
 
       <Box sx={{ width: '75%' }}>

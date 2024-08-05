@@ -11,6 +11,7 @@ import Playground from './Playground/Playground';
 import PriceModifier from './PriceModifier/PriceModifier';
 import PriceTagGenerator from './PriceTagGenerator/PriceTagGenerator';
 import ProductList from './ProductList/ProductList';
+import { action as productListAction } from './ProductList/ProductList.action';
 import { loader as productListLoader } from './ProductList/ProductList.loader';
 import UserInfo from './UserInfo/UserInfo';
 
@@ -28,6 +29,7 @@ export {
   PriceModifier,
   PriceTagGenerator,
   ProductList,
+  productListAction,
   productListLoader,
   UserInfo,
 };
