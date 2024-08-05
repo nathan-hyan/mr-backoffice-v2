@@ -13,6 +13,8 @@ import PriceTagGenerator from './PriceTagGenerator/PriceTagGenerator';
 import ProductList from './ProductList/ProductList';
 import { action as productListAction } from './ProductList/ProductList.action';
 import { loader as productListLoader } from './ProductList/ProductList.loader';
+import UserFeedbackTesting from './UserFeedbackTesting/UserFeedbackTesting';
+import { action as userFeedbackTestingAction } from './UserFeedbackTesting/UserFeedbackTesting.action';
 import UserInfo from './UserInfo/UserInfo';
 
 export {
@@ -31,5 +33,7 @@ export {
   ProductList,
   productListAction,
   productListLoader,
+  UserFeedbackTesting,
+  userFeedbackTestingAction,
   UserInfo,
 };

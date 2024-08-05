@@ -24,6 +24,8 @@ import {
   ProductList,
   productListAction,
   productListLoader,
+  UserFeedbackTesting,
+  userFeedbackTestingAction,
   UserInfo,
 } from '~screens';
 
@@ -43,6 +45,21 @@ export const ROUTES = (queryClient?: QueryClient) => [
     description: "You're not supposed to be here",
     path: 'playground',
     element: <Playground />,
+  },
+  {
+    id: 98,
+    title: 'uft',
+    description: "You're not supposed to be here",
+    path: 'uft',
+    element: <UserFeedbackTesting />,
+    children: [
+      {
+        path: 'add',
+        action: queryClient
+          ? userFeedbackTestingAction(queryClient)
+          : undefined,
+      },
+    ],
   },
   {
     id: 1,
