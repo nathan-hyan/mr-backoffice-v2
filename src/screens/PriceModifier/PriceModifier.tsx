@@ -10,7 +10,7 @@ import type { Product } from 'types/data';
 import { ROUTES } from '~config/routes';
 import { FirestoreCollections } from '~constants/firebase';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-import { useProducts } from '~contexts/Products';
+// import { useProducts } from '~contexts/Products';
 import { useFirestore, useGATag } from '~hooks';
 
 import Alert from './components/Alert';
@@ -25,7 +25,10 @@ function PriceModifier() {
   const { tagAction } = useGATag();
   const navigate = useNavigate();
 
-  const { productList } = useProducts();
+  // const { productList } = useProducts();
+
+  // TODO: Fix!
+  const productList: Product[] = [];
   const { updateDocument } = useFirestore(FirestoreCollections.Products);
 
   const {
@@ -55,6 +58,7 @@ function PriceModifier() {
       `${e.type === 'incr' ? 'Incremented' : 'Decremented'} prices`
     );
     const result = batchUpdateData(e, productList);
+    // TODO: Esto debe tener el viejo esquema de precios
     setNewData(result);
 
     toggleShowAlert();
