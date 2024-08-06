@@ -1,4 +1,5 @@
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, Form, useFieldArray, useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 import {
   AddCircleRounded,
   CancelRounded,
@@ -18,34 +19,23 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import type { Category } from 'types/data';
+
+import { requiredField } from '../../constants';
+import { styles } from './AddCategory.styles';
+import {
+  defaultCategory as defaultValues,
+  type IAddCategory,
+} from './constants';
 
 interface Props {
   show: boolean;
   handleClose: () => void;
-  submitCategory: (data: Category) => void;
-  isLoading: boolean;
 }
 
-interface IAddCategory {
-  name: string;
-  internalId: number;
-  subCategories?: {
-    name: '';
-    internalId: number;
-  }[];
-}
-
-function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
-  const { handleSubmit, control, formState, reset } = useForm<IAddCategory>({
-    defaultValues: {
-      name: '',
-      subCategories: [
-        {
-          name: '',
-        },
-      ],
-    },
+function AddCategory({ show, handleClose }: Props) {
+  const { state } = useLocation();
+  const { control, formState } = useForm<IAddCategory>({
+    defaultValues,
   });
   const { errors } = formState;
   const { fields, append, remove } = useFieldArray({
@@ -53,21 +43,11 @@ function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
     name: 'subCategories',
   });
 
-  const onSubmit = (data: IAddCategory) => {
-    submitCategory(data);
-
-    reset();
-    handleClose();
-  };
-
-  const handleCloseAndCancel = () => {
-    reset();
-    handleClose();
-  };
+  const isLoading = state === 'submitting';
 
   return (
-    <Dialog open={show} onClose={handleCloseAndCancel} fullWidth maxWidth='lg'>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+    <Dialog open={show} onClose={handleClose} fullWidth maxWidth='lg'>
+      <Form noValidate>
         <DialogTitle>Agregar categoría</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -77,12 +57,7 @@ function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
           <Controller
             name='name'
             control={control}
-            rules={{
-              required: {
-                value: true,
-                message: 'Este campo es obligatorio',
-              },
-            }}
+            rules={requiredField}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -91,33 +66,22 @@ function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
                 error={!!errors.name}
                 helperText={errors.name?.message}
                 fullWidth
-                sx={{ mt: 3 }}
+                sx={styles.categoryInput}
                 variant='outlined'
               />
             )}
           />
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={styles.divider} />
+
           <Typography variant='body1'>Agregar subcategorias:</Typography>
+
           {fields.map((input, index) => (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                mt: 3,
-              }}
-              key={input.id}
-            >
+            <Box sx={styles.subcategoryBox} key={input.id}>
               <Controller
                 name={`subCategories.${index}.name`}
                 control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Este campo es obligatorio',
-                  },
-                }}
+                rules={requiredField}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -140,7 +104,7 @@ function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
                 <IconButton
                   size='small'
                   color='error'
-                  sx={{ width: '40px', height: '40px' }}
+                  sx={styles.removeSubcategoryButton}
                   onClick={() => {
                     remove(index);
                   }}
@@ -184,7 +148,7 @@ function AddCategory({ show, handleClose, submitCategory, isLoading }: Props) {
             Guardar
           </Button>
         </DialogActions>
-      </form>
+      </Form>
     </Dialog>
   );
 }

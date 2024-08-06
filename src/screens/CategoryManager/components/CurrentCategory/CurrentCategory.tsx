@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ArrowForward, DeleteForeverRounded } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Grid,
   IconButton,
   List,
@@ -16,8 +15,10 @@ import {
 import type { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu/CustomMenu';
-import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
+import { CustomMenu, DeleteAlert } from '~components';
+
+import NoCategoryFoundMessage from '../NoCategoryFoundMessage/NoCategoryFoundMessage';
+import { styles } from './CurrentCategory.styles';
 
 interface Props {
   currentCategory: Category;
@@ -57,6 +58,8 @@ function CurrentCategory({
     handleClose();
   };
 
+  const subCategoryExist = currentCategory.subCategories?.length;
+
   return (
     currentCategory && (
       <>
@@ -73,30 +76,22 @@ function CurrentCategory({
           }
         />
         <Grid item xs={8}>
-          <Paper elevation={4} sx={{ p: 3 }}>
-            <Box
-              display='flex'
-              justifyContent='space-between'
-              alignItems='center'
-            >
+          <Paper elevation={4} sx={styles.paperContainer}>
+            <Box sx={styles.boxContainer}>
               <Typography variant='button' noWrap>
                 Subcategorias disponibles en {currentCategory.name}
               </Typography>
+
               <CustomMenu>
                 <MenuItem onClick={openModal}>
                   Agregar una sub-categoría
                 </MenuItem>
               </CustomMenu>
             </Box>
-            <List
-              sx={{
-                mt: 3,
-                maxHeight: '30rem',
-                overflow: 'hidden auto',
-              }}
-            >
-              {currentCategory.subCategories?.length ? (
-                currentCategory.subCategories.map((category, index) => (
+
+            <List sx={styles.list}>
+              {subCategoryExist ? (
+                currentCategory.subCategories?.map((category, index) => (
                   <ListItem
                     divider={
                       index + 1 !== currentCategory.subCategories!.length
@@ -117,20 +112,12 @@ function CurrentCategory({
                     <ListItemIcon>
                       <ArrowForward />
                     </ListItemIcon>
+
                     <ListItemText>{category.name}</ListItemText>
                   </ListItem>
                 ))
               ) : (
-                <>
-                  <ListItemText sx={{ textAlign: 'center', mb: 3 }}>
-                    No se encontraron sub-categorias
-                  </ListItemText>
-                  <ListItemText sx={{ textAlign: 'center' }}>
-                    <Button variant='contained' onClick={openModal}>
-                      Agregar sub-categorías
-                    </Button>
-                  </ListItemText>
-                </>
+                <NoCategoryFoundMessage action={openModal} />
               )}
             </List>
           </Paper>

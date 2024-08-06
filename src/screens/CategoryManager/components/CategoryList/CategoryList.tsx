@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react';
 import { ArrowForward } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Divider,
   Grid,
   List,
@@ -13,16 +12,18 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import type { Category } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu/CustomMenu';
+import { CustomMenu, DeleteAlert } from '~components';
+import { categoryQuery } from '~services/categories';
 
-import DeleteAlert from '../../../../components/DeleteAlert/DeleteAlert';
+import NoCategoryFoundMessage from '../NoCategoryFoundMessage/NoCategoryFoundMessage';
+import { styles } from './CategoryList.styles';
 
 interface Props {
   removeDocument: (documentId: string, callback?: (arg0: void) => void) => void;
-  data: Category[];
   selectedCategory: {
     internalId: Nullable<number>;
     firebaseId: string | undefined;
@@ -34,12 +35,13 @@ interface Props {
 
 function CategoryList({
   removeDocument,
-  data,
   selectedCategory,
   handleSelectCategory,
   clearCurrentCategory,
   openModal,
 }: Props) {
+  const { data } = useSuspenseQuery(categoryQuery());
+
   const [markedForDeletion, setMarkedForDeletion] =
     useState<Nullable<string>>(null);
 
@@ -66,14 +68,12 @@ function CategoryList({
             : ''
         }
       />
+
       <Grid item xs={4}>
-        <Paper elevation={2} sx={{ p: 3 }}>
-          <Box
-            display='flex'
-            justifyContent='space-between'
-            alignItems='center'
-          >
+        <Paper elevation={2} sx={styles.container}>
+          <Box sx={styles.box}>
             <Typography variant='button'>Lista de Categorias</Typography>
+
             <CustomMenu>
               <MenuItem onClick={toggleAddCategoryModal}>
                 Agregar una categoría
@@ -89,6 +89,7 @@ function CategoryList({
               )}
             </CustomMenu>
           </Box>
+
           <List>
             {data.length > 0 ? (
               data.map((category, index) => (
@@ -108,16 +109,7 @@ function CategoryList({
                 </Fragment>
               ))
             ) : (
-              <>
-                <ListItemText sx={{ textAlign: 'center', mb: 3 }}>
-                  No se encontraron sub-categorias
-                </ListItemText>
-                <ListItemText sx={{ textAlign: 'center' }}>
-                  <Button variant='contained' onClick={openModal}>
-                    Agregar una categoría
-                  </Button>
-                </ListItemText>
-              </>
+              <NoCategoryFoundMessage action={openModal} />
             )}
           </List>
         </Paper>

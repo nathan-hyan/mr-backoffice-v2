@@ -1,4 +1,5 @@
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Form, useNavigation } from 'react-router-dom';
 import {
   AddCircleRounded,
   CancelRounded,
@@ -18,9 +19,13 @@ import {
 } from '@mui/material';
 import type { Category } from 'types/data';
 
-interface IAddSubCategories {
-  subCategories: { name: string }[];
-}
+import { requiredField } from '../../constants';
+import { styles } from './AddSubCategory.styles';
+import {
+  defaultSubCategories as defaultValues,
+  IAddSubCategories,
+} from './constants';
+
 interface Props {
   show: boolean;
   handleClose: () => void;
@@ -28,45 +33,23 @@ interface Props {
   addSubcategory: (arg0: Category) => void;
 }
 
-function AddSubCategory({
-  show,
-  handleClose,
-  isLoading,
-  addSubcategory,
-}: Props) {
-  const { handleSubmit, control, formState, reset } =
-    useForm<IAddSubCategories>({
-      defaultValues: {
-        subCategories: [
-          {
-            name: '',
-          },
-        ],
-      },
-    });
+function AddSubCategory({ show, handleClose }: Props) {
+  const { state } = useNavigation();
+  const { control, formState } = useForm<IAddSubCategories>({
+    defaultValues,
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'subCategories',
   });
 
+  const isLoading = state === 'submitting';
   const { errors } = formState;
 
-  const onSubmit = (data: IAddSubCategories) => {
-    addSubcategory(data as Category);
-
-    reset();
-    handleClose();
-  };
-
-  const handleCloseAndCancel = () => {
-    reset();
-    handleClose();
-  };
-
   return (
-    <Dialog open={show} onClose={handleCloseAndCancel} fullWidth maxWidth='lg'>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Dialog open={show} onClose={handleClose} fullWidth maxWidth='lg'>
+      <Form>
         <DialogTitle>Agregar Sub-categoría</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -74,24 +57,11 @@ function AddSubCategory({
           </DialogContentText>
 
           {fields.map((input, index) => (
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                mt: 3,
-              }}
-              key={input.id}
-            >
+            <Box sx={styles.fieldBox} key={input.id}>
               <Controller
                 name={`subCategories.${index}.name`}
                 control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Este campo es obligatorio',
-                  },
-                }}
+                rules={requiredField}
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -114,7 +84,7 @@ function AddSubCategory({
                 <IconButton
                   size='small'
                   color='error'
-                  sx={{ width: '40px', height: '40px' }}
+                  sx={styles.removeSubcategoryButton}
                   onClick={() => {
                     remove(index);
                   }}
@@ -125,7 +95,7 @@ function AddSubCategory({
             </Box>
           ))}
         </DialogContent>
-        <DialogActions sx={{ m: 2 }}>
+        <DialogActions sx={styles.buttonContainer}>
           <Button
             variant='outlined'
             startIcon={<CancelRounded />}
@@ -157,7 +127,7 @@ function AddSubCategory({
             Guardar
           </Button>
         </DialogActions>
-      </form>
+      </Form>
     </Dialog>
   );
 }
