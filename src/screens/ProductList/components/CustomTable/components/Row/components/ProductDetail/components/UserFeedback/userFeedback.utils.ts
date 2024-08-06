@@ -1,9 +1,12 @@
 import { UserFeedback } from 'types/data';
 
-export const getAverageRating = (array: UserFeedback[]) => {
-  const ratingSum = array.reduce((prev, curr) => {
-    return prev + curr.rating;
-  }, 0);
+export function getAverageRating(ratings: UserFeedback[]): number {
+  if (ratings.length === 0) {
+    return 0;
+  }
 
-  return ratingSum / array.length;
-};
+  const total = ratings.reduce((acc, rating) => acc + Number(rating.rating), 0);
+  const average = total / ratings.length;
+
+  return Math.min(Math.max(average, 0), 5);
+}
