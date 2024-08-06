@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
 import {
   Box,
@@ -24,33 +25,30 @@ import { styles } from './CategoryList.styles';
 
 interface Props {
   removeDocument: (documentId: string, callback?: (arg0: void) => void) => void;
-  selectedCategory: {
-    internalId: Nullable<number>;
-    firebaseId: string | undefined;
-  };
   clearCurrentCategory: StateDispatch<Category>;
-  handleSelectCategory: (arg0: number) => void;
   openModal: () => void;
 }
 
 function CategoryList({
   removeDocument,
-  selectedCategory,
-  handleSelectCategory,
   clearCurrentCategory,
   openModal,
 }: Props) {
-  const { data } = useSuspenseQuery(categoryQuery());
+  const { id } = useLoaderData() as { id: number };
+  const { data } = useSuspenseQuery(categoryQuery(id));
+  const navigate = useNavigate();
 
-  const [markedForDeletion, setMarkedForDeletion] =
-    useState<Nullable<string>>(null);
+  console.log(data);
 
-  const handleDeleteCategory = () => {
-    removeDocument(markedForDeletion!, () => {
-      clearCurrentCategory(null);
-    });
-    setMarkedForDeletion(null);
-  };
+  // const [markedForDeletion, setMarkedForDeletion] =
+  //   useState<Nullable<string>>(null);
+
+  // const handleDeleteCategory = () => {
+  //   removeDocument(markedForDeletion!, () => {
+  //     clearCurrentCategory(null);
+  //   });
+  //   setMarkedForDeletion(null);
+  // };
 
   const toggleAddCategoryModal = () => {
     openModal();
@@ -58,7 +56,7 @@ function CategoryList({
 
   return (
     <>
-      <DeleteAlert
+      {/* <DeleteAlert
         open={Boolean(markedForDeletion)}
         onClose={() => setMarkedForDeletion(null)}
         onDelete={handleDeleteCategory}
@@ -67,7 +65,7 @@ function CategoryList({
             ? data.filter(({ id }) => id === markedForDeletion)[0].name
             : ''
         }
-      />
+      /> */}
 
       <Grid item xs={4}>
         <Paper elevation={2} sx={styles.container}>
@@ -78,10 +76,12 @@ function CategoryList({
               <MenuItem onClick={toggleAddCategoryModal}>
                 Agregar una categoría
               </MenuItem>
-              {data.length > 0 && selectedCategory.firebaseId && (
+              {/* {data.length > 0 && selectedCategory.firebaseId && ( */}
+              {data.length > 0 && (
                 <MenuItem
-                  onClick={() =>
-                    setMarkedForDeletion(selectedCategory.firebaseId!)
+                  onClick={
+                    () => {}
+                    // setMarkedForDeletion(selectedCategory.firebaseId!)
                   }
                 >
                   Quitar una categoría
@@ -95,10 +95,12 @@ function CategoryList({
               data.map((category, index) => (
                 <Fragment key={category.internalId}>
                   <ListItemButton
-                    selected={
-                      category.internalId === selectedCategory.internalId
+                    // selected={
+                    //   category.internalId === selectedCategory.internalId
+                    // }
+                    onClick={() =>
+                      navigate(`/categoryManager/${category.internalId}`)
                     }
-                    onClick={() => handleSelectCategory(category.internalId)}
                   >
                     <ListItemIcon>
                       <ArrowForward />

@@ -11,7 +11,7 @@ import type { Category } from 'types/data';
 
 import { database } from '~config/firebase';
 
-export const fetchCategories = async () => {
+export const fetchCategories = async (id?: string) => {
   const querySnap = await getDocs(collection(database, 'categories'));
   const data: Category[] = [];
 
@@ -26,7 +26,9 @@ export const fetchCategories = async () => {
     })
   );
 
-  return data;
+  return id
+    ? data.filter(({ internalId }) => String(internalId) === String(id))[0]
+    : data;
 };
 
 export const addCategory: (
@@ -49,8 +51,8 @@ export const addCategory: (
   }
 };
 
-export const categoryQuery = () =>
+export const categoryQuery = (id?: string) =>
   queryOptions({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
+    queryKey: ['categories', id],
+    queryFn: () => fetchCategories(id),
   });

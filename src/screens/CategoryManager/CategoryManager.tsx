@@ -1,3 +1,4 @@
+import { Outlet } from 'react-router-dom';
 import { Grid, Paper } from '@mui/material';
 
 import useModal from '~hooks/useModal';
@@ -7,16 +8,6 @@ import { AddCategory, AddSubCategory, CategoryList } from './components';
 function CategoryManager() {
   const [showAddCategoryModal, toggleAddCategoryModal] = useModal();
   const [showAddSubCategoryModal, toggleAddSubCategoryModal] = useModal();
-  // const [currentCategory, setCurrentCategory] =
-  //   useState<Nullable<number>>(null);
-
-  // const handleSelectCategory = (internalId: number) => {
-  //   setCurrentCategory(internalId);
-  // };
-
-  // const selectedCategory = data.filter(
-  //   (category) => currentCategory === category.internalId
-  // )[0];
 
   // const addSubcategory = (newData: Category) => {
   //   if (
@@ -73,21 +64,10 @@ function CategoryManager() {
           <CategoryList
             removeDocument={() => {}}
             clearCurrentCategory={() => {}}
-            selectedCategory={{
-              internalId: 0,
-              firebaseId: '0',
-              // internalId: currentCategory,
-              // firebaseId: selectedCategory?.id,
-            }}
-            handleSelectCategory={() => {}}
             openModal={toggleAddCategoryModal}
           />
 
-          {/* <CurrentCategory
-            currentCategory={undefined}
-            openModal={toggleAddSubCategoryModal}
-            removeSubcategory={removeSubCategory}
-          /> */}
+          <Outlet />
         </Grid>
       </Paper>
     </>

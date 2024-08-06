@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { ArrowForward, DeleteForeverRounded } from '@mui/icons-material';
 import {
   Box,
@@ -12,25 +13,25 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import type { Category } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import { CustomMenu, DeleteAlert } from '~components';
+import { categoryQuery } from '~services/categories';
 
 import NoCategoryFoundMessage from '../NoCategoryFoundMessage/NoCategoryFoundMessage';
 import { styles } from './CurrentCategory.styles';
 
 interface Props {
-  currentCategory: Category;
   removeSubcategory: (arg0: Category[]) => void;
   openModal: () => void;
 }
 
-function CurrentCategory({
-  currentCategory,
-  openModal,
-  removeSubcategory,
-}: Props) {
+function CurrentCategory({ openModal, removeSubcategory }: Props) {
+  const { id } = useLoaderData() as { id: string };
+  const { data } = useSuspenseQuery(categoryQuery(id)) as { data: Category };
+
   const [markedForDelete, setMarkedForDelete] =
     useState<Nullable<number>>(null);
 
@@ -43,13 +44,13 @@ function CurrentCategory({
   };
 
   const deleteSubCategory = () => {
-    let newArray: typeof currentCategory.subCategories = [];
-    const idToDelete = currentCategory.subCategories?.filter(
+    let newArray: typeof data.subCategories = [];
+    const idToDelete = data.subCategories?.filter(
       ({ internalId }) => internalId === markedForDelete
     )[0].internalId;
 
-    if (currentCategory.subCategories) {
-      newArray = currentCategory.subCategories.filter(
+    if (data.subCategories) {
+      newArray = data.subCategories.filter(
         ({ internalId }) => internalId !== idToDelete
       );
     }
@@ -58,10 +59,10 @@ function CurrentCategory({
     handleClose();
   };
 
-  const subCategoryExist = currentCategory.subCategories?.length;
+  const subCategoryExist = data.subCategories?.length;
 
   return (
-    currentCategory && (
+    data && (
       <>
         <DeleteAlert
           open={Boolean(markedForDelete)}
@@ -69,17 +70,18 @@ function CurrentCategory({
           onDelete={deleteSubCategory}
           stringToMatch={
             markedForDelete
-              ? currentCategory.subCategories?.filter(
+              ? data.subCategories?.filter(
                   ({ internalId }) => internalId === markedForDelete
                 )[0].name || ''
               : ''
           }
         />
+
         <Grid item xs={8}>
           <Paper elevation={4} sx={styles.paperContainer}>
             <Box sx={styles.boxContainer}>
               <Typography variant='button' noWrap>
-                Subcategorias disponibles en {currentCategory.name}
+                Subcategorias disponibles en: {data.name}
               </Typography>
 
               <CustomMenu>
@@ -91,11 +93,9 @@ function CurrentCategory({
 
             <List sx={styles.list}>
               {subCategoryExist ? (
-                currentCategory.subCategories?.map((category, index) => (
+                data.subCategories?.map((category, index) => (
                   <ListItem
-                    divider={
-                      index + 1 !== currentCategory.subCategories!.length
-                    }
+                    divider={index + 1 !== data.subCategories!.length}
                     secondaryAction={
                       <IconButton
                         edge='end'
@@ -126,4 +126,5 @@ function CurrentCategory({
     )
   );
 }
+
 export default CurrentCategory;
