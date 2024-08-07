@@ -1,5 +1,5 @@
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Form, useNavigation } from 'react-router-dom';
+import { Form, useNavigation, useParams, useSubmit } from 'react-router-dom';
 import {
   AddCircleRounded,
   CancelRounded,
@@ -17,7 +17,6 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import type { Category } from 'types/data';
 
 import { requiredField } from '../../constants';
 import { styles } from './AddSubCategory.styles';
@@ -29,13 +28,13 @@ import {
 interface Props {
   show: boolean;
   handleClose: () => void;
-  isLoading: boolean;
-  addSubcategory: (arg0: Category) => void;
 }
 
 function AddSubCategory({ show, handleClose }: Props) {
   const { state } = useNavigation();
-  const { control, formState } = useForm<IAddSubCategories>({
+  const { id } = useParams() as { id: string };
+  const submit = useSubmit();
+  const { control, formState, handleSubmit } = useForm<IAddSubCategories>({
     defaultValues,
   });
 
@@ -47,9 +46,26 @@ function AddSubCategory({ show, handleClose }: Props) {
   const isLoading = state === 'submitting';
   const { errors } = formState;
 
+  const onSubmit = (data: IAddSubCategories) => {
+    const formData = new FormData();
+
+    if (data.subCategories?.length && data.subCategories?.length > 0) {
+      data.subCategories.forEach((item, index) => {
+        formData.append(`subCategories.${index}.name`, item.name);
+      });
+    }
+
+    submit(formData, {
+      action: `/categoryManager/addSubcategory/${id}`,
+      method: 'post',
+    });
+
+    handleClose();
+  };
+
   return (
     <Dialog open={show} onClose={handleClose} fullWidth maxWidth='lg'>
-      <Form>
+      <Form noValidate onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Agregar Sub-categoría</DialogTitle>
         <DialogContent>
           <DialogContentText>

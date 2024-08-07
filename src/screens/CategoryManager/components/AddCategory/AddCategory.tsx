@@ -1,5 +1,5 @@
-import { Controller, Form, useFieldArray, useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Form, useNavigation, useSubmit } from 'react-router-dom';
 import {
   AddCircleRounded,
   CancelRounded,
@@ -33,8 +33,9 @@ interface Props {
 }
 
 function AddCategory({ show, handleClose }: Props) {
-  const { state } = useLocation();
-  const { control, formState } = useForm<IAddCategory>({
+  const { state } = useNavigation();
+  const submit = useSubmit();
+  const { control, formState, handleSubmit } = useForm<IAddCategory>({
     defaultValues,
   });
   const { errors } = formState;
@@ -45,9 +46,25 @@ function AddCategory({ show, handleClose }: Props) {
 
   const isLoading = state === 'submitting';
 
+  const onSubmit = (data: IAddCategory) => {
+    const formData = new FormData();
+
+    formData.append('name', data.name);
+
+    if (data.subCategories?.length && data.subCategories?.length > 0) {
+      data.subCategories.forEach((item, index) => {
+        formData.append(`subCategories.${index}.name`, item.name);
+        formData.append(`subCategories.${index}.internalId`, String(index));
+      });
+    }
+
+    submit(formData, { action: 'addCategory', method: 'post' });
+    handleClose();
+  };
+
   return (
     <Dialog open={show} onClose={handleClose} fullWidth maxWidth='lg'>
-      <Form noValidate>
+      <Form noValidate onSubmit={handleSubmit(onSubmit)}>
         <DialogTitle>Agregar categoría</DialogTitle>
         <DialogContent>
           <DialogContentText>

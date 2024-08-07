@@ -7,7 +7,6 @@ import {
   PlusOne,
 } from '@mui/icons-material';
 import { QueryClient } from '@tanstack/react-query';
-import { Category } from 'types/data';
 
 import {
   AddEditProduct,
@@ -30,8 +29,11 @@ import {
   UserInfo,
 } from '~screens';
 import {
+  addCategoryAction,
+  addSubCategoryAction,
   CurrentCategory,
   currentCategoryLoader,
+  deleteCategoryAction,
 } from '~screens/CategoryManager/components';
 
 import App from '../App';
@@ -144,18 +146,19 @@ export const ROUTES = (queryClient?: QueryClient) => [
       {
         path: ':id',
         loader: queryClient ? currentCategoryLoader(queryClient) : undefined,
-        element: (
-          <CurrentCategory
-            currentCategory={{} as Category}
-            removeSubcategory={function (arg0: Category[]): void {
-              console.log(arg0);
-              throw new Error('Function not implemented.');
-            }}
-            openModal={function (): void {
-              throw new Error('Function not implemented.');
-            }}
-          />
-        ),
+        element: <CurrentCategory />,
+      },
+      {
+        path: 'addCategory',
+        action: queryClient ? addCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'addSubcategory/:id',
+        action: queryClient ? addSubCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'deleteCategory/:id',
+        action: queryClient ? deleteCategoryAction(queryClient) : undefined,
       },
     ],
   },

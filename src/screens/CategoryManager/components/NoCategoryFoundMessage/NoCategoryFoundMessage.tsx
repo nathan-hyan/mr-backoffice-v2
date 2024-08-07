@@ -1,21 +1,17 @@
-import { Button, ListItemText } from '@mui/material';
+import { ListItemText, Typography } from '@mui/material';
 
 import { styles } from './NoCategoryFoundMessage.styles';
 
-interface Props {
-  action: () => void;
-}
-
-function NoCategoryFoundMessage({ action }: Props) {
+function NoCategoryFoundMessage() {
   return (
     <>
       <ListItemText sx={styles.noSubcategoriesText}>
-        No se encontraron sub-categorias
+        <Typography variant='h4'>No se encontraron sub-categorias</Typography>
       </ListItemText>
       <ListItemText sx={styles.addCategoryButton}>
-        <Button variant='contained' onClick={action}>
-          Agregar sub-categorías
-        </Button>
+        <Typography variant='body1'>
+          Por favor, agregue una categoría para continuar
+        </Typography>
       </ListItemText>
     </>
   );

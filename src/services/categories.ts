@@ -2,9 +2,12 @@ import { queryOptions } from '@tanstack/react-query';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   DocumentData,
   DocumentReference,
   getDocs,
+  updateDoc,
 } from 'firebase/firestore';
 import { enqueueSnackbar } from 'notistack';
 import type { Category } from 'types/data';
@@ -36,15 +39,46 @@ export const addCategory: (
 ) => Promise<
   DocumentReference<Record<string, unknown>, DocumentData> | Category[]
 > = async (newDocument) => {
-  const collectionRef = collection(database, 'products');
+  const collectionRef = collection(database, 'categories');
 
   try {
     const res = await addDoc(collectionRef, newDocument as Category);
-    enqueueSnackbar('Item creado correctamente', {
+    enqueueSnackbar('Categoría creada correctamente', {
       variant: 'success',
     });
 
     return res;
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
+};
+
+export const deleteCategory = async (id: string) => {
+  const collectionRef = collection(database, 'categories');
+
+  try {
+    await deleteDoc(doc(collectionRef, id));
+    enqueueSnackbar('Categoría eliminada correctamente', {
+      variant: 'success',
+    });
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
+};
+
+export const updateCategory = async (id: string, data: Category) => {
+  const collectionRef = collection(database, 'categories');
+
+  try {
+    await updateDoc(
+      doc(collectionRef, id),
+      data as Category & { [key: string]: string }
+    );
+    enqueueSnackbar('Categoría editada correctamente', {
+      variant: 'info',
+    });
   } catch (err) {
     console.log(err);
     throw new Error('Ocurrió un error inesperado.');
