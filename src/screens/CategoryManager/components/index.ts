@@ -7,3 +7,5 @@ export { default as CurrentCategory } from './CurrentCategory/CurrentCategory';
 export { action as deleteCategoryAction } from './CurrentCategory/CurrentCategory.action';
 export { loader as currentCategoryLoader } from './CurrentCategory/CurrentCategory.loader';
 export { default as NoCategoryFoundMessage } from './NoCategoryFoundMessage/NoCategoryFoundMessage';
+export { default as RenameCategory } from './RenameCategory/RenameCategory';
+export { action as editCategoryAction } from './RenameCategory/RenameCategory.action';
