@@ -5,6 +5,7 @@ export { action as addSubCategoryAction } from './AddSubCategory/AddSubCategory.
 export { default as CategoryList } from './CategoryList/CategoryList';
 export { default as CurrentCategory } from './CurrentCategory/CurrentCategory';
 export { action as deleteCategoryAction } from './CurrentCategory/CurrentCategory.action';
+export { actionEditSubCategory as editSubCategoryAction } from './CurrentCategory/CurrentCategory.action';
 export { loader as currentCategoryLoader } from './CurrentCategory/CurrentCategory.loader';
 export { default as NoCategoryFoundMessage } from './NoCategoryFoundMessage/NoCategoryFoundMessage';
 export { default as RenameCategory } from './RenameCategory/RenameCategory';

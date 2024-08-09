@@ -52,3 +52,48 @@ export const action =
 
     return redirect('/categoryManager');
   };
+
+export const actionEditSubCategory =
+  (queryClient: QueryClient) =>
+  async ({ params, request }: ActionFunctionArgs) => {
+    const url = new URL(request.url);
+    const subCategoryId = url.searchParams.get('sc');
+    const body = await request.formData();
+
+    const categories = (await queryClient.ensureQueryData(
+      categoryQuery()
+    )) as Category[];
+
+    const categoryToEdit = categories.find(
+      ({ internalId }) => internalId === Number(params.id)
+    );
+
+    if (categoryToEdit && subCategoryId) {
+      const subCategoryToEdit = categoryToEdit?.subCategories?.find(
+        ({ internalId }) => Number(internalId) === Number(subCategoryId)
+      );
+
+      if (subCategoryId && subCategoryToEdit) {
+        categoryToEdit.subCategories = categoryToEdit.subCategories?.map(
+          (category) => {
+            if (category.internalId === subCategoryToEdit.internalId) {
+              category.name = String(body.get('name'));
+            }
+
+            return category;
+          }
+        );
+
+        await updateCategory(categoryToEdit.id!, categoryToEdit);
+        await queryClient.invalidateQueries({
+          queryKey: ['categories', params.id],
+        });
+
+        return redirect(`/categoryManager/${params.id}`);
+      } else {
+        throw new Error('No se encontró la subcategoría');
+      }
+    }
+
+    return redirect('/categoryManager');
+  };

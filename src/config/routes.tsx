@@ -35,6 +35,7 @@ import {
   currentCategoryLoader,
   deleteCategoryAction,
   editCategoryAction,
+  editSubCategoryAction,
 } from '~screens/CategoryManager/components';
 
 import App from '../App';
@@ -164,6 +165,10 @@ export const ROUTES = (queryClient?: QueryClient) => [
       {
         path: 'editCategory/:id',
         action: queryClient ? editCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'editSubCategory/:id',
+        action: queryClient ? editSubCategoryAction(queryClient) : undefined,
       },
     ],
   },

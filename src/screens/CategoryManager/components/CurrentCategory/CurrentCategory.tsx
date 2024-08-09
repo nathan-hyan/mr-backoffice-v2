@@ -1,5 +1,5 @@
 import { useLoaderData, useSubmit } from 'react-router-dom';
-import { ArrowForward, DeleteForeverRounded } from '@mui/icons-material';
+import { ArrowForward, DeleteForeverRounded, Edit } from '@mui/icons-material';
 import {
   Box,
   Grid,
@@ -38,6 +38,34 @@ function CurrentCategory() {
     }
   };
 
+  const handleEditSubCategory = (subcategory?: number) => {
+    const index = data.subCategories?.findIndex(
+      ({ internalId }) => Number(internalId) === subcategory
+    );
+
+    if (index === undefined || index < 0) {
+      return;
+    }
+
+    const result = window.prompt('Ingrese un nombre para la subcategoría');
+
+    if (!result) {
+      return;
+    }
+
+    if (result === data.subCategories![index].name) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', result);
+
+    submit(formData, {
+      method: 'put',
+      action: `/categoryManager/editSubCategory/${id}${subcategory ? `?sc=${subcategory}` : ''}`,
+    });
+  };
+
   const subCategoryExist = data.subCategories?.length;
 
   return (
@@ -58,15 +86,26 @@ function CurrentCategory() {
                 <ListItem
                   divider={index + 1 !== data.subCategories!.length}
                   secondaryAction={
-                    <IconButton
-                      edge='end'
-                      color='error'
-                      onClick={() => {
-                        handleDeleteCat(Number(category.internalId));
-                      }}
-                    >
-                      <DeleteForeverRounded />
-                    </IconButton>
+                    <>
+                      <IconButton
+                        edge='end'
+                        color='default'
+                        onClick={() => {
+                          handleEditSubCategory(Number(category.internalId));
+                        }}
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        edge='end'
+                        color='error'
+                        onClick={() => {
+                          handleDeleteCat(Number(category.internalId));
+                        }}
+                      >
+                        <DeleteForeverRounded />
+                      </IconButton>
+                    </>
                   }
                   key={String(category.internalId) + String(index)}
                 >
