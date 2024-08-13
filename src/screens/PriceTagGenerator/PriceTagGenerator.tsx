@@ -1,11 +1,13 @@
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLoaderData, useNavigation } from 'react-router-dom';
+import { useNavigation } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { Box, Button, Divider, Typography } from '@mui/material';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import type { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
+import { productQuery } from '~services/products';
 import { calculateNumberWithPercentage } from '~utils';
 
 import ControlPanel from './components/ControlPanel';
@@ -13,7 +15,9 @@ import PriceTag from './components/PriceTag';
 import { ControlPanelValues, FORM_CONFIG } from './constants';
 
 function PriceTagGenerator() {
-  const productList = useLoaderData() as Product[];
+  const { data: productList } = useSuspenseQuery(
+    productQuery({ searchCriteria: null, searchTerm: null, sortBy: null })
+  ) as { data: Product[] };
   const { state } = useNavigation();
   const { control, watch } = useForm<ControlPanelValues>(FORM_CONFIG);
   const printable = useRef<Nullable<HTMLDivElement>>(null);
