@@ -18,7 +18,9 @@ export const loader =
     const { id: productId } = params;
     const searchParams = new URLSearchParams();
 
-    const brandData = await queryClient.ensureQueryData(brandQuery());
+    const brandData = await queryClient.ensureQueryData(
+      brandQuery({ searchTerm: null })
+    );
     const categoryData = await queryClient.ensureQueryData(categoryQuery());
     let productData;
 

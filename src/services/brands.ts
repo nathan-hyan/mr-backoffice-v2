@@ -1,5 +1,12 @@
 import { queryOptions } from '@tanstack/react-query';
-import { collection, getDocs } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  DocumentReference,
+  getDocs,
+} from 'firebase/firestore';
+import { enqueueSnackbar } from 'notistack';
 import type { Brand } from 'types/data';
 import { Nullable } from 'vitest';
 
@@ -25,13 +32,35 @@ export const fetchBrands = async ({
     })
   );
 
+  const sortedData = data.sort((a, b) => b.internalId - a.internalId);
+
   if (searchTerm) {
-    filteredData = data.filter((brand) => brand.name.includes(searchTerm));
+    filteredData = sortedData.filter((brand) =>
+      brand.name.includes(searchTerm)
+    );
   }
 
-  console.log({ searchTerm, filteredData, data });
+  return searchTerm ? filteredData : sortedData;
+};
 
-  return searchTerm ? filteredData : data;
+export const addBrand: (
+  newDocument: Brand
+) => Promise<
+  DocumentReference<Record<string, unknown>, DocumentData> | Brand[]
+> = async (newDocument) => {
+  const collectionRef = collection(database, 'brands');
+
+  try {
+    const res = await addDoc(collectionRef, newDocument as Brand);
+    enqueueSnackbar('Marca creada correctamente', {
+      variant: 'success',
+    });
+
+    return res;
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
 };
 
 export const brandQuery = ({ searchTerm }: { searchTerm: Nullable<string> }) =>

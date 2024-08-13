@@ -17,20 +17,27 @@ import usePagination from '~hooks/usePagination';
 import { brandQuery } from '~services/brands';
 
 import { styles } from './BrandManager.styles';
-import { BrandSearch, BrandTableRow, TableHeader } from './components';
+import {
+  AddBrandModal,
+  BrandSearch,
+  BrandTableRow,
+  TableHeader,
+} from './components';
 
 function BrandManager() {
   useGATag();
 
   const { searchTerm } = useLoaderData() as { searchTerm: Nullable<string> };
   const { data: fullData } = useSuspenseQuery(brandQuery({ searchTerm }));
-  const [, toggleAddBrandModal] = useModal();
+  const [addBrandModal, toggleAddBrandModal] = useModal();
 
   const { handleChangePage, handleChangeRowsPerPage, page, rowsPerPage, data } =
     usePagination(fullData);
 
   return (
     <>
+      <AddBrandModal show={addBrandModal} onClose={toggleAddBrandModal} />
+
       <BrandSearch />
 
       <TableContainer component={Paper} sx={styles.tableContainer}>
@@ -52,7 +59,7 @@ function BrandManager() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           colSpan={3}
-          count={data.length}
+          count={fullData.length || -1}
           component='div'
           rowsPerPage={rowsPerPage}
           page={page}

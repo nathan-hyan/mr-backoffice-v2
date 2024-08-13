@@ -1,4 +1,3 @@
-import { ChangeEvent, useState } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { AddRounded } from '@mui/icons-material';
 import {
@@ -14,17 +13,13 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Product } from 'types/data';
 
-import { GACategories, GATypes } from '~constants/gaTagTypes';
-import { useGATag } from '~hooks';
+import usePagination from '~hooks/usePagination';
 import { ProductQuery, productQuery } from '~services/products';
 
 import { Row } from './components';
 
 function CustomTable() {
   const navigate = useNavigate();
-  const { tagAction } = useGATag(true);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const { searchCriteria, searchTerm, sortBy } =
     useLoaderData() as ProductQuery;
@@ -36,20 +31,13 @@ function CustomTable() {
     })
   ) as { data: Product[] };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    tagAction(GACategories.Event, GATypes.Click, `Changed to page ${newPage}`);
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    tagAction(
-      GACategories.Event,
-      GATypes.Click,
-      `Changed rows per page to ${+event.target.value}`
-    );
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const {
+    data: paginatedData,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    page,
+    rowsPerPage,
+  } = usePagination(productData);
 
   return (
     <TableContainer component={Paper} sx={{ mb: 3 }}>
@@ -57,17 +45,15 @@ function CustomTable() {
         <TableHead>
           <Row header='show' />
         </TableHead>
-        {productData ? (
+        {paginatedData ? (
           <TableBody>
-            {productData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((product) => (
-                <Row
-                  header='hidden'
-                  data={product}
-                  key={product.id + product.internalId}
-                />
-              ))}
+            {paginatedData.map((product) => (
+              <Row
+                header='hidden'
+                data={product}
+                key={product.id + product.internalId}
+              />
+            ))}
           </TableBody>
         ) : null}
       </Table>

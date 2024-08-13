@@ -29,6 +29,10 @@ import {
   UserInfo,
 } from '~screens';
 import {
+  addBrandAction,
+  editBrandAction,
+} from '~screens/BrandManager/components';
+import {
   addCategoryAction,
   addSubCategoryAction,
   CurrentCategory,
@@ -180,6 +184,16 @@ export const ROUTES = (queryClient?: QueryClient) => [
     path: 'brandManager',
     loader: queryClient ? brandManagerLoader(queryClient) : undefined,
     element: <BrandManager />,
+    children: [
+      {
+        path: 'add',
+        action: queryClient ? addBrandAction(queryClient) : undefined,
+      },
+      {
+        path: 'edit/:id',
+        action: queryClient ? editBrandAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 7,
