@@ -7,6 +7,7 @@ import {
   DocumentData,
   DocumentReference,
   getDocs,
+  updateDoc,
 } from 'firebase/firestore';
 import { enqueueSnackbar } from 'notistack';
 import type { Brand } from 'types/data';
@@ -59,6 +60,27 @@ export const addBrand: (
     });
 
     return res;
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
+};
+
+export const editBrand = async (data: Brand, id?: string) => {
+  const collectionRef = collection(database, 'brands');
+
+  if (!id) {
+    throw new Error('No se puede editar una marca sin un id');
+  }
+
+  try {
+    await updateDoc(
+      doc(collectionRef, id),
+      data as Brand & { [key: string]: string }
+    );
+    enqueueSnackbar('Marca editada correctamente', {
+      variant: 'info',
+    });
   } catch (err) {
     console.log(err);
     throw new Error('Ocurrió un error inesperado.');

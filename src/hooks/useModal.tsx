@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-function useModal() {
-  const [showModal, setModal] = useState(false);
+function useModal(modal?: string) {
+  const [showModal, setModal] = useState(!!modal || false);
 
   const toggleModal = () => {
     setModal((prevState) => !prevState);

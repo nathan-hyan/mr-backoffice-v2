@@ -3,7 +3,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { enqueueSnackbar } from 'notistack';
 import { Brand } from 'types/data';
 
-import { addBrand, brandQuery } from '~services/brands';
+import { addBrand, brandQuery, editBrand } from '~services/brands';
 import { prepareFormData } from '~utils/index';
 
 export const action =
@@ -49,19 +49,8 @@ export const editAction =
       params,
     })) as Brand;
 
-    const brand = (await queryClient.ensureQueryData(
-      brandQuery({ searchTerm: null })
-    )) as Brand[];
+    await editBrand(body, params.id);
+    await queryClient?.invalidateQueries({ queryKey: ['brands'] });
 
-    const internalId =
-      brand.sort((a, b) => b.internalId - a.internalId)[0].internalId + 1;
-
-    const result = { ...body, internalId };
-
-    console.log(result);
-
-    // await addCategory(result);
-    // await queryClient?.invalidateQueries({ queryKey: ['brands'] });
-
-    // return redirect(`/categoryManager/${internalId}`);
+    return redirect(`/brandManager`);
   };

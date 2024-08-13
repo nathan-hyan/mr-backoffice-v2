@@ -13,9 +13,10 @@ import { CustomMenu } from '~components';
 
 interface Props {
   brand?: Brand;
+  onModify: (id?: string) => void;
 }
 
-function BrandTableRow({ brand = undefined }: Props) {
+function BrandTableRow({ brand = undefined, onModify }: Props) {
   if (!brand) {
     return null;
   }
@@ -40,7 +41,11 @@ function BrandTableRow({ brand = undefined }: Props) {
       <TableCell width='80%'>{brand?.name}</TableCell>
       <TableCell align='right'>
         <CustomMenu>
-          <MenuItem onClick={() => {}}>
+          <MenuItem
+            onClick={() => {
+              onModify(brand?.id);
+            }}
+          >
             <ListItemIcon>
               <Edit />
             </ListItemIcon>

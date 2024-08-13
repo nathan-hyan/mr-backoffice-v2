@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import {
@@ -30,13 +31,23 @@ function BrandManager() {
   const { searchTerm } = useLoaderData() as { searchTerm: Nullable<string> };
   const { data: fullData } = useSuspenseQuery(brandQuery({ searchTerm }));
   const [addBrandModal, toggleAddBrandModal] = useModal();
+  const [brandToEdit, setBrandToEdit] = useState<string | undefined>(undefined);
 
   const { handleChangePage, handleChangeRowsPerPage, page, rowsPerPage, data } =
     usePagination(fullData);
 
+  const handleModifyBrand = (id?: string) => {
+    setBrandToEdit(id);
+    toggleAddBrandModal();
+  };
+
   return (
     <>
-      <AddBrandModal show={addBrandModal} onClose={toggleAddBrandModal} />
+      <AddBrandModal
+        show={addBrandModal}
+        onClose={toggleAddBrandModal}
+        brandId={brandToEdit}
+      />
 
       <BrandSearch />
 
@@ -46,7 +57,11 @@ function BrandManager() {
 
           <TableBody>
             {data.map((brand) => (
-              <BrandTableRow key={brand?.id} brand={brand} />
+              <BrandTableRow
+                key={brand?.id}
+                brand={brand}
+                onModify={handleModifyBrand}
+              />
             ))}
           </TableBody>
         </Table>
