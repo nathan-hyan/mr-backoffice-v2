@@ -6,11 +6,8 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
-  TableRow,
 } from '@mui/material';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Nullable } from 'vite-env';
@@ -19,7 +16,8 @@ import { useGATag, useModal } from '~hooks';
 import usePagination from '~hooks/usePagination';
 import { brandQuery } from '~services/brands';
 
-import { BrandSearch, BrandTableRow } from './components';
+import { styles } from './BrandManager.styles';
+import { BrandSearch, BrandTableRow, TableHeader } from './components';
 
 function BrandManager() {
   useGATag();
@@ -34,17 +32,10 @@ function BrandManager() {
   return (
     <>
       <BrandSearch />
-      <TableContainer component={Paper} sx={{ mb: 3 }}>
+
+      <TableContainer component={Paper} sx={styles.tableContainer}>
         <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell align='left'>Id Interno</TableCell>
-
-              <TableCell width='80%'>Marca</TableCell>
-
-              <TableCell align='right' />
-            </TableRow>
-          </TableHead>
+          <TableHeader />
 
           <TableBody>
             {data.map((brand) => (
@@ -73,7 +64,7 @@ function BrandManager() {
 
         <Button
           variant='contained'
-          sx={{ m: 2 }}
+          sx={styles.addBrandButton}
           startIcon={<Add />}
           onClick={toggleAddBrandModal}
         >
@@ -83,4 +74,5 @@ function BrandManager() {
     </>
   );
 }
+
 export default BrandManager;
