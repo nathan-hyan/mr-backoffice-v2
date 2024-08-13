@@ -12,72 +12,52 @@ import {
   TablePagination,
   TableRow,
 } from '@mui/material';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { Nullable } from 'vite-env';
 
-import DeleteAlert from '~components/DeleteAlert/DeleteAlert';
 import { useGATag, useModal } from '~hooks';
+import usePagination from '~hooks/usePagination';
+import { brandQuery } from '~services/brands';
 
-import type { BrandType } from './BrandManager.hooks';
-import useBrandManager from './BrandManager.hooks';
-import AddBrandModal from './components/AddBrandModal';
-import BrandSearch from './components/BrandSearch';
-import BrandTableRow from './components/BrandTableRow';
+import { BrandSearch, BrandTableRow } from './components';
 
 function BrandManager() {
   useGATag();
-  const {
-    setMarkedForDeletion,
-    handleAddDocument,
-    handleChangePage,
-    handleChangeRowsPerPage,
-    handleDeleteBrand,
-    handleUpdateBrand,
-    page,
-    rowsPerPage,
-    markedForDeletion,
-    markedForUpdate,
-  } = useBrandManager();
 
-  const data = useLoaderData() as BrandType[];
-  const [showAddBrandModal, toggleAddBrandModal] = useModal();
+  const { searchTerm } = useLoaderData() as { searchTerm: Nullable<string> };
+  const { data: fullData } = useSuspenseQuery(brandQuery({ searchTerm }));
+  const [, toggleAddBrandModal] = useModal();
+
+  const { handleChangePage, handleChangeRowsPerPage, page, rowsPerPage, data } =
+    usePagination(fullData);
 
   return (
     <>
-      <DeleteAlert
-        open={Boolean(markedForDeletion)}
-        onClose={() => setMarkedForDeletion(null)}
-        onDelete={handleDeleteBrand}
-        stringToMatch={markedForDeletion ? markedForDeletion.name : ''}
-      />
-      <AddBrandModal
-        show={showAddBrandModal}
-        onCancel={toggleAddBrandModal}
-        addDocument={handleAddDocument}
-        updateDocument={handleUpdateBrand}
-        documentToUpdate={markedForUpdate}
-      />
-      <BrandSearch dataCopy={[]} setData={[]} />
+      <BrandSearch />
       <TableContainer component={Paper} sx={{ mb: 3 }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
               <TableCell align='left'>Id Interno</TableCell>
+
               <TableCell width='80%'>Marca</TableCell>
+
               <TableCell align='right' />
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {data
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((brand) => (
-                <BrandTableRow
-                  key={brand?.id}
-                  brand={brand}
-                  setMarkedForDeletion={setMarkedForDeletion}
-                  toggleModal={toggleAddBrandModal}
-                />
-              ))}
+            {data.map((brand) => (
+              <BrandTableRow
+                key={brand?.id}
+                brand={brand}
+                setMarkedForDeletion={() => {}}
+                toggleModal={toggleAddBrandModal}
+              />
+            ))}
           </TableBody>
         </Table>
+
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           colSpan={3}
@@ -90,6 +70,7 @@ function BrandManager() {
         />
 
         <Divider />
+
         <Button
           variant='contained'
           sx={{ m: 2 }}

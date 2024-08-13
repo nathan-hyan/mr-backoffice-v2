@@ -1,10 +1,17 @@
+import { LoaderFunctionArgs } from 'react-router-dom';
 import { QueryClient } from '@tanstack/react-query';
 
 import { brandQuery } from '~services/brands';
 
-export const loader = (queryClient: QueryClient) => async () => {
-  console.log('CategoryManager Loader Called');
-  const brandData = await queryClient.ensureQueryData(brandQuery());
+export const loader =
+  (queryClient: QueryClient) =>
+  async ({ request }: LoaderFunctionArgs) => {
+    const url = new URL(request.url);
 
-  return brandData;
-};
+    const term = url.searchParams.get('q');
+    const searchTerm = !term || term === '' ? null : term;
+
+    await queryClient.ensureQueryData(brandQuery({ searchTerm }));
+
+    return { searchTerm };
+  };

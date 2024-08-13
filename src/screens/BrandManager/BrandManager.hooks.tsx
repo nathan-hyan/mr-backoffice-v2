@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Brand } from 'types/data';
 import { Nullable } from 'vite-env';
 
@@ -15,8 +15,6 @@ function useBrandManager() {
   const [data, setData] = useState<BrandType[]>([]);
   const [dataCopy, setDataCopy] = useState<BrandType[]>([]);
   const [latestId, setLatestId] = useState(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const { addDocument, removeDocument, updateDocument, subscribeToData } =
     useFirestore<Brand>(FirestoreCollections.Brands);
@@ -57,15 +55,6 @@ function useBrandManager() {
     setMarkedForUpdate(null);
   };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   useEffect(() => {
     const unsubscribe = subscribeToData((response) => {
       setData(response);
@@ -82,16 +71,12 @@ function useBrandManager() {
     setMarkedForDeletion,
     setData,
     handleAddDocument,
-    handleChangePage,
-    handleChangeRowsPerPage,
     handleDeleteBrand,
     handleUpdateBrand,
     toggleModal,
     showModal,
     data,
     dataCopy,
-    page,
-    rowsPerPage,
     markedForDeletion,
     markedForUpdate,
   };

@@ -18,6 +18,7 @@ import { styles } from './SearchBox.styles';
 
 function SearchBox() {
   const queryClient = useQueryClient();
+
   return (
     <Form
       method='get'

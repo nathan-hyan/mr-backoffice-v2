@@ -9,32 +9,32 @@ import {
 import type { Brand } from 'types/data';
 import { Nullable, StateDispatch } from 'vite-env';
 
-import CustomMenu from '~components/CustomMenu/CustomMenu';
+import { CustomMenu } from '~components';
 
 interface Props {
-  brand: Nullable<Brand & { id: string }>;
-  setMarkedForDeletion: StateDispatch<Nullable<Brand & { id: string }>>;
-  toggleModal: (arg0: Nullable<Brand & { id: string }>) => void;
+  brand?: Brand;
+  setMarkedForDeletion: StateDispatch<Nullable<Brand>>;
+  toggleModal: (arg0: Nullable<Brand>) => void;
 }
 
-function BrandTableRow({ brand, toggleModal, setMarkedForDeletion }: Props) {
+function BrandTableRow({ brand = undefined }: Props) {
+  if (!brand) {
+    return null;
+  }
+
   return (
     <TableRow>
       <TableCell align='left'>{brand?.internalId}</TableCell>
       <TableCell width='80%'>{brand?.name}</TableCell>
       <TableCell align='right'>
         <CustomMenu>
-          <MenuItem onClick={() => toggleModal(brand)}>
+          <MenuItem onClick={() => {}}>
             <ListItemIcon>
               <Edit />
             </ListItemIcon>
             <ListItemText>Modificar</ListItemText>
           </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setMarkedForDeletion(brand || null);
-            }}
-          >
+          <MenuItem onClick={() => {}}>
             <ListItemIcon>
               <DeleteOutline />
             </ListItemIcon>
