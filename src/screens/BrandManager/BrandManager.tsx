@@ -46,12 +46,7 @@ function BrandManager() {
 
           <TableBody>
             {data.map((brand) => (
-              <BrandTableRow
-                key={brand?.id}
-                brand={brand}
-                setMarkedForDeletion={() => {}}
-                toggleModal={toggleAddBrandModal}
-              />
+              <BrandTableRow key={brand?.id} brand={brand} />
             ))}
           </TableBody>
         </Table>

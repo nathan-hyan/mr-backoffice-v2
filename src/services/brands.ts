@@ -2,6 +2,8 @@ import { queryOptions } from '@tanstack/react-query';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   DocumentData,
   DocumentReference,
   getDocs,
@@ -57,6 +59,20 @@ export const addBrand: (
     });
 
     return res;
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
+};
+
+export const deleteBrand = async (id: string) => {
+  const collectionRef = collection(database, 'brands');
+
+  try {
+    await deleteDoc(doc(collectionRef, id));
+    enqueueSnackbar('Marca eliminada correctamente', {
+      variant: 'success',
+    });
   } catch (err) {
     console.log(err);
     throw new Error('Ocurrió un error inesperado.');

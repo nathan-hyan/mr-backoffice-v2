@@ -30,6 +30,7 @@ import {
 } from '~screens';
 import {
   addBrandAction,
+  destroyBrandAction,
   editBrandAction,
 } from '~screens/BrandManager/components';
 import {
@@ -192,6 +193,10 @@ export const ROUTES = (queryClient?: QueryClient) => [
       {
         path: 'edit/:id',
         action: queryClient ? editBrandAction(queryClient) : undefined,
+      },
+      {
+        path: 'destroy/:id',
+        action: queryClient ? destroyBrandAction(queryClient) : undefined,
       },
     ],
   },
