@@ -3,31 +3,22 @@ import { Box, Button } from '@mui/material';
 
 import LogoWhite from '~assets/logo-white.svg';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
-import styles from './styles.module.scss';
+import { styles } from './App.styles';
 
 function App() {
   const navigate = useNavigate();
   const { tagAction } = useGATag();
+
   const handleNavigate = () => {
     tagAction(GACategories.Redirect, GATypes.Click, 'Redirected to login');
     navigate('/login');
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        gap: '3rem',
-        height: 'calc(100dvh - 10rem)',
-        minHeight: '30rem',
-      }}
-    >
-      <img src={LogoWhite} alt='Mundo Regalo' className={styles.image} />
+    <Box sx={styles.boxContainer}>
+      <img src={LogoWhite} alt='Mundo Regalo' height={100} />
 
       <Button variant='contained' onClick={handleNavigate}>
         Inicie sesión para continuar

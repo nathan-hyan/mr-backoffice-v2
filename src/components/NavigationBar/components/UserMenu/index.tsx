@@ -15,7 +15,7 @@ import { enqueueSnackbar } from 'notistack';
 
 import { auth } from '~config/firebase';
 import useUserContext from '~contexts/User';
-import { stringAvatar } from '~utils/getInitials';
+import { stringAvatar } from '~utils';
 
 function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

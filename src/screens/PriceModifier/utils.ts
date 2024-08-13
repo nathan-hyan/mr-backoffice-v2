@@ -1,7 +1,9 @@
-import { Timestamp } from 'firebase/firestore';
-import { Product } from 'types/data';
+// TODO: Fix item.prices
 
-import calculateNumberWithPercentage from '~utils/addPercentage';
+import { Timestamp } from 'firebase/firestore';
+import type { Product } from 'types/data';
+
+import { calculateNumberWithPercentage } from '~utils';
 
 import { PriceModifierForm } from './constants';
 

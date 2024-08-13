@@ -6,7 +6,7 @@ import {
 } from 'react-hook-form';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';

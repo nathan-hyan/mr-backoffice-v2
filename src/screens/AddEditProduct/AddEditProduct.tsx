@@ -1,50 +1,94 @@
-import { useParams } from 'react-router-dom';
+import { useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { Form, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
-import { Button, Container } from '@mui/material';
+import { Button, Container, Divider } from '@mui/material';
+import type { Product } from 'types/data';
 
+import { styles } from './AddEditProduct.styles';
 import {
   Dimensions,
+  Information,
   KioskInformation,
   Prices,
   Specifications,
+  Stock,
   Variants,
 } from './components';
-import Information from './components/Information/Information';
-import Stock from './components/Stock/Stock';
-import useProductModal from './hook';
+import { EMPTY_FORM } from './constants';
+import { useProductData } from './hooks';
+import { fabricateFakeData, getSubmitMode } from './utils';
 
-function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
-  const { id } = useParams();
+function AddEditProduct() {
+  const submit = useSubmit();
+  const navigate = useNavigate();
+  const ref = useRef<HTMLFormElement>(null);
+  const { editMode, data } = useProductData();
 
-  const {
-    fillFakeData,
-    handleCancel,
-    onSubmit,
-    checkForErrors,
-    handleSubmit,
-    control,
-    creatingLoading,
-    errors,
-    setValue,
-    watch,
-  } = useProductModal({
-    productIdToEdit: editMode ? id : null,
-  });
+  const { state } = useNavigation();
+  const { control, watch, formState, setValue, handleSubmit } =
+    useForm<Product>({
+      defaultValues: editMode ? (data as Product) : EMPTY_FORM,
+      mode: 'onChange',
+    });
+
+  const creatingLoading = state === 'submitting';
+  const { errors } = formState;
+
+  const fillFakeData = () => {
+    fabricateFakeData().forEach(({ field, value }) => {
+      setValue(field as keyof Product, value);
+    });
+  };
+
+  const checkForErrors = () => {
+    const errorsArray = Object.keys(errors);
+    if (errorsArray.length !== 0) {
+      const input =
+        document.querySelector(`input[name=${errorsArray[0]}]`) ||
+        document.querySelector(`textarea[name=${errorsArray[0]}]`);
+
+      if (input) {
+        input?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      }
+
+      return;
+    }
+
+    if (watch('imageURL').filter(Boolean).length === 0) {
+      const imageButton = document.getElementById('upload-button');
+
+      imageButton?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'start',
+      });
+    }
+
+    const categoryId = watch('category');
+    const subCategoryId = watch('subCategory');
+
+    const form = new FormData(ref.current!);
+
+    // Append category id and subCategory id to form
+    form.set('category', categoryId);
+    form.set('subCategory', subCategoryId);
+
+    submit(form, getSubmitMode(editMode));
+  };
 
   return (
-    <Container>
+    <Container sx={styles.mainContainer}>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Container
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
+      <Form noValidate ref={ref} onSubmit={handleSubmit(checkForErrors)}>
+        <Container sx={styles.container}>
           <Information
             setValue={setValue}
             control={control}
@@ -58,13 +102,13 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
           <KioskInformation control={control} errors={errors} />
           <Dimensions control={control} errors={errors} />
 
-          <hr />
+          <Divider sx={styles.divider} />
 
           <Button
             variant='outlined'
             startIcon={<CancelRounded />}
             color='error'
-            onClick={handleCancel}
+            onClick={() => navigate(-1)}
             disabled={creatingLoading}
           >
             Cancelar
@@ -74,12 +118,11 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             variant='contained'
             startIcon={<SaveAltRounded />}
             disabled={creatingLoading}
-            onClick={checkForErrors}
           >
             Guardar
           </Button>
         </Container>
-      </form>
+      </Form>
     </Container>
   );
 }

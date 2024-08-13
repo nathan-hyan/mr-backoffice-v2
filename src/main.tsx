@@ -4,12 +4,13 @@ import ReactGA from 'react-ga4';
 import { HelmetProvider } from 'react-helmet-async';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Analytics } from '@vercel/analytics/react';
 
-import NavbarWrapper from '~components/NavbarWrapper';
+import { NavbarWrapper } from '~components';
 import { THEME } from '~config/muiTheme';
 import { ROUTES } from '~config/routes';
-import ProductProvider from '~contexts/Products';
 import { UserContextProvider } from '~contexts/User';
 
 import './index.scss';
@@ -25,6 +26,14 @@ ReactGA.initialize(import.meta.env.VITE_FIREBASE_MESSAGING_MEASURAMENT_ID, {
   gaOptions: { send_page_view: false },
 });
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 10,
+    },
+  },
+});
+
 const router = createHashRouter([
   {
     path: '/',
@@ -33,22 +42,30 @@ const router = createHashRouter([
         <UserContextProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            <ProductProvider>
-              <NavbarWrapper />
-            </ProductProvider>
+            <NavbarWrapper />
           </ThemeProvider>
         </UserContextProvider>
         <Analytics />
       </HelmetProvider>
     ),
-    children: ROUTES.map(({ path, element }) => ({ path, element })),
+    children: ROUTES(queryClient).map(
+      ({ path, element, loader, children }) => ({
+        path,
+        element,
+        loader,
+        children,
+      })
+    ),
   },
 ]);
 
 if (root) {
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <ReactQueryDevtools buttonPosition='bottom-right' />
+      </QueryClientProvider>
     </React.StrictMode>
   );
 }

@@ -1,9 +1,8 @@
-/* eslint-disable no-await-in-loop */
 import { ChangeEventHandler, useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
 import { getDownloadURL } from 'firebase/storage';
 import { enqueueSnackbar } from 'notistack';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import usePercentage from './usePercentage';
 import useStorage from './useStorage';

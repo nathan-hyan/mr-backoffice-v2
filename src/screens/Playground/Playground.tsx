@@ -22,7 +22,6 @@ function Playground() {
   });
 
   const onSubmit = (data: Form) => {
-    // eslint-disable-next-line no-console
     console.log(data);
   };
 

@@ -85,8 +85,11 @@ export interface Product {
 
   category: string; // Reference to categories.id
   subCategory: string; // Reference to categories.subCategories[n].id
+  translatedCategory?: Category;
+  translatedSubCategory?: Category;
   barcode: string;
   brand: string;
+  translatedBrand?: string;
   stockOwner: string;
   dimensions?: Dimensions;
   weight: number;
@@ -102,3 +105,5 @@ export interface Product {
   showInStore: boolean;
   userFeedback: UserFeedback[];
 }
+
+
