@@ -42,6 +42,7 @@ import {
   editCategoryAction,
   editSubCategoryAction,
 } from '~screens/CategoryManager/components';
+import { destroyProductAction } from '~screens/ProductList/components/CustomTable/components';
 
 import App from '../App';
 
@@ -101,6 +102,10 @@ export const ROUTES = (queryClient?: QueryClient) => [
       {
         path: 'tsis/:id',
         action: queryClient ? productListAction(queryClient) : undefined,
+      },
+      {
+        path: 'destroy/:id',
+        action: queryClient ? destroyProductAction(queryClient) : undefined,
       },
     ],
   },

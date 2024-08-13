@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   DocumentData,
   DocumentReference,
@@ -121,6 +122,20 @@ export const updateProduct = async (newData: Product) => {
       console.log(err);
       throw new Error('Ocurrió un error inesperado.');
     });
+};
+
+export const deleteProduct = async (id: string) => {
+  const collectionRef = collection(database, 'products');
+
+  try {
+    await deleteDoc(doc(collectionRef, id));
+    enqueueSnackbar('Producto eliminado correctamente', {
+      variant: 'success',
+    });
+  } catch (err) {
+    console.log(err);
+    throw new Error('Ocurrió un error inesperado.');
+  }
 };
 
 export const productQuery = ({

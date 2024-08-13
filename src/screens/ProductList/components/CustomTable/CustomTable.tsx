@@ -45,6 +45,7 @@ function CustomTable() {
         <TableHead>
           <Row header='show' />
         </TableHead>
+
         {paginatedData ? (
           <TableBody>
             {paginatedData.map((product) => (
@@ -57,6 +58,7 @@ function CustomTable() {
           </TableBody>
         ) : null}
       </Table>
+
       <TablePagination
         rowsPerPageOptions={[3, 5, 10, 25]}
         component='div'
@@ -66,7 +68,9 @@ function CustomTable() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
       <Divider />
+
       <Button
         variant='contained'
         sx={{ m: 2 }}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSubmit } from 'react-router-dom';
 import { DeleteOutline, Edit } from '@mui/icons-material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -13,11 +13,8 @@ import {
   TableRow,
 } from '@mui/material';
 import type { Product } from 'types/data';
-import { Nullable } from 'vite-env';
 
-import { CustomMenu, DeleteAlert } from '~components';
-import { FirestoreCollections } from '~constants/firebase';
-import { useFirestore } from '~hooks';
+import { CustomMenu } from '~components';
 import { calculateNumberWithPercentage } from '~utils';
 
 import { ProductDetail } from './components';
@@ -32,11 +29,9 @@ type Props =
 function Row(props: Props) {
   const { header } = props;
 
-  const [markedForDeletion, setMarkedForDeletion] =
-    useState<Nullable<Product>>(null);
   const [open, setOpen] = useState(false);
+  const submit = useSubmit();
   const navigate = useNavigate();
-  const { removeDocument } = useFirestore(FirestoreCollections.Products);
 
   const handleOnClick = (id: number) => () => {
     return id;
@@ -55,9 +50,15 @@ function Row(props: Props) {
     } = props.data;
 
     const deleteProduct = () => {
-      removeDocument(id, () => {
-        setMarkedForDeletion(null);
-      });
+      const result = window.prompt(
+        'Va a eliminar el producto, para confirmar presiona OK'
+      );
+      if (result?.toUpperCase() === 'OK') {
+        submit(null, {
+          method: 'delete',
+          action: `/products/destroy/${id}`,
+        });
+      }
     };
 
     const date = prices.cost.lastModified
@@ -66,13 +67,6 @@ function Row(props: Props) {
 
     return (
       <>
-        <DeleteAlert
-          open={Boolean(markedForDeletion)}
-          onClose={() => setMarkedForDeletion(null)}
-          onDelete={deleteProduct}
-          stringToMatch={markedForDeletion ? name : ''}
-        />
-
         <TableRow
           selected={stock.current <= stock.minStock && !stock.noPhysicalStock}
           hover
@@ -133,7 +127,7 @@ function Row(props: Props) {
               </MenuItem>
               <MenuItem
                 onClick={() => {
-                  setMarkedForDeletion(props.data || null);
+                  deleteProduct();
                 }}
               >
                 <ListItemIcon>
