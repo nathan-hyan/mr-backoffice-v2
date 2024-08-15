@@ -15,7 +15,7 @@ import {
   Stock,
   Variants,
 } from './components';
-import { EMPTY_FORM } from './constants';
+import { EMPTY_FORM, PRICES_FORM_EMPTY } from './constants';
 import { useProductData } from './hooks';
 import { fabricateFakeData, getSubmitMode } from './utils';
 
@@ -26,9 +26,24 @@ function AddEditProduct() {
   const { editMode, data } = useProductData();
 
   const { state } = useNavigation();
+
+  // Some products will have old pricing method, so we need to set the default values
+  // to restart the form with the new pricing method. The only thing that we really need
+  // is the cost price, so we just set it to the current value of the retail price.
+
   const { control, watch, formState, setValue, handleSubmit } =
     useForm<Product>({
-      defaultValues: editMode ? (data as Product) : EMPTY_FORM,
+      defaultValues: editMode
+        ? {
+            ...(data as Product),
+            prices: data.prices.retail
+              ? data.prices
+              : {
+                  ...PRICES_FORM_EMPTY,
+                  cost: { value: data.prices.cost.value },
+                },
+          }
+        : EMPTY_FORM,
       mode: 'onChange',
     });
 
