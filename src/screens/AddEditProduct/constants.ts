@@ -229,6 +229,17 @@ export enum SearchType {
   'PRODUCT_ID',
 }
 
+export const PRICES_FORM_EMPTY = {
+  cost: { value: 0 },
+  retail: { value: 80 },
+  online: { value: 65 },
+  mayo1: { value: 60 },
+  mayo2: { value: 50 },
+  mayo3: { value: 40 },
+  mayo4: { value: 35 },
+  reseller: { value: 20 },
+};
+
 export const EMPTY_FORM: Product = {
   description: '',
   internalId: 0,
@@ -251,16 +262,7 @@ export const EMPTY_FORM: Product = {
   barcode: '',
   category: '',
   subCategory: '',
-  prices: {
-    cost: { value: 0 },
-    retail: { value: 80 },
-    online: { value: 65 },
-    mayo1: { value: 60 },
-    mayo2: { value: 50 },
-    mayo3: { value: 40 },
-    mayo4: { value: 35 },
-    reseller: { value: 20 },
-  },
+  prices: PRICES_FORM_EMPTY,
   brand: '',
   stockOwner: '',
   storePosition: '',

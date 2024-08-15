@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { Product } from 'types/data';
 
 import { productQuery } from '~services/products';
 
@@ -16,5 +17,5 @@ export const useProductData = () => {
 
   const editMode = id !== undefined;
 
-  return { data, editMode };
+  return { data: data as Product, editMode };
 };
