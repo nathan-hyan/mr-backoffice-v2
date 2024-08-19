@@ -29,7 +29,8 @@ ReactGA.initialize(import.meta.env.VITE_FIREBASE_MESSAGING_MEASURAMENT_ID, {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 10,
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
     },
   },
 });
