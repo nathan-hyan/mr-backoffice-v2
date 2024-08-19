@@ -17,7 +17,6 @@ import {
   CategoryManager,
   categoryManagerLoader,
   editProductAction,
-  Login,
   Playground,
   PriceModifier,
   PriceTagGenerator,
@@ -75,13 +74,6 @@ export const ROUTES = (queryClient?: QueryClient) => [
           : undefined,
       },
     ],
-  },
-  {
-    id: 1,
-    title: 'Iniciar sesión',
-    description: '',
-    path: 'login',
-    element: <Login />,
   },
   {
     id: 2,
