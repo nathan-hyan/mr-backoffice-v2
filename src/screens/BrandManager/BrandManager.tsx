@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import {
   Button,
@@ -7,69 +5,83 @@ import {
   Paper,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
+  TableHead,
   TablePagination,
+  TableRow,
 } from '@mui/material';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { Nullable } from 'vite-env';
 
-import { useGATag, useModal } from '~hooks';
-import usePagination from '~hooks/usePagination';
-import { brandQuery } from '~services/brands';
+import DeleteAlert from '~components/DeleteAlert';
+import useGATag from '~hooks/useGATag';
 
-import { styles } from './BrandManager.styles';
-import {
-  AddBrandModal,
-  BrandSearch,
-  BrandTableRow,
-  TableHeader,
-} from './components';
+import useBrandManager from './BrandManager.hooks';
+import AddBrandModal from './components/AddBrandModal';
+import BrandSearch from './components/BrandSearch';
+import BrandTableRow from './components/BrandTableRow';
 
 function BrandManager() {
+  const {
+    setData,
+    setMarkedForDeletion,
+    handleAddDocument,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleDeleteBrand,
+    handleUpdateBrand,
+    toggleModal,
+    showModal,
+    data,
+    dataCopy,
+    page,
+    rowsPerPage,
+    markedForDeletion,
+    markedForUpdate,
+  } = useBrandManager();
   useGATag();
-
-  const { searchTerm } = useLoaderData() as { searchTerm: Nullable<string> };
-  const { data: fullData } = useSuspenseQuery(brandQuery({ searchTerm }));
-  const [addBrandModal, toggleAddBrandModal] = useModal();
-  const [brandToEdit, setBrandToEdit] = useState<string | undefined>(undefined);
-
-  const { handleChangePage, handleChangeRowsPerPage, page, rowsPerPage, data } =
-    usePagination(fullData);
-
-  const handleModifyBrand = (id?: string) => {
-    setBrandToEdit(id);
-    toggleAddBrandModal();
-  };
 
   return (
     <>
-      <AddBrandModal
-        show={addBrandModal}
-        onClose={toggleAddBrandModal}
-        brandId={brandToEdit}
+      <DeleteAlert
+        open={Boolean(markedForDeletion)}
+        onClose={() => setMarkedForDeletion(null)}
+        onDelete={handleDeleteBrand}
+        stringToMatch={markedForDeletion ? markedForDeletion.name : ''}
       />
-
-      <BrandSearch />
-
-      <TableContainer component={Paper} sx={styles.tableContainer}>
+      <AddBrandModal
+        show={showModal}
+        onCancel={toggleModal}
+        addDocument={handleAddDocument}
+        updateDocument={handleUpdateBrand}
+        documentToUpdate={markedForUpdate}
+      />
+      <BrandSearch dataCopy={dataCopy} setData={setData} />
+      <TableContainer component={Paper} sx={{ mb: 3 }}>
         <Table stickyHeader>
-          <TableHeader />
-
+          <TableHead>
+            <TableRow>
+              <TableCell align='left'>Id Interno</TableCell>
+              <TableCell width='80%'>Marca</TableCell>
+              <TableCell align='right' />
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {data.map((brand) => (
-              <BrandTableRow
-                key={brand?.id}
-                brand={brand}
-                onModify={handleModifyBrand}
-              />
-            ))}
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((brand) => (
+                <BrandTableRow
+                  key={brand?.id}
+                  brand={brand}
+                  setMarkedForDeletion={setMarkedForDeletion}
+                  toggleModal={toggleModal}
+                />
+              ))}
           </TableBody>
         </Table>
-
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           colSpan={3}
-          count={fullData.length || -1}
+          count={data.length}
           component='div'
           rowsPerPage={rowsPerPage}
           page={page}
@@ -78,12 +90,11 @@ function BrandManager() {
         />
 
         <Divider />
-
         <Button
           variant='contained'
-          sx={styles.addBrandButton}
+          sx={{ m: 2 }}
           startIcon={<Add />}
-          onClick={toggleAddBrandModal}
+          onClick={() => toggleModal()}
         >
           Agregar una marca
         </Button>
@@ -91,5 +102,4 @@ function BrandManager() {
     </>
   );
 }
-
 export default BrandManager;

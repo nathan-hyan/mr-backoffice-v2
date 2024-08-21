@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
-import { useFileUpload } from '~hooks';
+import useFileUpload from '~hooks/useFileUpload';
 
 import { ImageDisplay, ImageUploader } from './components';
 import { styles } from './ImageSelection.styles';

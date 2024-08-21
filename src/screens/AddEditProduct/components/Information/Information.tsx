@@ -14,16 +14,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
+import { useProducts } from '~contexts/Products';
 import { PRODUCT_FORM } from '~screens/AddEditProduct/constants';
-import { categoryQuery } from '~services/categories';
 
 import ImageSelection from './components/ImageSelection/ImageSelection';
-import { generateBarcode, getSubcategories } from './utils';
+import { generateBarcode } from './utils';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -33,9 +32,8 @@ interface Props {
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { data: category } = useSuspenseQuery(categoryQuery());
-  const subCategories = getSubcategories(watch('category'), category);
-
+  const { categories, getSubcategories } = useProducts();
+  const subCategories = getSubcategories(watch('category'));
   const images = watch('imageURL').filter(Boolean);
 
   const handleGenerateBarcode = () => {
@@ -69,7 +67,7 @@ function Information({ control, watch, errors, setValue }: Props) {
           endAdornment: (
             <InputAdornment position='end'>
               <IconButton
-                aria-label='generate barcode'
+                aria-label='toggle password visibility'
                 onClick={handleGenerateBarcode}
                 edge='end'
               >
@@ -97,13 +95,14 @@ function Information({ control, watch, errors, setValue }: Props) {
             }}
             value={{
               value: field.value,
-              label: category.find(({ id }) => id === field.value)?.name || '',
+              label:
+                categories.find(({ id }) => id === field.value)?.name || '',
             }}
             disablePortal
             id='combo-box-demo'
             options={[
               { value: '', label: '' },
-              ...category.map(({ id, name }) => ({
+              ...categories.map(({ id, name }) => ({
                 value: id || 0,
                 label: name || '',
               })),
@@ -114,9 +113,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='category'
                 required
-                type={InputType.Text}
                 label='Categoría'
                 error={Boolean(errors.category)}
                 helperText={errors.category?.message}
@@ -166,8 +163,6 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                name='subCategory'
-                type={InputType.Text}
                 required
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
@@ -178,16 +173,35 @@ function Information({ control, watch, errors, setValue }: Props) {
         )}
       />
 
+      {/* <CustomSelect
+        data={categories.map(({ id, name }) => ({
+          value: id || '',
+          optionName: name,
+        }))}
+        label='Categoria'
+        name='category'
+        control={control}
+        defaultValue=''
+        error={errors.category}
+        required
+      />
+
+      <CustomSelect
+        data={subCategories.map(({ internalId, name }) => ({
+          value: internalId,
+          optionName: name,
+        }))}
+        label='Sub-Categoria'
+        name='subCategory'
+        control={control}
+        defaultValue=''
+        error={errors.subCategory}
+        required
+      /> */}
+
       <Divider sx={{ mt: 3 }} />
 
       <ImageSelection data={images} setValue={setValue} watch={watch} />
-      <input
-        type='text'
-        name='imageURL'
-        hidden
-        readOnly
-        value={JSON.stringify(images)}
-      />
     </>
   );
 }

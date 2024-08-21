@@ -1,7 +1,7 @@
 import { Paper, Typography } from '@mui/material';
 
 import useUserContext from '~contexts/User';
-import { roleTranslator } from '~utils';
+import { roleTranslator } from '~utils/roleTranslator';
 
 function UserInfo() {
   const { user } = useUserContext();

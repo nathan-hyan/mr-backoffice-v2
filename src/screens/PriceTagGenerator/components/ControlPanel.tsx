@@ -10,9 +10,9 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from '@mui/material';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
-import CustomSelect from '~components/CustomSelect/CustomSelect';
+import CustomSelect from '~components/CustomSelect';
 
 import { ControlPanelValues, TAG_VARIANTS } from '../constants';
 

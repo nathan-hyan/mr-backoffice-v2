@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import { capitalizePhrase } from '~utils';
+import capitalizePhrase from '~utils/capitalizePhrase';
 
 import BarcodeGenerator from './BarcodeGenerator';
 import * as styles from './PriceTag.styles';

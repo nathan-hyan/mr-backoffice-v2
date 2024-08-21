@@ -1,4 +1,4 @@
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
 export interface ControlPanelValues {
   variant: 'yellow' | 'green' | 'pink';
@@ -26,7 +26,7 @@ export const FORM_CONFIG: { defaultValues: ControlPanelValues } = {
   defaultValues: {
     variant: 'yellow',
     showPrices: true,
-    generatorType: 'individual',
+    generatorType: 'all',
     individualProducts: [],
   },
 };

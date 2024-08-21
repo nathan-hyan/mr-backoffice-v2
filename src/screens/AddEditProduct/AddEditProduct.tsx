@@ -1,109 +1,50 @@
-import { useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form, useNavigate, useNavigation, useSubmit } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
-import { Button, Container, Divider } from '@mui/material';
-import type { Product } from 'types/data';
+import { Button, Container } from '@mui/material';
 
-import { styles } from './AddEditProduct.styles';
 import {
   Dimensions,
-  Information,
   KioskInformation,
   Prices,
   Specifications,
-  Stock,
   Variants,
 } from './components';
-import { EMPTY_FORM, PRICES_FORM_EMPTY } from './constants';
-import { useProductData } from './hooks';
-import { fabricateFakeData, getSubmitMode } from './utils';
+import Information from './components/Information/Information';
+import Stock from './components/Stock/Stock';
+import useProductModal from './hook';
 
-function AddEditProduct() {
-  const submit = useSubmit();
-  const navigate = useNavigate();
-  const ref = useRef<HTMLFormElement>(null);
-  const { editMode, data } = useProductData();
+function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
+  const { id } = useParams();
 
-  const { state } = useNavigation();
-
-  // Some products will have old pricing method, so we need to set the default values
-  // to restart the form with the new pricing method. The only thing that we really need
-  // is the cost price, so we just set it to the current value of the retail price.
-
-  const { control, watch, formState, setValue, handleSubmit } =
-    useForm<Product>({
-      defaultValues: editMode
-        ? {
-            ...(data as Product),
-            prices: data.prices.retail
-              ? data.prices
-              : {
-                  ...PRICES_FORM_EMPTY,
-                  cost: { value: data.prices.cost.value },
-                },
-          }
-        : EMPTY_FORM,
-      mode: 'onChange',
-    });
-
-  const creatingLoading = state === 'submitting';
-  const { errors } = formState;
-
-  const fillFakeData = () => {
-    fabricateFakeData().forEach(({ field, value }) => {
-      setValue(field as keyof Product, value);
-    });
-  };
-
-  const checkForErrors = () => {
-    const errorsArray = Object.keys(errors);
-    if (errorsArray.length !== 0) {
-      const input =
-        document.querySelector(`input[name=${errorsArray[0]}]`) ||
-        document.querySelector(`textarea[name=${errorsArray[0]}]`);
-
-      if (input) {
-        input?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center',
-        });
-      }
-
-      return;
-    }
-
-    if (watch('imageURL').filter(Boolean).length === 0) {
-      const imageButton = document.getElementById('upload-button');
-
-      imageButton?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'start',
-      });
-    }
-
-    const categoryId = watch('category');
-    const subCategoryId = watch('subCategory');
-
-    const form = new FormData(ref.current!);
-
-    // Append category id and subCategory id to form
-    form.set('category', categoryId);
-    form.set('subCategory', subCategoryId);
-
-    submit(form, getSubmitMode(editMode));
-  };
+  const {
+    fillFakeData,
+    handleCancel,
+    onSubmit,
+    checkForErrors,
+    handleSubmit,
+    control,
+    creatingLoading,
+    errors,
+    setValue,
+    watch,
+  } = useProductModal({
+    productIdToEdit: editMode ? id : null,
+  });
 
   return (
-    <Container sx={styles.mainContainer}>
+    <Container>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
-      <Form noValidate ref={ref} onSubmit={handleSubmit(checkForErrors)}>
-        <Container sx={styles.container}>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Container
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
           <Information
             setValue={setValue}
             control={control}
@@ -117,13 +58,13 @@ function AddEditProduct() {
           <KioskInformation control={control} errors={errors} />
           <Dimensions control={control} errors={errors} />
 
-          <Divider sx={styles.divider} />
+          <hr />
 
           <Button
             variant='outlined'
             startIcon={<CancelRounded />}
             color='error'
-            onClick={() => navigate(-1)}
+            onClick={handleCancel}
             disabled={creatingLoading}
           >
             Cancelar
@@ -133,11 +74,12 @@ function AddEditProduct() {
             variant='contained'
             startIcon={<SaveAltRounded />}
             disabled={creatingLoading}
+            onClick={checkForErrors}
           >
             Guardar
           </Button>
         </Container>
-      </Form>
+      </form>
     </Container>
   );
 }
