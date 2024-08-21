@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { Nullable } from 'vite-env';
 
-import CircularProgressWithLabel from '~components/CircularProgressWithLabel/CircularProgressWithLabel';
+import CircularProgressWithLabel from '~components/CircularProgressWithLabel';
 
 interface Props {
   isUploading: boolean;

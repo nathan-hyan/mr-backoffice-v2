@@ -1,11 +1,11 @@
 import { Control, FieldErrors, UseFormWatch } from 'react-hook-form';
 import { Divider, Grid, InputAdornment, Typography } from '@mui/material';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import { PRICE_FORM } from '~screens/AddEditProduct/constants';
-import { calculateNumberWithPercentage } from '~utils';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -19,9 +19,7 @@ function Prices({ control, errors, watch }: Props) {
       <Typography sx={{ mt: 5 }} fontWeight='bold'>
         Precios
       </Typography>
-
       <Divider sx={{ my: 2 }} />
-
       <CustomInput
         label='Precio de costo'
         name='prices.cost.value'
@@ -30,7 +28,6 @@ function Prices({ control, errors, watch }: Props) {
         required
         error={errors.prices?.cost?.value}
       />
-
       <Grid container spacing={2}>
         {PRICE_FORM.map((item) => (
           <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>

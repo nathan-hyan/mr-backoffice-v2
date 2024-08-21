@@ -1,6 +1,6 @@
 import { Control, FieldErrors } from 'react-hook-form';
 import { Divider, Typography } from '@mui/material';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';

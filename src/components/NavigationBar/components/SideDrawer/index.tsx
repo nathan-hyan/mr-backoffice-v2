@@ -33,7 +33,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         </Typography>
         <Divider />
 
-        {ROUTES().map(
+        {ROUTES.map(
           ({ id, path, title, icon }) =>
             icon && (
               <Option

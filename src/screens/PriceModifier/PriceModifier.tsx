@@ -1,17 +1,16 @@
-// TODO: Fix price modifier
-
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { LinearProgress, Paper } from '@mui/material';
 import { enqueueSnackbar } from 'notistack';
-import type { Product } from 'types/data';
+import { Product } from 'types/data';
 
 import { ROUTES } from '~config/routes';
 import { FirestoreCollections } from '~constants/firebase';
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-// import { useProducts } from '~contexts/Products';
-import { useFirestore, useGATag } from '~hooks';
+import { useProducts } from '~contexts/Products';
+import useFirestore from '~hooks/useFirestore';
+import useGATag from '~hooks/useGATag';
 
 import Alert from './components/Alert';
 import Form from './components/Form';
@@ -25,10 +24,7 @@ function PriceModifier() {
   const { tagAction } = useGATag();
   const navigate = useNavigate();
 
-  // const { productList } = useProducts();
-
-  // TODO: Fix!
-  const productList: Product[] = [];
+  const { productList } = useProducts();
   const { updateDocument } = useFirestore(FirestoreCollections.Products);
 
   const {
@@ -58,7 +54,6 @@ function PriceModifier() {
       `${e.type === 'incr' ? 'Incremented' : 'Decremented'} prices`
     );
     const result = batchUpdateData(e, productList);
-    // TODO: Esto debe tener el viejo esquema de precios
     setNewData(result);
 
     toggleShowAlert();
@@ -93,7 +88,7 @@ function PriceModifier() {
   };
 
   const goBack = () => {
-    navigate(ROUTES()[4].path);
+    navigate(ROUTES[4].path);
   };
 
   return (

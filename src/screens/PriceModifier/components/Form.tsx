@@ -2,7 +2,7 @@ import { Control, FieldErrors } from 'react-hook-form';
 import { Box, Button, InputAdornment } from '@mui/material';
 
 import CustomInput from '~components/CustomInput/CustomInput';
-import CustomSelect from '~components/CustomSelect/CustomSelect';
+import CustomSelect from '~components/CustomSelect';
 
 import { PRICE_INPUTS, PriceModifierForm } from '../constants';
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { ReactElement } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';

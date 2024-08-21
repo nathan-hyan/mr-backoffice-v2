@@ -6,7 +6,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import { Product } from 'types/data';
+
+import { useProducts } from '~contexts/Products';
 
 interface Props {
   open: boolean;
@@ -15,8 +16,7 @@ interface Props {
 }
 
 function Alert({ open, handleClose, onClick }: Props) {
-  // TODO: Fix!
-  const productList: Product[] = [];
+  const { productList } = useProducts();
   const productCount = productList.length;
 
   return (
