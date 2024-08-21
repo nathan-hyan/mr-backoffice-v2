@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import react from '@vitejs/plugin-react';
+ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vitest/config';
 
@@ -51,6 +50,10 @@ export default defineConfig({
       {
         find: '~constants',
         replacement: path.resolve(__dirname, 'src/constants'),
+      },
+      {
+        find: '~services',
+        replacement: path.resolve(__dirname, 'src/services'),
       },
     ],
   },

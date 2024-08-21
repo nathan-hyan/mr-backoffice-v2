@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import { Product } from 'types/data';
+import type { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 
@@ -229,6 +229,17 @@ export enum SearchType {
   'PRODUCT_ID',
 }
 
+export const PRICES_FORM_EMPTY = {
+  cost: { value: 0 },
+  retail: { value: 80 },
+  online: { value: 65 },
+  mayo1: { value: 60 },
+  mayo2: { value: 50 },
+  mayo3: { value: 40 },
+  mayo4: { value: 35 },
+  reseller: { value: 20 },
+};
+
 export const EMPTY_FORM: Product = {
   description: '',
   internalId: 0,
@@ -251,16 +262,7 @@ export const EMPTY_FORM: Product = {
   barcode: '',
   category: '',
   subCategory: '',
-  prices: {
-    cost: { value: 0 },
-    retail: { value: 80 },
-    online: { value: 65 },
-    mayo1: { value: 60 },
-    mayo2: { value: 50 },
-    mayo3: { value: 40 },
-    mayo4: { value: 35 },
-    reseller: { value: 20 },
-  },
+  prices: PRICES_FORM_EMPTY,
   brand: '',
   stockOwner: '',
   storePosition: '',
@@ -270,4 +272,70 @@ export const EMPTY_FORM: Product = {
     width: 0,
     depth: 0,
   },
+};
+
+export const dummyProduct: Product = {
+  id: '',
+  name: '',
+  description: '',
+  stock: {
+    current: 0,
+    minStock: 0,
+    maxStock: 0,
+    noPhysicalStock: false,
+  },
+  category: '',
+  subCategory: '',
+  translatedCategory: { name: '', id: '', internalId: 0 },
+  translatedSubCategory: { name: '', id: '', internalId: 0 },
+  barcode: '',
+  brand: '',
+  translatedBrand: '',
+  stockOwner: '',
+  dimensions: { height: 0, width: 0, depth: 0 },
+  weight: 0,
+  storePosition: '',
+  providerProductCode: [],
+  specifications: [],
+  variants: [],
+  prices: {
+    cost: {
+      value: 0,
+      lastModified: undefined,
+    },
+    retail: {
+      value: 0,
+      lastModified: undefined,
+    },
+    online: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo1: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo2: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo3: {
+      value: 0,
+      lastModified: undefined,
+    },
+    mayo4: {
+      value: 0,
+      lastModified: undefined,
+    },
+    reseller: {
+      value: 0,
+      lastModified: undefined,
+    },
+  },
+  internalId: 0,
+  imageURL: [],
+  createdAt: new Timestamp(0, 0),
+  updatedAt: new Timestamp(0, 0),
+  showInStore: false,
+  userFeedback: [],
 };

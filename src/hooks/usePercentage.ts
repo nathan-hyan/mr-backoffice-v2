@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-/* eslint-disable @typescript-eslint/no-use-before-define */
-
 function usePercentage() {
   // timeToResolve will constantly be changed
   // in the functions to get a new random value

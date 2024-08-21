@@ -6,22 +6,46 @@ import {
   LocalOffer,
   PlusOne,
 } from '@mui/icons-material';
+import { QueryClient } from '@tanstack/react-query';
 
 import {
   AddEditProduct,
+  addEditProductLoader,
+  addProductAction,
   BrandManager,
+  brandManagerLoader,
   CategoryManager,
-  Login,
+  categoryManagerLoader,
+  editProductAction,
   Playground,
   PriceModifier,
   PriceTagGenerator,
   ProductList,
+  productListAction,
+  productListLoader,
+  UserFeedbackTesting,
+  userFeedbackTestingAction,
   UserInfo,
-} from '~screens/index';
+} from '~screens';
+import {
+  addBrandAction,
+  destroyBrandAction,
+  editBrandAction,
+} from '~screens/BrandManager/components';
+import {
+  addCategoryAction,
+  addSubCategoryAction,
+  CurrentCategory,
+  currentCategoryLoader,
+  deleteCategoryAction,
+  editCategoryAction,
+  editSubCategoryAction,
+} from '~screens/CategoryManager/components';
+import { destroyProductAction } from '~screens/ProductList/components/CustomTable/components';
 
 import App from '../App';
 
-export const ROUTES = [
+export const ROUTES = (queryClient?: QueryClient) => [
   {
     id: 0,
     path: '/',
@@ -33,21 +57,29 @@ export const ROUTES = [
     id: 99,
     title: 'Playground',
     description: "You're not supposed to be here",
-    path: '/playground',
+    path: 'playground',
     element: <Playground />,
   },
   {
-    id: 1,
-    title: 'Iniciar sesión',
-    description: '',
-    path: '/login',
-    element: <Login />,
+    id: 98,
+    title: 'uft',
+    description: "You're not supposed to be here",
+    path: 'uft',
+    element: <UserFeedbackTesting />,
+    children: [
+      {
+        path: 'add',
+        action: queryClient
+          ? userFeedbackTestingAction(queryClient)
+          : undefined,
+      },
+    ],
   },
   {
     id: 2,
     title: 'Perfil del usuario',
     description: '',
-    path: '/profile',
+    path: 'profile',
     element: <UserInfo />,
   },
   {
@@ -55,30 +87,55 @@ export const ROUTES = [
     title: 'Listado de Productos',
     description: '',
     icon: <FormatListNumbered />,
-    path: '/products',
+    path: 'products',
+    loader: queryClient ? productListLoader(queryClient) : undefined,
     element: <ProductList />,
+    children: [
+      {
+        path: 'tsis/:id',
+        action: queryClient ? productListAction(queryClient) : undefined,
+      },
+      {
+        path: 'destroy/:id',
+        action: queryClient ? destroyProductAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 8,
     title: 'Agregar Producto',
     description: 'Agregando Producto',
     icon: <PlusOne />,
-    path: '/add',
+    path: 'add',
+    loader: queryClient ? addEditProductLoader(queryClient) : undefined,
     element: <AddEditProduct />,
+    children: [
+      {
+        path: 'addProduct',
+        action: queryClient ? addProductAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 9,
     title: 'Editar Producto',
     description: 'Editando Producto',
-    path: '/edit/:id',
-    element: <AddEditProduct editMode />,
+    path: 'edit/:id',
+    loader: queryClient ? addEditProductLoader(queryClient) : undefined,
+    element: <AddEditProduct />,
+    children: [
+      {
+        path: 'editProduct',
+        action: queryClient ? editProductAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 4,
     icon: <AttachMoney />,
     title: 'Modif. Precios en lote',
     description: '',
-    path: '/priceModifier',
+    path: 'priceModifier',
     element: <PriceModifier />,
   },
   {
@@ -86,23 +143,67 @@ export const ROUTES = [
     icon: <AllInbox />,
     title: 'Administrador de Categorias',
     description: '',
-    path: '/categoryManager',
+    path: 'categoryManager',
+    loader: queryClient ? categoryManagerLoader(queryClient) : undefined,
     element: <CategoryManager />,
+    children: [
+      {
+        path: ':id',
+        loader: queryClient ? currentCategoryLoader(queryClient) : undefined,
+        element: <CurrentCategory />,
+      },
+      {
+        path: 'addCategory',
+        action: queryClient ? addCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'addSubcategory/:id',
+        action: queryClient ? addSubCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'deleteCategory/:id',
+        action: queryClient ? deleteCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'editCategory/:id',
+        action: queryClient ? editCategoryAction(queryClient) : undefined,
+      },
+      {
+        path: 'editSubCategory/:id',
+        action: queryClient ? editSubCategoryAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 6,
     icon: <LocalOffer />,
     title: 'Administrador de Marcas',
     description: '',
-    path: '/brandManager',
+    path: 'brandManager',
+    loader: queryClient ? brandManagerLoader(queryClient) : undefined,
     element: <BrandManager />,
+    children: [
+      {
+        path: 'add',
+        action: queryClient ? addBrandAction(queryClient) : undefined,
+      },
+      {
+        path: 'edit/:id',
+        action: queryClient ? editBrandAction(queryClient) : undefined,
+      },
+      {
+        path: 'destroy/:id',
+        action: queryClient ? destroyBrandAction(queryClient) : undefined,
+      },
+    ],
   },
   {
     id: 7,
     icon: <AutoFixHigh />,
     title: 'Generador de etiquetas de precio',
+    loader: queryClient ? productListLoader(queryClient) : undefined,
     description: '',
-    path: '/pricetaggenerator',
+    path: 'pricetaggenerator',
     element: <PriceTagGenerator />,
   },
 ];

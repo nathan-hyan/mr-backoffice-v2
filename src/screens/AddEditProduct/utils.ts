@@ -1,6 +1,7 @@
+import { SubmitOptions } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 import { Timestamp } from 'firebase/firestore';
-import {
+import type {
   Dimensions,
   Prices,
   ProviderProductCode,
@@ -52,7 +53,7 @@ export function fabricateFakeData(): {
       value: Number(faker.commerce.price({ min: 5, max: 300 })),
     },
     { field: 'brand', value: 'a2Cz7QoQVq1dVrKIpUm6' },
-    { field: 'stockOwner', value: faker.person.fullName() },
+    { field: 'stockOwner', value: 'Mundo Regalo' },
     { field: 'storePosition', value: faker.location.countryCode() },
     { field: 'weight', value: faker.number.int({ min: 2, max: 10 }) },
     {
@@ -68,4 +69,10 @@ export function fabricateFakeData(): {
       value: faker.number.int({ min: 2, max: 10 }),
     },
   ];
+}
+
+export function getSubmitMode(editMode: boolean): SubmitOptions {
+  return editMode
+    ? { action: 'editProduct', method: 'put' }
+    : { action: 'addProduct', method: 'post' };
 }

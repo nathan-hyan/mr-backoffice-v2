@@ -12,7 +12,6 @@ function Playground() {
   const {
     control,
     watch,
-    handleSubmit,
     formState: { errors },
   } = useForm<Form>({
     defaultValues: {
@@ -21,14 +20,9 @@ function Playground() {
     },
   });
 
-  const onSubmit = (data: Form) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
-  };
-
   return (
     <div>
-      <form action='' noValidate onSubmit={handleSubmit(onSubmit)}>
+      <form action='' noValidate>
         <CustomInput
           control={control}
           label='Text'

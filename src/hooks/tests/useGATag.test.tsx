@@ -4,7 +4,7 @@ import { act, renderHook } from '@testing-library/react';
 import vitest from 'vitest';
 
 import { GACategories, GATypes } from '~constants/gaTagTypes';
-import useGATag from '~hooks/useGATag';
+import { useGATag } from '~hooks';
 
 vi.mock('react-ga4');
 
