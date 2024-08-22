@@ -9,8 +9,8 @@ export const compare =
         return first.name.toLowerCase() > second.name.toLowerCase() ? 1 : -1;
 
       case 1:
-        return (first.prices.list.lastModified || 0) >
-          (second.prices.list.lastModified || 0)
+        return (first.prices.cost.lastModified || 0) >
+          (second.prices.cost.lastModified || 0)
           ? 1
           : -1;
 

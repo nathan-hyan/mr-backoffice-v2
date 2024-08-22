@@ -16,7 +16,7 @@ export const batchUpdateData = (
       newData.type
     );
     const newListPrice = calculateNumberWithPercentage(
-      item.prices.list.value,
+      item.prices.mayo1.value,
       newData.list,
       newData.type
     );
