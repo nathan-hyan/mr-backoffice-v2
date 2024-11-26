@@ -5,8 +5,10 @@ import {
   FormatListNumbered,
   LocalOffer,
   PlusOne,
+  RequestQuote,
 } from '@mui/icons-material';
 
+import BudgetManager from '~screens/BudgetScreen/budgetManager';
 import {
   AddEditProduct,
   BrandManager,
@@ -104,5 +106,13 @@ export const ROUTES = [
     description: '',
     path: '/pricetaggenerator',
     element: <PriceTagGenerator />,
+  },
+  {
+    id: 10,
+    icon: <RequestQuote />,
+    title: 'Administrador de Presupuestos',
+    description: '',
+    path: '/budgetManager',
+    element: <BudgetManager />,
   },
 ];

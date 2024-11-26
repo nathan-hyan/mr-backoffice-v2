@@ -3,6 +3,7 @@ import { Brand, Category, Product } from 'types/data';
 export enum SearchCriteria {
   ProductName = 0,
   BarCode = 1,
+  id = 2,
 }
 
 export enum SortBy {
