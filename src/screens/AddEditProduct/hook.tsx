@@ -137,6 +137,7 @@ function useProductModal({ productIdToEdit }: Props) {
       keys.forEach((field) => {
         setValue(field, productToEdit[field]);
       });
+      setValue('internalId', productToEdit.internalId || 0);
     }
   }, [productList, productIdToEdit, setValue]);
 

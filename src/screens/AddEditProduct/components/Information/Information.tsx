@@ -77,6 +77,24 @@ function Information({ control, watch, errors, setValue }: Props) {
           ),
         }}
       />
+      <Controller
+        name='internalId'
+        control={control}
+        rules={{
+          required: 'El ID interno es obligatorio.',
+          validate: (value) =>
+            Number.isInteger(Number(value)) || 'Debe ser un número entero.',
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label='ID Interno'
+            error={!!errors.internalId}
+            helperText={errors.internalId?.message}
+            fullWidth
+          />
+        )}
+      />
 
       <Controller
         control={control}
