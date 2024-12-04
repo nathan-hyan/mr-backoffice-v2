@@ -2,11 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DeleteOutline, Edit } from '@mui/icons-material';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {
-  Collapse,
-  IconButton,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -22,8 +18,6 @@ import { FirestoreCollections } from '~constants/firebase';
 import useCategoryTranslator from '~hooks/useCategoryTranslator';
 import useFirestore from '~hooks/useFirestore';
 import calculateNumberWithPercentage from '~utils/addPercentage';
-
-import ProductDetail from './components/ProductDetail';
 
 type Props =
   | {
@@ -88,11 +82,7 @@ function Row(props: Props) {
             cursor: 'pointer',
           }}
         >
-          <TableCell>
-            <IconButton size='small' onClick={() => setOpen(!open)}>
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </TableCell>
+          <TableCell />
           <TableCell>{internalId}</TableCell>
           <TableCell>{name}</TableCell>
           <TableCell>{stock.current}</TableCell>
@@ -149,17 +139,6 @@ function Row(props: Props) {
                 <ListItemText>Eliminar Producto</ListItemText>
               </MenuItem>
             </CustomMenu>
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-            <Collapse in={open} timeout='auto' unmountOnExit>
-              <ProductDetail
-                data={props.data}
-                category={category?.name}
-                subCategory={subCategory?.name}
-              />
-            </Collapse>
           </TableCell>
         </TableRow>
       </>

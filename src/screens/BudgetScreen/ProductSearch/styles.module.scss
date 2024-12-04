@@ -1,42 +1,39 @@
 .container {
     display: flex;
     flex-direction: row;
-
     align-items: flex-start;
-    gap: 2rem;
+    gap: 20px;
 }
 
 .searchBox {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    padding-left: 1rem;
-
+    padding-left: 10px;
+    position: relative;
 
     .search {
         background-color: #fff;
         color: #000;
-        height: 4.2rem;
-        width: 33.5rem;
+        height: 42px;
+        width: 335px;
         border: 1px solid #000;
         border-radius: 10px;
-        font-size: 2rem;
-        padding: 1rem;
+        font-size: 20px;
+        padding: 10px;
     }
 }
 
 .criteria {
     display: flex;
     flex-direction: row;
-
     align-items: center;
-    height: 4.2rem;
-    gap: 1rem;
+    height: 42px;
+    gap: 10px;
     color: #000;
-    font-size: 1.5rem;
+    font-size: 15px;
 
     label {
-
         flex-direction: row;
     }
 }
@@ -44,21 +41,23 @@
 .searchResults {
     list-style-type: none;
     padding: 0;
-    margin-top: 0.5rem;
-
+    margin: 0 0 0 10px;
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 0 0 10px 10px;
     max-height: 200px;
     overflow-y: auto;
-    position: relative;
+    position: absolute;
     z-index: 10;
+    width: 335px;
+    top: 100%;
+    left: 0;
 
     li {
         padding: 10px;
         border-bottom: 1px solid #ccc;
         cursor: pointer;
-        font-size: 1.6rem;
+        font-size: 16px;
 
         &:hover {
             background-color: #c2c0c0;
@@ -78,16 +77,18 @@
 .priceSelect {
     background-color: #fff;
     color: #000;
-    height: 4.2rem;
-    width: 25rem;
+    height: 42px;
+    width: 250px;
     border: 1px solid #000;
     border-radius: 10px;
-    font-size: 2rem;
-    padding: 1rem;
+    font-size: 20px;
+    padding: 10px;
+
 }
 
 .priceList {
     position: relative;
+
 }
 
 .selectList {
@@ -98,12 +99,13 @@
     font-size: 14px;
     font-weight: bold;
     color: #000;
-    margin: 0 2rem;
-    padding: 0 0.5rem;
+    margin: 0 20px;
+    padding: 0 5px;
+    border-radius: 0 0 10px 10px;
 }
 
 .orden {
     color: #000;
-    font-size: 1.5rem;
-    width: 10rem;
+    font-size: 15px;
+    width: 100px;
 }

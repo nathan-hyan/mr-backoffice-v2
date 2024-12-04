@@ -1,52 +1,40 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import useGATag from '~hooks/useGATag';
+import { useProducts } from '~contexts/Products';
 
 import styles from './styles.module.scss';
 
-import { mockProducts } from '../constants';
-
 interface ProductSearchBoxProps {
   onProductSelect: (product: Product, price: number) => void;
+  selectedPriceType: string;
+  onPriceTypeChange: (newPriceType: string) => void;
 }
 
-function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
-  const { tagAction } = useGATag(true);
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchCriteria, setSearchCriteria] = useState<number>(0);
-  const [searchResults, setSearchResults] = useState<Product[]>([]);
-  const [selectedPriceType, setSelectedPriceType] = useState<string>('retail');
+function ProductSearchBox({
+  onProductSelect,
+  selectedPriceType,
+  onPriceTypeChange,
+}: ProductSearchBoxProps) {
+  const {
+    productList,
+    performSearch,
+    clearSearch,
+    searchQuery,
+    searchCriteria,
+  } = useProducts();
 
-  const filterProducts = () => {
-    const filteredProducts = mockProducts.filter((product) => {
-      const query = searchQuery.toLowerCase();
-
-      switch (searchCriteria) {
-        case 0:
-          return product.name.toLowerCase().includes(query);
-        case 1:
-          return product.barcode.toLowerCase().includes(query);
-        case 2:
-          return product.id.toString().includes(query);
-        default:
-          return false;
-      }
-    });
-
-    setSearchResults(filteredProducts);
-  };
+  const [searchCriteriaLocal, setSearchCriteriaLocal] =
+    useState<number>(searchCriteria);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setSearchQuery(value);
+    performSearch(value, searchCriteriaLocal);
   };
 
   const handleClearInput = () => {
-    tagAction('Event', 'Click', 'Cleared search box');
-    setSearchQuery('');
-    setSearchResults([]);
+    clearSearch();
   };
 
   const handleChangeSearch = (
@@ -54,41 +42,22 @@ function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
     newValue: Nullable<number>
   ) => {
     if (typeof newValue === 'number') {
-      let criteriaLabel = '';
-      switch (newValue) {
-        case 0:
-          criteriaLabel = 'nombre producto';
-          break;
-        case 1:
-          criteriaLabel = 'codigo barras';
-          break;
-        case 2:
-          criteriaLabel = 'ID';
-          break;
-      }
-      tagAction('Event', 'Changed', `Search type: ${criteriaLabel}`);
-      setSearchCriteria(newValue);
+      setSearchCriteriaLocal(newValue);
+      performSearch(searchQuery, newValue);
     }
   };
-
-  const handlePriceTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedPriceType(e.target.value);
-  };
-
-  useEffect(() => {
-    filterProducts();
-  }, [searchQuery, searchCriteria]);
 
   const handleSelectProduct = (product: Product) => {
     const selectedPrice =
       product.prices[selectedPriceType as keyof typeof product.prices]?.value;
-    console.log('Producto seleccionado:', product);
-    console.log(`Precio seleccionado (${selectedPriceType}):`, selectedPrice);
-
-    setSearchQuery('');
-    setSearchResults([]);
 
     onProductSelect(product, selectedPrice);
+    clearSearch();
+  };
+
+  const handlePriceTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const newPriceType = e.target.value;
+    onPriceTypeChange(newPriceType);
   };
 
   return (
@@ -101,9 +70,9 @@ function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
           onChange={handleChangeValue}
           placeholder='Buscar Producto'
         />
-        {searchQuery && searchResults.length > 0 && (
+        {searchQuery && productList.length > 0 && (
           <ul className={styles.searchResults}>
-            {searchResults.map((product) => (
+            {productList.map((product) => (
               <li key={product.id}>
                 <button
                   type='button'
@@ -122,7 +91,7 @@ function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
           <input
             type='radio'
             name='searchCriteria'
-            checked={searchCriteria === 0}
+            checked={searchCriteriaLocal === 0}
             onChange={(e) => handleChangeSearch(e, 0)}
           />
           Nombre
@@ -131,19 +100,10 @@ function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
           <input
             type='radio'
             name='searchCriteria'
-            checked={searchCriteria === 1}
+            checked={searchCriteriaLocal === 1}
             onChange={(e) => handleChangeSearch(e, 1)}
           />
           Codigo Barras
-        </label>
-        <label>
-          <input
-            type='radio'
-            name='searchCriteria'
-            checked={searchCriteria === 2}
-            onChange={(e) => handleChangeSearch(e, 2)}
-          />
-          ID
         </label>
       </div>
 
@@ -159,14 +119,14 @@ function ProductSearchBox({ onProductSelect }: ProductSearchBoxProps) {
           <option value='online'>Online</option>
           <option value='mayo1'>Mayo 1</option>
           <option value='mayo2'>Mayo 2</option>
-          <option value='cost'>cost</option>
-          <option value='mayo3'>mayo 3</option>
-          <option value='mayo4'>mayo 4</option>
-          <option value='reseller'>reseller</option>
+          <option value='cost'>Cost</option>
+          <option value='mayo3'>Mayo 3</option>
+          <option value='mayo4'>Mayo 4</option>
+          <option value='reseller'>Reseller</option>
         </select>
       </div>
       <div className={styles.orden}>
-        <span>N° de Orden: #032156</span>
+        <span>N° de Orden: #xxxx</span>
       </div>
     </div>
   );

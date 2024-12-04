@@ -10,23 +10,72 @@ import ProductSearchBox from './ProductSearch/ProductSearchBar';
 import SellAndBudget from './SellAndBudget/SellAndBudget';
 
 function BudgetManager() {
-  // Estado para manejar los productos seleccionados y sus precios
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
-  const [selectedPriceTypes, setSelectedPriceTypes] = useState<string[]>([]);
+  const [selectedPriceType, setSelectedPriceType] = useState<string>('retail');
+  const [productDetails, setProductDetails] = useState<{
+    [productId: string]: {
+      quantity: number;
+      unitPrice: number;
+      discount: number;
+      total: number;
+    };
+  }>({});
+  const [totalPrice, setTotalPrice] = useState<number>(0); // Estado para el total general
+  const [clientData, setClientData] = useState<any>(null);
 
   const handleProductSelect = (product: Product, price: number) => {
-    setSelectedProducts((prevProducts) => [...prevProducts, product]); // Agregar el producto seleccionado
-    setSelectedPriceTypes((prevPriceTypes) => [
-      ...prevPriceTypes,
-      price.toString(),
-    ]); // Agregar el precio seleccionado
+    setSelectedProducts((prevProducts) => [...prevProducts, product]);
+  };
+
+  const handlePriceTypeChange = (newPriceType: string) => {
+    setSelectedPriceType(newPriceType);
+  };
+
+  const handleProductDetailsChange = (
+    productId: string,
+    details: {
+      quantity: number;
+      unitPrice: number;
+      discount: number;
+      total: number;
+    }
+  ) => {
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [productId]: {
+        quantity: details.quantity,
+        unitPrice: details.unitPrice,
+        discount: details.discount,
+        total: details.total,
+      },
+    }));
+  };
+
+  const handleUpdateProductSummary = (summary: {
+    totalPrice: number;
+    productDetails: {
+      [productId: string]: {
+        quantity: number;
+        unitPrice: number;
+        discount: number;
+        total: number;
+      };
+    };
+  }) => {
+    setProductDetails(summary.productDetails);
+    setTotalPrice(summary.totalPrice);
+    console.log('Resumen actualizado:', summary);
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.budgetList}>
         <div className={styles.searchBarNav}>
-          <ProductSearchBox onProductSelect={handleProductSelect} />
+          <ProductSearchBox
+            onProductSelect={handleProductSelect}
+            selectedPriceType={selectedPriceType}
+            onPriceTypeChange={handlePriceTypeChange}
+          />
         </div>
         <div className={styles.titleBar}>
           {tableTitle.map((column) => (
@@ -42,16 +91,23 @@ function BudgetManager() {
         <div className={styles.productList}>
           <ProductList
             selectedProducts={selectedProducts}
-            selectedPriceType={selectedPriceTypes}
+            selectedPriceType={selectedPriceType}
+            onProductDetailsChange={handleProductDetailsChange}
+            onUpdateProductSummary={handleUpdateProductSummary}
           />
         </div>
       </div>
       <div className={styles.clientSide}>
         <div>
-          <ClientInfo />
-        </div>{' '}
+          <ClientInfo setClientData={setClientData} />
+        </div>
         <div>
-          <SellAndBudget />
+          <SellAndBudget
+            items={selectedProducts}
+            clientData={clientData}
+            productDetails={productDetails}
+            totalPrice={totalPrice}
+          />
         </div>
       </div>
     </div>

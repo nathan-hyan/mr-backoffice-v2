@@ -1,35 +1,83 @@
+import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
 import ProductItem from './ProductItem/productItem';
 
 interface ProductListProps {
-  selectedProducts: Product[]; // Cambié el nombre de selectedProduct por selectedProducts
+  selectedProducts: Product[];
   selectedPriceType: string;
+  onUpdateProductSummary: (summary: {
+    totalPrice: number;
+    productDetails: {
+      [productId: string]: {
+        quantity: number;
+        unitPrice: number;
+        discount: number;
+        total: number;
+      };
+    };
+  }) => void;
 }
 
 function ProductList({
-  selectedProducts, // Aquí ya recibimos los productos y el tipo de precio directamente desde el padre
+  selectedProducts,
   selectedPriceType,
+  onUpdateProductSummary,
 }: ProductListProps) {
+  const [productDetails, setProductDetails] = useState<{
+    [productId: string]: {
+      quantity: number;
+      unitPrice: number;
+      discount: number;
+      total: number;
+    };
+  }>({});
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const total = Object.values(productDetails).reduce(
+      (sum, { total }) => sum + total,
+      0
+    );
+    setTotalPrice(total);
+
+    onUpdateProductSummary({ totalPrice, productDetails });
+  }, [productDetails, onUpdateProductSummary]);
+
+  const handleUpdateProductDetails = (
+    productId: string,
+    details: { quantity: number; unitPrice: number; discount: number },
+    total: number
+  ) => {
+    setProductDetails((prevDetails) => ({
+      ...prevDetails,
+      [productId]: { ...details, total },
+    }));
+  };
+
   const handleRemoveProduct = (productId: string) => {
-    // Eliminación de producto, si fuera necesario
-    // Esto dependerá de cómo deseas manejar el estado de los productos seleccionados
+    setProductDetails((prevDetails) => {
+      const updatedDetails = { ...prevDetails };
+      delete updatedDetails[productId];
+      return updatedDetails;
+    });
   };
 
   return (
     <div>
-      {selectedProducts.length === 0 ? (
-        <p>No hay productos seleccionados.</p>
-      ) : (
-        selectedProducts.map((product) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            selectedPriceType={selectedPriceType}
-            onRemove={handleRemoveProduct}
-          />
-        ))
-      )}
+      {selectedProducts.map((product) => (
+        <ProductItem
+          key={product.id}
+          product={product}
+          selectedPriceType={selectedPriceType}
+          onRemove={handleRemoveProduct}
+          onUpdateProductDetails={handleUpdateProductDetails}
+        />
+      ))}
+
+      <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
+        <p>Total General: $ {totalPrice.toFixed(2)}</p>
+      </div>
     </div>
   );
 }

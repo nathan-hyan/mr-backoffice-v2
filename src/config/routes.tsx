@@ -8,7 +8,7 @@ import {
   RequestQuote,
 } from '@mui/icons-material';
 
-import BudgetManager from '~screens/BudgetScreen/budgetManager';
+import BudgetManager from '~screens/BudgetScreen/BudgetManager';
 import {
   AddEditProduct,
   BrandManager,
