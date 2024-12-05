@@ -55,7 +55,6 @@ function ProductItem({
       { quantity, unitPrice: price, discount },
       newTotalPrice
     );
-    console.log(newTotalPrice, 'precio total');
   }, [product, selectedPriceType, quantity, discount]);
 
   const handleQuantityChange = (increment: boolean) => {

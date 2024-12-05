@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-shadow */
 import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
@@ -17,12 +19,14 @@ interface ProductListProps {
       };
     };
   }) => void;
+  onRemoveProduct: (productId: string) => void;
 }
 
 function ProductList({
   selectedProducts,
   selectedPriceType,
   onUpdateProductSummary,
+  onRemoveProduct,
 }: ProductListProps) {
   const [productDetails, setProductDetails] = useState<{
     [productId: string]: {
@@ -55,14 +59,6 @@ function ProductList({
     }));
   };
 
-  const handleRemoveProduct = (productId: string) => {
-    setProductDetails((prevDetails) => {
-      const updatedDetails = { ...prevDetails };
-      delete updatedDetails[productId];
-      return updatedDetails;
-    });
-  };
-
   return (
     <div>
       {selectedProducts.map((product) => (
@@ -70,7 +66,7 @@ function ProductList({
           key={product.id}
           product={product}
           selectedPriceType={selectedPriceType}
-          onRemove={handleRemoveProduct}
+          onRemove={onRemoveProduct}
           onUpdateProductDetails={handleUpdateProductDetails}
         />
       ))}

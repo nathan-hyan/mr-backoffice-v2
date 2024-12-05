@@ -1,21 +1,13 @@
-import { useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { Product } from 'types/data';
 
 import styles from './styles.module.scss';
 
 import PDFDocument from './PdfGenerator/PdfGenerator';
 
-interface Product {
-  name: string;
-  quantity: number;
-  unitPrice: number;
-  discount: number;
-  totalPrice: number;
-}
-
 interface SellAndBudgetProps {
   totalPrice: number;
-  clientData: any;
+  clientData: never;
   productDetails: {
     [key: string]: {
       quantity: number;
@@ -24,7 +16,8 @@ interface SellAndBudgetProps {
       total: number;
     };
   };
-  items: Product[]; // Prop faltante
+  items: Product[];
+  onCancel: () => void;
 }
 
 function SellAndBudget({
@@ -32,6 +25,7 @@ function SellAndBudget({
   clientData,
   productDetails,
   items,
+  onCancel,
 }: SellAndBudgetProps) {
   return (
     <div className={styles.container}>
@@ -44,29 +38,26 @@ function SellAndBudget({
         </button>
       </div>
       <div className={styles.buttons}>
-        {/* <PDFDownloadLink
+        <PDFDownloadLink
           document={
             <PDFDocument
               customer={clientData}
-              items={Object.values(productDetails)}
-              total={total}
+              items={items}
+              productDetails={productDetails}
+              totalPrice={totalPrice}
             />
           }
           fileName='presupuesto.pdf'
         >
-          {({ loading }) =>
-            loading ? (
-              <button className={styles.buttonBudget} type='button' disabled>
-                Generando PDF...
-              </button>
-            ) : (
-              <button className={styles.buttonBudget} type='button'>
-                PRESUPUESTO
-              </button>
-            )
-          }
-        </PDFDownloadLink> */}
-        <button className={styles.buttonCancel} type='button'>
+          <button className={styles.buttonBudget} type='button'>
+            PRESUPUESTO
+          </button>
+        </PDFDownloadLink>
+        <button
+          className={styles.buttonCancel}
+          type='button'
+          onClick={onCancel}
+        >
           Cancelar
         </button>
       </div>

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable no-param-reassign */
+import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
 import styles from './styles.module.scss';
@@ -20,35 +21,15 @@ function BudgetManager() {
       total: number;
     };
   }>({});
-  const [totalPrice, setTotalPrice] = useState<number>(0); // Estado para el total general
-  const [clientData, setClientData] = useState<any>(null);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [clientData, setClientData] = useState<never>(null);
 
-  const handleProductSelect = (product: Product, price: number) => {
+  const handleProductSelect = (product: Product) => {
     setSelectedProducts((prevProducts) => [...prevProducts, product]);
   };
 
   const handlePriceTypeChange = (newPriceType: string) => {
     setSelectedPriceType(newPriceType);
-  };
-
-  const handleProductDetailsChange = (
-    productId: string,
-    details: {
-      quantity: number;
-      unitPrice: number;
-      discount: number;
-      total: number;
-    }
-  ) => {
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      [productId]: {
-        quantity: details.quantity,
-        unitPrice: details.unitPrice,
-        discount: details.discount,
-        total: details.total,
-      },
-    }));
   };
 
   const handleUpdateProductSummary = (summary: {
@@ -64,8 +45,40 @@ function BudgetManager() {
   }) => {
     setProductDetails(summary.productDetails);
     setTotalPrice(summary.totalPrice);
-    console.log('Resumen actualizado:', summary);
   };
+
+  const handleRemoveProduct = (productId: string) => {
+    setSelectedProducts((prevProducts) => {
+      const updatedProducts = prevProducts.filter(
+        (product) => product.id !== productId
+      );
+
+      setProductDetails((prevDetails) => {
+        const updatedDetails = { ...prevDetails };
+        delete updatedDetails[productId];
+        return updatedDetails;
+      });
+
+      return updatedProducts;
+    });
+  };
+  const handleCancel = () => {
+    setSelectedProducts([]);
+    setProductDetails({});
+    setTotalPrice(0);
+  };
+
+  useEffect(() => {
+    const newTotalPrice = selectedProducts.reduce((accum, product) => {
+      const details = productDetails[product.id];
+      if (details) {
+        accum += details.total;
+      }
+      return accum;
+    }, 0);
+
+    setTotalPrice(newTotalPrice);
+  }, [selectedProducts, productDetails]);
 
   return (
     <div className={styles.container}>
@@ -92,8 +105,8 @@ function BudgetManager() {
           <ProductList
             selectedProducts={selectedProducts}
             selectedPriceType={selectedPriceType}
-            onProductDetailsChange={handleProductDetailsChange}
             onUpdateProductSummary={handleUpdateProductSummary}
+            onRemoveProduct={handleRemoveProduct}
           />
         </div>
       </div>
@@ -107,6 +120,7 @@ function BudgetManager() {
             clientData={clientData}
             productDetails={productDetails}
             totalPrice={totalPrice}
+            onCancel={handleCancel}
           />
         </div>
       </div>

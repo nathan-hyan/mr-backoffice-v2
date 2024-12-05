@@ -60,19 +60,19 @@ function ClientInfo({
         <p>Información</p>
         <span>Cliente: {clientData.name || 'No asignado'}</span>
         <span>Celular: {clientData.phone || 'No asignado'}</span>
-        <span>Email: {clientData.email || 'No asignado'}</span>
+        {/*        <span>Email: {clientData.email || 'No asignado'}</span> */}
         <span>ID Cliente: {clientData.id || 'No asignado'}</span>
       </div>
       <div className={styles.delivery}>
         <p>Envío</p>
         <span>Domicilio: {clientData.address || 'No asignado'}</span>
-        <span>
+        {/* <span>
           Barrio/localidad: {clientData.neighborhood || 'No asignado'}
-        </span>
+        </span> */}
       </div>
       <div className={styles.facturacion}>
         <p>Facturación</p>
-        <span>Domicilio: {clientData.billingAddress || 'No asignado'}</span>
+        {/*     <span>Domicilio: {clientData.billingAddress || 'No asignado'}</span> */}
         <span>Situación Fiscal: {clientData.taxStatus || 'No asignado'}</span>
         <span>DNI/CUIT: {clientData.dniCuit || 'No asignado'}</span>
       </div>
@@ -100,7 +100,7 @@ function ClientInfo({
             setClientDataState(data);
             setClientData(data);
           }}
-          closeModal={() => setShowModal(false)} // Cierra el modal
+          closeModal={() => setShowModal(false)}
         />
       )}
     </div>

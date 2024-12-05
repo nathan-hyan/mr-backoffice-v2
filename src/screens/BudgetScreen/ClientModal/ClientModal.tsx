@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import styles from './styles.module.scss';
 
 interface ClientData {
@@ -52,14 +53,14 @@ function ClientModal({
           value={clientData.phone}
           onChange={handleInputChange}
         />
-        <label>Email:</label>
+        {/* <label>Email:</label>
         <input
           className={styles.input}
           type='email'
           name='email'
           value={clientData.email}
           onChange={handleInputChange}
-        />
+        /> */}
         <label>ID Cliente:</label>
         <input
           className={styles.input}
@@ -77,15 +78,15 @@ function ClientModal({
           value={clientData.address}
           onChange={handleInputChange}
         />
-        <label>Barrio/localidad:</label>
+        {/*  <label>Barrio/localidad:</label>
         <input
           className={styles.input}
           type='text'
           name='neighborhood'
           value={clientData.neighborhood}
           onChange={handleInputChange}
-        />
-        <label>Dirección de facturación:</label>
+        /> */}
+        {/*  <label>Dirección de facturación:</label>
         <input
           required
           className={styles.input}
@@ -93,7 +94,7 @@ function ClientModal({
           name='billingAddress'
           value={clientData.billingAddress}
           onChange={handleInputChange}
-        />
+        /> */}
         <label>Situación Fiscal:</label>
         <input
           className={styles.input}
