@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 39px;
+    gap: 18px;
+    ;
+}
+
+.totalPrice {
+    background-color: #fff;
+    border-radius: 10px;
+
+    p {
+        padding-left: 17px;
+        font-size: 32px;
+        font-weight: 700;
+        color: #000;
+    }
+
+}
+
+.buttonVenta {
+    width: 100%;
+    border-radius: 10px;
+    height: 43px;
+    background-color: #ABFFA0;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.buttons {
+    display: flex;
+    gap: 17px;
+    justify-content: center;
+    width: 100%;
+
+}
+
+.buttonBudget {
+    width: 100%;
+    height: 43px;
+    border-radius: 10px;
+    background-color: #79A8FF;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.buttonCancel {
+    width: 100%;
+    height: 43px;
+    border-radius: 10px;
+    background-color: #FF7878;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}

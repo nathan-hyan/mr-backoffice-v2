@@ -1,0 +1,119 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    color: #000;
+    width: 100%;
+    gap: 15px;
+}
+
+.client {
+    background-color: #fff;
+    border-radius: 10px;
+    height: 91px;
+    font-size: 16px;
+    font-weight: 600;
+
+
+    p {
+        margin: 10px 0 5px 17px;
+
+    }
+
+
+}
+
+.information {
+    padding: 0 0 20px 17px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    p {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    span {
+        font-size: 15px;
+    }
+}
+
+.delivery {
+    padding: 0 0 20px 17px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    p {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    span {
+        font-size: 15px;
+    }
+}
+
+.facturacion {
+    padding: 0 0 20px 17px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
+    p {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    span {
+        font-size: 15px;
+    }
+}
+
+.buttons {
+    display: flex;
+    gap: 17px;
+    justify-content: center;
+    width: 100%;
+
+}
+
+.buttonNuevoCliente {
+    width: 100%;
+    height: 43px;
+    border-radius: 10px;
+    background-color: #FCC10B;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.buttonQuitar {
+    width: 100%;
+    height: 43px;
+    border-radius: 10px;
+    background-color: #FF7878;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.clientInfoButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.clientButton {
+    background-color: #fff;
+    color: #000;
+    height: 43px;
+    width: 291px;
+    border: 1px solid #000;
+    border-radius: 10px;
+}

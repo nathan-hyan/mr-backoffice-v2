@@ -1,0 +1,108 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    color: black;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.quantityInput {
+    background-color: #fff;
+    color: #000;
+    width: 50px;
+    height: 32px;
+    margin: 0 3px;
+    border-radius: 10px;
+    border: 1px solid #000;
+}
+
+.quantityButton {
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    border: 1px solid #000;
+    color: #000;
+    height: 32px;
+    width: 27px;
+}
+
+.unitPriceInput {
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #000;
+    color: #000;
+    height: 32px;
+    width: 80px;
+}
+
+.unitPrice {
+    display: flex;
+    flex-direction: row;
+    width: 12%;
+    padding: 7px;
+    gap: 3px;
+
+}
+
+.moneyButton {
+    align-items: center;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    border: 1px solid #000;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    justify-content: center;
+    width: 25px;
+}
+
+.discount {
+    display: flex;
+    flex-direction: row;
+    width: 11%;
+    padding: 7px;
+    gap: 3px;
+}
+
+.discountInput {
+    width: 60px;
+    background-color: #fff;
+    color: #000;
+
+    border-radius: 10px;
+    border: 1px solid #000;
+    height: 32px;
+}
+
+.discountButton {
+    align-items: center;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    border: 1px solid #000;
+    color: #000;
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    justify-content: center;
+    width: 25px;
+}
+
+.totalPrice {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 14%;
+    padding: 7px;
+
+}
+
+.deleteButton {
+    background-color: #fff;
+    border: none;
+
+    width: 9%;
+    padding: 7px
+}
