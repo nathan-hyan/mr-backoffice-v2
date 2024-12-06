@@ -41,10 +41,18 @@ export default function ProductProvider({ children }: Props) {
       setSearchQuery(query);
       setSearchCriteria(criteria);
 
+      const normalizeText = (text: string) =>
+        text
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+
+      const normalizedQuery = normalizeText(query);
+
       const filteredProducts = productListCopy.filter(({ name, barcode }) =>
         criteria === SearchCriteria.ProductName
-          ? name.toLowerCase().includes(query.toLocaleLowerCase())
-          : barcode.toLowerCase().includes(query.toLocaleLowerCase())
+          ? normalizeText(name).includes(normalizedQuery)
+          : normalizeText(barcode).includes(normalizedQuery)
       );
 
       setProductList(filteredProducts);
