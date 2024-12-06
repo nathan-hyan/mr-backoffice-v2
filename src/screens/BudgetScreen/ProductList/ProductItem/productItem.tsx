@@ -40,11 +40,13 @@ function ProductItem({
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   useEffect(() => {
-    const price =
+    const basePrice = product.prices.cost?.value || 0;
+    const percentage =
       selectedPriceType in product.prices
         ? product.prices[selectedPriceType as keyof Prices].value
         : 0;
 
+    const price = basePrice * (percentage / 100 + 1);
     setUnitPrice(price);
 
     const newTotalPrice = price * quantity * (1 - discount / 100);
@@ -149,7 +151,7 @@ function ProductItem({
         <input
           className={styles.unitPriceInput}
           type='number'
-          value={unitPrice}
+          value={unitPrice.toFixed(2)}
           onChange={handleUnitPriceChange}
         />
       </div>
