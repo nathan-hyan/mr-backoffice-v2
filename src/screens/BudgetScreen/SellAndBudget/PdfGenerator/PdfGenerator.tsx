@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
+    position: 'relative',
   },
   sellerInfo: {
     fontSize: 12,
@@ -47,13 +48,16 @@ const styles = StyleSheet.create({
   clientInfo: {
     fontSize: 12,
     width: '48%',
-    paddingLeft: 10,
+    paddingLeft: 0,
   },
   divider: {
+    position: 'absolute',
+    left: '60%',
+    top: 0,
+    bottom: 0,
     width: 2,
     backgroundColor: '#000',
-    marginLeft: -80,
-    marginRight: 10,
+    transform: 'translateX(-50%)',
   },
   leftSide: {
     flexDirection: 'column',
