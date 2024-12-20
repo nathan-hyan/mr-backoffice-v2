@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { useReactToPrint } from 'react-to-print';
 import { Box, Button, Divider, Typography } from '@mui/material';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
@@ -11,6 +11,7 @@ import useFirestore from '~hooks/useFirestore';
 import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import ControlPanel from './components/ControlPanel';
+import PdfPrint from './components/PdfPrint';
 import PriceTag from './components/PriceTag';
 import { ControlPanelValues, FORM_CONFIG } from './constants';
 
@@ -22,10 +23,6 @@ function PriceTagGenerator() {
   );
 
   const printable = useRef<Nullable<HTMLDivElement>>(null);
-
-  const handlePrint = useReactToPrint({
-    content: () => printable.current,
-  });
 
   useEffect(() => {
     if (productList && productList.length > 0) {
@@ -54,13 +51,18 @@ function PriceTagGenerator() {
         productList={productList}
         control={control}
       />
-
       <Divider />
-
       <Typography variant='h6'>Previsualización</Typography>
-      <Button variant='contained' onClick={handlePrint}>
-        Imprimir etiquetas
-      </Button>
+
+      <PDFDownloadLink
+        document={<PdfPrint data={map} />}
+        fileName='etiquetas.pdf'
+        style={{ textDecoration: 'none' }}
+      >
+        <Button style={{ width: '100%' }} variant='contained'>
+          Imprimir Etiquetas
+        </Button>
+      </PDFDownloadLink>
       <Box
         ref={printable}
         sx={{
@@ -96,4 +98,5 @@ function PriceTagGenerator() {
     </>
   );
 }
+
 export default PriceTagGenerator;
