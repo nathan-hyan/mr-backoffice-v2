@@ -147,12 +147,10 @@ function PDFDocument({ customer, items, productDetails, totalPrice }) {
                   style={{ width: 70, height: 70, margin: '-30px 0 10px 0' }}
                 />
                 <Text>MR tienda</Text>
-                <Text>
-                  Dirección del Vendedor: Av. Belgrano 2846, San Miguel De
-                  Tucuman
-                </Text>
+                <Text>Dirección: Av. Belgrano 2846, San Miguel De Tucuman</Text>
                 <Text>CUIL: 20-20284257-8</Text>
-                <Text>Juan Carlos Gonzalez</Text> Juan Carlos Gonzalez
+                <Text>Juan Carlos Gonzalez</Text>
+                <Text>Telefono:381-3159319</Text>
               </View>
               <View style={styles.divider} />
               <View style={styles.leftSide}>
