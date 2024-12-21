@@ -159,21 +159,19 @@ function PDFDocument({ customer, items, productDetails, totalPrice }) {
                   <Text>N° de Orden: 00001</Text>
                 </View>
                 <View style={styles.clientInfo}>
-                  <Text>Cliente: {customer?.name || 'No definido'}</Text>
-                  <Text>Dirección: {customer?.address || 'No definida'}</Text>
-                  <Text>CUIL: {customer?.dniCuit || 'No definido'}</Text>
-                  <Text>Celular: {customer?.phone || 'No definido'}</Text>
-                  {/*          <Text>Email: {customer?.email || 'No definido'}</Text> */}
+                  <Text>Cliente: {customer?.name || ''}</Text>
+                  <Text>Dirección: {customer?.address || ''}</Text>
+                  <Text>CUIL: {customer?.dniCuit || ''}</Text>
+                  <Text>Celular: {customer?.phone || ''}</Text>
+                  {/*          <Text>Email: {customer?.email || ''}</Text> */}
                   {/*     <Text>
-                  Barrio/localidad: {customer?.neighborhood || 'No definido'}
+                  Barrio/localidad: {customer?.neighborhood || ''}
                 </Text> */}
                   {/* <Text>
                   Domicilio de Facturación:{' '}
-                  {customer?.billingAddress || 'No definido'}
+                  {customer?.billingAddress || ''}
                 </Text> */}
-                  <Text>
-                    Situación Fiscal: {customer?.taxStatus || 'No definido'}
-                  </Text>
+                  <Text>Situación Fiscal: {customer?.taxStatus || ''}</Text>
                 </View>
               </View>
             </View>
