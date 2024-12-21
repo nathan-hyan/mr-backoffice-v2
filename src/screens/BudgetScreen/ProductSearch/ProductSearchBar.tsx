@@ -1,4 +1,5 @@
-import { ChangeEvent, useState } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
@@ -28,13 +29,16 @@ function ProductSearchBox({
   const [searchCriteriaLocal, setSearchCriteriaLocal] =
     useState<number>(searchCriteria);
 
+  useEffect(() => {
+    clearSearch();
+    return () => {
+      clearSearch();
+    };
+  }, [clearSearch]);
+
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     performSearch(value, searchCriteriaLocal);
-  };
-
-  const handleClearInput = () => {
-    clearSearch();
   };
 
   const handleChangeSearch = (

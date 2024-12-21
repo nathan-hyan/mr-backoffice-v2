@@ -68,9 +68,9 @@ function Stock({ control, watch, errors }: Props) {
           name='stock.current'
           label='Stock actual'
           type={InputType.Number}
-          disabled={watch('stock.noPhysicalStock')}
-          required={!watch('stock.noPhysicalStock')}
-          rules={{
+          /*   disabled={watch('stock.noPhysicalStock')}
+          required={!watch('stock.noPhysicalStock')} */
+          /* rules={{
             min:
               watch('stock.minStock') > 0
                 ? {
@@ -85,7 +85,7 @@ function Stock({ control, watch, errors }: Props) {
                     message: 'El stock actual no puede ser mayor al máximo',
                   }
                 : undefined,
-          }}
+          }} */
           error={errors.stock?.current}
         />
 
@@ -95,7 +95,7 @@ function Stock({ control, watch, errors }: Props) {
           label='Stock máximo'
           type={InputType.Number}
           error={errors.stock?.maxStock}
-          disabled={watch('stock.noPhysicalStock')}
+          /* disabled={watch('stock.noPhysicalStock')}
           rules={{
             validate: () => {
               if (watch('stock.maxStock') < watch('stock.minStock')) {
@@ -104,7 +104,7 @@ function Stock({ control, watch, errors }: Props) {
 
               return true;
             },
-          }}
+          }} */
         />
       </Box>
     </>

@@ -51,6 +51,24 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
             watch={watch}
             errors={errors}
           />
+          <Button
+            variant='outlined'
+            startIcon={<CancelRounded />}
+            color='error'
+            onClick={handleCancel}
+            disabled={creatingLoading}
+          >
+            Cancelar
+          </Button>
+          <Button
+            type='submit'
+            variant='contained'
+            startIcon={<SaveAltRounded />}
+            disabled={creatingLoading}
+            onClick={checkForErrors}
+          >
+            Guardar
+          </Button>
           <Stock control={control} errors={errors} watch={watch} />
           <Prices control={control} errors={errors} watch={watch} />
           <Variants control={control} errors={errors} />

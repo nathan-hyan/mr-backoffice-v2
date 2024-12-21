@@ -46,11 +46,11 @@ function ProductItem({
         ? product.prices[selectedPriceType as keyof Prices].value
         : 0;
 
-    const price = basePrice * (percentage / 100 + 1);
+    const price = parseFloat((basePrice * (percentage / 100 + 1)).toFixed(2));
     setUnitPrice(price);
-
-    const newTotalPrice = price * quantity * (1 - discount / 100);
-    setTotalPrice(newTotalPrice);
+    const newTotalPrice = parseFloat(
+      (price * quantity * (1 - discount / 100)).toFixed(2)
+    );
 
     onUpdateProductDetails(
       product.id,
