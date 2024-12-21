@@ -48,12 +48,16 @@ export default function ProductProvider({ children }: Props) {
           .toLowerCase();
 
       const normalizedQuery = normalizeText(query);
+      const queryWords = normalizedQuery.split(' ');
 
-      const filteredProducts = productListCopy.filter(({ name, barcode }) =>
-        criteria === SearchCriteria.ProductName
-          ? normalizeText(name).includes(normalizedQuery)
-          : normalizeText(barcode).includes(normalizedQuery)
-      );
+      const filteredProducts = productListCopy.filter(({ name, barcode }) => {
+        if (criteria === SearchCriteria.ProductName) {
+          const normalizedName = normalizeText(name);
+          const nameWords = normalizedName.split(' ');
+          return queryWords.every((word) => nameWords.includes(word));
+        }
+        return normalizeText(barcode).includes(normalizedQuery);
+      });
 
       setProductList(filteredProducts);
     },

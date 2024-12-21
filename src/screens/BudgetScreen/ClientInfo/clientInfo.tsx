@@ -45,7 +45,7 @@ function ClientInfo({
   return (
     <div className={styles.container}>
       <div className={styles.client}>
-        <p>CLIENTE: {clientData.name || 'No asignado'}</p>
+        <p>CLIENTE: {clientData.name || ''}</p>
         <div className={styles.clientInfoButton}>
           <button
             className={styles.clientButton}
@@ -58,23 +58,23 @@ function ClientInfo({
       </div>
       <div className={styles.information}>
         <p>Información</p>
-        <span>Cliente: {clientData.name || 'No asignado'}</span>
-        <span>Celular: {clientData.phone || 'No asignado'}</span>
-        {/*        <span>Email: {clientData.email || 'No asignado'}</span> */}
-        <span>ID Cliente: {clientData.id || 'No asignado'}</span>
+        <span>Cliente: {clientData.name || ''}</span>
+        <span>Celular: {clientData.phone || ''}</span>
+        {/*        <span>Email: {clientData.email || ''}</span> */}
+        <span>ID Cliente: {clientData.id || ''}</span>
       </div>
       <div className={styles.delivery}>
         <p>Envío</p>
-        <span>Domicilio: {clientData.address || 'No asignado'}</span>
+        <span>Domicilio: {clientData.address || ''}</span>
         {/* <span>
-          Barrio/localidad: {clientData.neighborhood || 'No asignado'}
+          Barrio/localidad: {clientData.neighborhood || ''}
         </span> */}
       </div>
       <div className={styles.facturacion}>
         <p>Facturación</p>
-        {/*     <span>Domicilio: {clientData.billingAddress || 'No asignado'}</span> */}
-        <span>Situación Fiscal: {clientData.taxStatus || 'No asignado'}</span>
-        <span>DNI/CUIT: {clientData.dniCuit || 'No asignado'}</span>
+        {/*     <span>Domicilio: {clientData.billingAddress || ''}</span> */}
+        <span>Situación Fiscal: {clientData.taxStatus || ''}</span>
+        <span>DNI/CUIT: {clientData.dniCuit || ''}</span>
       </div>
       <div className={styles.buttons}>
         <button

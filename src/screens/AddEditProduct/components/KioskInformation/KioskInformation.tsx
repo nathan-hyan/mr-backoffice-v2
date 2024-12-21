@@ -67,7 +67,7 @@ function KioskInformation({ control, errors }: Props) {
                 errors.providerProductCode[index]?.id
               }
               type={InputType.Number}
-              required
+              /*     required */
             />
             <CustomInput
               name={`providerProductCode.${index}.name`}
@@ -78,7 +78,7 @@ function KioskInformation({ control, errors }: Props) {
                 errors.providerProductCode[index]?.name
               }
               type={InputType.Text}
-              required
+              /*  required */
             />
 
             <IconButton
@@ -116,7 +116,7 @@ function KioskInformation({ control, errors }: Props) {
 
       <CustomSelect
         name='stockOwner'
-        required
+        /*         required */
         control={control}
         error={errors.stockOwner}
         label='Dueño de stock'
@@ -139,7 +139,7 @@ function KioskInformation({ control, errors }: Props) {
           control={control}
           label={item.label}
           type={item.type}
-          required={item.required}
+          /*           required={item.required} */
           error={errors[item.name] && errors[item.name]}
         />
       ))}

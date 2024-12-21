@@ -80,11 +80,11 @@ function Information({ control, watch, errors, setValue }: Props) {
       <Controller
         name='internalId'
         control={control}
-        rules={{
+        /*     rules={{
           required: 'El ID interno es obligatorio.',
           validate: (value) =>
             Number.isInteger(Number(value)) || 'Debe ser un número entero.',
-        }}
+        }} */
         render={({ field }) => (
           <TextField
             {...field}
@@ -99,12 +99,12 @@ function Information({ control, watch, errors, setValue }: Props) {
       <Controller
         control={control}
         name='category'
-        rules={{
+        /*    rules={{
           required: {
             value: true,
             message: 'Este campo es requerido',
           },
-        }}
+        }} */
         render={({ field }) => (
           <Autocomplete
             {...field}
@@ -131,7 +131,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                required
+                /*          required */
                 label='Categoría'
                 error={Boolean(errors.category)}
                 helperText={errors.category?.message}
@@ -144,12 +144,12 @@ function Information({ control, watch, errors, setValue }: Props) {
       <Controller
         control={control}
         name='subCategory'
-        rules={{
+        /*  rules={{
           required: {
             value: true,
             message: 'Este campo es requerido',
           },
-        }}
+        }} */
         render={({ field }) => (
           <Autocomplete
             {...field}
@@ -181,7 +181,7 @@ function Information({ control, watch, errors, setValue }: Props) {
             renderInput={(params) => (
               <TextField
                 {...params}
-                required
+                /*   required */
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
                 helperText={errors.subCategory?.message}

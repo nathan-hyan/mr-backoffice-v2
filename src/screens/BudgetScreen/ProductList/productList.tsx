@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
+import styles from './styles.module.scss';
+
 import ProductItem from './ProductItem/productItem';
 
 interface ProductListProps {
@@ -60,7 +62,7 @@ function ProductList({
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {selectedProducts.map((product) => (
         <ProductItem
           key={product.id}
@@ -70,10 +72,6 @@ function ProductList({
           onUpdateProductDetails={handleUpdateProductDetails}
         />
       ))}
-
-      <div style={{ marginTop: '20px', fontWeight: 'bold' }}>
-        <p>Total General: $ {totalPrice.toFixed(2)}</p>
-      </div>
     </div>
   );
 }
