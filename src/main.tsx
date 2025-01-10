@@ -10,6 +10,7 @@ import NavbarWrapper from '~components/NavbarWrapper';
 import { THEME } from '~config/muiTheme';
 import { ROUTES } from '~config/routes';
 import ProductProvider from '~contexts/Products';
+import VentasProvider from '~contexts/Sells';
 import { UserContextProvider } from '~contexts/User';
 
 import './index.scss';
@@ -32,10 +33,12 @@ const router = createHashRouter([
       <HelmetProvider>
         <UserContextProvider>
           <ThemeProvider theme={theme}>
-            <CssBaseline enableColorScheme />
-            <ProductProvider>
-              <NavbarWrapper />
-            </ProductProvider>
+            <VentasProvider>
+              <CssBaseline enableColorScheme />
+              <ProductProvider>
+                <NavbarWrapper />
+              </ProductProvider>
+            </VentasProvider>
           </ThemeProvider>
         </UserContextProvider>
         <Analytics />

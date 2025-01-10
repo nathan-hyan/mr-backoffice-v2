@@ -1,0 +1,154 @@
+.container {
+    background-color: #d9d9d9;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    color: #000;
+}
+
+.innerContainer {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+
+
+}
+
+.searchbar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+.inputSearch {
+    background-color: #fff;
+    color: #000;
+    height: 42px;
+    width: 335px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 42px;
+    gap: 10px;
+    color: #000;
+    font-size: 15px;
+
+    label {
+        flex-direction: row;
+    }
+}
+
+.list {
+    width: 100%;
+}
+
+.title {
+    background-color: #D6DCFF;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #000;
+    width: 100%;
+    padding: 0 20px;
+
+
+    font-size: 16px;
+    font-weight: 500;
+
+    h4 {
+        width: 28.57%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    p {
+        width: 17.86%;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+.map {
+    width: 100%;
+    height: 600px;
+    margin-top: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.resultItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+
+    p {
+        width: 17.86%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    h4 {
+        width: 28.57%;
+        display: flex;
+        justify-content: flex-start;
+    }
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    width: 50%;
+}
+
+.buttonSearch {
+    background-color: #4CAF50;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(#4CAF50, 10%);
+    }
+
+    &:active {
+        background-color: lighten(#4CAF50, 10%);
+    }
+
+}
+
+.buttonClear {
+    background-color: #00a2ff;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(#00a2ff, 10%);
+    }
+
+    &:active {
+        background-color: lighten(#00a2ff, 10%);
+    }
+}

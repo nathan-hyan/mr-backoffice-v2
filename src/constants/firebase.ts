@@ -4,6 +4,7 @@ export enum FirestoreCollections {
   Users = 'users',
   Categories = 'categories',
   Brands = 'brands',
+  Ventas = 'ventas',
 }
 
 export enum UserRoles {
