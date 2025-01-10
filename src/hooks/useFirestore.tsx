@@ -8,7 +8,11 @@ import {
   DocumentData,
   DocumentReference,
   getDoc,
+  getDocs,
+  limit,
   onSnapshot,
+  orderBy,
+  query,
   updateDoc,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
@@ -29,10 +33,12 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     (err: unknown) => {
       if (err instanceof FirebaseError) {
         enqueueSnackbar(err.message, { variant: 'error' });
+        console.error('FirebaseError:', err);
       } else {
         enqueueSnackbar('Ocurrió un error inesperado.', {
           variant: 'error',
         });
+        console.error('Error:', err);
       }
     },
     [enqueueSnackbar]
@@ -143,6 +149,25 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     return response.data() as T;
   };
 
+  const getLastDocument = async (field: string) => {
+    try {
+      const collectionRef = collection(database, collectionName);
+      const q = query(collectionRef, orderBy(field, 'desc'), limit(1));
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        return null;
+      }
+      return querySnapshot.docs[0].data() as T;
+    } catch (err) {
+      throwError(err);
+      return null;
+    }
+  };
+
+  const queryDocuments = () => {
+    return collection(database, collectionName);
+  };
+
   return {
     updateDocument,
     addDocument,
@@ -152,6 +177,8 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     fetchLoading,
     creatingLoading,
     updateLoading,
+    getLastDocument,
+    queryDocuments,
   };
 }
 export default useFirestore;

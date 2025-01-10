@@ -4,6 +4,7 @@ import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
 import { useProducts } from '~contexts/Products';
+import { useVentas } from '~contexts/Sells';
 
 import styles from './styles.module.scss';
 
@@ -26,6 +27,8 @@ function ProductSearchBox({
     searchCriteria,
   } = useProducts();
 
+  const { getNextOrderNumber } = useVentas();
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [searchCriteriaLocal, setSearchCriteriaLocal] =
     useState<number>(searchCriteria);
 
@@ -35,6 +38,14 @@ function ProductSearchBox({
       clearSearch();
     };
   }, [clearSearch]);
+
+  useEffect(() => {
+    const fetchOrderNumber = async () => {
+      const newOrderNumber = await getNextOrderNumber();
+      setOrderNumber(newOrderNumber);
+    };
+    fetchOrderNumber();
+  }, [getNextOrderNumber]);
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -130,7 +141,7 @@ function ProductSearchBox({
         </select>
       </div>
       <div className={styles.orden}>
-        <span>N° de Orden: #xxxx</span>
+        <span>N° de Orden: #{orderNumber}</span>
       </div>
     </div>
   );

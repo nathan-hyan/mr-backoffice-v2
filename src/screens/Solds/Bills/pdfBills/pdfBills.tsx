@@ -8,7 +8,6 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import { Product } from 'types/data';
 
 import logo from '../../../../assets/LOGO MR.png';
 
@@ -118,44 +117,13 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Props {
-  customer: string;
-  items: { id: string; name: string }[];
-  productDetails: Product[];
-  totalPrice: number;
-  orderNumber: string;
-  presupuesto: string;
-}
-function PDFDocument({
-  customer,
-  items,
-  productDetails,
-  totalPrice,
-  orderNumber,
-  presupuesto,
-}: Props) {
-  const safeItems = items || [];
-  const safeProductDetails = productDetails || {};
-
-  const combinedItems = safeItems.map((item) => {
-    const productId = item.id;
-    const details = safeProductDetails[productId] || {};
-
-    return {
-      name: item.name,
-      quantity: details.quantity || 'No definido',
-      unitPrice: Number(details.unitPrice) || 0,
-      discount: details.discount || 0,
-      total: Number(details.total) || 0,
-    };
-  });
-
+function PDFDocumentBills({ venta }) {
   return (
     <Document>
       <Page style={styles.page}>
         <View style={styles.borderBox}>
           <View>
-            <Text style={styles.header}>{presupuesto}</Text>
+            <Text style={styles.header}>Presupuesto</Text>
             <View style={styles.infoSection}>
               <View style={styles.sellerInfo}>
                 <Image
@@ -163,31 +131,23 @@ function PDFDocument({
                   style={{ width: 70, height: 70, margin: '-30px 0 10px 0' }}
                 />
                 <Text>MR tienda</Text>
-                <Text>Dirección: Av. Belgrano 2846, San Miguel De Tucuman</Text>
-                <Text>CUIL: 20-20284257-8</Text>
-                <Text>Juan Carlos Gonzalez</Text>
-                <Text>Telefono:381-3159319</Text>
+                <Text>Dirección: {venta.sellerInfo.address}</Text>
+                <Text>CUIL: {venta.sellerInfo.cuil}</Text>
+                <Text>{venta.sellerInfo.contactPerson}</Text>
+                <Text>Telefono: {venta.sellerInfo.phone}</Text>
               </View>
               <View style={styles.divider} />
               <View style={styles.leftSide}>
                 <View style={styles.date}>
-                  <Text>Fecha: {new Date().toLocaleDateString()}</Text>
-                  <Text>N° de Orden: {orderNumber}</Text>
+                  <Text>Fecha: {venta.orderDate}</Text>
+                  <Text>N° de Orden: {venta.orderNumber}</Text>
                 </View>
                 <View style={styles.clientInfo}>
-                  <Text>Cliente: {customer?.name || ''}</Text>
-                  <Text>Dirección: {customer?.address || ''}</Text>
-                  <Text>CUIL: {customer?.dniCuit || ''}</Text>
-                  <Text>Celular: {customer?.phone || ''}</Text>
-                  {/*          <Text>Email: {customer?.email || ''}</Text> */}
-                  {/*     <Text>
-                  Barrio/localidad: {customer?.neighborhood || ''}
-                </Text> */}
-                  {/* <Text>
-                  Domicilio de Facturación:{' '}
-                  {customer?.billingAddress || ''}
-                </Text> */}
-                  <Text>Situación Fiscal: {customer?.taxStatus || ''}</Text>
+                  <Text>Cliente: {venta.customerInfo.name}</Text>
+                  <Text>Dirección: {venta.customerInfo.address}</Text>
+                  <Text>CUIL:</Text>
+                  <Text>Celular: {venta.customerInfo.phone}</Text>
+                  <Text>Situación Fiscal:</Text>
                 </View>
               </View>
             </View>
@@ -201,8 +161,8 @@ function PDFDocument({
                 <Text style={styles.itemDiscount}>Descuento</Text>
                 <Text style={styles.itemTotal}>Subtotal</Text>
               </View>
-              {combinedItems.length > 0 ? (
-                combinedItems.map((item, index) => (
+              {venta.items.length > 0 ? (
+                venta.items.map((item, index) => (
                   <View key={index} style={styles.itemRow}>
                     <Text style={styles.itemName}>{item.name}</Text>
                     <Text style={styles.itemQuantity}>{item.quantity}</Text>
@@ -223,7 +183,7 @@ function PDFDocument({
           <View>
             <View style={styles.totalSection}>
               <Text style={styles.totalText}>
-                Total: ${totalPrice?.toFixed(2) || '0.00'}
+                Total: ${venta.totalPrice.toFixed(2)}
               </Text>
             </View>
             <View style={styles.footer}>
@@ -236,4 +196,4 @@ function PDFDocument({
   );
 }
 
-export default PDFDocument;
+export default PDFDocumentBills;

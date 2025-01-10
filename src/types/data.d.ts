@@ -102,3 +102,36 @@ export interface Product {
   showInStore: boolean;
   userFeedback: UserFeedback[];
 }
+export interface Venta {
+  id?: string;
+  sellerInfo: SellerInfo;
+  customerInfo: CustomerInfo;
+  items: Item[];
+  orderDate: string;
+  orderNumber: string;
+  totalPrice: number;
+}
+
+export interface SellerInfo {
+  name: string;
+  address: string;
+  cuil: string;
+  contactPerson: string;
+  phone: string;
+}
+
+export interface CustomerInfo {
+  name: string;
+  address: string;
+  dniCuit: string;
+  phone: string;
+  taxStatus: string;
+}
+
+export interface Item {
+  name: string;
+  quantity: number;
+  unitPrice: number;
+  discount: number;
+  total: number;
+}

@@ -5,6 +5,7 @@ import {
   FormatListNumbered,
   LocalOffer,
   PlusOne,
+  PointOfSale,
   RequestQuote,
 } from '@mui/icons-material';
 
@@ -20,6 +21,8 @@ import {
   ProductList,
   UserInfo,
 } from '~screens/index';
+import BillsPreview from '~screens/Solds/Bills/billsPreview';
+import SearchScreen from '~screens/Solds/searchScreen';
 
 import App from '../App';
 
@@ -114,5 +117,20 @@ export const ROUTES = [
     description: '',
     path: '/budgetManager',
     element: <BudgetManager />,
+  },
+  {
+    id: 11,
+    icon: <PointOfSale />,
+    title: 'Ventas',
+    description: '',
+    path: '/sells',
+    element: <SearchScreen />,
+  },
+  {
+    id: 12,
+    title: 'bills',
+    description: '',
+    path: '/bills',
+    element: <BillsPreview />,
   },
 ];
