@@ -69,13 +69,17 @@ export default function VentasProvider({ children }: Props) {
       const results = await getDocs(baseQuery);
       const allVentas = results.docs.map((doc) => doc.data() as Venta);
 
-      let filteredVentas = allVentas;
+      let filteredVentas = allVentas.filter(
+        (venta) => venta.customerInfo && venta.orderDate
+      );
 
       if (criteria.customerName) {
-        filteredVentas = filteredVentas.filter((venta) =>
-          venta.customerInfo.name
-            .toLowerCase()
-            .includes(criteria.customerName.toLowerCase())
+        filteredVentas = filteredVentas.filter(
+          (venta) =>
+            venta.customerInfo.name &&
+            venta.customerInfo.name
+              .toLowerCase()
+              .includes((criteria.customerName ?? '').toLowerCase())
         );
       }
 
