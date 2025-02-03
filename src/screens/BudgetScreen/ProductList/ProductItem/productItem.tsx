@@ -51,6 +51,7 @@ function ProductItem({
     const newTotalPrice = parseFloat(
       (price * quantity * (1 - discount / 100)).toFixed(2)
     );
+    setTotalPrice(newTotalPrice);
 
     onUpdateProductDetails(
       product.id,
@@ -61,8 +62,9 @@ function ProductItem({
 
   const handleQuantityChange = (increment: boolean) => {
     setQuantity((prevQuantity) => {
+      const stock = product.stock.current ?? 1;
       const newQuantity = increment
-        ? Math.min(prevQuantity + 1, product.stock.current)
+        ? Math.min(prevQuantity + 1, stock)
         : Math.max(1, prevQuantity - 1);
 
       const newTotalPrice = newQuantity * unitPrice * (1 - discount / 100);
@@ -121,9 +123,10 @@ function ProductItem({
           type='number'
           value={quantity}
           onChange={(e) => {
+            const stock = product.stock.current ?? 1;
             const newQuantity = Math.min(
               Math.max(1, parseInt(e.target.value, 10)),
-              product.stock.current
+              stock
             );
             setQuantity(newQuantity);
             const newTotalPrice =
@@ -135,7 +138,7 @@ function ProductItem({
               newTotalPrice
             );
           }}
-          max={product.stock.current}
+          max={product.stock.current ?? 1}
         />
         <button
           className={styles.quantityButton}

@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 10,
+    padding: 20,
   },
 });
 

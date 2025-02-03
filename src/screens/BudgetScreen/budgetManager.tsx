@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { useEffect, useState } from 'react';
-import { Product } from 'types/data';
+import { ClientData, Product } from 'types/data';
 
 import styles from './styles.module.scss';
 
@@ -22,7 +22,7 @@ function BudgetManager() {
     };
   }>({});
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [clientData, setClientData] = useState<never>(null);
+  const [clientData, setClientData] = useState<ClientData | null>(null);
 
   const handleProductSelect = (product: Product) => {
     setSelectedProducts((prevProducts) => [...prevProducts, product]);
@@ -66,19 +66,17 @@ function BudgetManager() {
     setSelectedProducts([]);
     setProductDetails({});
     setTotalPrice(0);
+    setClientData(null);
   };
 
   useEffect(() => {
     const newTotalPrice = selectedProducts.reduce((accum, product) => {
       const details = productDetails[product.id];
-      if (details) {
-        accum += details.total;
-      }
-      return accum;
+      return details ? accum + details.total : accum;
     }, 0);
 
     setTotalPrice(newTotalPrice);
-  }, [selectedProducts, productDetails]);
+  }, [selectedProducts, productDetails, clientData]);
 
   return (
     <div className={styles.container}>
@@ -121,6 +119,7 @@ function BudgetManager() {
             productDetails={productDetails}
             totalPrice={totalPrice}
             onCancel={handleCancel}
+            onComplete={handleCancel}
           />
         </div>
       </div>

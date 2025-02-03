@@ -39,7 +39,7 @@ function ClientInfo({
 
   const resetClientData = () => {
     setClientDataState(initialClientData);
-    setClientData(initialClientData);
+    setClientData({ ...initialClientData });
   };
 
   return (

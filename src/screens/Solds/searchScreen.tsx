@@ -6,13 +6,14 @@ import { useVentas } from '~contexts/Sells';
 import styles from './styles.module.scss';
 
 function SearchScreen() {
-  const { searchVentas } = useVentas();
+  const { searchVentas, fetchAllVentas } = useVentas();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchCriteria, setSearchCriteria] = useState<'name' | 'fecha'>(
     'name'
   );
   const [searchResults, setSearchResults] = useState<
     Array<{
+      isSale: boolean;
       orderNumber: string;
       customerInfo: { name: string; address: string };
       orderDate: string;
@@ -22,6 +23,15 @@ function SearchScreen() {
   const [shouldSearch, setShouldSearch] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchVentas = async () => {
+      const ventas = await fetchAllVentas();
+      setSearchResults(ventas);
+    };
+
+    fetchVentas();
+  }, [fetchAllVentas]);
 
   useEffect(() => {
     if (shouldSearch && searchQuery.trim() !== '') {
@@ -42,11 +52,13 @@ function SearchScreen() {
     setShouldSearch(true);
   };
 
-  const clearSearch = () => {
+  const clearSearch = async () => {
     setSearchQuery('');
     setSearchCriteria('name');
-    setSearchResults([]);
+    const ventas = await fetchAllVentas();
+    setSearchResults(ventas);
   };
+
   const handleViewBill = (venta) => {
     navigate('/bills', { state: { venta } });
   };
@@ -108,6 +120,7 @@ function SearchScreen() {
         <div className={styles.list}>
           <div className={styles.title}>
             <h4>Nombre</h4>
+            <p>Tipo</p>
             <p>Fecha</p>
             <p>N° de orden</p>
             <p>Direccion</p>
@@ -125,11 +138,12 @@ function SearchScreen() {
                 tabIndex={0}
                 className={styles.resultItem}
               >
-                <h4>{venta.customerInfo.name}</h4>
-                <p>{venta.orderDate}</p>
-                <p>{venta.orderNumber}</p>
-                <p>{venta.customerInfo.address}</p>
-                <p>{venta.totalPrice}</p>
+                <h4>{venta.customerInfo?.name || ''}</h4>
+                <p>{venta.isSale ? 'Venta' : 'Presupuesto'}</p>
+                <p>{venta.orderDate || ''}</p>
+                <p>{venta.orderNumber || ''}</p>
+                <p>{venta.customerInfo?.address || ''}</p>
+                <p>${venta.totalPrice !== undefined ? venta.totalPrice : ''}</p>
               </div>
             ))}
           </div>

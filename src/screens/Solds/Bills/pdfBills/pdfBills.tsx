@@ -123,7 +123,9 @@ function PDFDocumentBills({ venta }) {
       <Page style={styles.page}>
         <View style={styles.borderBox}>
           <View>
-            <Text style={styles.header}>Presupuesto</Text>
+            <Text style={styles.header}>
+              {venta.isSale ? 'Factura' : 'Presupuesto'}
+            </Text>
             <View style={styles.infoSection}>
               <View style={styles.sellerInfo}>
                 <Image
@@ -143,10 +145,10 @@ function PDFDocumentBills({ venta }) {
                   <Text>N° de Orden: {venta.orderNumber}</Text>
                 </View>
                 <View style={styles.clientInfo}>
-                  <Text>Cliente: {venta.customerInfo.name}</Text>
-                  <Text>Dirección: {venta.customerInfo.address}</Text>
+                  <Text>Cliente: {venta.customerInfo?.name || ''}</Text>
+                  <Text>Dirección: {venta.customerInfo?.address || ''}</Text>
                   <Text>CUIL:</Text>
-                  <Text>Celular: {venta.customerInfo.phone}</Text>
+                  <Text>Celular: {venta.customerInfo?.phone || ''}</Text>
                   <Text>Situación Fiscal:</Text>
                 </View>
               </View>

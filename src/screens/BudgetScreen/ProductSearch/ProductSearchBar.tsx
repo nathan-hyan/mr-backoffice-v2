@@ -42,7 +42,7 @@ function ProductSearchBox({
   useEffect(() => {
     const fetchOrderNumber = async () => {
       const newOrderNumber = await getNextOrderNumber();
-      setOrderNumber(newOrderNumber);
+      setOrderNumber(newOrderNumber || '00001');
     };
     fetchOrderNumber();
   }, [getNextOrderNumber]);

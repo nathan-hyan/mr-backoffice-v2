@@ -35,7 +35,7 @@ function BillsPreview() {
       <div className={styles.boleta}>
         <div className={styles.borderBox}>
           <div className={styles.header}>
-            <h2>Presupuesto</h2>
+            <h2>{venta.isSale ? 'Factura' : 'Presupuesto'}</h2>
             <div className={styles.fechaOrden}>
               <span>Fecha: {venta.orderDate}</span>
               <span>N° de Orden: {venta.orderNumber}</span>
@@ -55,10 +55,10 @@ function BillsPreview() {
               </div>
               <div className={styles.separador} />
               <div className={styles.cliente}>
-                <p>Cliente: {venta.customerInfo.name}</p>
-                <p>Dirección: {venta.customerInfo.address}</p>
+                <p>Cliente: {venta.customerInfo?.name || ''}</p>
+                <p>Dirección: {venta.customerInfo?.address || ''}</p>
                 <p>CUIL:</p>
-                <p>Celular: {venta.customerInfo.phone}</p>
+                <p>Celular: {venta.customerInfo?.phone || ''}</p>
                 <p>Situación Fiscal:</p>
               </div>
             </div>
@@ -81,13 +81,13 @@ function BillsPreview() {
                   <p>{item.discount}</p>
                   <p>${item.total}</p>
                 </div>
-              ))}
-              <div className={styles.total}>
-                <div>
-                  <p>Total:${venta.totalPrice}</p>
-                </div>
-                <h4>Gracias por su compra</h4>
+              ))}{' '}
+            </div>
+            <div className={styles.total}>
+              <div>
+                <p>Total:${venta.totalPrice}</p>
               </div>
+              <h4>Gracias por su compra</h4>
             </div>
           </div>
         </div>

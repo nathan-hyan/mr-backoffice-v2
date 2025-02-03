@@ -20,6 +20,7 @@ interface SellAndBudgetProps {
   };
   items: Product[];
   onCancel: () => void;
+  onComplete: () => void;
 }
 
 function SellAndBudget({
@@ -28,11 +29,25 @@ function SellAndBudget({
   productDetails,
   items,
   onCancel,
+  onComplete,
 }: SellAndBudgetProps) {
   const { createVenta, getNextOrderNumber } = useContext(VentasContext);
   const [orderNumber, setOrderNumber] = useState('');
+  const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(totalPrice);
 
-  const handleVenta = async () => {
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const newTotalPrice = items.reduce((accum, item) => {
+        const details = productDetails[item.id];
+        return details ? accum + details.total : accum;
+      }, 0);
+      setCalculatedTotalPrice(newTotalPrice);
+    };
+
+    calculateTotalPrice();
+  }, [items, productDetails]);
+
+  const handleVenta = async (isSale: boolean) => {
     const venta = {
       sellerInfo: {
         name: 'MR tienda',
@@ -51,17 +66,20 @@ function SellAndBudget({
       })),
       orderDate: new Date().toLocaleDateString(),
       orderNumber: '',
-      totalPrice,
+      totalPrice: calculatedTotalPrice,
+      isSale,
     };
 
     const res = await createVenta(venta);
     const newOrderNumber = res.orderNumber;
     setOrderNumber(newOrderNumber);
+    onComplete();
   };
+
   useEffect(() => {
     const fetchOrderNumber = async () => {
       const newOrderNumber = await getNextOrderNumber();
-      setOrderNumber(newOrderNumber);
+      setOrderNumber(newOrderNumber || '00001');
     };
     fetchOrderNumber();
   }, [getNextOrderNumber]);
@@ -69,7 +87,10 @@ function SellAndBudget({
   return (
     <div className={styles.container}>
       <div className={styles.totalPrice}>
-        <p>Total: $ {totalPrice ? totalPrice.toFixed(2) : '0.00'}</p>
+        <p>
+          Total: ${' '}
+          {calculatedTotalPrice ? calculatedTotalPrice.toFixed(2) : '0.00'}
+        </p>
       </div>
       <div>
         <PDFDownloadLink
@@ -78,7 +99,7 @@ function SellAndBudget({
               customer={clientData}
               items={items}
               productDetails={productDetails}
-              totalPrice={totalPrice}
+              totalPrice={calculatedTotalPrice}
               orderNumber={orderNumber}
               presupuesto='Factura'
             />
@@ -88,7 +109,7 @@ function SellAndBudget({
           <button
             className={styles.buttonVenta}
             type='button'
-            onClick={handleVenta}
+            onClick={() => handleVenta(true)}
           >
             PROCEDER CON LA VENTA
           </button>
@@ -101,14 +122,18 @@ function SellAndBudget({
               customer={clientData}
               items={items}
               productDetails={productDetails}
-              totalPrice={totalPrice}
+              totalPrice={calculatedTotalPrice}
               presupuesto='Presupuesto'
-              orderNumber='xxx'
+              orderNumber={orderNumber}
             />
           }
           fileName='presupuesto.pdf'
         >
-          <button className={styles.buttonBudget} type='button'>
+          <button
+            className={styles.buttonBudget}
+            type='button'
+            onClick={() => handleVenta(false)}
+          >
             PRESUPUESTO
           </button>
         </PDFDownloadLink>
