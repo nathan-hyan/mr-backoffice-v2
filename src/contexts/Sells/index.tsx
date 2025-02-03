@@ -17,7 +17,24 @@ interface Props {
   children: ReactNode;
 }
 
-const VentasContext = createContext(null);
+interface VentasContextType {
+  ventas: Venta[];
+  createVenta: (venta: Venta) => Promise<void>;
+  updateVenta: (id: string, updatedVenta: Venta) => void;
+  deleteVenta: (id: string) => void;
+  fetchVentas: () => void;
+  fetchLoading: boolean;
+  creatingLoading: boolean;
+  updateLoading: boolean;
+  searchVentas: (criteria: {
+    customerName?: string;
+    creationDate?: string;
+  }) => Promise<Venta[]>;
+  getNextOrderNumber: () => Promise<string>;
+  fetchAllVentas: () => Promise<Venta[]>;
+}
+
+const VentasContext = createContext<VentasContextType | null>(null);
 
 export default function VentasProvider({ children }: Props) {
   const [ventas, setVentas] = useState<Venta[]>([]);
@@ -88,9 +105,9 @@ export default function VentasProvider({ children }: Props) {
           const [day, month, year] = venta.orderDate.split('/');
 
           return (
-            day.includes(criteria.creationDate) ||
-            month.includes(criteria.creationDate) ||
-            year.includes(criteria.creationDate)
+            day?.includes(criteria.creationDate ?? '') ||
+            month?.includes(criteria.creationDate ?? '') ||
+            year?.includes(criteria.creationDate ?? '')
           );
         });
       }
@@ -106,6 +123,11 @@ export default function VentasProvider({ children }: Props) {
     return (lastOrderNumber + 1).toString().padStart(5, '0');
   }, [getLastDocument]);
 
+  const fetchAllVentas = useCallback(async () => {
+    const results = await getDocs(queryDocuments());
+    return results.docs.map((doc) => doc.data() as Venta);
+  }, [queryDocuments]);
+
   const value = useMemo(
     () => ({
       ventas,
@@ -118,6 +140,7 @@ export default function VentasProvider({ children }: Props) {
       updateLoading,
       searchVentas,
       getNextOrderNumber,
+      fetchAllVentas,
     }),
     [
       ventas,
@@ -130,6 +153,7 @@ export default function VentasProvider({ children }: Props) {
       updateLoading,
       searchVentas,
       getNextOrderNumber,
+      fetchAllVentas,
     ]
   );
 

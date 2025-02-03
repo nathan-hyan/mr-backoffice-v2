@@ -110,6 +110,7 @@ export interface Venta {
   orderDate: string;
   orderNumber: string;
   totalPrice: number;
+  isSale: boolean;
 }
 
 export interface SellerInfo {
@@ -134,4 +135,12 @@ export interface Item {
   unitPrice: number;
   discount: number;
   total: number;
+}
+
+interface ClientData {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
 }

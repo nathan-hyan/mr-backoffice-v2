@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
   },
   productName: {
     overflow: 'hidden',
-    height: 30,
-    lineClamp: 4,
+    height: 60,
     fontWeight: 700,
+    fontSize: '8px',
   },
   priceSide: (variant: string) => {
     let color;
