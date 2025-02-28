@@ -144,3 +144,20 @@ interface ClientData {
   phone: string;
   address: string;
 }
+export interface Providers {
+  id: string;
+  name: string;
+  address: string;
+  phone1: string;
+  phone2?: string;
+  phone3?: string;
+  phone4?: string;
+  phone5?: string;
+  email: string;
+  orderDate: string;
+  cbu: string;
+  nextexpiration: string;
+  restDays: string;
+  balance: string;
+  buys: number;
+}
