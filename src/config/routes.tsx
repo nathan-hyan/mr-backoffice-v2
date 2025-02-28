@@ -4,6 +4,7 @@ import {
   AutoFixHigh,
   FormatListNumbered,
   LocalOffer,
+  LocalShipping,
   PlusOne,
   PointOfSale,
   RequestQuote,
@@ -21,6 +22,8 @@ import {
   ProductList,
   UserInfo,
 } from '~screens/index';
+import Providers from '~screens/Providers';
+import ProvidersDetails from '~screens/Providers/ProvidersDetails';
 import BillsPreview from '~screens/Solds/Bills/billsPreview';
 import SearchScreen from '~screens/Solds/searchScreen';
 
@@ -132,5 +135,21 @@ export const ROUTES = [
     description: '',
     path: '/bills',
     element: <BillsPreview />,
+  },
+  {
+    id: 13,
+    icon: <LocalShipping />,
+    title: 'Proveedores',
+    description: '',
+    path: '/providers',
+    element: <Providers />,
+  },
+  {
+    id: 14,
+
+    title: 'ProveedoresDetails',
+    description: '',
+    path: '/provider-details',
+    element: <ProvidersDetails />,
   },
 ];

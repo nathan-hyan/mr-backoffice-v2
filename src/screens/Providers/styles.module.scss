@@ -1,0 +1,262 @@
+.container {
+    background-color: #d9d9d9;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    color: #000;
+}
+
+.innerContainer {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.searchbar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}
+
+.inputSearch {
+    background-color: #fff;
+    color: #000;
+    height: 42px;
+    width: 335px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.criteria {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 42px;
+    gap: 10px;
+    color: #000;
+    font-size: 15px;
+
+    label {
+        flex-direction: row;
+    }
+}
+
+.list {
+    width: 100%;
+}
+
+.title {
+    background-color: #d6dcff;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #000;
+    width: 100%;
+    padding: 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+
+    p,
+    h4 {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .actions {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}
+
+.map {
+    width: 100%;
+    height: 600px;
+    margin-top: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.resultItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+
+    p,
+    h4 {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .actions {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+    }
+}
+
+.listItems {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    width: 50%;
+}
+
+.buttonSearch {
+    background-color: #4caf50;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(#4caf50, 10%);
+    }
+
+    &:active {
+        background-color: lighten(#4caf50, 10%);
+    }
+}
+
+.buttonClear {
+    background-color: #00a2ff;
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(#00a2ff, 10%);
+    }
+
+    &:active {
+        background-color: lighten(#00a2ff, 10%);
+    }
+}
+
+.buttonAdd {
+    background-color: #ff7878;
+    height: 40px;
+    width: 160px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken(#ff7878, 10%);
+    }
+
+    &:active {
+        background-color: lighten(#ff7878, 10%);
+    }
+}
+
+.actionButton {
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.debtor {
+    color: #ff3030;
+    font-weight: 600;
+}
+
+.inFavor {
+    color: #00eb00;
+    font-weight: 600;
+}
+
+.even {
+    color: #000;
+    font-weight: 600;
+}
+
+.expirationGreen {
+    background-color: #b5ffbd;
+    width: 88px;
+    height: 25px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.expirationYellow {
+    background-color: #ffde77;
+    width: 88px;
+    height: 25px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.expirationRed {
+
+    background-color: #ffb5b5;
+    border-radius: 10px;
+    display: flex;
+    height: 25px;
+    justify-content: center;
+    width: 88px;
+
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdownContent {
+    display: none;
+    position: absolute;
+
+    min-width: 160px;
+
+    z-index: 1;
+}
+
+.dropdownItem {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    background-color: #fff;
+
+    &:hover {
+        background-color: #f80404;
+        color: #fff;
+    }
+}
