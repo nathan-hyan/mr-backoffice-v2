@@ -111,6 +111,7 @@
     flex-direction: column;
 
 
+
     p {
         font-size: 10px;
         margin: 0;
@@ -147,7 +148,10 @@
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
-    height: 30px;
+    height: 100px;
+
+
+
 
     p {
         font-size: 14px;
@@ -171,6 +175,7 @@
         font-size: 14px;
         display: flex;
         flex-direction: row;
+        font-weight: 600;
 
     }
 
@@ -189,6 +194,8 @@
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
+    overflow: auto;
+    gap: 15px;
 
     p {
         font-size: 14px;

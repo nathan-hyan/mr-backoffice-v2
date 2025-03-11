@@ -48,17 +48,20 @@ function ProductItem({
 
     const price = parseFloat((basePrice * (percentage / 100 + 1)).toFixed(2));
     setUnitPrice(price);
+  }, [product, selectedPriceType]);
+
+  useEffect(() => {
     const newTotalPrice = parseFloat(
-      (price * quantity * (1 - discount / 100)).toFixed(2)
+      (unitPrice * quantity * (1 - discount / 100)).toFixed(2)
     );
     setTotalPrice(newTotalPrice);
 
     onUpdateProductDetails(
       product.id,
-      { quantity, unitPrice: price, discount },
+      { quantity, unitPrice, discount },
       newTotalPrice
     );
-  }, [product, selectedPriceType, quantity, discount]);
+  }, [quantity, discount, unitPrice]);
 
   const handleQuantityChange = (increment: boolean) => {
     setQuantity((prevQuantity) => {
@@ -66,14 +69,6 @@ function ProductItem({
       const newQuantity = increment
         ? Math.min(prevQuantity + 1, stock)
         : Math.max(1, prevQuantity - 1);
-
-      const newTotalPrice = newQuantity * unitPrice * (1 - discount / 100);
-      setTotalPrice(newTotalPrice);
-      onUpdateProductDetails(
-        product.id,
-        { quantity: newQuantity, unitPrice, discount },
-        newTotalPrice
-      );
 
       return newQuantity;
     });
@@ -83,26 +78,12 @@ function ProductItem({
     const value = parseFloat(e.target.value);
     const validDiscount = Number.isNaN(value) ? 0 : Math.min(value, 100);
     setDiscount(validDiscount);
-    const newTotalPrice = quantity * unitPrice * (1 - validDiscount / 100);
-    setTotalPrice(newTotalPrice);
-    onUpdateProductDetails(
-      product.id,
-      { quantity, unitPrice, discount: validDiscount },
-      newTotalPrice
-    );
   };
 
   const handleUnitPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     const updatedUnitPrice = Number.isNaN(value) ? 0 : value;
     setUnitPrice(updatedUnitPrice);
-    const newTotalPrice = updatedUnitPrice * quantity * (1 - discount / 100);
-    setTotalPrice(newTotalPrice);
-    onUpdateProductDetails(
-      product.id,
-      { quantity, unitPrice: updatedUnitPrice, discount },
-      newTotalPrice
-    );
   };
 
   return (
@@ -129,14 +110,6 @@ function ProductItem({
               stock
             );
             setQuantity(newQuantity);
-            const newTotalPrice =
-              newQuantity * unitPrice * (1 - discount / 100);
-            setTotalPrice(newTotalPrice);
-            onUpdateProductDetails(
-              product.id,
-              { quantity: newQuantity, unitPrice, discount },
-              newTotalPrice
-            );
           }}
           max={product.stock.current ?? 1}
         />
