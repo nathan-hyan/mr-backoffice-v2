@@ -77,15 +77,15 @@ function BillsPreview() {
                 <div key={item.id} className={styles.items}>
                   <h4>{item.name}</h4>
                   <p>{item.quantity}</p>
-                  <p>${item.unitPrice}</p>
+                  <p>${item.unitPrice.toFixed(2)}</p>
                   <p>{item.discount}</p>
-                  <p>${item.total}</p>
+                  <p>${item.total.toFixed(2)}</p>
                 </div>
               ))}{' '}
             </div>
             <div className={styles.total}>
               <div>
-                <p>Total:${venta.totalPrice}</p>
+                <p>Total:${venta.totalPrice.toFixed(2)}</p>
               </div>
               <h4>Gracias por su compra</h4>
             </div>

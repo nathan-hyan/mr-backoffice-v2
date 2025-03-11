@@ -25,7 +25,6 @@ function Providers() {
     'name'
   );
   const [searchResults, setSearchResults] = useState<ProviderType[]>([]);
-  const [shouldSearch, setShouldSearch] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [providerToEdit, setProviderToEdit] = useState<ProviderType | null>(
     null
@@ -43,23 +42,22 @@ function Providers() {
   }, [fetchAllProviders]);
 
   useEffect(() => {
-    if (shouldSearch && searchQuery.trim() !== '') {
-      const criteria =
-        searchCriteria === 'name'
-          ? { name: searchQuery }
-          : { creationDate: searchQuery };
-      searchProviders(criteria).then((results) => {
+    const handleSearch = async () => {
+      if (searchQuery.trim() !== '') {
+        const criteria =
+          searchCriteria === 'name'
+            ? { name: searchQuery }
+            : { creationDate: searchQuery };
+        const results = await searchProviders(criteria);
         setSearchResults(results || []);
-        setShouldSearch(false);
-      });
-    } else {
-      setShouldSearch(false);
-    }
-  }, [shouldSearch, searchQuery, searchCriteria, searchProviders]);
+      } else {
+        const providers = await fetchAllProviders();
+        setSearchResults(providers);
+      }
+    };
 
-  const handleSearch = () => {
-    setShouldSearch(true);
-  };
+    handleSearch();
+  }, [searchQuery, searchCriteria, searchProviders, fetchAllProviders]);
 
   const clearSearch = async () => {
     setSearchQuery('');
@@ -91,6 +89,7 @@ function Providers() {
     await deleteProvider(id);
     clearSearch();
   };
+
   const providerID = (id) => id.slice(0, 6);
 
   const getBalanceStatus = (balance: number) => {
@@ -117,43 +116,31 @@ function Providers() {
     <div className={styles.container}>
       <div className={styles.innerContainer}>
         <div className={styles.searchbar}>
-          <div>
-            <input
-              className={styles.inputSearch}
-              type='text'
-              placeholder='Search'
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className={styles.criteria}>
-            <label htmlFor='criteria-name'>
+          <div className={styles.inputs}>
+            <div>
               <input
-                id='criteria-name'
-                type='radio'
-                name='criteria'
-                value='name'
-                checked={searchCriteria === 'name'}
-                onChange={() => setSearchCriteria('name')}
+                className={styles.inputSearch}
+                type='text'
+                placeholder='Search'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
-              Nombre
-            </label>
+            </div>
+            <div className={styles.criteria}>
+              <label htmlFor='criteria-name'>
+                <input
+                  id='criteria-name'
+                  type='radio'
+                  name='criteria'
+                  value='name'
+                  checked={searchCriteria === 'name'}
+                  onChange={() => setSearchCriteria('name')}
+                />
+                Nombre
+              </label>
+            </div>
           </div>
           <div className={styles.buttons}>
-            <button
-              type='button'
-              className={styles.buttonSearch}
-              onClick={handleSearch}
-            >
-              Buscar
-            </button>
-            <button
-              type='button'
-              className={styles.buttonClear}
-              onClick={clearSearch}
-            >
-              Clear Search
-            </button>
             <button
               type='button'
               className={styles.buttonAdd}
@@ -195,7 +182,11 @@ function Providers() {
                     {getBalanceStatus(Number(provider.balance))}
                     <p>
                       <span className={getExpirationClass(daysUntilExpiration)}>
-                        {daysUntilExpiration} días
+                        {Number.isNaN(daysUntilExpiration) ||
+                        daysUntilExpiration === undefined ||
+                        daysUntilExpiration === null
+                          ? '-'
+                          : `${daysUntilExpiration} días`}
                       </span>
                     </p>
                     <div className={styles.actions}>

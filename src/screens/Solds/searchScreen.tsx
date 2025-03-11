@@ -20,7 +20,6 @@ function SearchScreen() {
       totalPrice: number;
     }>
   >([]);
-  const [shouldSearch, setShouldSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -34,30 +33,22 @@ function SearchScreen() {
   }, [fetchAllVentas]);
 
   useEffect(() => {
-    if (shouldSearch && searchQuery.trim() !== '') {
-      const criteria =
-        searchCriteria === 'name'
-          ? { customerName: searchQuery }
-          : { creationDate: searchQuery };
-      searchVentas(criteria).then((results) => {
+    const handleSearch = async () => {
+      if (searchQuery.trim() !== '') {
+        const criteria =
+          searchCriteria === 'name'
+            ? { customerName: searchQuery }
+            : { creationDate: searchQuery };
+        const results = await searchVentas(criteria);
         setSearchResults(results || []);
-        setShouldSearch(false);
-      });
-    } else {
-      setShouldSearch(false);
-    }
-  }, [shouldSearch, searchQuery, searchCriteria, searchVentas]);
+      } else {
+        const ventas = await fetchAllVentas();
+        setSearchResults(ventas);
+      }
+    };
 
-  const handleSearch = () => {
-    setShouldSearch(true);
-  };
-
-  const clearSearch = async () => {
-    setSearchQuery('');
-    setSearchCriteria('name');
-    const ventas = await fetchAllVentas();
-    setSearchResults(ventas);
-  };
+    handleSearch();
+  }, [searchQuery, searchCriteria, searchVentas, fetchAllVentas]);
 
   const handleViewBill = (venta) => {
     navigate('/bills', { state: { venta } });
@@ -100,22 +91,6 @@ function SearchScreen() {
               Fecha
             </label>
           </div>
-          <div className={styles.buttons}>
-            <button
-              type='button'
-              className={styles.buttonSearch}
-              onClick={handleSearch}
-            >
-              Buscar
-            </button>
-            <button
-              type='button'
-              className={styles.buttonClear}
-              onClick={clearSearch}
-            >
-              Clear Search
-            </button>
-          </div>
         </div>
         <div className={styles.list}>
           <div className={styles.title}>
@@ -143,7 +118,12 @@ function SearchScreen() {
                 <p>{venta.orderDate || ''}</p>
                 <p>{venta.orderNumber || ''}</p>
                 <p>{venta.customerInfo?.address || ''}</p>
-                <p>${venta.totalPrice !== undefined ? venta.totalPrice : ''}</p>
+                <p>
+                  $
+                  {venta.totalPrice !== undefined
+                    ? venta.totalPrice.toFixed(2)
+                    : ''}
+                </p>
               </div>
             ))}
           </div>
