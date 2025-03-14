@@ -46,22 +46,6 @@ function useProductModal({ productIdToEdit }: Props) {
           inline: 'center',
         });
       }
-
-      return;
-    }
-
-    if (watch('imageURL').filter(Boolean).length === 0) {
-      enqueueSnackbar(`Elija una imágen antes de continuar`, {
-        variant: 'error',
-      });
-
-      const imageButton = document.getElementById('upload-button');
-
-      imageButton?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'start',
-      });
     }
   };
 
@@ -84,14 +68,6 @@ function useProductModal({ productIdToEdit }: Props) {
         minStock: 0,
         noPhysicalStock: true,
       };
-    }
-
-    if (data.imageURL.filter(Boolean).length < 1) {
-      enqueueSnackbar(`Elija una imágen antes de continuar`, {
-        variant: 'error',
-      });
-
-      return;
     }
 
     addDocument({
