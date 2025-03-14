@@ -3,6 +3,7 @@ import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { Product } from 'types/data';
 
+import defaultProduct from '~assets/defaultProduct.jpg';
 import useFileUpload from '~hooks/useFileUpload';
 
 import { ImageDisplay, ImageUploader } from './components';
@@ -26,7 +27,7 @@ function ImageSelection({ data, setValue, watch }: Props) {
 
   return (
     <Box sx={styles.container}>
-      <ImageDisplay data={data} />
+      <ImageDisplay data={data.length > 0 ? data : [defaultProduct]} />
       <ImageUploader
         isUploading={isUploading}
         uploadProgress={uploadProgress}
@@ -35,4 +36,5 @@ function ImageSelection({ data, setValue, watch }: Props) {
     </Box>
   );
 }
+
 export default ImageSelection;
