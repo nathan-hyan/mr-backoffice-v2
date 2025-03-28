@@ -28,7 +28,14 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
 
   return (
     <Drawer anchor='left' open={drawer} onClose={handleDrawer}>
-      <List sx={{ width: 300, backgroundColor: 'white', color: 'black' }}>
+      <List
+        sx={{
+          width: 300,
+
+          backgroundColor: 'white',
+          color: 'black',
+        }}
+      >
         <Typography
           variant='h5'
           sx={{

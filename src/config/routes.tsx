@@ -57,13 +57,6 @@ export const ROUTES = [
     element: <AddEditProduct editMode />,
   },
   {
-    id: 3,
-    title: 'Listado de Productos',
-    description: '',
-    path: '/products',
-    element: <ProductList />,
-  },
-  {
     id: 12,
     title: 'bills',
     description: '',
@@ -85,8 +78,8 @@ export const ROUTESA = [
     icon: <FiberManualRecord fontSize='5px' />,
     title: 'P.O.S',
     description: '',
-    path: '/WorkInProgress',
-    element: <WorkInProgress />,
+    path: '/budgetManager',
+    element: <BudgetManager />,
   },
   {
     id: 16,
@@ -95,14 +88,6 @@ export const ROUTESA = [
     description: '',
     path: '/sells',
     element: <SearchScreen />,
-  },
-  {
-    id: 17,
-    icon: <FiberManualRecord fontSize='5px' />,
-    title: 'Administrador de Presupuestos',
-    description: '',
-    path: '/budgetManager',
-    element: <BudgetManager />,
   },
 ];
 

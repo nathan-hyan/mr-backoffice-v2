@@ -8,15 +8,19 @@ function WorkInProgress() {
   const navigate = useNavigate();
   const handleHome = () => navigate('/');
   return (
-    <div className={styles.container}>
+    <div className={styles.customcontainer}>
       <div>
         <h4>Estamos trabajando en esta seccion,pronto estara lista</h4>
       </div>
       <div>
-        <img className={styles.img} src={tecnico} alt='tecnico' />
+        <img className={styles.tecImg} src={tecnico} alt='tecnico' />
       </div>
       <div>
-        <button className={styles.button} type='button' onClick={handleHome}>
+        <button
+          className={styles.homebutton}
+          type='button'
+          onClick={handleHome}
+        >
           {' '}
           HOME PAGE
         </button>
