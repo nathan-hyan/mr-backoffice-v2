@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { ArrowForward, DeleteForeverRounded } from '@mui/icons-material';
 import {
   Box,
-  Button,
   Grid,
   IconButton,
   List,
@@ -23,14 +22,22 @@ interface Props {
   currentCategory: Category;
   removeSubcategory: (arg0: Category[]) => void;
   openModal: () => void;
+  openSubSubCategoryModal: (subCategoryId: number) => void;
+  handleSelectSubCategory: (internalId: number) => void;
+  removeSubSubCategory: (subSubCategoryId: number) => void;
 }
 
 function CurrentCategory({
   currentCategory,
   openModal,
   removeSubcategory,
+  openSubSubCategoryModal,
+  handleSelectSubCategory,
+  removeSubSubCategory,
 }: Props) {
   const [markedForDelete, setMarkedForDelete] =
+    useState<Nullable<number>>(null);
+  const [selectedSubCategory, setSelectedSubCategory] =
     useState<Nullable<number>>(null);
 
   const handleDeleteModal = (id: number) => {
@@ -72,71 +79,128 @@ function CurrentCategory({
               : ''
           }
         />
-        <Grid item xs={8}>
-          <Paper elevation={4} sx={{ p: 3 }}>
-            <Box
-              display='flex'
-              justifyContent='space-between'
-              alignItems='center'
-            >
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Paper elevation={4} sx={{ p: 3 }}>
+              <Box
+                display='flex'
+                justifyContent='space-between'
+                alignItems='center'
+              >
+                <Typography variant='button' noWrap>
+                  Subcategorías en {currentCategory.name}
+                </Typography>
+                <CustomMenu>
+                  {!selectedSubCategory ? (
+                    <MenuItem onClick={openModal}>
+                      Agregar una sub-categoría
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      onClick={() =>
+                        openSubSubCategoryModal(selectedSubCategory)
+                      }
+                    >
+                      Agregar una sub-sub-categoría
+                    </MenuItem>
+                  )}
+                </CustomMenu>
+              </Box>
+              <List
+                sx={{
+                  mt: 3,
+                  maxHeight: '30rem',
+                  overflow: 'hidden auto',
+                }}
+              >
+                {currentCategory.subCategories?.length ? (
+                  currentCategory.subCategories.map((subCategory) => (
+                    <ListItem
+                      key={subCategory.internalId}
+                      secondaryAction={
+                        <IconButton
+                          edge='end'
+                          color='error'
+                          onClick={() => {
+                            handleDeleteModal(subCategory.internalId);
+                          }}
+                        >
+                          <DeleteForeverRounded />
+                        </IconButton>
+                      }
+                      onClick={() => {
+                        setSelectedSubCategory(subCategory.internalId);
+                        handleSelectSubCategory(subCategory.internalId);
+                      }}
+                      sx={{
+                        cursor: 'pointer',
+                        backgroundColor:
+                          selectedSubCategory === subCategory.internalId
+                            ? 'rgba(0, 0, 0, 0.1)'
+                            : 'transparent',
+                      }}
+                    >
+                      <ListItemIcon>
+                        <ArrowForward />
+                      </ListItemIcon>
+                      <ListItemText>{subCategory.name}</ListItemText>
+                    </ListItem>
+                  ))
+                ) : (
+                  <Typography textAlign='center' sx={{ mt: 2 }}>
+                    No se encontraron subcategorías.
+                  </Typography>
+                )}
+              </List>
+            </Paper>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Paper elevation={4} sx={{ p: 3 }}>
               <Typography variant='button' noWrap>
-                Subcategorias disponibles en {currentCategory.name}
+                Sub-Subcategorías
               </Typography>
-              <CustomMenu>
-                <MenuItem onClick={openModal}>
-                  Agregar una sub-categoría
-                </MenuItem>
-              </CustomMenu>
-            </Box>
-            <List
-              sx={{
-                mt: 3,
-                maxHeight: '30rem',
-                overflow: 'hidden auto',
-              }}
-            >
-              {currentCategory.subCategories?.length ? (
-                currentCategory.subCategories.map((category, index) => (
-                  <ListItem
-                    divider={
-                      index + 1 !== currentCategory.subCategories!.length
-                    }
-                    secondaryAction={
-                      <IconButton
-                        edge='end'
-                        color='error'
-                        onClick={() => {
-                          handleDeleteModal(category.internalId);
-                        }}
-                      >
-                        <DeleteForeverRounded />
-                      </IconButton>
-                    }
-                    key={category.internalId}
-                  >
-                    <ListItemIcon>
-                      <ArrowForward />
-                    </ListItemIcon>
-                    <ListItemText>{category.name}</ListItemText>
-                  </ListItem>
-                ))
-              ) : (
-                <>
-                  <ListItemText sx={{ textAlign: 'center', mb: 3 }}>
-                    No se encontraron sub-categorias
-                  </ListItemText>
-                  <ListItemText sx={{ textAlign: 'center' }}>
-                    <Button variant='contained' onClick={openModal}>
-                      Agregar sub-categorías
-                    </Button>
-                  </ListItemText>
-                </>
-              )}
-            </List>
-          </Paper>
+              <List
+                sx={{
+                  mt: 3,
+                  maxHeight: '30rem',
+                  overflow: 'hidden auto',
+                }}
+              >
+                {currentCategory.subCategories
+                  ?.find((sub) => sub.internalId === selectedSubCategory)
+                  ?.subSubCategories?.map((subSubCategory) => (
+                    <ListItem
+                      key={subSubCategory.internalId}
+                      secondaryAction={
+                        <IconButton
+                          edge='end'
+                          color='error'
+                          onClick={() =>
+                            removeSubSubCategory(subSubCategory.internalId)
+                          }
+                        >
+                          <DeleteForeverRounded />
+                        </IconButton>
+                      }
+                    >
+                      <ListItemIcon>
+                        <ArrowForward />
+                      </ListItemIcon>
+                      <ListItemText>{subSubCategory.name}</ListItemText>
+                    </ListItem>
+                  )) || (
+                  <Typography textAlign='center' sx={{ mt: 2 }}>
+                    Seleccione una subcategoría para ver sus sub-subcategorías.
+                  </Typography>
+                )}
+              </List>
+            </Paper>
+          </Grid>
         </Grid>
       </>
     )
   );
 }
+
 export default CurrentCategory;
