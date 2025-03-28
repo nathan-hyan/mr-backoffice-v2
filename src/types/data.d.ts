@@ -89,6 +89,7 @@ export interface Product {
 
   category: string; // Reference to categories.id
   subCategory: string; // Reference to categories.subCategories[n].id
+  subSubCategories: string;
   barcode: string;
   brand: string;
   stockOwner: string;

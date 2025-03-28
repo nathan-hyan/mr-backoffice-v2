@@ -1,4 +1,4 @@
-.container {
+.customcontainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -12,7 +12,7 @@
 
 }
 
-button {
+.homebutton {
     margin: 20px 0 0 -50px;
     padding: 10px 20px;
     background-color: #007bff;
@@ -34,7 +34,7 @@ button {
     }
 }
 
-.img {
+.tecImg {
     width: 400px;
     height: 400px;
 
