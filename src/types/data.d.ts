@@ -54,6 +54,10 @@ export interface Category {
   subCategories?: {
     internalId: number;
     name: string;
+    subSubCategories?: {
+      internalId: number;
+      name: string;
+    }[];
   }[];
 }
 

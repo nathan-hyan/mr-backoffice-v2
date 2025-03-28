@@ -1,14 +1,4 @@
-import {
-  AllInbox,
-  AttachMoney,
-  AutoFixHigh,
-  FormatListNumbered,
-  LocalOffer,
-  LocalShipping,
-  PlusOne,
-  PointOfSale,
-  RequestQuote,
-} from '@mui/icons-material';
+import { FiberManualRecord } from '@mui/icons-material';
 
 import BudgetManager from '~screens/BudgetScreen/budgetManager';
 import {
@@ -26,6 +16,7 @@ import Providers from '~screens/Providers';
 import ProvidersDetails from '~screens/Providers/ProvidersDetails';
 import BillsPreview from '~screens/Solds/Bills/billsPreview';
 import SearchScreen from '~screens/Solds/searchScreen';
+import WorkInProgress from '~screens/WorkInProgress/WorkInProgress';
 
 import App from '../App';
 
@@ -59,22 +50,6 @@ export const ROUTES = [
     element: <UserInfo />,
   },
   {
-    id: 3,
-    title: 'Listado de Productos',
-    description: '',
-    icon: <FormatListNumbered />,
-    path: '/products',
-    element: <ProductList />,
-  },
-  {
-    id: 8,
-    title: 'Agregar Producto',
-    description: 'Agregando Producto',
-    icon: <PlusOne />,
-    path: '/add',
-    element: <AddEditProduct />,
-  },
-  {
     id: 9,
     title: 'Editar Producto',
     description: 'Editando Producto',
@@ -82,52 +57,11 @@ export const ROUTES = [
     element: <AddEditProduct editMode />,
   },
   {
-    id: 4,
-    icon: <AttachMoney />,
-    title: 'Modif. Precios en lote',
+    id: 3,
+    title: 'Listado de Productos',
     description: '',
-    path: '/priceModifier',
-    element: <PriceModifier />,
-  },
-  {
-    id: 5,
-    icon: <AllInbox />,
-    title: 'Administrador de Categorias',
-    description: '',
-    path: '/categoryManager',
-    element: <CategoryManager />,
-  },
-  {
-    id: 6,
-    icon: <LocalOffer />,
-    title: 'Administrador de Marcas',
-    description: '',
-    path: '/brandManager',
-    element: <BrandManager />,
-  },
-  {
-    id: 7,
-    icon: <AutoFixHigh />,
-    title: 'Generador de etiquetas de precio',
-    description: '',
-    path: '/pricetaggenerator',
-    element: <PriceTagGenerator />,
-  },
-  {
-    id: 10,
-    icon: <RequestQuote />,
-    title: 'Administrador de Presupuestos',
-    description: '',
-    path: '/budgetManager',
-    element: <BudgetManager />,
-  },
-  {
-    id: 11,
-    icon: <PointOfSale />,
-    title: 'Ventas',
-    description: '',
-    path: '/sells',
-    element: <SearchScreen />,
+    path: '/products',
+    element: <ProductList />,
   },
   {
     id: 12,
@@ -137,19 +71,204 @@ export const ROUTES = [
     element: <BillsPreview />,
   },
   {
-    id: 13,
-    icon: <LocalShipping />,
+    id: 34,
+    title: 'Detalles',
+    description: '',
+    path: '/provider-details',
+    element: <ProvidersDetails />,
+  },
+];
+
+export const ROUTESA = [
+  {
+    id: 15,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'P.O.S',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 16,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Ventas',
+    description: '',
+    path: '/sells',
+    element: <SearchScreen />,
+  },
+  {
+    id: 17,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Administrador de Presupuestos',
+    description: '',
+    path: '/budgetManager',
+    element: <BudgetManager />,
+  },
+];
+
+export const ROUTESB = [
+  {
+    id: 18,
+    title: 'Listado de Productos',
+    description: '',
+    icon: <FiberManualRecord fontSize='5px' />,
+    path: '/products',
+    element: <ProductList />,
+  },
+  {
+    id: 19,
+    title: 'Agregar Producto',
+    description: 'Agregando Producto',
+    icon: <FiberManualRecord fontSize='5px' />,
+    path: '/add',
+    element: <AddEditProduct />,
+  },
+  {
+    id: 20,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Administrador de Categorias',
+    description: '',
+    path: '/categoryManager',
+    element: <CategoryManager />,
+  },
+  {
+    id: 21,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Administrador de Marcas',
+    description: '',
+    path: '/brandManager',
+    element: <BrandManager />,
+  },
+  {
+    id: 22,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Generador de etiquetas de precio',
+    description: '',
+    path: '/pricetaggenerator',
+    element: <PriceTagGenerator />,
+  },
+  {
+    id: 23,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Modif. Precios en lote',
+    description: '',
+    path: '/priceModifier',
+    element: <PriceModifier />,
+  },
+  {
+    id: 24,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Ofertas',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 25,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Exporta Listado de productos',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+];
+
+export const ROUTESC = [
+  {
+    id: 26,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Lista Clientes',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 27,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Agregar Cliente',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+];
+
+export const ROUTESD = [
+  {
+    id: 28,
+    icon: <FiberManualRecord fontSize='5px' />,
     title: 'Proveedores',
     description: '',
     path: '/providers',
     element: <Providers />,
   },
   {
-    id: 14,
-
-    title: 'ProveedoresDetails',
+    id: 29,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Agregar Proveedores',
     description: '',
-    path: '/provider-details',
-    element: <ProvidersDetails />,
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+];
+
+export const ROUTESE = [
+  {
+    id: 30,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Banners',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 31,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Pedidos',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 32,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Links Paginas',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 33,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Create filtered link',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+];
+
+export const ROUTESF = [
+  {
+    id: 34,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Dash board General',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 35,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Retail Belgrano 2846',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
+  },
+  {
+    id: 36,
+    icon: <FiberManualRecord fontSize='5px' />,
+    title: 'Ecommerce',
+    description: '',
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
   },
 ];

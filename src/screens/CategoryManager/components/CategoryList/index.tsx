@@ -66,7 +66,7 @@ function CategoryList({
             : ''
         }
       />
-      <Grid item xs={4}>
+      <Grid item xs={12}>
         <Paper elevation={2} sx={{ p: 3 }}>
           <Box
             display='flex'

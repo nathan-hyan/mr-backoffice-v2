@@ -8,7 +8,15 @@ import { Analytics } from '@vercel/analytics/react';
 
 import NavbarWrapper from '~components/NavbarWrapper';
 import { THEME } from '~config/muiTheme';
-import { ROUTES } from '~config/routes';
+import {
+  ROUTES,
+  ROUTESA,
+  ROUTESB,
+  ROUTESC,
+  ROUTESD,
+  ROUTESE,
+  ROUTESF,
+} from '~config/routes';
 import ProductProvider from '~contexts/Products';
 import ProvidersProvider from '~contexts/Providers';
 import VentasProvider from '~contexts/Sells';
@@ -47,7 +55,21 @@ const router = createHashRouter([
         <Analytics />
       </HelmetProvider>
     ),
-    children: ROUTES.map(({ path, element }) => ({ path, element })),
+    children: [
+      ...ROUTES.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESA.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESB.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESC.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESD.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESE.map(({ path, element }) => ({ path, element })),
+
+      ...ROUTESF.map(({ path, element }) => ({ path, element })),
+    ],
   },
 ]);
 

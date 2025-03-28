@@ -14,10 +14,34 @@ interface Props {
 
 function Option({ handleNavigate, title, icon }: Props) {
   return (
-    <ListItem disablePadding>
-      <ListItemButton onClick={handleNavigate}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={title} />
+    <ListItem
+      sx={{
+        backgroundColor: 'white',
+        color: 'black',
+      }}
+      disablePadding
+    >
+      <ListItemButton
+        sx={{
+          padding: '5px',
+        }}
+        onClick={handleNavigate}
+      >
+        <ListItemIcon
+          sx={{
+            color: 'black',
+            fontSize: '10px',
+            paddingLeft: '20px',
+          }}
+        >
+          {icon}
+        </ListItemIcon>
+        <ListItemText
+          sx={{
+            margin: '0px',
+          }}
+          primary={title}
+        />
       </ListItemButton>
     </ListItem>
   );
