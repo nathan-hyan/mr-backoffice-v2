@@ -1,23 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import edit from '~assets/editar-texto.svg';
+import pic from '~assets/Group 9.png';
+import mas from '~assets/mas2.svg';
+import ojo from '~assets/ojo.svg';
 import { useVentas } from '~contexts/Sells';
 
 import styles from './styles.module.scss';
 
 function SearchScreen() {
-  const { searchVentas, fetchAllVentas } = useVentas();
+  const { searchVentas, fetchAllVentas, deleteVenta } = useVentas();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchCriteria, setSearchCriteria] = useState<'name' | 'fecha'>(
-    'name'
-  );
+  const [searchCriteria, setSearchCriteria] = useState<
+    'name' | 'fecha' | 'orderNumber'
+  >('name');
   const [searchResults, setSearchResults] = useState<
     Array<{
       isSale: boolean;
       orderNumber: string;
-      customerInfo: { name: string; address: string };
+      customerInfo: { name: string; phone: string; email: string };
       orderDate: string;
       totalPrice: number;
+      id: string;
     }>
   >([]);
 
@@ -35,14 +40,21 @@ function SearchScreen() {
   useEffect(() => {
     const handleSearch = async () => {
       if (searchQuery.trim() !== '') {
-        const criteria =
-          searchCriteria === 'name'
-            ? { customerName: searchQuery }
-            : { creationDate: searchQuery };
+        let criteria;
+        if (searchCriteria === 'name') {
+          criteria = { customerName: searchQuery };
+        } else if (searchCriteria === 'fecha') {
+          criteria = { creationDate: searchQuery };
+        } else {
+          criteria = { orderNumber: searchQuery };
+        }
+
         const results = await searchVentas(criteria);
+
         setSearchResults(results || []);
       } else {
         const ventas = await fetchAllVentas();
+
         setSearchResults(ventas);
       }
     };
@@ -54,6 +66,29 @@ function SearchScreen() {
     navigate('/bills', { state: { venta } });
   };
 
+  const deletesold = async (id?: string, orderNumber?: string) => {
+    try {
+      if (id) {
+        await deleteVenta(id);
+        console.log(`Venta con ID ${id} eliminada correctamente.`);
+      } else if (orderNumber) {
+        await deleteVenta(undefined, orderNumber);
+        console.log(
+          `Venta con orderNumber ${orderNumber} eliminada correctamente.`
+        );
+      } else {
+        console.error(
+          'No se proporcionó ni ID ni orderNumber para eliminar la venta.'
+        );
+      }
+
+      const updatedVentas = await fetchAllVentas();
+      setSearchResults(updatedVentas);
+    } catch (error) {
+      console.error('Error al eliminar la venta:', error);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.innerContainer}>
@@ -62,7 +97,7 @@ function SearchScreen() {
             <input
               className={styles.inputSearch}
               type='text'
-              placeholder='Search'
+              placeholder='Buscar Orden'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -90,42 +125,90 @@ function SearchScreen() {
               />
               Fecha
             </label>
+            <label htmlFor='criteria-orderNumber'>
+              <input
+                id='criteria-orderNumber'
+                type='radio'
+                name='criteria'
+                value='orderNumber'
+                checked={searchCriteria === 'orderNumber'}
+                onChange={() => setSearchCriteria('orderNumber')}
+              />
+              Número de Orden
+            </label>
           </div>
         </div>
         <div className={styles.list}>
           <div className={styles.title}>
-            <h4>Nombre</h4>
-            <p>Tipo</p>
-            <p>Fecha</p>
-            <p>N° de orden</p>
-            <p>Direccion</p>
-            <p>Total</p>
+            <p>ORDEN</p>
+            <p>FECHA</p>
+            <h4>Cliente</h4>
+            <p>TIPO</p>
+            <p>STATUS</p>
+            <p>PAGO</p>
+            <p>CELULAR</p>
+            <p>ACTIONS</p>
           </div>
           <div className={styles.map}>
-            {searchResults.map((venta) => (
-              <div
-                key={venta.orderNumber}
-                onClick={() => handleViewBill(venta)}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') handleViewBill(venta);
-                }}
-                role='button'
-                tabIndex={0}
-                className={styles.resultItem}
-              >
-                <h4>{venta.customerInfo?.name || ''}</h4>
-                <p>{venta.isSale ? 'Venta' : 'Presupuesto'}</p>
-                <p>{venta.orderDate || ''}</p>
-                <p>{venta.orderNumber || ''}</p>
-                <p>{venta.customerInfo?.address || ''}</p>
-                <p>
-                  $
-                  {venta.totalPrice !== undefined
-                    ? venta.totalPrice.toFixed(2)
-                    : ''}
-                </p>
-              </div>
-            ))}
+            {searchResults
+              .sort(
+                (a, b) =>
+                  parseInt(b.orderNumber, 10) - parseInt(a.orderNumber, 10)
+              )
+              .map((venta) => (
+                <div className={styles.resultItem} key={venta.orderNumber}>
+                  <p>{venta.orderNumber || ''}</p>
+                  <p>{venta.orderDate || ''}</p>
+                  <div className={styles.customerInfo}>
+                    <img className={styles.pic} src={pic} alt='foto' />
+                    <span className={styles.customer}>
+                      {venta.customerInfo?.name || ''}
+                      <span className={styles.email}>
+                        {venta.customerInfo?.email || ''}
+                      </span>
+                    </span>
+                  </div>
+                  <p
+                    className={
+                      venta.isSale ? styles.isSaleTrue : styles.isSaleFalse
+                    }
+                  >
+                    {venta.isSale ? 'VENTA' : 'PRESUPUESTO'}
+                  </p>
+                  <p>-</p>
+                  <p>-</p>
+                  <p>{venta.customerInfo?.phone || ''}</p>
+                  <section>
+                    <button
+                      className={styles.actions}
+                      type='button'
+                      onClick={() => handleViewBill(venta)}
+                    >
+                      <img src={ojo} alt='ver' />
+                    </button>
+                    <button type='button' className={styles.actions}>
+                      <img src={edit} alt='editar' />
+                    </button>
+                    <div className={styles.dropdown}>
+                      <button
+                        type='button'
+                        className={styles.actions}
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              '¿Estás seguro de que deseas eliminar esta venta?'
+                            )
+                          ) {
+                            deletesold(venta.id, venta.orderNumber);
+                          }
+                        }}
+                      >
+                        <img src={mas} alt='mas' />
+                      </button>
+                    </div>
+                  </section>
+                </div>
+              ))}
           </div>
         </div>
       </div>
