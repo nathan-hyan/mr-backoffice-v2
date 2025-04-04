@@ -29,6 +29,7 @@ interface VentasContextType {
   searchVentas: (criteria: {
     customerName?: string;
     creationDate?: string;
+    orderNumber?: string;
   }) => Promise<Venta[]>;
   getNextOrderNumber: () => Promise<string>;
   fetchAllVentas: () => Promise<Venta[]>;
@@ -75,13 +76,54 @@ export default function VentasProvider({ children }: Props) {
     [updateDocument]
   );
 
-  const deleteVenta = useCallback(
+  /* const deleteVenta = useCallback(
     (id: string) => removeDocument(id),
     [removeDocument]
+  ); */
+
+  const deleteVenta = useCallback(
+    async (id?: string, orderNumber?: string) => {
+      try {
+        if (id) {
+          // Elimina directamente por ID
+          await removeDocument(id);
+          console.log(`Venta con ID ${id} eliminada correctamente.`);
+        } else if (orderNumber) {
+          // Busca el documento por orderNumber y elimina
+          const baseQuery = queryDocuments();
+          const results = await getDocs(baseQuery);
+          const ventaToDelete = results.docs.find(
+            (doc) => (doc.data() as Venta).orderNumber === orderNumber
+          );
+
+          if (ventaToDelete) {
+            await removeDocument(ventaToDelete.id);
+            console.log(
+              `Venta con orderNumber ${orderNumber} eliminada correctamente.`
+            );
+          } else {
+            console.warn(
+              `No se encontró una venta con orderNumber ${orderNumber}.`
+            );
+          }
+        } else {
+          console.error(
+            'No se proporcionó ni ID ni orderNumber para eliminar la venta.'
+          );
+        }
+      } catch (error) {
+        console.error('Error al eliminar la venta:', error);
+      }
+    },
+    [removeDocument, queryDocuments]
   );
 
   const searchVentas = useCallback(
-    async (criteria: { customerName?: string; creationDate?: string }) => {
+    async (criteria: {
+      customerName?: string;
+      creationDate?: string;
+      orderNumber?: string;
+    }) => {
       const baseQuery = queryDocuments();
       const results = await getDocs(baseQuery);
       const allVentas = results.docs.map((doc) => doc.data() as Venta);
@@ -110,6 +152,14 @@ export default function VentasProvider({ children }: Props) {
             year?.includes(criteria.creationDate ?? '')
           );
         });
+      }
+
+      if (criteria.orderNumber) {
+        filteredVentas = filteredVentas.filter(
+          (venta) =>
+            venta.orderNumber &&
+            (venta.orderNumber ?? '').includes(criteria.orderNumber)
+        );
       }
 
       return filteredVentas;

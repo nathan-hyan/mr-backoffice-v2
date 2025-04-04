@@ -31,7 +31,7 @@
     height: 42px;
     width: 335px;
     border: 1px solid #000;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 20px;
     padding: 10px;
 }
@@ -60,10 +60,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
     color: #000;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 5px;
 
 
     font-size: 16px;
@@ -82,21 +81,14 @@
     }
 }
 
-.map {
-    width: 100%;
-    height: 600px;
-    margin-top: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
+
 
 .resultItem {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    cursor: pointer;
+
+    width: 100%;
 
     p {
         width: 17.86%;
@@ -104,11 +96,31 @@
         justify-content: center;
     }
 
-    h4 {
+    .customerInfo {
         width: 28.57%;
         display: flex;
+        flex-direction: row;
         justify-content: flex-start;
+        align-items: center;
     }
+
+    section {
+        width: 17.86%;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+}
+
+.map {
+    width: 100%;
+    height: 600px;
+    margin-top: 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
 }
 
 .buttons {
@@ -136,6 +148,41 @@
 
 }
 
+.actions {
+    width: 30px;
+    height: 30px;
+    background: none;
+    border: none;
+
+    cursor: pointer;
+
+
+}
+
+.pic {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+
+}
+
+.customer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .email {
+        font-size: 14px;
+        color: #9C9C9C;
+    }
+
+    .phone {
+        font-size: 12px;
+        color: #000;
+    }
+}
+
+
 .buttonClear {
     background-color: #00a2ff;
     height: 40px;
@@ -151,4 +198,14 @@
     &:active {
         background-color: lighten(#00a2ff, 10%);
     }
+}
+
+.isSaleTrue {
+    color: #00EB00;
+    font-weight: bold;
+}
+
+.isSaleFalse {
+    color: #000;
+    font-weight: bold;
 }
