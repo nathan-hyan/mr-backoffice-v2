@@ -101,7 +101,7 @@ function SellAndBudget({
               productDetails={productDetails}
               totalPrice={calculatedTotalPrice}
               orderNumber={orderNumber}
-              presupuesto='Factura'
+              presupuesto='Remito de Venta'
             />
           }
           fileName='Venta.pdf'

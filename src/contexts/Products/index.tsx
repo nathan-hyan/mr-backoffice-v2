@@ -93,6 +93,26 @@ export default function ProductProvider({ children }: Props) {
     [categories]
   );
 
+  const getSubSubcategories: (subCategoryId: string | number) => Category[] =
+    useCallback(
+      (subCategoryId) => {
+        if (!subCategoryId) {
+          return [];
+        }
+
+        const subCategory = categories
+          .flatMap((category) => category.subCategories || [])
+          .find(({ internalId }) => internalId === Number(subCategoryId));
+
+        if (subCategory && subCategory.subSubCategories) {
+          return subCategory.subSubCategories;
+        }
+
+        return [];
+      },
+      [categories]
+    );
+
   const value = useMemo(
     () => ({
       productList,
@@ -102,6 +122,7 @@ export default function ProductProvider({ children }: Props) {
       saveProducts,
       saveCategories,
       getSubcategories,
+      getSubSubcategories,
       performSearch,
       searchQuery,
       clearSearch,
@@ -116,6 +137,7 @@ export default function ProductProvider({ children }: Props) {
       saveBrands,
       saveProducts,
       getSubcategories,
+      getSubSubcategories,
       performSearch,
       searchQuery,
       clearSearch,

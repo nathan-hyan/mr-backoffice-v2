@@ -32,8 +32,12 @@ interface Props {
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { categories, getSubcategories } = useProducts();
+  const { categories, getSubcategories, getSubSubcategories } = useProducts();
+
   const subCategories = getSubcategories(watch('category'));
+  const subSubCategories: { internalId: number; name: string }[] =
+    getSubSubcategories(watch('subCategory'));
+
   const images = watch('imageURL').filter(Boolean);
 
   const handleGenerateBarcode = () => {
@@ -77,47 +81,21 @@ function Information({ control, watch, errors, setValue }: Props) {
           ),
         }}
       />
-      <Controller
-        name='internalId'
-        control={control}
-        /*     rules={{
-          required: 'El ID interno es obligatorio.',
-          validate: (value) =>
-            Number.isInteger(Number(value)) || 'Debe ser un número entero.',
-        }} */
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label='ID Interno'
-            error={!!errors.internalId}
-            helperText={errors.internalId?.message}
-            fullWidth
-          />
-        )}
-      />
 
       <Controller
         control={control}
         name='category'
-        /*    rules={{
-          required: {
-            value: true,
-            message: 'Este campo es requerido',
-          },
-        }} */
         render={({ field }) => (
           <Autocomplete
             {...field}
-            onChange={(_, value) => {
-              field.onChange(value?.value);
-            }}
+            onChange={(_, value) => field.onChange(value?.value)}
             value={{
               value: field.value,
               label:
                 categories.find(({ id }) => id === field.value)?.name || '',
             }}
             disablePortal
-            id='combo-box-demo'
+            id='combo-box-category'
             options={[
               { value: '', label: '' },
               ...categories.map(({ id, name }) => ({
@@ -125,13 +103,10 @@ function Information({ control, watch, errors, setValue }: Props) {
                 label: name || '',
               })),
             ]}
-            isOptionEqualToValue={(opt, value) => {
-              return JSON.stringify(opt) === JSON.stringify(value);
-            }}
+            isOptionEqualToValue={(opt, value) => opt.value === value.value}
             renderInput={(params) => (
               <TextField
                 {...params}
-                /*          required */
                 label='Categoría'
                 error={Boolean(errors.category)}
                 helperText={errors.category?.message}
@@ -144,21 +119,10 @@ function Information({ control, watch, errors, setValue }: Props) {
       <Controller
         control={control}
         name='subCategory'
-        /*  rules={{
-          required: {
-            value: true,
-            message: 'Este campo es requerido',
-          },
-        }} */
         render={({ field }) => (
           <Autocomplete
             {...field}
-            onChange={(_, value) => {
-              field.onChange(value?.value);
-            }}
-            isOptionEqualToValue={(opt, value) => {
-              return JSON.stringify(opt) === JSON.stringify(value);
-            }}
+            onChange={(_, value) => field.onChange(value?.value)}
             value={{
               value: Number(field.value),
               label:
@@ -167,21 +131,18 @@ function Information({ control, watch, errors, setValue }: Props) {
                 )?.name || '',
             }}
             disablePortal
-            id='combo-box-demo'
+            id='combo-box-subcategory'
             options={[
-              {
-                value: 0,
-                label: '',
-              },
+              { value: 0, label: '' },
               ...subCategories.map(({ internalId, name }) => ({
                 value: internalId || 0,
                 label: name || '',
               })),
             ]}
+            isOptionEqualToValue={(opt, value) => opt.value === value.value}
             renderInput={(params) => (
               <TextField
                 {...params}
-                /*   required */
                 label='Sub Categoría'
                 error={Boolean(errors.subCategory)}
                 helperText={errors.subCategory?.message}
@@ -191,31 +152,41 @@ function Information({ control, watch, errors, setValue }: Props) {
         )}
       />
 
-      {/* <CustomSelect
-        data={categories.map(({ id, name }) => ({
-          value: id || '',
-          optionName: name,
-        }))}
-        label='Categoria'
-        name='category'
+      <Controller
         control={control}
-        defaultValue=''
-        error={errors.category}
-        required
+        name='subSubCategories'
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            onChange={(_, value) => field.onChange(value?.value || 0)}
+            value={{
+              value: Number(field.value),
+              label:
+                subSubCategories.find(
+                  ({ internalId }) => internalId === Number(field.value)
+                )?.name || '',
+            }}
+            disablePortal
+            id='combo-box-subsubcategory'
+            options={[
+              { value: 0, label: '' },
+              ...subSubCategories.map(({ internalId, name }) => ({
+                value: internalId || 0,
+                label: name || '',
+              })),
+            ]}
+            isOptionEqualToValue={(opt, value) => opt.value === value.value}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label='Sub Sub Categoría'
+                error={Boolean(errors.subSubCategories)}
+                helperText={errors.subSubCategories?.message}
+              />
+            )}
+          />
+        )}
       />
-
-      <CustomSelect
-        data={subCategories.map(({ internalId, name }) => ({
-          value: internalId,
-          optionName: name,
-        }))}
-        label='Sub-Categoria'
-        name='subCategory'
-        control={control}
-        defaultValue=''
-        error={errors.subCategory}
-        required
-      /> */}
 
       <Divider sx={{ mt: 3 }} />
 
@@ -223,4 +194,5 @@ function Information({ control, watch, errors, setValue }: Props) {
     </>
   );
 }
+
 export default Information;

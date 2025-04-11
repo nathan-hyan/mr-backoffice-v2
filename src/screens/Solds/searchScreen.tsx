@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +10,11 @@ import { useVentas } from '~contexts/Sells';
 
 import styles from './styles.module.scss';
 
+import EditModal from './Bills/EditModal/EditModal';
+
 function SearchScreen() {
-  const { searchVentas, fetchAllVentas, deleteVenta } = useVentas();
+  const { searchVentas, fetchAllVentas, deleteVenta, updateVenta } =
+    useVentas();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchCriteria, setSearchCriteria] = useState<
     'name' | 'fecha' | 'orderNumber'
@@ -23,8 +27,12 @@ function SearchScreen() {
       orderDate: string;
       totalPrice: number;
       id: string;
+      status: string;
+      pago: string;
     }>
   >([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedVenta, setSelectedVenta] = useState(null);
 
   const navigate = useNavigate();
 
@@ -70,16 +78,14 @@ function SearchScreen() {
     try {
       if (id) {
         await deleteVenta(id);
-        console.log(`Venta con ID ${id} eliminada correctamente.`);
       } else if (orderNumber) {
         await deleteVenta(undefined, orderNumber);
-        console.log(
-          `Venta con orderNumber ${orderNumber} eliminada correctamente.`
-        );
       } else {
         console.error(
           'No se proporcionó ni ID ni orderNumber para eliminar la venta.'
         );
+
+        await deleteVenta(orderNumber);
       }
 
       const updatedVentas = await fetchAllVentas();
@@ -91,6 +97,26 @@ function SearchScreen() {
 
   return (
     <div className={styles.container}>
+      {isModalOpen && (
+        <EditModal
+          venta={selectedVenta}
+          onClose={() => setIsModalOpen(false)}
+          onSave={(updatedVenta) => {
+            setSearchResults((prevResults) =>
+              prevResults.map((venta) =>
+                venta.orderNumber === updatedVenta.orderNumber
+                  ? { ...venta, ...updatedVenta }
+                  : venta
+              )
+            );
+            if (updatedVenta.id) {
+              updateVenta(updatedVenta.id, updatedVenta);
+            } else {
+              updateVenta(undefined, updatedVenta, updatedVenta.orderNumber);
+            }
+          }}
+        />
+      )}
       <div className={styles.innerContainer}>
         <div className={styles.searchbar}>
           <div>
@@ -175,8 +201,28 @@ function SearchScreen() {
                   >
                     {venta.isSale ? 'VENTA' : 'PRESUPUESTO'}
                   </p>
-                  <p>-</p>
-                  <p>-</p>
+                  <p
+                    className={
+                      venta.status === 'Entregado'
+                        ? styles.statusGreen
+                        : venta.status === 'Pendiente'
+                          ? styles.statusRed
+                          : styles.statusBlack
+                    }
+                  >
+                    {venta.status || ''}
+                  </p>
+                  <p
+                    className={
+                      venta.pago === 'Pagado'
+                        ? styles.statusGreen
+                        : venta.pago === 'Saldo'
+                          ? styles.statusRed
+                          : styles.statusBlack
+                    }
+                  >
+                    {venta.pago || ''}
+                  </p>
                   <p>{venta.customerInfo?.phone || ''}</p>
                   <section>
                     <button
@@ -186,26 +232,31 @@ function SearchScreen() {
                     >
                       <img src={ojo} alt='ver' />
                     </button>
-                    <button type='button' className={styles.actions}>
+                    <button
+                      type='button'
+                      className={styles.actions}
+                      onClick={() => {
+                        setSelectedVenta(venta);
+                        setIsModalOpen(true);
+                      }}
+                    >
                       <img src={edit} alt='editar' />
                     </button>
-                    <div className={styles.dropdown}>
-                      <button
-                        type='button'
-                        className={styles.actions}
-                        onClick={() => {
-                          if (
-                            window.confirm(
-                              '¿Estás seguro de que deseas eliminar esta venta?'
-                            )
-                          ) {
-                            deletesold(venta.id, venta.orderNumber);
-                          }
-                        }}
-                      >
-                        <img src={mas} alt='mas' />
-                      </button>
-                    </div>
+                    <button
+                      type='button'
+                      className={styles.actions}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            '¿Estás seguro de que deseas eliminar esta venta?'
+                          )
+                        ) {
+                          deletesold(venta.id, venta.orderNumber);
+                        }
+                      }}
+                    >
+                      <img src={mas} alt='eliminar' />
+                    </button>
                   </section>
                 </div>
               ))}

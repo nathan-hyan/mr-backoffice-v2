@@ -251,6 +251,7 @@ export const EMPTY_FORM: Product = {
   barcode: '',
   category: '',
   subCategory: '',
+  subSubCategories: '',
   prices: {
     cost: { value: 0 },
     retail: { value: 80 },
