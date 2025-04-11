@@ -72,26 +72,51 @@ export default function VentasProvider({ children }: Props) {
   );
 
   const updateVenta = useCallback(
-    (id: string, updatedVenta: Venta) => updateDocument(id, updatedVenta),
-    [updateDocument]
-  );
+    async (id?: string, updatedVenta?: Venta, orderNumber?: string) => {
+      try {
+        if (id) {
+          await updateDocument(id, updatedVenta);
+          console.log(`Venta con ID ${id} actualizada correctamente.`);
+          return;
+        }
 
-  /* const deleteVenta = useCallback(
-    (id: string) => removeDocument(id),
-    [removeDocument]
-  ); */
+        if (orderNumber) {
+          const baseQuery = queryDocuments();
+          const results = await getDocs(baseQuery);
+          const ventaToUpdate = results.docs.find(
+            (doc) => (doc.data() as Venta).orderNumber === orderNumber
+          );
+
+          if (ventaToUpdate) {
+            await updateDocument(ventaToUpdate.id, updatedVenta);
+            console.log(
+              `Venta con orderNumber ${orderNumber} actualizada correctamente.`
+            );
+            return;
+          }
+
+          console.warn(
+            `No se encontró una venta con orderNumber ${orderNumber} para actualizar.`
+          );
+        }
+      } catch (error) {
+        console.error('Error al actualizar la venta:', error);
+      }
+    },
+    [updateDocument, queryDocuments]
+  );
 
   const deleteVenta = useCallback(
     async (id?: string, orderNumber?: string) => {
       try {
         if (id) {
-          // Elimina directamente por ID
           await removeDocument(id);
           console.log(`Venta con ID ${id} eliminada correctamente.`);
-        } else if (orderNumber) {
-          // Busca el documento por orderNumber y elimina
-          const baseQuery = queryDocuments();
-          const results = await getDocs(baseQuery);
+          return;
+        }
+
+        if (orderNumber) {
+          const results = await getDocs(queryDocuments());
           const ventaToDelete = results.docs.find(
             (doc) => (doc.data() as Venta).orderNumber === orderNumber
           );
@@ -101,14 +126,11 @@ export default function VentasProvider({ children }: Props) {
             console.log(
               `Venta con orderNumber ${orderNumber} eliminada correctamente.`
             );
-          } else {
-            console.warn(
-              `No se encontró una venta con orderNumber ${orderNumber}.`
-            );
+            return;
           }
-        } else {
-          console.error(
-            'No se proporcionó ni ID ni orderNumber para eliminar la venta.'
+
+          console.warn(
+            `No se encontró una venta con orderNumber ${orderNumber}.`
           );
         }
       } catch (error) {
@@ -117,7 +139,6 @@ export default function VentasProvider({ children }: Props) {
     },
     [removeDocument, queryDocuments]
   );
-
   const searchVentas = useCallback(
     async (criteria: {
       customerName?: string;

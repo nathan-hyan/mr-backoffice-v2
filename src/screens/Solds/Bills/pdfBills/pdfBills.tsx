@@ -124,7 +124,7 @@ function PDFDocumentBills({ venta }) {
         <View style={styles.borderBox}>
           <View>
             <Text style={styles.header}>
-              {venta.isSale ? 'Factura' : 'Presupuesto'}
+              {venta.isSale ? 'Remito de Venta' : 'Presupuesto'}
             </Text>
             <View style={styles.infoSection}>
               <View style={styles.sellerInfo}>

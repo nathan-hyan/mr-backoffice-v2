@@ -35,7 +35,7 @@ function BillsPreview() {
       <div className={styles.boleta}>
         <div className={styles.borderBox}>
           <div className={styles.header}>
-            <h2>{venta.isSale ? 'Factura' : 'Presupuesto'}</h2>
+            <h2>{venta.isSale ? 'Remito de Venta' : 'Presupuesto'}</h2>
             <div className={styles.fechaOrden}>
               <span>Fecha: {venta.orderDate}</span>
               <span>N° de Orden: {venta.orderNumber}</span>
