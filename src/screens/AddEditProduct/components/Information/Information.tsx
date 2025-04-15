@@ -35,8 +35,10 @@ function Information({ control, watch, errors, setValue }: Props) {
   const { categories, getSubcategories, getSubSubcategories } = useProducts();
 
   const subCategories = getSubcategories(watch('category'));
-  const subSubCategories: { internalId: number; name: string }[] =
-    getSubSubcategories(watch('subCategory'));
+  const subSubCategories = getSubSubcategories(
+    watch('category'),
+    watch('subCategory')
+  );
 
   const images = watch('imageURL').filter(Boolean);
 
