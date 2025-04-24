@@ -12,6 +12,7 @@ import {
   ProductList,
   UserInfo,
 } from '~screens/index';
+import PriceList from '~screens/PriceList/priceList';
 import Providers from '~screens/Providers';
 import ProvidersDetails from '~screens/Providers/ProvidersDetails';
 import BillsPreview from '~screens/Solds/Bills/billsPreview';
@@ -69,6 +70,13 @@ export const ROUTES = [
     description: '',
     path: '/provider-details',
     element: <ProvidersDetails />,
+  },
+  {
+    id: 55,
+    path: '/priceList',
+    title: 'Lista de Precios',
+    description: '',
+    element: <PriceList />,
   },
 ];
 
