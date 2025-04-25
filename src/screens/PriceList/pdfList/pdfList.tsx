@@ -141,7 +141,6 @@ function PDFDocument({
         <Image src={logo} style={styles.logo} />
         <Text style={styles.header}>Lista de Precios</Text>
         <View style={styles.table}>
-          {/* Encabezado */}
           <View style={styles.row}>
             {headerColumns.map((col, index) => (
               <Text key={index} style={styles.headerCell}>
