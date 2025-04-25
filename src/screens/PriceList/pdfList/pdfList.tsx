@@ -111,6 +111,16 @@ function PDFDocument({
     return brand ? brand.name : 'Sin marca';
   };
 
+  const calculateFinalPrice = (product: Product, priceType: string) => {
+    const basePrice = product.prices.cost?.value || 0;
+    const percentage =
+      priceType in product.prices
+        ? product.prices[priceType as keyof Prices].value
+        : 0;
+
+    return Math.round(basePrice * (percentage / 100 + 1));
+  };
+
   const headerColumns = ['Nombre'];
   if (selectedProperties.includes('stock')) headerColumns.push('Stock');
   if (selectedProperties.includes('category')) headerColumns.push('Categoría');
@@ -131,7 +141,6 @@ function PDFDocument({
         <Image src={logo} style={styles.logo} />
         <Text style={styles.header}>Lista de Precios</Text>
         <View style={styles.table}>
-          {/* Encabezado */}
           <View style={styles.row}>
             {headerColumns.map((col, index) => (
               <Text key={index} style={styles.headerCell}>
@@ -190,7 +199,7 @@ function PDFDocument({
                 </Text>
               )}
               <Text style={styles.cell}>
-                ${product.prices[selectedPriceType]?.value || 'N/A'}
+                ${calculateFinalPrice(product, selectedPriceType)}
               </Text>
             </View>
           ))}

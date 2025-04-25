@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
+import { Product } from 'types/data';
 
 import { useProducts } from '~contexts/Products';
 
@@ -59,6 +60,16 @@ function PriceList() {
   const getBrandName = (brandId: string) => {
     const brand = brands.find((b) => b.id === brandId);
     return brand ? brand.name : 'Sin marca';
+  };
+
+  const calculateFinalPrice = (product: Product, priceType: string) => {
+    const basePrice = product.prices.cost?.value || 0;
+    const percentage =
+      priceType in product.prices
+        ? product.prices[priceType as keyof Prices].value
+        : 0;
+
+    return Math.round(basePrice * (percentage / 100 + 1));
   };
 
   return (
@@ -139,7 +150,6 @@ function PriceList() {
           <label>
             Precio:{' '}
             <select value={selectedPriceType} onChange={handlePriceTypeChange}>
-              <option value='cost'>Precio de Costo</option>
               <option value='retail'>Precio Minorista</option>
               <option value='online'>Precio Online</option>
               <option value='mayo1'>Mayorista 1</option>
@@ -147,6 +157,7 @@ function PriceList() {
               <option value='mayo3'>Mayorista 3</option>
               <option value='mayo4'>Mayorista 4</option>
               <option value='reseller'>Precio Reseller</option>
+              <option value='cost'>Precio de Costo</option>
             </select>
           </label>
         </div>
@@ -213,7 +224,7 @@ function PriceList() {
                 {product.variants.map((variant) => variant.color).join(', ')}
               </span>
             )}
-            <span>${product.prices[selectedPriceType]?.value || 'N/A'}</span>
+            <span>${calculateFinalPrice(product, selectedPriceType)}</span>
           </div>
         ))}
       </div>
