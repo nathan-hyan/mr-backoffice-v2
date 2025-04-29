@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import { Product } from 'types/data';
 
 import styles from './styles.module.scss';
 
 import { VentasContext } from '../../../contexts/Sells';
-import PDFDocument from './PdfGenerator/PdfGenerator';
+import ConfirmationModal from '../ConfirmationModal/confirmationModal';
 
 interface SellAndBudgetProps {
   totalPrice: number;
@@ -34,6 +33,8 @@ function SellAndBudget({
   const { createVenta, getNextOrderNumber } = useContext(VentasContext);
   const [orderNumber, setOrderNumber] = useState('');
   const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(totalPrice);
+  const [showModal, setShowModal] = useState(false);
+  const [isSale, setIsSale] = useState(false);
 
   useEffect(() => {
     const calculateTotalPrice = () => {
@@ -47,7 +48,13 @@ function SellAndBudget({
     calculateTotalPrice();
   }, [items, productDetails]);
 
-  const handleVenta = async (isSale: boolean) => {
+  interface VentaData {
+    saldo: number;
+    entregado: boolean;
+    pago: boolean;
+  }
+
+  const handleVenta = async (data: VentaData) => {
     const venta = {
       sellerInfo: {
         name: 'MR tienda',
@@ -68,6 +75,10 @@ function SellAndBudget({
       orderNumber: '',
       totalPrice: calculatedTotalPrice,
       isSale,
+      payments: data,
+      saldo: data.saldo,
+      status: data.entregado ? 'Entregado' : 'Pendiente',
+      pago: data.pago ? 'Saldo' : 'Pagado',
     };
 
     const res = await createVenta(venta);
@@ -93,50 +104,28 @@ function SellAndBudget({
         </p>
       </div>
       <div>
-        <PDFDownloadLink
-          document={
-            <PDFDocument
-              customer={clientData}
-              items={items}
-              productDetails={productDetails}
-              totalPrice={calculatedTotalPrice}
-              orderNumber={orderNumber}
-              presupuesto='Remito de Venta'
-            />
-          }
-          fileName='Venta.pdf'
+        <button
+          className={styles.buttonVenta}
+          type='button'
+          onClick={() => {
+            setIsSale(true);
+            setShowModal(true);
+          }}
         >
-          <button
-            className={styles.buttonVenta}
-            type='button'
-            onClick={() => handleVenta(true)}
-          >
-            PROCEDER CON LA VENTA
-          </button>
-        </PDFDownloadLink>
+          PROCEDER CON LA VENTA
+        </button>
       </div>
       <div className={styles.buttons}>
-        <PDFDownloadLink
-          document={
-            <PDFDocument
-              customer={clientData}
-              items={items}
-              productDetails={productDetails}
-              totalPrice={calculatedTotalPrice}
-              presupuesto='Presupuesto'
-              orderNumber={orderNumber}
-            />
-          }
-          fileName='presupuesto.pdf'
+        <button
+          className={styles.buttonBudget}
+          type='button'
+          onClick={() => {
+            setIsSale(false);
+            setShowModal(true);
+          }}
         >
-          <button
-            className={styles.buttonBudget}
-            type='button'
-            onClick={() => handleVenta(false)}
-          >
-            PRESUPUESTO
-          </button>
-        </PDFDownloadLink>
+          PRESUPUESTO
+        </button>
         <button
           className={styles.buttonCancel}
           type='button'
@@ -145,6 +134,24 @@ function SellAndBudget({
           Cancelar
         </button>
       </div>
+
+      {showModal && (
+        <ConfirmationModal
+          total={calculatedTotalPrice}
+          onConfirm={(data) => {
+            handleVenta(data);
+            setShowModal(false);
+          }}
+          onClose={() => setShowModal(false)}
+          customer={clientData}
+          items={items}
+          productDetails={productDetails}
+          totalPrice={calculatedTotalPrice}
+          orderNumber={orderNumber}
+          isSale={isSale}
+          onCancel={onCancel}
+        />
+      )}
     </div>
   );
 }

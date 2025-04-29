@@ -50,6 +50,8 @@ function CustomTable() {
         {productList ? (
           <TableBody>
             {productList
+              .slice()
+              .sort((a, b) => a.name.localeCompare(b.name)) // Ordenar alfabéticamente por 'name'
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((product) => (
                 <Row
