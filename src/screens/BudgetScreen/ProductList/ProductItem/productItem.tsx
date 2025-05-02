@@ -63,13 +63,22 @@ function ProductItem({
     );
   }, [quantity, discount, unitPrice]);
 
-  const handleQuantityChange = (increment: boolean) => {
+  /*   const handleQuantityChange = (increment: boolean) => {
     setQuantity((prevQuantity) => {
       const stock = product.stock.current ?? 1;
       const newQuantity = increment
         ? Math.min(prevQuantity + 1, stock)
         : Math.max(1, prevQuantity - 1);
 
+      return newQuantity;
+    });
+  }; */
+
+  const handleQuantityChange = (increment: boolean) => {
+    setQuantity((prevQuantity) => {
+      const newQuantity = increment
+        ? prevQuantity + 1
+        : Math.max(1, prevQuantity - 1);
       return newQuantity;
     });
   };
@@ -104,14 +113,9 @@ function ProductItem({
           type='number'
           value={quantity}
           onChange={(e) => {
-            const stock = product.stock.current ?? 1;
-            const newQuantity = Math.min(
-              Math.max(1, parseInt(e.target.value, 10)),
-              stock
-            );
+            const newQuantity = Math.max(1, parseInt(e.target.value, 10));
             setQuantity(newQuantity);
           }}
-          max={product.stock.current ?? 1}
         />
         <button
           className={styles.quantityButton}

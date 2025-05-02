@@ -93,7 +93,7 @@ function ProductSearchBox({
                   type='button'
                   onClick={() => handleSelectProduct(product)}
                 >
-                  {product.name}
+                  {product.name} <span>({product.stock.current || '0'})</span>
                 </button>
               </li>
             ))}
