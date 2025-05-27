@@ -1,5 +1,21 @@
 import { FiberManualRecord } from '@mui/icons-material';
 
+import addClient from '~assets/Agregar cliente.png';
+import addProd from '~assets/Agregar producto.png';
+import addProv from '~assets/Agregar Provedor.png';
+import Banners from '~assets/Banners.png';
+import Categorizacion from '~assets/Categorizacion.png';
+import ticket from '~assets/Generador etiquetas.png';
+import clientList from '~assets/Listado Clientes.png';
+import ProdList from '~assets/Listado de Productos.png';
+import exportProduct from '~assets/Listado producto.png';
+import Marcas from '~assets/Marcas.png';
+import Ofertas from '~assets/Ofertas.png';
+import pedidos from '~assets/Pedidos Sitio.png';
+import PosIcon from '~assets/POS.png';
+import provedores from '~assets/Provedores.jpg';
+import Ventas from '~assets/Ventas.png';
+import AnalyticsScreen from '~screens/Analitycs/analitycs';
 import BudgetManager from '~screens/BudgetScreen/budgetManager';
 import {
   AddEditProduct,
@@ -83,7 +99,7 @@ export const ROUTES = [
 export const ROUTESA = [
   {
     id: 15,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: <img src={PosIcon} alt='P.O.S' style={{ width: 30, height: 30 }} />,
     title: 'P.O.S',
     description: '',
     path: '/budgetManager',
@@ -91,7 +107,7 @@ export const ROUTESA = [
   },
   {
     id: 16,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: <img src={Ventas} alt='ventas' style={{ width: 30, height: 30 }} />,
     title: 'Ventas',
     description: '',
     path: '/sells',
@@ -104,7 +120,13 @@ export const ROUTESB = [
     id: 18,
     title: 'Listado de Productos',
     description: '',
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={ProdList}
+        alt='listado de productos'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     path: '/products',
     element: <ProductList />,
   },
@@ -112,13 +134,25 @@ export const ROUTESB = [
     id: 19,
     title: 'Agregar Producto',
     description: 'Agregando Producto',
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={addProd}
+        alt='agregar producto'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     path: '/add',
     element: <AddEditProduct />,
   },
   {
     id: 20,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={Categorizacion}
+        alt='administrador de categorias'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Administrador de Categorias',
     description: '',
     path: '/categoryManager',
@@ -126,7 +160,13 @@ export const ROUTESB = [
   },
   {
     id: 21,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={Marcas}
+        alt='administrador de marcas'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Administrador de Marcas',
     description: '',
     path: '/brandManager',
@@ -134,7 +174,13 @@ export const ROUTESB = [
   },
   {
     id: 22,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={ticket}
+        alt='generador de etiquetas'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Generador de etiquetas de precio',
     description: '',
     path: '/pricetaggenerator',
@@ -150,7 +196,7 @@ export const ROUTESB = [
   },
   {
     id: 24,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: <img src={Ofertas} alt='ofertas' style={{ width: 30, height: 30 }} />,
     title: 'Ofertas',
     description: '',
     path: '/WorkInProgress',
@@ -158,7 +204,13 @@ export const ROUTESB = [
   },
   {
     id: 25,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={exportProduct}
+        alt='Exporta listado de productos'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Exporta Listado de productos',
     description: '',
     path: '/WorkInProgress',
@@ -169,7 +221,13 @@ export const ROUTESB = [
 export const ROUTESC = [
   {
     id: 26,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={clientList}
+        alt='Listado de clientes'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Lista Clientes',
     description: '',
     path: '/WorkInProgress',
@@ -177,7 +235,13 @@ export const ROUTESC = [
   },
   {
     id: 27,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={addClient}
+        alt='Agregar cliente'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Agregar Cliente',
     description: '',
     path: '/WorkInProgress',
@@ -188,7 +252,13 @@ export const ROUTESC = [
 export const ROUTESD = [
   {
     id: 28,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={provedores}
+        alt='Provedores'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Proveedores',
     description: '',
     path: '/providers',
@@ -196,7 +266,13 @@ export const ROUTESD = [
   },
   {
     id: 29,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={addProv}
+        alt='agregar provedor'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Agregar Proveedores',
     description: '',
     path: '/WorkInProgress',
@@ -207,7 +283,7 @@ export const ROUTESD = [
 export const ROUTESE = [
   {
     id: 30,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: <img src={Banners} alt='banners' style={{ width: 30, height: 30 }} />,
     title: 'Banners',
     description: '',
     path: '/WorkInProgress',
@@ -215,7 +291,7 @@ export const ROUTESE = [
   },
   {
     id: 31,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: <img src={pedidos} alt='pedidos' style={{ width: 30, height: 30 }} />,
     title: 'Pedidos',
     description: '',
     path: '/WorkInProgress',
@@ -245,8 +321,8 @@ export const ROUTESF = [
     icon: <FiberManualRecord fontSize='5px' />,
     title: 'Dash board General',
     description: '',
-    path: '/WorkInProgress',
-    element: <WorkInProgress />,
+    path: '/analytics',
+    element: <AnalyticsScreen />,
   },
   {
     id: 35,

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -24,6 +26,10 @@ function NavigationBar() {
     navigate('/login');
   };
 
+  const handleHomeRedirect = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <SideDrawer drawer={drawer} handleDrawer={handleDrawer} />
@@ -45,7 +51,12 @@ function NavigationBar() {
             >
               <MenuIcon />
             </IconButton>
-            <img src={LogoWhite} alt='StockOS Logo' className={styles.logo} />
+            <img
+              onClick={handleHomeRedirect}
+              src={LogoWhite}
+              alt='StockOS Logo'
+              className={styles.logo}
+            />
           </Box>
           {user ? (
             <UserMenu />

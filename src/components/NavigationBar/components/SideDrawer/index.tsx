@@ -64,7 +64,9 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             POINT OF SALE
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
+
           {ROUTESA.map(({ id, path, title, icon }) =>
             icon ? (
               <Option
@@ -80,6 +82,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             INVENTARIO
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
           {ROUTESB.map(({ id, path, title, icon }) =>
             icon ? (
@@ -96,6 +99,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             CLIENTES
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
           {ROUTESC.map(({ id, path, title, icon }) =>
             icon ? (
@@ -112,6 +116,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             PROVEEDORES
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
           {ROUTESD.map(({ id, path, title, icon }) =>
             icon ? (
@@ -128,6 +133,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             ECOMMERCE
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
           {ROUTESE.map(({ id, path, title, icon }) =>
             icon ? (
@@ -144,6 +150,7 @@ function SideDrawer({ drawer, handleDrawer }: Props) {
         <div>
           <Typography variant='h6' sx={{ px: 2, mt: 2, fontSize: '15px' }}>
             ANALYTICS
+            <Divider sx={{ backgroundColor: 'black' }} />
           </Typography>
           {ROUTESF.map(({ id, path, title, icon }) =>
             icon ? (
