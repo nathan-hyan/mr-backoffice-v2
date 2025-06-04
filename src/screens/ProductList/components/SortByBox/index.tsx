@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
   InputLabel,
@@ -13,22 +12,15 @@ import { useProducts } from '~contexts/Products';
 import { SortBy } from '~contexts/Products/constants';
 import useGATag from '~hooks/useGATag';
 
-import styles from './styles.module.scss';
-
 function SortByBox() {
   const { tagAction } = useGATag(true);
   const { sortBy, handleSort } = useProducts();
-  const navigate = useNavigate();
 
   const handleSortBy = (event: SelectChangeEvent<SortBy>) => {
     const { value } = event.target;
 
     tagAction(GACategories.Event, GATypes.SubmittedForm, `Sorted by ${value}`);
     handleSort(value as SortBy);
-  };
-
-  const handlePriceList = () => {
-    navigate('/priceList');
   };
 
   return (
@@ -47,10 +39,6 @@ function SortByBox() {
           <MenuItem value={SortBy.InternalId}>ID Interno</MenuItem>
         </Select>
       </FormControl>
-      <button onClick={handlePriceList} type='button' className={styles.button}>
-        {' '}
-        Lista de Precios
-      </button>
     </Paper>
   );
 }

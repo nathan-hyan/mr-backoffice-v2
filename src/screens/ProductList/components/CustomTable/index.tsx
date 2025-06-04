@@ -42,16 +42,30 @@ function CustomTable() {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mb: 3 }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        mb: 3,
+        maxHeight: 600,
+      }}
+    >
       <Table stickyHeader>
-        <TableHead>
+        <TableHead
+          sx={{
+            '& .MuiTableCell-head': {
+              height: 32,
+              paddingTop: 0,
+              paddingBottom: 0,
+            },
+          }}
+        >
           <Row header='show' />
         </TableHead>
         {productList ? (
           <TableBody>
             {productList
               .slice()
-              .sort((a, b) => a.name.localeCompare(b.name)) // Ordenar alfabéticamente por 'name'
+              .sort((a, b) => a.name.localeCompare(b.name))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((product) => (
                 <Row
