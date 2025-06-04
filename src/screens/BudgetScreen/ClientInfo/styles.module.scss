@@ -117,3 +117,50 @@
     border: 1px solid #000;
     border-radius: 10px;
 }
+
+@media (max-width: 1366px) and (max-height: 768px) {
+    .container {
+        gap: 8px;
+    }
+
+    .client {
+        height: 70px;
+        font-size: 14px;
+
+        p {
+            margin: 8px 0 3px 12px;
+        }
+    }
+
+    .information,
+    .delivery,
+    .facturacion {
+        padding: 0 0 12px 10px;
+
+        p {
+            font-size: 13px;
+        }
+
+        span {
+            font-size: 13px;
+        }
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+
+    .buttonNuevoCliente,
+    .buttonQuitar {
+        height: 36px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .clientButton {
+        height: 30px;
+        width: 220px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+}

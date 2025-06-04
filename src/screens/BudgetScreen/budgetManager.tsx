@@ -99,6 +99,7 @@ function BudgetManager() {
             </div>
           ))}
         </div>
+
         <div className={styles.productList}>
           <ProductList
             selectedProducts={selectedProducts}

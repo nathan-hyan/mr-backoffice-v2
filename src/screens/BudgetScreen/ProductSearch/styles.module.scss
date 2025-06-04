@@ -3,6 +3,7 @@
     flex-direction: row;
     align-items: flex-start;
     gap: 20px;
+    width: 100%;
 }
 
 .searchBox {
@@ -108,4 +109,53 @@
     color: #000;
     font-size: 15px;
     width: 100px;
+}
+
+@media (max-width: 1366px) and (max-height: 768px) {
+    .container {
+        display: flex;
+        flex-direction: row;
+        align-items: space-between;
+        gap: 0px;
+    }
+
+    .searchBox {
+        width: 35%;
+
+        .search {
+            width: 250px;
+            font-size: 16px;
+            height: 36px;
+            padding: 8px;
+        }
+    }
+
+    .criteria {
+        font-size: 13px;
+        height: 36px;
+        gap: 5px;
+        padding-right: 30px;
+    }
+
+    .searchResults {
+        width: 250px;
+
+        li {
+            font-size: 14px;
+            padding: 8px;
+        }
+    }
+
+    .priceSelect {
+        width: 180px;
+        font-size: 16px;
+        height: 36px;
+        padding: 8px;
+    }
+
+    .orden {
+        padding-left: 30px;
+        font-size: 13px;
+        width: 150px;
+    }
 }

@@ -13,6 +13,7 @@
         background-color: #fff;
         border-radius: 10px;
         height: 610px;
+        overflow: auto;
 
     }
 
@@ -42,4 +43,33 @@
     font-size: 16px;
     font-weight: 500;
 
+}
+
+@media (max-width: 1366px) and (max-height: 768px) {
+    .container {
+        padding: 12px 12px;
+        gap: 12px;
+        grid-template-columns: 3fr 1fr;
+
+
+        .productList {
+            height: 500px;
+        }
+    }
+}
+
+
+.budgetList {
+    padding: 8px;
+
+}
+
+.searchBarNav {
+    height: 60px;
+    font-size: 14px;
+}
+
+.titleBar {
+    height: 45px;
+    font-size: 14px;
 }

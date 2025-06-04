@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Product } from 'types/data';
 
-import styles from './styles.module.scss';
-
 import ProductItem from './ProductItem/productItem';
 
 interface ProductListProps {
@@ -62,7 +60,7 @@ function ProductList({
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       {selectedProducts.map((product) => (
         <ProductItem
           key={product.id}

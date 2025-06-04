@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEvent } from 'react';
+import { ChangeEventHandler /* MouseEvent  */ } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
@@ -6,11 +6,11 @@ import {
   InputAdornment,
   Paper,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
+  /*   ToggleButton,
+  ToggleButtonGroup, */
 } from '@mui/material';
-import { Nullable } from 'vite-env';
 
+/* import { Nullable } from 'vite-env'; */
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
 import useGATag from '~hooks/useGATag';
@@ -33,7 +33,7 @@ function SearchBox() {
     clearSearch();
   };
 
-  const handleChangeSearch: (
+  /*  const handleChangeSearch: (
     event: MouseEvent<HTMLElement, globalThis.MouseEvent>,
     value: Nullable<number>
   ) => void = (_, newValue) => {
@@ -45,7 +45,7 @@ function SearchBox() {
       );
       performSearch(searchQuery, newValue);
     }
-  };
+  }; */
 
   return (
     <Paper
@@ -75,7 +75,7 @@ function SearchBox() {
           ),
         }}
       />
-      <ToggleButtonGroup
+      {/* <ToggleButtonGroup
         color='primary'
         value={searchCriteria}
         exclusive
@@ -89,7 +89,7 @@ function SearchBox() {
       >
         <ToggleButton value={0}>Nombre Prod.</ToggleButton>
         <ToggleButton value={1}>Cod. Barras</ToggleButton>
-      </ToggleButtonGroup>
+      </ToggleButtonGroup> */}
     </Paper>
   );
 }

@@ -4,12 +4,17 @@ import addClient from '~assets/Agregar cliente.png';
 import addProd from '~assets/Agregar producto.png';
 import addProv from '~assets/Agregar Provedor.png';
 import Banners from '~assets/Banners.png';
+import belgrano from '~assets/Belgrano2846.png';
 import Categorizacion from '~assets/Categorizacion.png';
+import dashboard from '~assets/Dashboard.png';
+import ecommerce from '~assets/Ecomerce.png';
 import ticket from '~assets/Generador etiquetas.png';
+import paginas from '~assets/LinkPagina.png';
 import clientList from '~assets/Listado Clientes.png';
 import ProdList from '~assets/Listado de Productos.png';
 import exportProduct from '~assets/Listado producto.png';
 import Marcas from '~assets/Marcas.png';
+import lote from '~assets/Modificacion precio lote.png';
 import Ofertas from '~assets/Ofertas.png';
 import pedidos from '~assets/Pedidos Sitio.png';
 import PosIcon from '~assets/POS.png';
@@ -188,7 +193,13 @@ export const ROUTESB = [
   },
   {
     id: 23,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={lote}
+        alt='modificacion precio lote'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Modif. Precios en lote',
     description: '',
     path: '/priceModifier',
@@ -213,8 +224,8 @@ export const ROUTESB = [
     ),
     title: 'Exporta Listado de productos',
     description: '',
-    path: '/WorkInProgress',
-    element: <WorkInProgress />,
+    path: '/priceList',
+    element: <PriceList />,
   },
 ];
 
@@ -299,7 +310,9 @@ export const ROUTESE = [
   },
   {
     id: 32,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img src={paginas} alt='link paginas' style={{ width: 30, height: 30 }} />
+    ),
     title: 'Links Paginas',
     description: '',
     path: '/WorkInProgress',
@@ -318,7 +331,13 @@ export const ROUTESE = [
 export const ROUTESF = [
   {
     id: 34,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={dashboard}
+        alt='Dashboard general'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Dash board General',
     description: '',
     path: '/analytics',
@@ -326,7 +345,13 @@ export const ROUTESF = [
   },
   {
     id: 35,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img
+        src={belgrano}
+        alt='retal belgrano 2846'
+        style={{ width: 30, height: 30 }}
+      />
+    ),
     title: 'Retail Belgrano 2846',
     description: '',
     path: '/WorkInProgress',
@@ -334,7 +359,9 @@ export const ROUTESF = [
   },
   {
     id: 36,
-    icon: <FiberManualRecord fontSize='5px' />,
+    icon: (
+      <img src={ecommerce} alt='Ecommerce' style={{ width: 30, height: 30 }} />
+    ),
     title: 'Ecommerce',
     description: '',
     path: '/WorkInProgress',
