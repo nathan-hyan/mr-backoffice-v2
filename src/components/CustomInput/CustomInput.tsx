@@ -35,6 +35,7 @@ interface Props<T> {
     | Partial<FilledInputProps>
     | Partial<OutlinedInputProps>
     | Partial<InputProps>;
+  className?: string;
 }
 
 function CustomInput<T extends FieldValues>({
@@ -50,6 +51,7 @@ function CustomInput<T extends FieldValues>({
   multiline = false,
   inputProps = undefined,
   variant = 'outlined',
+  className = '',
   ...props
 }: Props<T>) {
   const numberFieldRef = useRef<HTMLInputElement>(null);
@@ -89,6 +91,7 @@ function CustomInput<T extends FieldValues>({
         <TextField
           {...field}
           {...props}
+          className={className}
           onBlur={(event) =>
             field.onChange(
               type === 'number' ? parseOnlyNumbers(event) : event.target.value
@@ -108,6 +111,51 @@ function CustomInput<T extends FieldValues>({
           helperText={error ? error.message : undefined}
           InputProps={{ ...inputProps, disabled }}
           ref={numberFieldRef}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              color: '#9C9C9C',
+              '& .MuiInputBase-root': {
+                height: 42,
+                minHeight: 42,
+              },
+              '& fieldset': {
+                borderColor: '#9C9C9C',
+              },
+              '&:hover fieldset': {
+                borderColor: '#9C9C9C',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#9C9C9C',
+              },
+              '&.Mui-disabled': {
+                color: '#9C9C9C',
+              },
+              '&.Mui-disabled fieldset': {
+                borderColor: '#9C9C9C',
+              },
+            },
+            '& .MuiInputBase-input': {
+              color: '#9C9C9C',
+              height: 42,
+              minHeight: 42,
+              padding: '0 8px',
+              WebkitTextFillColor: '#9C9C9C',
+            },
+            '& .MuiInputBase-input.Mui-disabled': {
+              color: '#9C9C9C',
+
+              WebkitTextFillColor: '#9C9C9C',
+            },
+            '& .MuiInputLabel-root': {
+              color: '#9C9C9C',
+            },
+            '& .MuiInputLabel-root.Mui-disabled': {
+              color: '#9C9C9C',
+            },
+            '& .Mui-focused': {
+              color: '#9C9C9C',
+            },
+          }}
         />
       )}
     />

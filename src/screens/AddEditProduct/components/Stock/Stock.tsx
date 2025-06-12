@@ -8,13 +8,15 @@ import {
   Box,
   Divider,
   FormControlLabel,
-  Switch,
+  Radio,
   Typography,
 } from '@mui/material';
 import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
+
+import styles from './styles.module.scss';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -24,49 +26,18 @@ interface Props {
 
 function Stock({ control, watch, errors }: Props) {
   return (
-    <>
-      <Typography sx={{ mt: 5 }} fontWeight='bold'>
+    <div className={styles.container}>
+      <Typography sx={{ mt: 5 }} color='#454545' fontWeight='bold'>
         Stock
       </Typography>
 
       <Divider sx={{ my: 2 }} />
 
-      <Controller
-        control={control}
-        name='stock.noPhysicalStock'
-        defaultValue={false}
-        render={({ field }) => (
-          <FormControlLabel
-            control={<Switch />}
-            label='El producto no tiene stock físico'
-            {...field}
-          />
-        )}
-      />
-
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
         <CustomInput
           control={control}
-          name='stock.minStock'
-          label='Stock mínimo'
-          type={InputType.Number}
-          error={errors.stock?.minStock}
-          disabled={watch('stock.noPhysicalStock')}
-          rules={{
-            validate: () => {
-              if (watch('stock.minStock') > watch('stock.maxStock')) {
-                return 'El stock mínimo no puede ser mayor al máximo';
-              }
-
-              return true;
-            },
-          }}
-        />
-
-        <CustomInput
-          control={control}
           name='stock.current'
-          label='Stock actual'
+          label='Actual'
           type={InputType.Number}
           /*   disabled={watch('stock.noPhysicalStock')}
           required={!watch('stock.noPhysicalStock')} */
@@ -88,11 +59,27 @@ function Stock({ control, watch, errors }: Props) {
           }} */
           error={errors.stock?.current}
         />
+        <CustomInput
+          control={control}
+          name='stock.minStock'
+          label='Mínimo'
+          type={InputType.Number}
+          error={errors.stock?.minStock}
+          disabled={watch('stock.noPhysicalStock')}
+          rules={{
+            validate: () => {
+              if (watch('stock.minStock') > watch('stock.maxStock')) {
+                return 'El stock mínimo no puede ser mayor al máximo';
+              }
 
+              return true;
+            },
+          }}
+        />
         <CustomInput
           control={control}
           name='stock.maxStock'
-          label='Stock máximo'
+          label='Máximo'
           type={InputType.Number}
           error={errors.stock?.maxStock}
           /* disabled={watch('stock.noPhysicalStock')}
@@ -107,7 +94,29 @@ function Stock({ control, watch, errors }: Props) {
           }} */
         />
       </Box>
-    </>
+      <Controller
+        control={control}
+        name='stock.noPhysicalStock'
+        defaultValue={false}
+        render={({ field }) => (
+          <FormControlLabel
+            sx={{ color: '#9c9c9c' }}
+            control={
+              <Radio
+                sx={{
+                  color: '#9c9c9c',
+                  '&.Mui-checked': {
+                    color: '#1976d2',
+                  },
+                }}
+              />
+            }
+            label='Sin Stock (Por Ejemplo ,Fotocopias, servicios de boletas)'
+            {...field}
+          />
+        )}
+      />
+    </div>
   );
 }
 export default Stock;

@@ -32,6 +32,7 @@ interface Props<T> {
   value?: string | number;
   onChange?: (e: SelectChangeEvent) => void;
   sx?: SxProps<Theme>;
+  InputLabelProps?: object;
 }
 
 function CustomSelect<T extends FieldValues>({
@@ -45,9 +46,67 @@ function CustomSelect<T extends FieldValues>({
   rules = {},
   variant = 'outlined',
   data,
-  sx = undefined,
+  InputLabelProps = {},
+  sx = {},
   onChange = undefined,
 }: Props<T>) {
+  const defaultSx: SxProps<Theme> = {
+    '& .MuiOutlinedInput-root': {
+      color: '#9c9c9c',
+      height: 42,
+      minHeight: 42,
+      boxSizing: 'border-box',
+      '& fieldset': {
+        borderColor: '#9c9c9c',
+      },
+      '&:hover fieldset': {
+        borderColor: '#9c9c9c',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#9c9c9c',
+      },
+      '&.Mui-disabled': {
+        color: '#9c9c9c',
+      },
+      '&.Mui-disabled fieldset': {
+        borderColor: '#9c9c9c',
+      },
+    },
+    '& .MuiSelect-select': {
+      color: '#9c9c9c',
+      WebkitTextFillColor: '#9c9c9c',
+      height: 42,
+      minHeight: 42,
+      boxSizing: 'border-box',
+      padding: '0 8px',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    '& .MuiSelect-select.Mui-disabled': {
+      color: '#9c9c9c',
+      WebkitTextFillColor: '#9c9c9c',
+      height: 42,
+      minHeight: 42,
+      boxSizing: 'border-box',
+      padding: '0 8px',
+    },
+    '& .MuiSelect-icon': {
+      color: '#9c9c9c',
+    },
+    '& .MuiInputLabel-root': {
+      color: '#9c9c9c',
+      backgroundColor: '#fff',
+    },
+    '& .MuiInputLabel-root.Mui-disabled': {
+      color: '#9c9c9c',
+      backgroundColor: '#fff',
+    },
+    '& .Mui-focused': {
+      color: '#9c9c9c',
+    },
+    ...sx,
+  };
+
   return (
     <Controller
       name={name}
@@ -69,13 +128,15 @@ function CustomSelect<T extends FieldValues>({
           variant={variant}
           error={Boolean(error)}
           id={name}
-          sx={sx}
+          sx={defaultSx}
         >
-          <InputLabel id={name}>{label}</InputLabel>
+          <InputLabel id={`${name}-label`} {...InputLabelProps}>
+            {label}
+          </InputLabel>
           <Select
             {...field}
             disabled={disabled}
-            labelId={name}
+            labelId={`${name}-label`}
             label={label}
             onChange={onChange ?? field.onChange}
           >

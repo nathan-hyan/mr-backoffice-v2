@@ -1,0 +1,42 @@
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+}
+
+.categoriesContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.customInput {
+    margin-bottom: 1rem;
+
+
+}
+
+.customInputdescripcion {
+    margin-bottom: 1rem;
+
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.categoriesFather {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.selectsContainer {
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}

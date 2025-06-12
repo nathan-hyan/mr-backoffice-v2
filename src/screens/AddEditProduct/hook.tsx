@@ -55,9 +55,9 @@ function useProductModal({ productIdToEdit }: Props) {
     if (productIdToEdit) {
       updateDocument(productIdToEdit, data, () => {
         reset();
-        navigate(ROUTES[4].path);
-      });
 
+        navigate(ROUTES[3].path);
+      });
       return;
     }
 
@@ -76,7 +76,8 @@ function useProductModal({ productIdToEdit }: Props) {
       internalId: getLatestInternalId(productList) + 1,
     }).then(() => {
       reset();
-      navigate(ROUTES[4].path);
+
+      navigate('/add');
     });
   };
 

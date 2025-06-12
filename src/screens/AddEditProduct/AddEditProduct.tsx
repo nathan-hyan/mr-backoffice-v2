@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { CancelRounded, SaveAltRounded } from '@mui/icons-material';
-import { Button, Container } from '@mui/material';
+import { Button } from '@mui/material';
+
+import styles from './styles.module.scss';
 
 import {
   Dimensions,
@@ -9,11 +10,12 @@ import {
   Specifications,
   Variants,
 } from './components';
+import ImageSelection from './components/Information/components/ImageSelection/ImageSelection';
 import Information from './components/Information/Information';
 import Stock from './components/Stock/Stock';
 import useProductModal from './hook';
 
-function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
+function AddEditProduct() {
   const { id } = useParams();
 
   const {
@@ -28,77 +30,87 @@ function AddEditProduct({ editMode = false }: { editMode?: boolean }) {
     setValue,
     watch,
   } = useProductModal({
-    productIdToEdit: editMode ? id : null,
+    productIdToEdit: id || null,
   });
 
+  const images = watch('imageURL').filter(Boolean);
+  function getTodayFormattedEs() {
+    const meses = [
+      'enero',
+      'febrero',
+      'marzo',
+      'abril',
+      'mayo',
+      'junio',
+      'julio',
+      'agosto',
+      'septiembre',
+      'octubre',
+      'noviembre',
+      'diciembre',
+    ];
+    const hoy = new Date();
+    const dia = hoy.getDate();
+    const mes = meses[hoy.getMonth()];
+    const anio = hoy.getFullYear();
+    return `${dia} de ${mes} de ${anio}`;
+  }
+
+  const fechaHoy = getTodayFormattedEs();
+
   return (
-    <Container>
+    <div className={styles.container}>
       {import.meta.env.VITE_LOCAL_ENV && (
         <Button onClick={fillFakeData}>Fill with fake data</Button>
       )}
 
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
-        <Container
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <Information
-            setValue={setValue}
-            control={control}
-            watch={watch}
-            errors={errors}
-          />
-          <Button
-            variant='outlined'
-            startIcon={<CancelRounded />}
-            color='error'
-            onClick={handleCancel}
-            disabled={creatingLoading}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type='submit'
-            variant='contained'
-            startIcon={<SaveAltRounded />}
-            disabled={creatingLoading}
-            onClick={checkForErrors}
-          >
-            Guardar
-          </Button>
-          <Stock control={control} errors={errors} watch={watch} />
-          <Prices control={control} errors={errors} watch={watch} />
-          <Variants control={control} errors={errors} />
-          <Specifications control={control} errors={errors} />
-          <KioskInformation control={control} errors={errors} />
-          <Dimensions control={control} errors={errors} />
-
-          <hr />
-
-          <Button
-            variant='outlined'
-            startIcon={<CancelRounded />}
-            color='error'
-            onClick={handleCancel}
-            disabled={creatingLoading}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type='submit'
-            variant='contained'
-            startIcon={<SaveAltRounded />}
-            disabled={creatingLoading}
-            onClick={checkForErrors}
-          >
-            Guardar
-          </Button>
-        </Container>
+        <div className={styles.header}>
+          <div>
+            {' '}
+            <h4>Formulario nuevo producto</h4>
+            <p>{fechaHoy}</p>
+          </div>
+          <div className={styles.actions}>
+            <button
+              className={styles.cancelButton}
+              type='button'
+              onClick={handleCancel}
+              disabled={creatingLoading}
+            >
+              Cancelar
+            </button>
+            <button
+              className={styles.saveButton}
+              type='submit'
+              disabled={creatingLoading}
+              onClick={checkForErrors}
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+        <div className={styles.formContainer}>
+          <div className={styles.formLeft}>
+            <Information
+              setValue={setValue}
+              control={control}
+              watch={watch}
+              errors={errors}
+            />
+            <Stock control={control} errors={errors} watch={watch} />
+            <Specifications control={control} errors={errors} />{' '}
+            <Variants control={control} errors={errors} />
+            <ImageSelection data={images} setValue={setValue} watch={watch} />
+          </div>
+          <div className={styles.formRight}>
+            <Prices control={control} errors={errors} watch={watch} />
+            <KioskInformation control={control} errors={errors} />
+            <Dimensions control={control} errors={errors} />
+          </div>
+        </div>
       </form>
-    </Container>
+    </div>
   );
 }
 export default AddEditProduct;

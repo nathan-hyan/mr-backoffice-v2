@@ -20,7 +20,8 @@ function useFileUpload(watch: UseFormWatch<Product>) {
   ) => {
     const { files } = event.target;
 
-    if (watch('name').length === 0) {
+    const productName = watch('name');
+    if (!productName || productName.length === 0) {
       enqueueSnackbar(
         'Por favor, ingrese un nombre al producto antes de cargar una imagen',
         { variant: 'error' }
@@ -44,7 +45,7 @@ function useFileUpload(watch: UseFormWatch<Product>) {
         return;
       }
 
-      await uploadImage(current, watch('name'))
+      await uploadImage(current, productName)
         .then((imageReference) => {
           getDownloadURL(imageReference.ref).then((url) =>
             setImageURL((prevState) => [url, ...prevState])

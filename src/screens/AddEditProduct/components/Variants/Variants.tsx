@@ -1,11 +1,11 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
-import { AddRounded } from '@mui/icons-material';
-import { Button, Divider, Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Product } from 'types/data';
+
+import styles from './styles.module.scss';
 
 import FieldInputs from './components/FieldInputs/FieldInputs';
 import { VARIANTS_FORM_EMPTY } from './Variants.constants';
-import { styles } from './Variants.styles';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -22,15 +22,26 @@ function Variants({ control, errors }: Props) {
   const hasVariantFields = variantsFields.length > 0;
 
   return (
-    <>
-      <Typography sx={styles.title} fontWeight='bold'>
+    <div className={styles.container}>
+      <Typography
+        sx={{
+          mt: 5,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          color: '#454545',
+        }}
+        color='#454545'
+        fontWeight='bold'
+      >
         Variantes
-        <Button
+        <button
+          className={styles.addButton}
+          type='button'
           onClick={() => variantsAppend(VARIANTS_FORM_EMPTY)}
-          startIcon={<AddRounded />}
         >
           Agregar
-        </Button>
+        </button>
       </Typography>
 
       <Divider sx={{ my: 2 }} />
@@ -52,7 +63,7 @@ function Variants({ control, errors }: Props) {
           comenzar
         </Typography>
       )}
-    </>
+    </div>
   );
 }
 export default Variants;
