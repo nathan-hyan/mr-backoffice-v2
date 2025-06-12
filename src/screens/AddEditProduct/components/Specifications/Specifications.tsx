@@ -1,11 +1,13 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
-import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
-import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
+import { DeleteForeverRounded } from '@mui/icons-material';
+import { Box, Divider, IconButton, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
 import { SPECIFICATIONS_FORM_EMPTY } from '~screens/AddEditProduct/constants';
+
+import styles from './styles.module.scss';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -20,23 +22,25 @@ function Specifications({ control, errors }: Props) {
   } = useFieldArray({ control, name: 'specifications' });
 
   return (
-    <>
+    <div className={styles.container}>
       <Typography
         sx={{
           mt: 5,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          color: '#454545',
         }}
         fontWeight='bold'
       >
-        Especificaciónes
-        <Button
+        Especificación
+        <button
+          className={styles.addButton}
+          type='button'
           onClick={() => specificationAppend(SPECIFICATIONS_FORM_EMPTY)}
-          startIcon={<AddRounded />}
         >
           Agregar
-        </Button>
+        </button>
       </Typography>
       <Divider sx={{ my: 2 }} />
       {specificationFields.length > 0 ? (
@@ -92,7 +96,7 @@ function Specifications({ control, errors }: Props) {
           No hay especificaciónes, presione &quot;Agregar&quot; para comenzar
         </Typography>
       )}
-    </>
+    </div>
   );
 }
 export default Specifications;

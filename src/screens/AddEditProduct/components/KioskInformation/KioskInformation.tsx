@@ -1,16 +1,13 @@
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
-import { AddRounded, DeleteForeverRounded } from '@mui/icons-material';
-import { Box, Button, Divider, IconButton, Typography } from '@mui/material';
+import { DeleteForeverRounded } from '@mui/icons-material';
+import { Box, Divider, IconButton, Typography } from '@mui/material';
 import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
-import CustomSelect from '~components/CustomSelect';
-import { useProducts } from '~contexts/Products';
-import {
-  LOCAL_INFO_FORM,
-  PROVIDER_PRODUCT_CODE_FORM_EMPTY,
-} from '~screens/AddEditProduct/constants';
+import { PROVIDER_PRODUCT_CODE_FORM_EMPTY } from '~screens/AddEditProduct/constants';
+
+import styles from './styles.module.scss';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -24,28 +21,29 @@ function KioskInformation({ control, errors }: Props) {
     append: providerProductCodeAppend,
   } = useFieldArray({ control, name: 'providerProductCode' });
 
-  const { brands } = useProducts();
-
   return (
-    <>
+    <div className={styles.container}>
       <Typography
         sx={{
           mt: 5,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          color: '#454545',
         }}
+        color='#454545'
         fontWeight='bold'
       >
         Proveedores
-        <Button
+        <button
+          className={styles.addButton}
+          type='button'
           onClick={() =>
             providerProductCodeAppend(PROVIDER_PRODUCT_CODE_FORM_EMPTY)
           }
-          startIcon={<AddRounded />}
         >
           Agregar
-        </Button>
+        </button>
       </Typography>
       <Divider sx={{ mb: 2 }} />
       {providerProductCodeFields.length > 0 ? (
@@ -103,47 +101,7 @@ function KioskInformation({ control, errors }: Props) {
           comenzar
         </Typography>
       )}
-      <CustomSelect
-        name='brand'
-        control={control}
-        error={errors.brand}
-        label='Marca'
-        data={brands.map(({ name, id }) => ({
-          optionName: name,
-          value: id || '',
-        }))}
-      />
-
-      <CustomSelect
-        name='stockOwner'
-        /*         required */
-        control={control}
-        error={errors.stockOwner}
-        label='Dueño de stock'
-        data={[
-          {
-            optionName: 'Mundo Regalo',
-            value: 'Mundo Regalo',
-          },
-          {
-            optionName: 'mr Tienda',
-            value: 'mr Tienda',
-          },
-        ]}
-      />
-
-      {LOCAL_INFO_FORM.map((item) => (
-        <CustomInput
-          key={item.id}
-          name={item.name}
-          control={control}
-          label={item.label}
-          type={item.type}
-          /*           required={item.required} */
-          error={errors[item.name] && errors[item.name]}
-        />
-      ))}
-    </>
+    </div>
   );
 }
 export default KioskInformation;

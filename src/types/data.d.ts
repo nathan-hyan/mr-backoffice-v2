@@ -19,10 +19,14 @@ interface Price {
   | 'mayo4'
   | 'reseller';
   */
+export interface RetailPrice extends Price {
+  cantidad: number;
+  percent: number;
+}
 
 interface Prices {
   cost: Price; // Precio de costo
-  retail: Price;
+  retail: RetailPrice;
   online: Price;
   mayo1: Price;
   mayo2: Price;
@@ -35,6 +39,7 @@ interface Dimensions {
   height: number;
   width: number;
   depth: number;
+  unit?: 'mm' | 'cm' | 'mt';
 }
 
 interface Specifications {
@@ -95,6 +100,7 @@ export interface Product {
   stockOwner: string;
   dimensions?: Dimensions;
   weight: number;
+  weightUnit?: 'gramos' | 'kilos';
   storePosition: string;
   providerProductCode: ProviderProductCode[];
   specifications: Specifications[];

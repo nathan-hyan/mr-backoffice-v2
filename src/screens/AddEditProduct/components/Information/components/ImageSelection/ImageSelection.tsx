@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { Box } from '@mui/material';
 import { Product } from 'types/data';
@@ -19,15 +19,29 @@ function ImageSelection({ data, setValue, watch }: Props) {
   const { handleFileUpload, isUploading, uploadProgress, imageURL } =
     useFileUpload(watch);
 
+  const [images, setImages] = useState<string[]>(
+    data.length > 0 ? data : [defaultProduct]
+  );
+
   useEffect(() => {
     if (imageURL.length) {
+      setImages(imageURL);
       setValue('imageURL', imageURL);
     }
   }, [imageURL, setValue]);
 
+  useEffect(() => {
+    if (data.length > 0) setImages(data);
+  }, [data]);
+
+  const handleReorder = (newOrder: string[]) => {
+    setImages(newOrder);
+    setValue('imageURL', newOrder);
+  };
+
   return (
     <Box sx={styles.container}>
-      <ImageDisplay data={data.length > 0 ? data : [defaultProduct]} />
+      <ImageDisplay data={images} onReorder={handleReorder} />
       <ImageUploader
         isUploading={isUploading}
         uploadProgress={uploadProgress}

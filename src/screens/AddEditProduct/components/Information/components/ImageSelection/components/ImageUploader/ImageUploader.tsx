@@ -15,20 +15,35 @@ function ImageUploader({
   handleFileUpload,
 }: Props) {
   return (
-    <label htmlFor='upload-image'>
+    <label
+      htmlFor='upload-image'
+      style={{ display: 'flex', justifyContent: 'flex-end' }}
+    >
       <Button
         variant='contained'
         component='span'
         id='upload-button'
-        fullWidth
+        fullWidth={false}
         disabled={isUploading}
         startIcon={
           uploadProgress !== null && isUploading ? (
             <CircularProgressWithLabel color='primary' value={uploadProgress} />
           ) : null
         }
+        sx={{
+          width: 180,
+          height: 40,
+          backgroundColor: '#fff',
+          color: '#8251ED',
+          border: '1px solid #8251ED',
+          borderRadius: 2,
+          '&:hover': {
+            backgroundColor: '#8251ED',
+            color: '#fff',
+          },
+        }}
       >
-        Subir imágenes
+        Subir imagen
       </Button>
       <input
         disabled={isUploading}

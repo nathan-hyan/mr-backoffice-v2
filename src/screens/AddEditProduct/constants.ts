@@ -31,9 +31,10 @@ export type StockInputName =
   | 'maxStock'
   | 'noPhysicalStock';
 
-interface Form<T> {
+export interface Form<T> {
   id: number;
   label: string;
+  label2?: string;
   name: T;
   required: boolean;
   multiline?: boolean;
@@ -46,7 +47,7 @@ interface Form<T> {
 export const PRODUCT_FORM: Form<keyof Product>[] = [
   {
     id: 0,
-    label: 'Nombre del producto',
+    label: 'Nombre stock',
     name: 'name',
     type: InputType.Text,
     required: true,
@@ -64,49 +65,53 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
 export const PRICE_FORM: Form<PriceInputName>[] = [
   {
     id: 1,
-    label: 'Retail',
+    label: 'Retail %',
     name: 'retail',
     type: InputType.Number,
     required: true,
   },
   {
     id: 2,
-    label: 'Online',
+    label: 'Online %',
     name: 'online',
     type: InputType.Number,
     required: true,
   },
   {
     id: 3,
-    label: 'Mayorista 1',
+    label: 'Mayorista 1 %',
+    label2: 'Mayorista 1 $',
     name: 'mayo1',
     type: InputType.Number,
     required: true,
   },
   {
     id: 4,
-    label: 'Mayorista 2',
+    label: 'Mayorista 2 %',
+    label2: 'Mayorista 2 $',
     name: 'mayo2',
     type: InputType.Number,
     required: true,
   },
   {
     id: 5,
-    label: 'Mayorista 3',
+    label: 'Mayorista 3 %',
+    label2: 'Mayorista 3 $',
     name: 'mayo3',
     type: InputType.Number,
     required: true,
   },
   {
     id: 6,
-    label: 'Mayorista 4',
+    label: 'Mayorista 4 %',
+    label2: 'Mayorista 4 $',
     name: 'mayo4',
     type: InputType.Number,
     required: true,
   },
   {
     id: 7,
-    label: 'Reseller',
+    label: 'Reseller %',
     name: 'reseller',
     type: InputType.Number,
     required: true,
@@ -127,13 +132,13 @@ export const LOCAL_INFO_FORM: Form<keyof Product>[] = [
   //     name: 'storeBranch',
   //     type: InputType.Text,
   // },
-  {
+  /* {
     id: 5,
     label: 'Ubicación dentro de sucursal',
     name: 'storePosition',
     type: InputType.Text,
     required: true,
-  },
+  }, */
   {
     id: 6,
     label: 'Peso (kg)',
@@ -254,7 +259,7 @@ export const EMPTY_FORM: Product = {
   subSubCategories: '',
   prices: {
     cost: { value: 0 },
-    retail: { value: 80 },
+    retail: { value: 80, cantidad: 1, percent: 0 },
     online: { value: 65 },
     mayo1: { value: 60 },
     mayo2: { value: 50 },
