@@ -33,8 +33,10 @@ interface Props {
 }
 
 function Information({ control, watch, errors, setValue }: Props) {
-  const { categories, getSubcategories, getSubSubcategories } = useProducts();
+  const { categories, getSubcategories, getSubSubcategories, departments } =
+    useProducts();
   const { brands } = useProducts();
+  const selectedDepartment = watch('department');
   const subCategories = getSubcategories(watch('category'));
   const subSubCategories = getSubSubcategories(
     watch('category'),
@@ -45,6 +47,10 @@ function Information({ control, watch, errors, setValue }: Props) {
     const barcode = generateBarcode();
     setValue('barcode', barcode);
   };
+
+  const filteredCategories = categories.filter(
+    (cat) => Number(cat.departmentId) === Number(selectedDepartment)
+  );
 
   return (
     <div className={styles.container}>
@@ -71,17 +77,15 @@ function Information({ control, watch, errors, setValue }: Props) {
           InputLabelProps={{ shrink: true }}
           control={control}
           label='Nombre ecommerce'
-          name=''
+          name='ecommerceName'
           type={InputType.Text}
-          disabled
-          value={watch('name') || ''}
         />
 
         <div className={styles.categoriesContainer}>
           <div className={styles.categoriesFather}>
             <Controller
               control={control}
-              name=''
+              name='department'
               render={({ field }) => (
                 <Autocomplete
                   {...field}
@@ -89,29 +93,32 @@ function Information({ control, watch, errors, setValue }: Props) {
                   value={{
                     value: field.value,
                     label:
-                      categories.find(({ id }) => id === field.value)?.name ||
-                      '',
+                      departments.find(
+                        (department: { internalId: string; name: string }) =>
+                          department.internalId === field.value
+                      )?.name || '',
                   }}
                   disablePortal
-                  id='combo-box-categoria-hardcodeada'
+                  id='combo-box-department'
                   options={[
                     { value: '', label: '' },
-                    ...categories.map(({ id, name }) => ({
-                      value: id || 0,
-                      label: name || '',
-                    })),
+                    ...departments.map(
+                      (department: { internalId: string; name: string }) => ({
+                        value: department.internalId,
+                        label: department.name,
+                      })
+                    ),
                   ]}
                   isOptionEqualToValue={(opt, value) =>
                     opt.value === value.value
                   }
-                  disabled
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       label='Departamento'
                       InputLabelProps={{ shrink: true }}
-                      error={Boolean(errors.categoriaHardcodeada)}
-                      helperText={errors.categoriaHardcodeada?.message}
+                      error={Boolean(errors.department)}
+                      helperText={errors.department?.message}
                       sx={{
                         '& .MuiOutlinedInput-root': {
                           color: '#9c9c9c',
@@ -187,14 +194,14 @@ function Information({ control, watch, errors, setValue }: Props) {
                   value={{
                     value: field.value,
                     label:
-                      categories.find(({ id }) => id === field.value)?.name ||
-                      '',
+                      filteredCategories.find(({ id }) => id === field.value)
+                        ?.name || '',
                   }}
                   disablePortal
                   id='combo-box-category'
                   options={[
                     { value: '', label: '' },
-                    ...categories.map(({ id, name }) => ({
+                    ...filteredCategories.map(({ id, name }) => ({
                       value: id || 0,
                       label: name || '',
                     })),

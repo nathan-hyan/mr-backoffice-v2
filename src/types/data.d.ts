@@ -52,10 +52,18 @@ interface ProviderProductCode {
   name: string;
 }
 
+export interface Department {
+  id?: string;
+  internalId: number;
+  name: string;
+  categories: Category[];
+}
+
 export interface Category {
   id?: string;
   internalId: number;
   name: string;
+  departmentId?: number;
   subCategories?: {
     internalId: number;
     name: string;
@@ -89,9 +97,10 @@ export interface Product {
   id: string;
   name: string;
   description: string;
+  ecommerceName: string;
 
   stock: Stock;
-
+  department: string;
   category: string; // Reference to categories.id
   subCategory: string; // Reference to categories.subCategories[n].id
   subSubCategories: string;

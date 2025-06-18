@@ -340,8 +340,8 @@ export const ROUTESF = [
     ),
     title: 'Dash board General',
     description: '',
-    path: '/analytics',
-    element: <AnalyticsScreen />,
+    path: '/WorkInProgress',
+    element: <WorkInProgress />,
   },
   {
     id: 35,
@@ -354,8 +354,8 @@ export const ROUTESF = [
     ),
     title: 'Retail Belgrano 2846',
     description: '',
-    path: '/WorkInProgress',
-    element: <WorkInProgress />,
+    path: '/analytics',
+    element: <AnalyticsScreen />,
   },
   {
     id: 36,
