@@ -3,10 +3,14 @@ import {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
-import { Brand, Category, Product } from 'types/data';
+import { Brand, Category, Department, Product } from 'types/data';
+
+import { FirestoreCollections } from '~constants/firebase';
+import useFirestore from '~hooks/useFirestore';
 
 import { INITIAL_CONTEXT, SearchCriteria, SortBy } from './constants';
 import { compare } from './utils';
@@ -22,6 +26,7 @@ export default function ProductProvider({ children }: Props) {
   const [productListCopy, setProductListCopy] = useState<Product[]>([]);
 
   const [categories, saveCategories] = useState<Category[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
 
   const [brands, saveBrands] = useState<Brand[]>([]);
 
@@ -35,6 +40,16 @@ export default function ProductProvider({ children }: Props) {
     setProductList(products);
     setProductListCopy(products);
   }, []);
+  const { subscribeToData: subscribeToDepartments } = useFirestore<Department>(
+    FirestoreCollections.Departments
+  );
+
+  useEffect(() => {
+    const unsubscribe = subscribeToDepartments((deps) => {
+      setDepartments(deps);
+    });
+    return () => unsubscribe();
+  }, [subscribeToDepartments]);
 
   const performSearch = useCallback(
     (query: string, criteria: SearchCriteria) => {
@@ -79,6 +94,18 @@ export default function ProductProvider({ children }: Props) {
       setProductList(sortedItems);
     },
     [productList]
+  );
+
+  const saveDepartments = useCallback((deps: Department[]) => {
+    setDepartments(deps);
+  }, []);
+
+  const getCategories = useCallback(
+    (departmentId: string) => {
+      const dep = departments.find(({ id }) => id === departmentId);
+      return dep?.categories || [];
+    },
+    [departments]
   );
 
   const getSubcategories: (categoryId: string) => Category[] = useCallback(
@@ -137,6 +164,9 @@ export default function ProductProvider({ children }: Props) {
       searchCriteria,
       sortBy,
       handleSort,
+      departments,
+      saveDepartments,
+      getCategories,
     }),
     [
       productList,
@@ -152,6 +182,9 @@ export default function ProductProvider({ children }: Props) {
       searchCriteria,
       sortBy,
       handleSort,
+      departments,
+      saveDepartments,
+      getCategories,
     ]
   );
 
