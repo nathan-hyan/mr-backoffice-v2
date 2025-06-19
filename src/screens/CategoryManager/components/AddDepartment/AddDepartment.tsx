@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Button,
@@ -14,8 +15,9 @@ import ImageSelection from '../../../AddEditProduct/components/Information/compo
 interface Props {
   show: boolean;
   handleClose: () => void;
-  submitDepartment: (data: { name: string }) => void;
+  submitDepartment: (data: { name: string; imageURL?: string[] }) => void;
   isLoading: boolean;
+  initialData?: { name: string; imageURL?: string[] }; // ✅ nuevo
 }
 
 function AddDepartment({
@@ -23,16 +25,28 @@ function AddDepartment({
   handleClose,
   submitDepartment,
   isLoading,
+  initialData = undefined,
 }: Props) {
   const { handleSubmit, control, formState, reset, setValue, watch } = useForm<{
     name: string;
     imageURL: string[];
   }>({
-    defaultValues: { name: '', imageURL: [] },
+    defaultValues: {
+      name: initialData?.name || '',
+      imageURL: initialData?.imageURL || [],
+    },
   });
+
   const { errors } = formState;
 
-  const onSubmit = (data: { name: string }) => {
+  useEffect(() => {
+    reset({
+      name: initialData?.name || '',
+      imageURL: initialData?.imageURL || [],
+    });
+  }, [initialData, reset]);
+
+  const onSubmit = (data: { name: string; imageURL: string[] }) => {
     submitDepartment(data);
     reset();
     handleClose();
@@ -46,11 +60,16 @@ function AddDepartment({
   return (
     <Dialog open={show} onClose={handleCloseAndCancel} fullWidth maxWidth='sm'>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <DialogTitle>Agregar departamento</DialogTitle>
+        <DialogTitle>
+          {initialData ? 'Editar departamento' : 'Agregar departamento'}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Ingrese el nombre del departamento.
+            {initialData
+              ? 'Actualice los datos del departamento.'
+              : 'Ingrese el nombre del departamento.'}
           </DialogContentText>
+
           <Controller
             name='name'
             control={control}
@@ -70,6 +89,7 @@ function AddDepartment({
               />
             )}
           />
+
           <Controller
             control={control}
             name='imageURL'

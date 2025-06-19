@@ -37,11 +37,7 @@ function AddSubSubCategory({
   const { handleSubmit, control, formState, reset } =
     useForm<IAddSubSubCategories>({
       defaultValues: {
-        subSubCategories: [
-          {
-            name: '',
-          },
-        ],
+        subSubCategories: [{ name: '' }],
       },
     });
 
@@ -53,7 +49,10 @@ function AddSubSubCategory({
   const { errors } = formState;
 
   const onSubmit = (data: IAddSubSubCategories) => {
-    addSubSubCategory(data.subSubCategories);
+    const validData = data.subSubCategories.filter(
+      (item) => item.name.trim() !== ''
+    );
+    addSubSubCategory(validData);
     reset();
     handleClose();
   };
@@ -71,16 +70,10 @@ function AddSubSubCategory({
           <DialogContentText>
             Ingrese los siguientes datos para poder crear una sub-sub-categoría
           </DialogContentText>
-
           {fields.map((input, index) => (
             <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                mt: 3,
-              }}
               key={input.id}
+              sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 3 }}
             >
               <Controller
                 name={`subSubCategories.${index}.name`}
@@ -94,11 +87,13 @@ function AddSubSubCategory({
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label='Nombre de la sub-sub-categoría'
+                    label='Nombre de la sub‑subcategoría'
                     required
                     error={
-                      errors.subSubCategories &&
-                      !!errors.subSubCategories[index]?.name
+                      !!(
+                        errors.subSubCategories &&
+                        errors.subSubCategories[index]?.name
+                      )
                     }
                     helperText={
                       errors.subSubCategories &&
@@ -114,9 +109,7 @@ function AddSubSubCategory({
                   size='small'
                   color='error'
                   sx={{ width: '40px', height: '40px' }}
-                  onClick={() => {
-                    remove(index);
-                  }}
+                  onClick={() => remove(index)}
                 >
                   <DeleteForeverRounded />
                 </IconButton>
@@ -129,7 +122,7 @@ function AddSubSubCategory({
             variant='outlined'
             startIcon={<CancelRounded />}
             color='error'
-            onClick={handleClose}
+            onClick={handleCloseAndCancel}
             disabled={isLoading}
           >
             Cancelar
@@ -138,14 +131,10 @@ function AddSubSubCategory({
             variant='outlined'
             startIcon={<AddCircleRounded />}
             color='primary'
-            onClick={() =>
-              append({
-                name: '',
-              })
-            }
+            onClick={() => append({ name: '' })}
             disabled={isLoading}
           >
-            Agregar otra sub-sub-categoría
+            Agregar otra sub‑subcategoría
           </Button>
           <Button
             type='submit'
