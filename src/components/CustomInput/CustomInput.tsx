@@ -113,47 +113,47 @@ function CustomInput<T extends FieldValues>({
           ref={numberFieldRef}
           sx={{
             '& .MuiOutlinedInput-root': {
-              color: '#9C9C9C',
+              color: '#000',
               '& .MuiInputBase-root': {
                 height: 42,
                 minHeight: 42,
               },
               '& fieldset': {
-                borderColor: '#9C9C9C',
+                borderColor: '#000',
               },
               '&:hover fieldset': {
-                borderColor: '#9C9C9C',
+                borderColor: '#000',
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#9C9C9C',
+                borderColor: '#000',
               },
               '&.Mui-disabled': {
-                color: '#9C9C9C',
+                color: '#000',
               },
               '&.Mui-disabled fieldset': {
-                borderColor: '#9C9C9C',
+                borderColor: '#000',
               },
             },
             '& .MuiInputBase-input': {
-              color: '#9C9C9C',
+              color: '#000',
               height: 42,
               minHeight: 42,
               padding: '0 8px',
-              WebkitTextFillColor: '#9C9C9C',
+              WebkitTextFillColor: '#000',
             },
             '& .MuiInputBase-input.Mui-disabled': {
-              color: '#9C9C9C',
+              color: '#000',
 
-              WebkitTextFillColor: '#9C9C9C',
+              WebkitTextFillColor: '#000',
             },
             '& .MuiInputLabel-root': {
-              color: '#9C9C9C',
+              color: '#000',
             },
             '& .MuiInputLabel-root.Mui-disabled': {
-              color: '#9C9C9C',
+              color: '#000',
             },
             '& .Mui-focused': {
-              color: '#9C9C9C',
+              color: '#000',
             },
           }}
         />

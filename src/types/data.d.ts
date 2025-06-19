@@ -57,6 +57,7 @@ export interface Department {
   internalId: number;
   name: string;
   categories: Category[];
+  imageURL?: string[];
 }
 
 export interface Category {
@@ -64,6 +65,7 @@ export interface Category {
   internalId: number;
   name: string;
   departmentId?: number;
+  imageURL?: string[];
   subCategories?: {
     internalId: number;
     name: string;

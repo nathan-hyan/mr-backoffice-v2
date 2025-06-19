@@ -121,18 +121,18 @@ function Information({ control, watch, errors, setValue }: Props) {
                       helperText={errors.department?.message}
                       sx={{
                         '& .MuiOutlinedInput-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                           '& fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-disabled fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '& .MuiInputBase-root': {
                             height: 42,
@@ -146,8 +146,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           boxSizing: 'border-box',
                         },
                         '& .MuiInputBase-input': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -157,8 +157,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           alignItems: 'center',
                         },
                         '& .MuiInputBase-input.Mui-disabled': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -166,16 +166,16 @@ function Information({ control, watch, errors, setValue }: Props) {
                           padding: '0 8px',
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiInputLabel-root.Mui-disabled': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .Mui-focused': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiAutocomplete-popupIndicator': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                       }}
                     />
@@ -218,18 +218,18 @@ function Information({ control, watch, errors, setValue }: Props) {
                       helperText={errors.category?.message}
                       sx={{
                         '& .MuiOutlinedInput-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                           '& fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-disabled fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '& .MuiInputBase-root': {
                             height: 42,
@@ -243,8 +243,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           boxSizing: 'border-box',
                         },
                         '& .MuiInputBase-input': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -254,8 +254,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           alignItems: 'center',
                         },
                         '& .MuiInputBase-input.Mui-disabled': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -263,16 +263,16 @@ function Information({ control, watch, errors, setValue }: Props) {
                           padding: '0 8px',
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiInputLabel-root.Mui-disabled': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .Mui-focused': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiAutocomplete-popupIndicator': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                       }}
                     />
@@ -317,18 +317,18 @@ function Information({ control, watch, errors, setValue }: Props) {
                       helperText={errors.subCategory?.message}
                       sx={{
                         '& .MuiOutlinedInput-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                           '& fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-disabled fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '& .MuiInputBase-root': {
                             height: 42,
@@ -342,8 +342,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           boxSizing: 'border-box',
                         },
                         '& .MuiInputBase-input': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -353,8 +353,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           alignItems: 'center',
                         },
                         '& .MuiInputBase-input.Mui-disabled': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -362,16 +362,16 @@ function Information({ control, watch, errors, setValue }: Props) {
                           padding: '0 8px',
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiInputLabel-root.Mui-disabled': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .Mui-focused': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiAutocomplete-popupIndicator': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                       }}
                     />
@@ -415,18 +415,18 @@ function Information({ control, watch, errors, setValue }: Props) {
                       helperText={errors.subSubCategories?.message}
                       sx={{
                         '& .MuiOutlinedInput-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                           '& fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&:hover fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-focused fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '&.Mui-disabled fieldset': {
-                            borderColor: '#9c9c9c',
+                            borderColor: '#000',
                           },
                           '& .MuiInputBase-root': {
                             height: 42,
@@ -440,8 +440,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           boxSizing: 'border-box',
                         },
                         '& .MuiInputBase-input': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -451,8 +451,8 @@ function Information({ control, watch, errors, setValue }: Props) {
                           alignItems: 'center',
                         },
                         '& .MuiInputBase-input.Mui-disabled': {
-                          color: '#9c9c9c',
-                          WebkitTextFillColor: '#9c9c9c',
+                          color: '#000',
+                          WebkitTextFillColor: '#000',
                           backgroundColor: 'transparent',
                           height: 42,
                           minHeight: 42,
@@ -460,16 +460,16 @@ function Information({ control, watch, errors, setValue }: Props) {
                           padding: '0 8px',
                         },
                         '& .MuiInputLabel-root': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiInputLabel-root.Mui-disabled': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .Mui-focused': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                         '& .MuiAutocomplete-popupIndicator': {
-                          color: '#9c9c9c',
+                          color: '#000',
                         },
                       }}
                     />
@@ -493,6 +493,7 @@ function Information({ control, watch, errors, setValue }: Props) {
                   aria-label='toggle password visibility'
                   onClick={handleGenerateBarcode}
                   edge='end'
+                  sx={{ color: 'black' }}
                 >
                   <CachedIcon />
                 </IconButton>
