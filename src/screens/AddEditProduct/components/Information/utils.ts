@@ -1,4 +1,7 @@
 export const generateBarcode = () => {
-  const barcode = Math.floor(Math.random() * 1000000000000).toString();
-  return barcode;
+  const prefix = '2011';
+  const randomPart = Math.floor(Math.random() * 100000000)
+    .toString()
+    .padStart(8, '0');
+  return prefix + randomPart;
 };

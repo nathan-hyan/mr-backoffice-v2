@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Grid, Paper } from '@mui/material';
 import { Category, Department } from 'types/data';
@@ -19,6 +20,8 @@ function CategoryManager() {
   const {
     subscribeToData: subscribeToDepartments,
     addDocument: addDepartment,
+    updateDocument: updateDepartment,
+    removeDocument: removeDepartment,
     creatingLoading: creatingDepartmentLoading,
   } = useFirestore<Department>(FirestoreCollections.Departments);
 
@@ -27,15 +30,21 @@ function CategoryManager() {
     removeDocument,
     addDocument,
     updateDocument,
-    creatingLoading,
+    creatingLoading: creatingCategoryLoading,
   } = useFirestore<Category>(FirestoreCollections.Categories);
 
   const [departments, setDepartments] = useState<Department[]>([]);
-  const [showAddDepartmentModal, setShowAddDepartmentModal] = useState(false);
   const [selectedDepartment, setSelectedDepartment] =
     useState<Nullable<Department>>(null);
 
+  const [showAddDepartmentModal, setShowAddDepartmentModal] = useState(false);
+  const [departmentToEdit, setDepartmentToEdit] =
+    useState<Nullable<Department>>(null);
+
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] =
+    useState<Nullable<Category>>(null);
+
   const [showAddSubCategoryModal, setShowAddSubCategoryModal] = useState(false);
   const [showAddSubSubCategoryModal, setShowAddSubSubCategoryModal] =
     useState(false);
@@ -79,134 +88,76 @@ function CategoryManager() {
     setCurrentSubCategory(internalId);
   };
 
-  const toggleModals =
-    (
-      modalToToggle:
-        | 'addDepartment'
-        | 'addCategory'
-        | 'addSubCategory'
-        | 'addSubSubCategory'
-    ) =>
-    () => {
-      if (modalToToggle === 'addDepartment')
-        setShowAddDepartmentModal((prev) => !prev);
-      if (modalToToggle === 'addCategory')
-        setShowAddCategoryModal((prev) => !prev);
-      if (modalToToggle === 'addSubCategory')
-        setShowAddSubCategoryModal((prev) => !prev);
-      if (modalToToggle === 'addSubSubCategory')
-        setShowAddSubSubCategoryModal((prev) => !prev);
-    };
-
-  const addCategory = (newData: Category) => {
-    if (!selectedDepartment) return;
-    const newInternalId = getLatestInternalId(data) + 1;
-    const subCategoriesWithInternalId: Category[] = [];
-    newData.subCategories?.forEach((item, index) => {
-      subCategoriesWithInternalId.push({
-        name: item.name,
-        internalId: index + 1,
-      });
-    });
-    addDocument({
-      ...newData,
-      subCategories: subCategoriesWithInternalId,
-      internalId: newInternalId,
-      departmentId: selectedDepartment.internalId,
-    });
+  const openDepartmentModal = (dep?: Department) => {
+    if (dep) {
+      setDepartmentToEdit(dep);
+    } else {
+      setDepartmentToEdit(null);
+    }
+    setShowAddDepartmentModal(true);
   };
 
-  const selectedCategory = data.filter(
-    (category) => currentCategory === category.internalId
-  )[0];
+  const closeDepartmentModal = () => {
+    setShowAddDepartmentModal(false);
+    setDepartmentToEdit(null);
+  };
 
-  const selectedSubCategory = selectedCategory?.subCategories?.filter(
-    (subCategory) => currentSubCategory === subCategory.internalId
-  )[0];
+  const openCategoryModal = (cat?: Category) => {
+    if (cat) {
+      setCategoryToEdit(cat);
+    } else {
+      setCategoryToEdit(null);
+    }
+    setShowAddCategoryModal(true);
+  };
+
+  const closeCategoryModal = () => {
+    setShowAddCategoryModal(false);
+    setCategoryToEdit(null);
+  };
+
+  const handleSubmitCategory = (newData: Category) => {
+    if (!selectedDepartment) return;
+
+    if (categoryToEdit) {
+      updateDocument(categoryToEdit.id!, {
+        ...categoryToEdit,
+        ...newData,
+      });
+    } else {
+      const newInternalId = getLatestInternalId(data) + 1;
+      addDocument({
+        ...newData,
+        internalId: newInternalId,
+        departmentId: selectedDepartment.internalId,
+      });
+    }
+  };
 
   const addSubcategory = (newData: Category) => {
-    if (
-      currentCategory &&
-      selectedCategory.subCategories &&
-      newData.subCategories
-    ) {
-      const latestId = getLatestInternalId(selectedCategory.subCategories);
-      const dataWithInternalId: Category[] = [];
-      newData.subCategories.forEach((item, index) => {
-        dataWithInternalId.push({
-          name: item.name,
-          internalId: latestId + index + 1,
+    if (currentCategory && selectedDepartment) {
+      const selectedCategory = data.find(
+        (category) => category.internalId === currentCategory
+      );
+      if (
+        selectedCategory &&
+        selectedCategory.subCategories &&
+        newData.subCategories
+      ) {
+        const latestId = getLatestInternalId(selectedCategory.subCategories);
+        const dataWithInternalId: Category[] = [];
+        newData.subCategories.forEach((item, index) => {
+          dataWithInternalId.push({
+            name: item.name,
+            internalId: latestId + index + 1,
+          });
         });
-      });
-      updateDocument(selectedCategory.id!, {
-        ...selectedCategory,
-        id: selectedCategory.id!,
-        subCategories: [
-          ...selectedCategory.subCategories,
-          ...dataWithInternalId,
-        ],
-      });
-    }
-  };
-
-  const addSubSubCategory = (newData: { name: string }[]) => {
-    if (currentCategory && currentSubCategory && selectedSubCategory) {
-      const latestId = getLatestInternalId(
-        selectedSubCategory.subSubCategories || []
-      );
-      const dataWithInternalId = newData.map((item, index) => ({
-        name: item.name,
-        internalId: latestId + index + 1,
-      }));
-      const updatedSubCategories = (selectedCategory.subCategories ?? []).map(
-        (sub) =>
-          sub.internalId === currentSubCategory
-            ? {
-                ...sub,
-                subSubCategories: [
-                  ...(sub.subSubCategories || []),
-                  ...dataWithInternalId,
-                ],
-              }
-            : sub
-      );
-      if (selectedCategory.id) {
         updateDocument(selectedCategory.id!, {
           ...selectedCategory,
-          id: selectedCategory.id!,
-          subCategories: updatedSubCategories,
-        });
-      }
-    }
-  };
-
-  const removeSubCategory = (newArray: Category[]) => {
-    updateDocument(selectedCategory.id!, {
-      ...selectedCategory,
-      id: selectedCategory.id!,
-      subCategories: newArray,
-    });
-  };
-
-  const removeSubSubCategory = (subSubCategoryId: number) => {
-    if (currentCategory && currentSubCategory && selectedSubCategory) {
-      const updatedSubSubCategories =
-        selectedSubCategory.subSubCategories?.filter(
-          (subSub) => subSub.internalId !== subSubCategoryId
-        );
-      const updatedSubCategories = (selectedCategory.subCategories ?? []).map(
-        (sub) =>
-          sub.internalId === currentSubCategory
-            ? {
-                ...sub,
-                subSubCategories: updatedSubSubCategories,
-              }
-            : sub
-      );
-      if (selectedCategory.id) {
-        updateDocument(selectedCategory.id, {
-          ...selectedCategory,
-          subCategories: updatedSubCategories,
+          subCategories: [
+            ...selectedCategory.subCategories,
+            ...dataWithInternalId,
+          ],
         });
       }
     }
@@ -216,35 +167,43 @@ function CategoryManager() {
     <>
       <AddDepartment
         show={showAddDepartmentModal}
-        handleClose={toggleModals('addDepartment')}
+        handleClose={closeDepartmentModal}
         submitDepartment={(dep) => {
-          const newDep = {
-            ...dep,
-            internalId: getLatestInternalId(departments) + 1,
-            categories: [],
-          };
-
-          addDepartment(newDep);
+          if (departmentToEdit) {
+            updateDepartment(departmentToEdit.id!, {
+              ...departmentToEdit,
+              ...dep,
+            });
+          } else {
+            const newDep = {
+              ...dep,
+              internalId: getLatestInternalId(departments) + 1,
+              categories: [],
+            };
+            addDepartment(newDep);
+          }
         }}
         isLoading={creatingDepartmentLoading}
+        initialData={departmentToEdit || undefined}
       />
       <AddCategory
         show={showAddCategoryModal}
-        handleClose={toggleModals('addCategory')}
-        submitCategory={addCategory}
-        isLoading={creatingLoading}
+        handleClose={closeCategoryModal}
+        submitCategory={handleSubmitCategory}
+        isLoading={creatingCategoryLoading}
+        initialData={categoryToEdit || undefined}
       />
       <AddSubCategory
         show={showAddSubCategoryModal}
-        handleClose={toggleModals('addSubCategory')}
-        isLoading={creatingLoading}
+        handleClose={() => setShowAddSubCategoryModal((prev) => !prev)}
+        isLoading={creatingCategoryLoading}
         addSubcategory={addSubcategory}
       />
       <AddSubSubCategory
         show={showAddSubSubCategoryModal}
-        handleClose={toggleModals('addSubSubCategory')}
-        isLoading={creatingLoading}
-        addSubSubCategory={addSubSubCategory}
+        handleClose={() => setShowAddSubSubCategoryModal((prev) => !prev)}
+        isLoading={creatingCategoryLoading}
+        addSubSubCategory={() => {}}
       />
       <Paper sx={{ p: 3 }}>
         <Grid container spacing={2}>
@@ -253,7 +212,8 @@ function CategoryManager() {
               data={departments}
               selectedDepartment={selectedDepartment}
               handleSelectDepartment={handleSelectDepartment}
-              openModal={toggleModals('addDepartment')}
+              openModal={openDepartmentModal}
+              removeDepartment={removeDepartment}
             />
           </Grid>
           <Grid item xs={3}>
@@ -265,21 +225,25 @@ function CategoryManager() {
               )}
               selectedCategory={{
                 internalId: currentCategory,
-                firebaseId: selectedCategory?.id,
+                firebaseId: data.find(
+                  (cat) => cat.internalId === currentCategory
+                )?.id,
               }}
               handleSelectCategory={handleSelectCategory}
-              openModal={toggleModals('addCategory')}
+              openModal={openCategoryModal}
             />
           </Grid>
           {currentCategory && (
             <Grid item xs={6}>
               <CurrentCategory
-                currentCategory={selectedCategory}
-                openModal={toggleModals('addSubCategory')}
-                removeSubcategory={removeSubCategory}
+                currentCategory={data.find(
+                  (cat) => cat.internalId === currentCategory
+                )}
+                openModal={() => {}}
+                removeSubcategory={() => {}}
                 handleSelectSubCategory={handleSelectSubCategory}
-                openSubSubCategoryModal={toggleModals('addSubSubCategory')}
-                removeSubSubCategory={removeSubSubCategory}
+                openSubSubCategoryModal={() => {}}
+                removeSubSubCategory={() => {}}
               />
             </Grid>
           )}
@@ -288,4 +252,5 @@ function CategoryManager() {
     </>
   );
 }
+
 export default CategoryManager;

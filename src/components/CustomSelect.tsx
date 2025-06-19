@@ -52,29 +52,29 @@ function CustomSelect<T extends FieldValues>({
 }: Props<T>) {
   const defaultSx: SxProps<Theme> = {
     '& .MuiOutlinedInput-root': {
-      color: '#9c9c9c',
+      color: '#000',
       height: 42,
       minHeight: 42,
       boxSizing: 'border-box',
       '& fieldset': {
-        borderColor: '#9c9c9c',
+        borderColor: '#000',
       },
       '&:hover fieldset': {
-        borderColor: '#9c9c9c',
+        borderColor: '#000',
       },
       '&.Mui-focused fieldset': {
-        borderColor: '#9c9c9c',
+        borderColor: '#000',
       },
       '&.Mui-disabled': {
-        color: '#9c9c9c',
+        color: '#000',
       },
       '&.Mui-disabled fieldset': {
-        borderColor: '#9c9c9c',
+        borderColor: '#000',
       },
     },
     '& .MuiSelect-select': {
-      color: '#9c9c9c',
-      WebkitTextFillColor: '#9c9c9c',
+      color: '#000',
+      WebkitTextFillColor: '#000',
       height: 42,
       minHeight: 42,
       boxSizing: 'border-box',
@@ -83,26 +83,26 @@ function CustomSelect<T extends FieldValues>({
       alignItems: 'center',
     },
     '& .MuiSelect-select.Mui-disabled': {
-      color: '#9c9c9c',
-      WebkitTextFillColor: '#9c9c9c',
+      color: '#000',
+      WebkitTextFillColor: '#000',
       height: 42,
       minHeight: 42,
       boxSizing: 'border-box',
       padding: '0 8px',
     },
     '& .MuiSelect-icon': {
-      color: '#9c9c9c',
+      color: '#000',
     },
     '& .MuiInputLabel-root': {
-      color: '#9c9c9c',
+      color: '#000',
       backgroundColor: '#fff',
     },
     '& .MuiInputLabel-root.Mui-disabled': {
-      color: '#9c9c9c',
+      color: '#000',
       backgroundColor: '#fff',
     },
     '& .Mui-focused': {
-      color: '#9c9c9c',
+      color: '#000',
     },
     ...sx,
   };

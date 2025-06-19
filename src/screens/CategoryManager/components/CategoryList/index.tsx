@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
-import { ArrowForward } from '@mui/icons-material';
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -28,8 +28,8 @@ interface Props {
     firebaseId: string | undefined;
   };
   clearCurrentCategory: StateDispatch<Category>;
-  handleSelectCategory: (arg0: number) => void;
-  openModal: () => void;
+  handleSelectCategory: (internalId: number) => void;
+  openModal: (category?: Category) => void;
 }
 
 function CategoryList({
@@ -44,14 +44,16 @@ function CategoryList({
     useState<Nullable<string>>(null);
 
   const handleDeleteCategory = () => {
-    removeDocument(markedForDeletion!, () => {
-      clearCurrentCategory(null);
-    });
+    if (markedForDeletion) {
+      removeDocument(markedForDeletion, () => {
+        clearCurrentCategory(null);
+      });
+    }
     setMarkedForDeletion(null);
   };
 
-  const toggleAddCategoryModal = () => {
-    openModal();
+  const handleEditCategory = (category: Category) => {
+    openModal(category);
   };
 
   return (
@@ -62,7 +64,7 @@ function CategoryList({
         onDelete={handleDeleteCategory}
         stringToMatch={
           markedForDeletion
-            ? data.filter(({ id }) => id === markedForDeletion)[0].name
+            ? data.find(({ id }) => id === markedForDeletion)?.name || ''
             : ''
         }
       />
@@ -73,19 +75,32 @@ function CategoryList({
             justifyContent='space-between'
             alignItems='center'
           >
-            <Typography variant='button'>Lista de Categorias</Typography>
+            <Typography variant='button'>Lista de Categorías</Typography>
             <CustomMenu>
-              <MenuItem onClick={toggleAddCategoryModal}>
+              <MenuItem onClick={() => openModal()}>
                 Agregar una categoría
               </MenuItem>
               {data.length > 0 && selectedCategory.firebaseId && (
-                <MenuItem
-                  onClick={() =>
-                    setMarkedForDeletion(selectedCategory.firebaseId!)
-                  }
-                >
-                  Quitar una categoría
-                </MenuItem>
+                <>
+                  <MenuItem
+                    onClick={() =>
+                      handleEditCategory(
+                        data.find(
+                          ({ id }) => id === selectedCategory.firebaseId
+                        )!
+                      )
+                    }
+                  >
+                    Modificar categoría
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() =>
+                      setMarkedForDeletion(selectedCategory.firebaseId!)
+                    }
+                  >
+                    Quitar categoría
+                  </MenuItem>
+                </>
               )}
             </CustomMenu>
           </Box>
@@ -100,7 +115,11 @@ function CategoryList({
                     onClick={() => handleSelectCategory(category.internalId)}
                   >
                     <ListItemIcon>
-                      <ArrowForward />
+                      {/* Agregamos el avatar para la imagen en miniatura */}
+                      <Avatar
+                        src={category.imageURL || undefined}
+                        sx={{ width: 32, height: 32, mr: 1 }}
+                      />
                     </ListItemIcon>
                     <ListItemText>{category.name}</ListItemText>
                   </ListItemButton>
@@ -110,10 +129,10 @@ function CategoryList({
             ) : (
               <>
                 <ListItemText sx={{ textAlign: 'center', mb: 3 }}>
-                  No se encontraron sub-categorias
+                  No se encontraron categorías
                 </ListItemText>
                 <ListItemText sx={{ textAlign: 'center' }}>
-                  <Button variant='contained' onClick={openModal}>
+                  <Button variant='contained' onClick={() => openModal()}>
                     Agregar una categoría
                   </Button>
                 </ListItemText>

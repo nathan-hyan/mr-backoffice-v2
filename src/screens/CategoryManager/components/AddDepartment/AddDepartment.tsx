@@ -9,6 +9,8 @@ import {
   TextField,
 } from '@mui/material';
 
+import ImageSelection from '../../../AddEditProduct/components/Information/components/ImageSelection/ImageSelection';
+
 interface Props {
   show: boolean;
   handleClose: () => void;
@@ -22,11 +24,12 @@ function AddDepartment({
   submitDepartment,
   isLoading,
 }: Props) {
-  const { handleSubmit, control, formState, reset } = useForm<{ name: string }>(
-    {
-      defaultValues: { name: '' },
-    }
-  );
+  const { handleSubmit, control, formState, reset, setValue, watch } = useForm<{
+    name: string;
+    imageURL: string[];
+  }>({
+    defaultValues: { name: '', imageURL: [] },
+  });
   const { errors } = formState;
 
   const onSubmit = (data: { name: string }) => {
@@ -64,6 +67,17 @@ function AddDepartment({
                 fullWidth
                 sx={{ mt: 3 }}
                 variant='outlined'
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name='imageURL'
+            render={({ field }) => (
+              <ImageSelection
+                data={field.value || []}
+                setValue={setValue}
+                watch={watch}
               />
             )}
           />
