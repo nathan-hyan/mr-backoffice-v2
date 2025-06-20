@@ -49,17 +49,10 @@ function CurrentCategory({
   };
 
   const deleteSubCategory = () => {
-    let newArray: typeof currentCategory.subCategories = [];
-    const idToDelete = currentCategory.subCategories?.filter(
-      ({ internalId }) => internalId === markedForDelete
-    )[0].internalId;
-
-    if (currentCategory.subCategories) {
-      newArray = currentCategory.subCategories.filter(
-        ({ internalId }) => internalId !== idToDelete
-      );
-    }
-
+    if (!currentCategory.subCategories) return;
+    const newArray = currentCategory.subCategories.filter(
+      (sub) => sub.internalId !== markedForDelete
+    );
     removeSubcategory(newArray);
     handleClose();
   };
@@ -73,9 +66,9 @@ function CurrentCategory({
           onDelete={deleteSubCategory}
           stringToMatch={
             markedForDelete
-              ? currentCategory.subCategories?.filter(
+              ? currentCategory.subCategories?.find(
                   ({ internalId }) => internalId === markedForDelete
-                )[0].name || ''
+                )?.name || ''
               : ''
           }
         />
@@ -91,19 +84,9 @@ function CurrentCategory({
                   Subcategorías en {currentCategory.name}
                 </Typography>
                 <CustomMenu>
-                  {!selectedSubCategory ? (
-                    <MenuItem onClick={openModal}>
-                      Agregar una sub-categoría
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      onClick={() =>
-                        openSubSubCategoryModal(selectedSubCategory)
-                      }
-                    >
-                      Agregar una sub-sub-categoría
-                    </MenuItem>
-                  )}
+                  <MenuItem onClick={openModal}>
+                    Agregar una sub-categoría
+                  </MenuItem>
                 </CustomMenu>
               </Box>
               <List
@@ -157,9 +140,27 @@ function CurrentCategory({
 
           <Grid item xs={6}>
             <Paper elevation={4} sx={{ p: 3 }}>
-              <Typography variant='button' noWrap>
-                Sub-Subcategorías
-              </Typography>
+              <Box
+                display='flex'
+                justifyContent='space-between'
+                alignItems='center'
+              >
+                <Typography variant='button' noWrap>
+                  Sub‑Subcategorías
+                </Typography>
+                <CustomMenu>
+                  <MenuItem
+                    onClick={() =>
+                      selectedSubCategory
+                        ? openSubSubCategoryModal(selectedSubCategory)
+                        : null
+                    }
+                    disabled={!selectedSubCategory}
+                  >
+                    Agregar sub‑subcategoría
+                  </MenuItem>
+                </CustomMenu>
+              </Box>
               <List
                 sx={{
                   mt: 3,
@@ -191,7 +192,7 @@ function CurrentCategory({
                     </ListItem>
                   )) || (
                   <Typography textAlign='center' sx={{ mt: 2 }}>
-                    Seleccione una subcategoría para ver sus sub-subcategorías.
+                    No hay sub‑subcategorías cargadas.
                   </Typography>
                 )}
               </List>

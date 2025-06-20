@@ -110,6 +110,12 @@ function CategoryManager() {
     }
     setShowAddCategoryModal(true);
   };
+  const openSubCategoryModal = () => {
+    setShowAddSubCategoryModal(true);
+  };
+  const openSubSubCategoryModal = () => {
+    setShowAddSubSubCategoryModal(true);
+  };
 
   const closeCategoryModal = () => {
     setShowAddCategoryModal(false);
@@ -162,6 +168,77 @@ function CategoryManager() {
       }
     }
   };
+  const addSubSubCategory = (newData: { name: string }[]) => {
+    if (currentCategory && currentSubCategory) {
+      const selectedCategory = data.find(
+        (cat) => cat.internalId === currentCategory
+      );
+      if (!selectedCategory || !selectedCategory.subCategories) return;
+
+      const updatedSubCategories = selectedCategory.subCategories.map((sub) => {
+        if (sub.internalId === currentSubCategory) {
+          const lastInternalId =
+            sub.subSubCategories && sub.subSubCategories.length > 0
+              ? Math.max(...sub.subSubCategories.map((ss) => ss.internalId))
+              : 0;
+
+          const newSubSub = newData.map((item, index) => ({
+            name: item.name,
+            internalId: lastInternalId + index + 1,
+          }));
+          return {
+            ...sub,
+            subSubCategories: [...(sub.subSubCategories || []), ...newSubSub],
+          };
+        }
+        return sub;
+      });
+
+      if (selectedCategory.id) {
+        updateDocument(selectedCategory.id, {
+          ...selectedCategory,
+          subCategories: updatedSubCategories,
+        });
+      }
+    }
+  };
+
+  const removeSubCategory = (updatedSubCategories: Category[] | undefined) => {
+    const selectedCat = data.find((cat) => cat.internalId === currentCategory);
+    if (!selectedCat) return;
+    updateDocument(selectedCat.id!, {
+      subCategories: updatedSubCategories || [],
+    });
+  };
+
+  const removeSubSubCategory = (subSubCategoryId: number) => {
+    if (currentCategory && currentSubCategory) {
+      const selectedCategory = data.find(
+        (cat) => cat.internalId === currentCategory
+      );
+      if (!selectedCategory || !selectedCategory.subCategories) return;
+
+      const updatedSubCategories = selectedCategory.subCategories.map((sub) => {
+        if (sub.internalId === currentSubCategory) {
+          const newSubSubCategories = sub.subSubCategories?.filter(
+            (ss) => ss.internalId !== subSubCategoryId
+          );
+          return {
+            ...sub,
+            subSubCategories: newSubSubCategories,
+          };
+        }
+        return sub;
+      });
+
+      if (selectedCategory.id) {
+        updateDocument(selectedCategory.id, {
+          ...selectedCategory,
+          subCategories: updatedSubCategories,
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -203,7 +280,7 @@ function CategoryManager() {
         show={showAddSubSubCategoryModal}
         handleClose={() => setShowAddSubSubCategoryModal((prev) => !prev)}
         isLoading={creatingCategoryLoading}
-        addSubSubCategory={() => {}}
+        addSubSubCategory={addSubSubCategory}
       />
       <Paper sx={{ p: 3 }}>
         <Grid container spacing={2}>
@@ -239,11 +316,11 @@ function CategoryManager() {
                 currentCategory={data.find(
                   (cat) => cat.internalId === currentCategory
                 )}
-                openModal={() => {}}
-                removeSubcategory={() => {}}
+                openModal={openSubCategoryModal}
+                removeSubcategory={removeSubCategory}
                 handleSelectSubCategory={handleSelectSubCategory}
-                openSubSubCategoryModal={() => {}}
-                removeSubSubCategory={() => {}}
+                openSubSubCategoryModal={openSubSubCategoryModal}
+                removeSubSubCategory={removeSubSubCategory}
               />
             </Grid>
           )}

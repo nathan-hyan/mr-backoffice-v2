@@ -16,16 +16,16 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import { Category } from 'types/data';
 
 interface IAddSubCategories {
   subCategories: { name: string }[];
 }
+
 interface Props {
   show: boolean;
   handleClose: () => void;
   isLoading: boolean;
-  addSubcategory: (arg0: Category) => void;
+  addSubcategory: (data: IAddSubCategories) => void;
 }
 
 function AddSubCategory({
@@ -53,8 +53,13 @@ function AddSubCategory({
   const { errors } = formState;
 
   const onSubmit = (data: IAddSubCategories) => {
-    addSubcategory(data as Category);
+    const filteredData = {
+      subCategories: data.subCategories.filter(
+        (item) => item.name.trim() !== ''
+      ),
+    };
 
+    addSubcategory(filteredData);
     reset();
     handleClose();
   };
@@ -70,33 +75,29 @@ function AddSubCategory({
         <DialogTitle>Agregar Sub-categoría</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Ingrese los siguientes datos para poder crear una categoría
+            Ingrese los siguientes datos para poder crear una subcategoría.
           </DialogContentText>
 
           {fields.map((input, index) => (
             <Box
+              key={input.id}
               sx={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 3,
                 mt: 3,
               }}
-              key={input.id}
             >
               <Controller
                 name={`subCategories.${index}.name`}
                 control={control}
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Este campo es obligatorio',
-                  },
-                }}
+                rules={{}}
                 render={({ field }) => (
                   <TextField
                     {...field}
                     label='Nombre de la sub-categoría'
-                    required
+                    fullWidth
+                    variant='outlined'
                     error={
                       errors.subCategories &&
                       !!errors.subCategories[index]?.name
@@ -105,8 +106,6 @@ function AddSubCategory({
                       errors.subCategories &&
                       errors.subCategories[index]?.name?.message
                     }
-                    fullWidth
-                    variant='outlined'
                   />
                 )}
               />
@@ -130,7 +129,7 @@ function AddSubCategory({
             variant='outlined'
             startIcon={<CancelRounded />}
             color='error'
-            onClick={handleClose}
+            onClick={handleCloseAndCancel}
             disabled={isLoading}
           >
             Cancelar
@@ -139,11 +138,7 @@ function AddSubCategory({
             variant='outlined'
             startIcon={<AddCircleRounded />}
             color='primary'
-            onClick={() =>
-              append({
-                name: '',
-              })
-            }
+            onClick={() => append({ name: '' })}
             disabled={isLoading}
           >
             Agregar otra sub-categoría
@@ -161,4 +156,5 @@ function AddSubCategory({
     </Dialog>
   );
 }
+
 export default AddSubCategory;
