@@ -35,8 +35,6 @@ interface IAddCategory {
   name: string;
   internalId: number;
   imageURL: string[];
-  initialData?: Category;
-
   subCategories?: {
     name: string;
     internalId: number;
@@ -57,10 +55,7 @@ function AddCategory({
       defaultValues: {
         name: initialData?.name || '',
         imageURL: initialData?.imageURL || [],
-        subCategories:
-          initialData?.subCategories && initialData.subCategories.length > 0
-            ? initialData.subCategories
-            : [{ name: '', internalId: 0 }],
+        subCategories: initialData?.subCategories || [],
       },
     });
 
@@ -74,10 +69,7 @@ function AddCategory({
     reset({
       name: initialData?.name || '',
       imageURL: initialData?.imageURL || [],
-      subCategories:
-        initialData?.subCategories && initialData.subCategories.length > 0
-          ? initialData.subCategories
-          : [{ name: '', internalId: 0 }],
+      subCategories: initialData?.subCategories || [],
     });
   }, [initialData, reset]);
 
@@ -142,56 +134,52 @@ function AddCategory({
           <Divider sx={{ my: 3 }} />
 
           <Typography variant='body1'>Agregar subcategorías:</Typography>
-          {fields.map((input, index) => (
-            <Box
-              key={input.id}
-              sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 3 }}
-            >
-              <Controller
-                name={`subCategories.${index}.name`}
-                control={control}
-                rules={
-                  isEditing
-                    ? {}
-                    : {
-                        required: {
-                          value: true,
-                          message: 'Este campo es obligatorio',
-                        },
+          {fields.length > 0 ? (
+            fields.map((input, index) => (
+              <Box
+                key={input.id}
+                sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 3 }}
+              >
+                <Controller
+                  name={`subCategories.${index}.name`}
+                  control={control}
+                  rules={{}}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label='Nombre de la sub-categoría'
+                      error={
+                        !!(
+                          errors.subCategories &&
+                          errors.subCategories[index]?.name
+                        )
                       }
-                }
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label='Nombre de la sub-categoría'
-                    required={!isEditing}
-                    error={
-                      !!(
+                      helperText={
                         errors.subCategories &&
-                        errors.subCategories[index]?.name
-                      )
-                    }
-                    helperText={
-                      errors.subCategories &&
-                      errors.subCategories[index]?.name?.message
-                    }
-                    fullWidth
-                    variant='outlined'
-                  />
+                        errors.subCategories[index]?.name?.message
+                      }
+                      fullWidth
+                      variant='outlined'
+                    />
+                  )}
+                />
+                {fields.length > 1 && (
+                  <IconButton
+                    size='small'
+                    color='error'
+                    sx={{ width: '40px', height: '40px' }}
+                    onClick={() => remove(index)}
+                  >
+                    <DeleteForeverRounded />
+                  </IconButton>
                 )}
-              />
-              {fields.length > 1 && (
-                <IconButton
-                  size='small'
-                  color='error'
-                  sx={{ width: '40px', height: '40px' }}
-                  onClick={() => remove(index)}
-                >
-                  <DeleteForeverRounded />
-                </IconButton>
-              )}
-            </Box>
-          ))}
+              </Box>
+            ))
+          ) : (
+            <Typography textAlign='center' sx={{ mt: 2 }}>
+              No hay subcategorías agregadas.
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions sx={{ m: 2 }}>
           <Button
