@@ -247,6 +247,7 @@ export const EMPTY_FORM: Product = {
   variants: [],
   providerProductCode: [],
   name: '',
+  ecommerceName: '',
   stock: {
     current: 0,
     minStock: 0,
@@ -254,6 +255,7 @@ export const EMPTY_FORM: Product = {
     noPhysicalStock: false,
   },
   barcode: '',
+  department: '',
   category: '',
   subCategory: '',
   subSubCategories: '',

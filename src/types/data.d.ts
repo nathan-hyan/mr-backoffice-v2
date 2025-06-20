@@ -99,8 +99,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  ecommerceName: string;
-
+  ecommerceName?: string;
   stock: Stock;
   department: string;
   category: string; // Reference to categories.id

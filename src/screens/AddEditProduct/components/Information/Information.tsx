@@ -79,6 +79,7 @@ function Information({ control, watch, errors, setValue }: Props) {
           label='Nombre ecommerce'
           name='ecommerceName'
           type={InputType.Text}
+          required={false}
         />
 
         <div className={styles.categoriesContainer}>
