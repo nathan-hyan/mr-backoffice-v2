@@ -1,5 +1,12 @@
-import React from 'react';
-import { Control, FieldErrors, UseFormWatch } from 'react-hook-form';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-restricted-globals */
+import { useEffect } from 'react';
+import {
+  Control,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { Grid, InputAdornment } from '@mui/material';
 import { Product } from 'types/data';
 
@@ -19,12 +26,43 @@ import {
 interface Props {
   control: Control<Product, unknown>;
   watch: UseFormWatch<Product>;
+  setValue: UseFormSetValue<Product>;
   errors: FieldErrors<Product>;
 }
 
-function Prices({ control, errors, watch }: Props) {
+function Prices({ control, errors, watch, setValue }: Props) {
+  const costoRaw = watch('prices.cost.value');
+  const costo = Number(costoRaw);
+
+  // 🔁 Recalcular Retail $ automáticamente cuando cambia el costo o cantidad
+  useEffect(() => {
+    if (!costo || isNaN(costo)) return;
+
+    getRetailPrices().forEach((item) => {
+      const porcentaje = Number(watch(`prices.${item.name}.value`));
+      const cantidad = Number(watch(`prices.${item.name}.cantidad`)) || 1;
+
+      if (!isNaN(porcentaje) && cantidad > 0) {
+        const unitario = calculateNumberWithPercentage(
+          costo,
+          porcentaje,
+          'incr'
+        );
+        const total = unitario * cantidad;
+        setValue(`prices.${item.name}.retail`, total);
+      }
+    });
+  }, [
+    costo,
+    watch('prices.retail1.cantidad'),
+    watch('prices.retail2.cantidad'),
+    watch('prices.retail3.cantidad'),
+    watch('prices.retail4.cantidad'),
+  ]);
+
   return (
     <div className={styles.prices}>
+      {/* COSTO */}
       <div className={styles.costo}>
         <p>COSTO PRODUCTO</p>
         <CustomInput
@@ -37,41 +75,65 @@ function Prices({ control, errors, watch }: Props) {
           defaultValue={0}
         />
       </div>
+
+      {/* RETAIL */}
       <div className={styles.costo}>
         <p>PRECIO RETAIL</p>
-        <Grid
-          container
-          spacing={2}
-          sx={{ mt: 2 }}
-          direction='row'
-          wrap='nowrap'
-        >
-          {getRetailPrices().map((item) => (
-            <React.Fragment key={item.id}>
-              <Grid item key={`cantidad-${item.id}`}>
+        {getRetailPrices().map((item) => {
+          const porcentaje = Number(watch(`prices.${item.name}.value`));
+          const cantidad = Number(watch(`prices.${item.name}.cantidad`)) || 1;
+          const retailManual = Number(watch(`prices.${item.name}.retail`));
+
+          const unitario =
+            !isNaN(costo) && !isNaN(porcentaje)
+              ? calculateNumberWithPercentage(costo, porcentaje, 'incr')
+              : 0;
+
+          const totalCalculado = unitario * cantidad;
+          const retailMostrado = !isNaN(retailManual)
+            ? retailManual
+            : totalCalculado;
+
+          return (
+            <Grid
+              container
+              spacing={2}
+              direction='row'
+              alignItems='center'
+              key={`retail-row-${item.id}`}
+              sx={{ px: 2, mb: 2 }}
+            >
+              {/* Cantidad */}
+              <Grid item xs={4}>
                 <CustomInput
                   label='Cantidad'
-                  name={`prices.${item.name}.cantidad`}
+                  name={`prices.${item.name}.cantidad` as const}
                   type={InputType.Number}
                   control={control}
                   error={errors.prices?.[item.name]?.cantidad}
                   InputLabelProps={{ shrink: true }}
-                  inputProps={{ min: 0 }}
+                  inputProps={{ min: 1 }}
                 />
               </Grid>
 
-              <Grid item key={`valor-${item.id}`}>
+              {/* Retail $ */}
+              <Grid item xs={4}>
                 <CustomInput
                   label='Retail $'
-                  name=''
+                  name={`prices.${item.name}.retail`}
                   type={InputType.Number}
                   control={control}
-                  disabled
-                  value={calculateNumberWithPercentage(
-                    watch('prices.cost.value'),
-                    watch(`prices.${item.name}.value`),
-                    'incr'
-                  ).toFixed(2)}
+                  value={retailMostrado.toFixed(2)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const nuevoTotal = Number(e.target.value);
+                    if (!isNaN(nuevoTotal) && costo > 0 && cantidad > 0) {
+                      const nuevoUnitario = nuevoTotal / cantidad;
+                      const nuevoPorcentaje =
+                        ((nuevoUnitario - costo) / costo) * 100;
+                      setValue(`prices.${item.name}.value`, nuevoPorcentaje);
+                      setValue(`prices.${item.name}.retail`, nuevoTotal);
+                    }
+                  }}
                   inputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>$</InputAdornment>
@@ -80,86 +142,27 @@ function Prices({ control, errors, watch }: Props) {
                 />
               </Grid>
 
-              <Grid item key={`retail-${item.id}`}>
+              {/* Retail % */}
+              <Grid item xs={4}>
                 <CustomInput
-                  inputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>%</InputAdornment>
-                    ),
-                  }}
                   label='Retail %'
                   name={`prices.${item.name}.value`}
                   type={InputType.Number}
                   control={control}
                   error={errors.prices?.[item.name]?.value}
+                  inputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>%</InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
-            </React.Fragment>
-          ))}
-        </Grid>
-
-        {[1, 2, 3].map((row) => (
-          <Grid
-            container
-            spacing={2}
-            sx={{ mt: 2 }}
-            direction='row'
-            wrap='nowrap'
-            key={`mock-row-${row}`}
-          >
-            {getRetailPrices().map((item) => (
-              <React.Fragment key={`${item.id}-${row}`}>
-                <Grid item key={`cantidad-mock-${item.id}-${row}`}>
-                  <CustomInput
-                    label='Cantidad'
-                    name=''
-                    type={InputType.Number}
-                    control={control}
-                    disabled
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                {/* Valor $ */}
-                <Grid item key={`valor-mock-${item.id}-${row}`}>
-                  <CustomInput
-                    label='Retail $'
-                    name=''
-                    type={InputType.Number}
-                    control={control}
-                    disabled
-                    value={calculateNumberWithPercentage(
-                      watch('prices.cost.value'),
-                      0, // Puedes ajustar el valor mock si lo necesitas
-                      'incr'
-                    ).toFixed(2)}
-                    inputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>$</InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                {/* Retail % */}
-                <Grid item key={`retail-mock-${item.id}-${row}`}>
-                  <CustomInput
-                    inputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>%</InputAdornment>
-                      ),
-                    }}
-                    label='Retail %'
-                    name=''
-                    type={InputType.Number}
-                    control={control}
-                    disabled
-                  />
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-        ))}
+            </Grid>
+          );
+        })}
       </div>
 
+      {/* ONLINE */}
       <div className={styles.costo}>
         <p>PRECIO ONLINE</p>
         <Grid container spacing={2} sx={{ mt: 2 }}>
@@ -183,7 +186,7 @@ function Prices({ control, errors, watch }: Props) {
                   }
                 />
               </Grid>
-              <Grid item key={item.id} xs={6}>
+              <Grid item key={`${item.id}-editable`} xs={6}>
                 <CustomInput
                   inputProps={{
                     startAdornment: (
@@ -204,6 +207,7 @@ function Prices({ control, errors, watch }: Props) {
         </Grid>
       </div>
 
+      {/* MAYORISTAS / REVENDEDORES */}
       <div className={styles.costo}>
         <p>PRECIOS MAYORISTAS/REVENDEDORES</p>
         <Grid container spacing={2} sx={{ mt: 2 }} direction='column'>

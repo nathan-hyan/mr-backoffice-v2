@@ -4,7 +4,10 @@ import { Product } from 'types/data';
 import { InputType } from '~components/CustomInput/constants';
 
 export type PriceInputName =
-  | 'retail'
+  | 'retail1'
+  | 'retail2'
+  | 'retail3'
+  | 'retail4'
   | 'online'
   | 'mayo1'
   | 'mayo2'
@@ -65,20 +68,45 @@ export const PRODUCT_FORM: Form<keyof Product>[] = [
 export const PRICE_FORM: Form<PriceInputName>[] = [
   {
     id: 1,
-    label: 'Retail %',
-    name: 'retail',
+    label: 'Retail1 %',
+    label2: 'Retail1 $',
+    name: 'retail1',
     type: InputType.Number,
     required: true,
   },
   {
     id: 2,
+    label: 'Retail2 %',
+    label2: 'Retail2 $',
+    name: 'retail2',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 3,
+    label: 'Retail3 %',
+    label2: 'Retail3 $',
+    name: 'retail3',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 4,
+    label: 'Retail4 %',
+    label2: 'Retail4 $',
+    name: 'retail4',
+    type: InputType.Number,
+    required: true,
+  },
+  {
+    id: 5,
     label: 'Online %',
     name: 'online',
     type: InputType.Number,
     required: true,
   },
   {
-    id: 3,
+    id: 6,
     label: 'Mayorista 1 %',
     label2: 'Mayorista 1 $',
     name: 'mayo1',
@@ -86,7 +114,7 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
     required: true,
   },
   {
-    id: 4,
+    id: 7,
     label: 'Mayorista 2 %',
     label2: 'Mayorista 2 $',
     name: 'mayo2',
@@ -94,7 +122,7 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
     required: true,
   },
   {
-    id: 5,
+    id: 8,
     label: 'Mayorista 3 %',
     label2: 'Mayorista 3 $',
     name: 'mayo3',
@@ -102,7 +130,7 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
     required: true,
   },
   {
-    id: 6,
+    id: 9,
     label: 'Mayorista 4 %',
     label2: 'Mayorista 4 $',
     name: 'mayo4',
@@ -110,7 +138,7 @@ export const PRICE_FORM: Form<PriceInputName>[] = [
     required: true,
   },
   {
-    id: 7,
+    id: 10,
     label: 'Reseller %',
     name: 'reseller',
     type: InputType.Number,
@@ -261,7 +289,10 @@ export const EMPTY_FORM: Product = {
   subSubCategories: '',
   prices: {
     cost: { value: 0 },
-    retail: { value: 80, cantidad: 1, percent: 0 },
+    retail1: { value: 80, cantidad: 1, percent: 0 },
+    retail2: { value: 70, cantidad: 1, percent: 0 },
+    retail3: { value: 60, cantidad: 1, percent: 0 },
+    retail4: { value: 90, cantidad: 1, percent: 0 },
     online: { value: 65 },
     mayo1: { value: 60 },
     mayo2: { value: 50 },

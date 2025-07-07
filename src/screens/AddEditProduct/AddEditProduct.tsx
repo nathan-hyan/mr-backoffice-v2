@@ -104,7 +104,12 @@ function AddEditProduct() {
             <ImageSelection data={images} setValue={setValue} watch={watch} />
           </div>
           <div className={styles.formRight}>
-            <Prices control={control} errors={errors} watch={watch} />
+            <Prices
+              control={control}
+              errors={errors}
+              watch={watch}
+              setValue={setValue}
+            />
             <KioskInformation control={control} errors={errors} />
             <Dimensions control={control} errors={errors} />
           </div>
