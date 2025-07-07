@@ -26,7 +26,10 @@ export interface RetailPrice extends Price {
 
 interface Prices {
   cost: Price; // Precio de costo
-  retail: RetailPrice;
+  retail1: RetailPrice;
+  retail2: RetailPrice;
+  retail3: RetailPrice;
+  retail4: RetailPrice;
   online: Price;
   mayo1: Price;
   mayo2: Price;

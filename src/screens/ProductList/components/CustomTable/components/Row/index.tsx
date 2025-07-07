@@ -31,7 +31,7 @@ function Row(props: Props) {
 
   const [markedForDeletion, setMarkedForDeletion] =
     useState<Nullable<Product>>(null);
-  const [open, setOpen] = useState(false);
+  /*  const [open, setOpen] = useState(false); */
   const navigate = useNavigate();
   const { removeDocument } = useFirestore(FirestoreCollections.Products);
   const { translateCategories } = useCategoryTranslator();
@@ -93,7 +93,7 @@ function Row(props: Props) {
               Number(
                 calculateNumberWithPercentage(
                   prices.cost?.value,
-                  prices.retail?.value,
+                  prices.retail1?.value ?? prices.retail?.value,
                   'incr'
                 )
               ) || 0

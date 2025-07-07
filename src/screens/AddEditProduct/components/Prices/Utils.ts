@@ -8,7 +8,9 @@ export function getPriceFormByName(
 }
 
 export function getRetailPrices() {
-  return PRICE_FORM.filter((item) => item.name === 'retail');
+  return PRICE_FORM.filter((item) =>
+    ['retail1', 'retail2', 'retail3', 'retail4'].includes(item.name)
+  );
 }
 
 export function getWholesalePrices() {
