@@ -1,10 +1,19 @@
+import { useMemo, useState } from 'react';
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { DeleteForeverRounded } from '@mui/icons-material';
-import { Box, Divider, IconButton, Typography } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Divider,
+  IconButton,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
+import { useProviders } from '~contexts/Providers';
 import { PROVIDER_PRODUCT_CODE_FORM_EMPTY } from '~screens/AddEditProduct/constants';
 
 import styles from './styles.module.scss';
@@ -15,11 +24,36 @@ interface Props {
 }
 
 function KioskInformation({ control, errors }: Props) {
+  const { providers } = useProviders();
+
   const {
     fields: providerProductCodeFields,
     remove: providerProductCodeRemove,
     append: providerProductCodeAppend,
   } = useFieldArray({ control, name: 'providerProductCode' });
+
+  const [search, setSearch] = useState('');
+
+  const filteredProviders = useMemo(() => {
+    return providers.filter((p) =>
+      p.name?.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, providers]);
+
+  const isAlreadySelected = (providerId: string) => {
+    return providerProductCodeFields.some((field) => field.id === providerId);
+  };
+
+  const handleAddProvider = (
+    selectedProvider: (typeof providers)[0] | null
+  ) => {
+    if (!selectedProvider || isAlreadySelected(selectedProvider.id)) return;
+
+    providerProductCodeAppend({
+      id: selectedProvider.id,
+      name: selectedProvider.name,
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -30,8 +64,8 @@ function KioskInformation({ control, errors }: Props) {
           justifyContent: 'space-between',
           alignItems: 'center',
           color: '#454545',
+          paddingBottom: '5px',
         }}
-        color='#454545'
         fontWeight='bold'
       >
         Proveedores
@@ -45,7 +79,33 @@ function KioskInformation({ control, errors }: Props) {
           Agregar
         </button>
       </Typography>
+
+      <Autocomplete
+        options={filteredProviders}
+        getOptionLabel={(option) => option.name}
+        onChange={(_, newValue) => handleAddProvider(newValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label='Buscar proveedor'
+            variant='outlined'
+            sx={{
+              mb: 2,
+              label: { color: '#454545' },
+              input: { color: '#454545' },
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#454545',
+              },
+            }}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        )}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        openOnFocus
+      />
+
       <Divider sx={{ mb: 2 }} />
+
       {providerProductCodeFields.length > 0 ? (
         providerProductCodeFields.map((item, index) => (
           <Box
@@ -54,6 +114,7 @@ function KioskInformation({ control, errors }: Props) {
               gap: 1,
               display: 'flex',
               alignItems: 'center',
+              paddingBottom: 3,
             }}
           >
             <CustomInput
@@ -65,7 +126,6 @@ function KioskInformation({ control, errors }: Props) {
                 errors.providerProductCode[index]?.id
               }
               type={InputType.Number}
-              /*     required */
             />
             <CustomInput
               name={`providerProductCode.${index}.name`}
@@ -76,16 +136,12 @@ function KioskInformation({ control, errors }: Props) {
                 errors.providerProductCode[index]?.name
               }
               type={InputType.Text}
-              /*  required */
             />
-
             <IconButton
               size='small'
               color='error'
               sx={{ width: '40px', height: '40px' }}
-              onClick={() => {
-                providerProductCodeRemove(index);
-              }}
+              onClick={() => providerProductCodeRemove(index)}
             >
               <DeleteForeverRounded />
             </IconButton>
@@ -97,11 +153,12 @@ function KioskInformation({ control, errors }: Props) {
           fontStyle='italic'
           color='InactiveCaptionText'
         >
-          No hay informacion del prestador, presione &quot;Agregar&quot; para
-          comenzar
+          No hay información del prestador, presioná Agregar o buscá por nombre
+          para comenzar.
         </Typography>
       )}
     </div>
   );
 }
+
 export default KioskInformation;
