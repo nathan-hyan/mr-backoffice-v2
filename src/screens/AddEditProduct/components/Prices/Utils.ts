@@ -25,3 +25,9 @@ export function getResellerPrice() {
 export function getOnlinePrices() {
   return PRICE_FORM.filter((item) => item.name === 'online');
 }
+
+export function formatPrice(value: number): string {
+  if (Number.isNaN(value)) return '';
+  const fixed = value.toFixed(2);
+  return fixed.endsWith('.00') ? parseInt(fixed, 10).toString() : fixed;
+}

@@ -17,7 +17,12 @@ import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import styles from './styles.module.scss';
 
-import { getResellerPrice, getRetailPrices, getWholesalePrices } from './Utils';
+import {
+  formatPrice,
+  getResellerPrice,
+  getRetailPrices,
+  getWholesalePrices,
+} from './Utils';
 
 interface Props {
   control: Control<Product, unknown>;
@@ -44,7 +49,7 @@ function Prices({ control, watch, setValue, errors }: Props) {
 
       if (!isNaN(pct) && qty > 0) {
         const unit = calculateNumberWithPercentage(costo, pct, 'incr');
-        setValue(`prices.${item.name}.retail`, unit * qty);
+        setValue(`prices.${item.name}.retail`, Number(unit.toFixed(2)));
       }
     });
   }, [
@@ -58,7 +63,7 @@ function Prices({ control, watch, setValue, errors }: Props) {
   useEffect(() => {
     if (isNaN(costo) || isNaN(onlinePercent)) return;
     const unit = calculateNumberWithPercentage(costo, onlinePercent, 'incr');
-    setValue('prices.online.retail', unit);
+    setValue('prices.online.retail', Number(unit.toFixed(2)));
   }, [costo, onlinePercent]);
 
   useEffect(() => {
@@ -69,7 +74,7 @@ function Prices({ control, watch, setValue, errors }: Props) {
       const pct = Number(watch(`prices.${item.name}.value`));
       if (!isNaN(pct)) {
         const precio = calculateNumberWithPercentage(costo, pct, 'incr');
-        setValue(`prices.${item.name}.retail`, precio);
+        setValue(`prices.${item.name}.retail`, Number(precio.toFixed(2)));
       }
     });
   }, [
@@ -136,9 +141,9 @@ function Prices({ control, watch, setValue, errors }: Props) {
                 <CustomInput
                   label={item.label2 || 'Retail $'}
                   name={`prices.${item.name}.retail`}
-                  type={InputType.Number}
+                  type={InputType.Text}
                   control={control}
-                  value={display.toFixed(2)}
+                  value={formatPrice(display)}
                   onChange={(e) => {
                     const val = Number(e.target.value);
                     if (!isNaN(val) && costo > 0 && qty > 0) {
@@ -184,9 +189,9 @@ function Prices({ control, watch, setValue, errors }: Props) {
             <CustomInput
               label='Online $'
               name='prices.online.retail'
-              type={InputType.Number}
+              type={InputType.Text}
               control={control}
-              value={!isNaN(onlineRetail) ? onlineRetail.toFixed(2) : ''}
+              value={formatPrice(onlineRetail)}
               onChange={(e) => {
                 const val = Number(e.target.value);
                 if (!isNaN(val) && costo > 0) {
@@ -241,9 +246,9 @@ function Prices({ control, watch, setValue, errors }: Props) {
                     <CustomInput
                       label={item.label || 'Mayorista $'}
                       name={`prices.${item.name}.retail`}
-                      type={InputType.Number}
+                      type={InputType.Text}
                       control={control}
-                      value={display.toFixed(2)}
+                      value={formatPrice(display)}
                       onChange={(e) => {
                         const val = Number(e.target.value);
                         if (!isNaN(val) && costo > 0) {

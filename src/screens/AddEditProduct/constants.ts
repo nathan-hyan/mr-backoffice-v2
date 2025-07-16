@@ -292,7 +292,7 @@ export const EMPTY_FORM: Product = {
     retail1: { value: 80, cantidad: 1, percent: 0 },
     retail2: { value: 70, cantidad: 3, percent: 0 },
     retail3: { value: 60, cantidad: 5, percent: 0 },
-    retail4: { value: 90, cantidad: 10, percent: 0 },
+    retail4: { value: 40, cantidad: 10, percent: 0 },
     online: { value: 65 },
     mayo1: { value: 60 },
     mayo2: { value: 50 },
