@@ -72,28 +72,29 @@ function PriceTagGenerator() {
           gap: 0.5,
         }}
       >
-        {map.map(
-          ({ name, id, barcode, internalId, prices: { cost, retail } }) => (
+        {map.map(({ name, id, barcode, internalId, prices }) => {
+          const safeCost = prices?.cost?.value ?? 0;
+          const safeRetail =
+            prices?.retail1?.value ?? prices?.retail?.value ?? 0;
+
+          const cashPrice =
+            safeRetail === 0
+              ? 'Invalid'
+              : calculateNumberWithPercentage(safeCost, safeRetail, 'incr');
+
+          return (
             <PriceTag
               id={id}
               key={internalId}
               barCode={barcode}
-              cashPrice={
-                !retail
-                  ? 'Invalid'
-                  : calculateNumberWithPercentage(
-                      cost.value,
-                      retail?.value || 0,
-                      'incr'
-                    )
-              }
+              cashPrice={cashPrice}
               internalId={internalId}
               name={name}
               showPrices={watch('showPrices')}
               variant={watch('variant')}
             />
-          )
-        )}
+          );
+        })}
       </Box>
     </>
   );

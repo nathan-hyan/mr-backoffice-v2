@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
+
+import { useProviders } from '~contexts/Providers';
 
 import styles from './styles.module.scss';
 
@@ -32,6 +35,15 @@ function AddEditProduct() {
   } = useProductModal({
     productIdToEdit: id || null,
   });
+  const { fetchProviders } = useProviders();
+
+  useEffect(() => {
+    const unsubscribe = fetchProviders();
+    return () => {
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const images = watch('imageURL').filter(Boolean);
   function getTodayFormattedEs() {
@@ -98,7 +110,12 @@ function AddEditProduct() {
               watch={watch}
               errors={errors}
             />
-            <Stock control={control} errors={errors} watch={watch} />
+            <Stock
+              control={control}
+              errors={errors}
+              watch={watch}
+              setValue={setValue}
+            />
             <Specifications control={control} errors={errors} />{' '}
             <Variants control={control} errors={errors} />
             <ImageSelection data={images} setValue={setValue} watch={watch} />

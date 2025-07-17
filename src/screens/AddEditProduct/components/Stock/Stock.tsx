@@ -1,7 +1,10 @@
+/* eslint-disable no-underscore-dangle */
+import { useEffect } from 'react';
 import {
   Control,
   Controller,
   FieldErrors,
+  UseFormSetValue,
   UseFormWatch,
 } from 'react-hook-form';
 import {
@@ -22,9 +25,20 @@ interface Props {
   control: Control<Product, unknown>;
   watch: UseFormWatch<Product>;
   errors: FieldErrors<Product>;
+  setValue: UseFormSetValue<Product>;
 }
 
-function Stock({ control, watch, errors }: Props) {
+function Stock({ control, watch, errors, setValue }: Props) {
+  const noPhysicalStock = watch('stock.noPhysicalStock');
+
+  useEffect(() => {
+    if (noPhysicalStock) {
+      setValue('stock.minStock', 1);
+      setValue('stock.maxStock', 1);
+      setValue('stock.current', 0);
+    }
+  }, [noPhysicalStock, setValue]);
+
   return (
     <div className={styles.container}>
       <Typography sx={{ mt: 5 }} color='#454545' fontWeight='bold'>
@@ -65,7 +79,7 @@ function Stock({ control, watch, errors }: Props) {
           label='Mínimo'
           type={InputType.Number}
           error={errors.stock?.minStock}
-          disabled={watch('stock.noPhysicalStock')}
+          disabled={Boolean(watch('stock.noPhysicalStock'))}
           rules={{
             validate: () => {
               if (watch('stock.minStock') > watch('stock.maxStock')) {
