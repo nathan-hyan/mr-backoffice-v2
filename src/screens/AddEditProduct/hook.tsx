@@ -56,7 +56,7 @@ function useProductModal({ productIdToEdit }: Props) {
       updateDocument(productIdToEdit, data, () => {
         reset();
 
-        navigate(ROUTES[3].path);
+        navigate('/');
       });
       return;
     }

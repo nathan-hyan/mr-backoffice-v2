@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import {
@@ -54,6 +54,10 @@ function KioskInformation({ control, errors }: Props) {
       name: selectedProvider.name,
     });
   };
+
+  useEffect(() => {
+    console.log('PROVIDERS CARGADOS:', providers);
+  }, [providers]);
 
   return (
     <div className={styles.container}>
