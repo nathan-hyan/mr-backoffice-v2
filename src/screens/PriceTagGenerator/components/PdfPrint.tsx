@@ -18,7 +18,11 @@ interface ProductData {
   id?: string;
   barcode: string;
   internalId: number;
-  prices: { cost: { value: number }; retail?: { value: number } };
+  prices: {
+    cost: { value: number };
+    retail?: { value: number };
+    retail1?: { value: number };
+  };
   variant?: 'green' | 'pink' | 'yellow';
 }
 
@@ -30,34 +34,28 @@ function PdfPrint({ data }: PdfPrintProps) {
   return (
     <Document>
       <Page size='A4' style={styles.page}>
-        {data.map(
-          ({
-            name,
+        {data.map(({ name, barcode, internalId, prices, variant }) => {
+          const safeCost = prices?.cost?.value ?? 0;
+          const safeRetail =
+            prices?.retail1?.value ?? prices?.retail?.value ?? 0;
 
-            barcode,
-            internalId,
-            prices: { cost, retail },
-            variant,
-          }) => (
+          const cashPrice =
+            safeRetail === 0
+              ? 'Invalid'
+              : calculateNumberWithPercentage(safeCost, safeRetail, 'incr');
+
+          return (
             <PDFPriceTag
               key={internalId}
               name={name}
-              cashPrice={
-                !retail
-                  ? 'Invalid'
-                  : calculateNumberWithPercentage(
-                      cost.value,
-                      retail?.value || 0,
-                      'incr'
-                    )
-              }
+              cashPrice={cashPrice}
               internalId={internalId}
               barCode={barcode}
               showPrices
               variant={variant || 'yellow'}
             />
-          )
-        )}
+          );
+        })}
       </Page>
     </Document>
   );
