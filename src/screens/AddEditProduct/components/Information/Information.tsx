@@ -8,6 +8,7 @@ import {
 import CachedIcon from '@mui/icons-material/Cached';
 import {
   Autocomplete,
+  Box,
   IconButton,
   InputAdornment,
   TextField,
@@ -17,7 +18,6 @@ import { Product } from 'types/data';
 
 import { InputType } from '~components/CustomInput/constants';
 import CustomInput from '~components/CustomInput/CustomInput';
-import CustomSelect from '~components/CustomSelect';
 import { useProducts } from '~contexts/Products';
 import { PRODUCT_FORM } from '~screens/AddEditProduct/constants';
 
@@ -503,31 +503,126 @@ function Information({ control, watch, errors, setValue }: Props) {
           }}
         />
         <div className={styles.selectsContainer}>
-          <CustomSelect
-            name='brand'
-            control={control}
-            error={errors.brand}
-            variant='outlined'
-            label='Marca'
-            data={brands.map(({ name, id }) => ({
-              optionName: name,
-              value: id || '',
-            }))}
-            InputLabelProps={{ shrink: true }}
-          />
+          <Box>
+            <Controller
+              control={control}
+              name='brand'
+              render={({ field }) => (
+                <Autocomplete
+                  options={brands.map(({ name, id }) => ({
+                    label: name,
+                    value: id,
+                  }))}
+                  getOptionLabel={(option) => option.label || ''}
+                  isOptionEqualToValue={(opt, val) => opt.value === val?.value}
+                  onChange={(_, value) => field.onChange(value?.value || '')}
+                  value={
+                    brands.find((b) => b.id === field.value)
+                      ? {
+                          label:
+                            brands.find((b) => b.id === field.value)?.name ||
+                            '',
+                          value: field.value,
+                        }
+                      : null
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label='Marca'
+                      InputLabelProps={{ shrink: true }}
+                      error={Boolean(errors.brand)}
+                      helperText={errors.brand?.message}
+                      sx={{
+                        height: 42,
+                        '& .MuiOutlinedInput-root': {
+                          height: 42,
+                          '& fieldset': {
+                            borderColor: '#454545',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#454545',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#454545',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          height: 42,
+                          padding: '0 8px',
+                          color: '#454545',
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#454545',
+                        },
+                        '& .MuiAutocomplete-popupIndicator': {
+                          color: '#454545',
+                        },
+                      }}
+                    />
+                  )}
+                />
+              )}
+            />
+          </Box>
 
-          <CustomSelect
-            name='stockOwner'
-            control={control}
-            error={errors.stockOwner}
-            label='Dueño de stock'
-            variant='outlined'
-            data={[
-              { optionName: 'Mundo Regalo', value: 'Mundo Regalo' },
-              { optionName: 'mr Tienda', value: 'mr Tienda' },
-            ]}
-            InputLabelProps={{ shrink: true }}
-          />
+          <Box>
+            <Controller
+              control={control}
+              name='stockOwner'
+              render={({ field }) => (
+                <Autocomplete
+                  options={[
+                    { label: 'Mundo Regalo', value: 'Mundo Regalo' },
+                    { label: 'mr Tienda', value: 'mr Tienda' },
+                  ]}
+                  getOptionLabel={(option) => option.label}
+                  isOptionEqualToValue={(opt, val) => opt.value === val?.value}
+                  onChange={(_, value) => field.onChange(value?.value || '')}
+                  value={
+                    ['Mundo Regalo', 'mr Tienda'].includes(field.value)
+                      ? { label: field.value, value: field.value }
+                      : null
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label='Dueño de stock'
+                      InputLabelProps={{ shrink: true }}
+                      error={Boolean(errors.stockOwner)}
+                      helperText={errors.stockOwner?.message}
+                      sx={{
+                        height: 42,
+                        '& .MuiOutlinedInput-root': {
+                          height: 42,
+                          '& fieldset': {
+                            borderColor: '#454545',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#454545',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: '#454545',
+                          },
+                        },
+                        '& .MuiInputBase-input': {
+                          height: 42,
+                          padding: '0 8px',
+                          color: '#454545',
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: '#454545',
+                        },
+                        '& .MuiAutocomplete-popupIndicator': {
+                          color: '#454545',
+                        },
+                      }}
+                    />
+                  )}
+                />
+              )}
+            />
+          </Box>
         </div>
         <CustomInput
           className={styles.customInputdescripcion}

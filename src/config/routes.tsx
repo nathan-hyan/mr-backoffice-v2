@@ -21,6 +21,7 @@ import PosIcon from '~assets/POS.png';
 import provedores from '~assets/Provedores.jpg';
 import Ventas from '~assets/Ventas.png';
 import AnalyticsScreen from '~screens/Analitycs/analitycs';
+import BannerManager from '~screens/BannerManager/BannerManager';
 import BudgetManager from '~screens/BudgetScreen/budgetManager';
 import {
   AddEditProduct,
@@ -297,8 +298,8 @@ export const ROUTESE = [
     icon: <img src={Banners} alt='banners' style={{ width: 30, height: 30 }} />,
     title: 'Banners',
     description: '',
-    path: '/WorkInProgress',
-    element: <WorkInProgress />,
+    path: '/Banners',
+    element: <BannerManager />,
   },
   {
     id: 31,
