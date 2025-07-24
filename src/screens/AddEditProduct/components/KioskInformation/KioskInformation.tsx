@@ -1,5 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Control, FieldErrors, useFieldArray } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  useFieldArray,
+  UseFormSetValue,
+} from 'react-hook-form';
 import { DeleteForeverRounded } from '@mui/icons-material';
 import {
   Autocomplete,
@@ -21,9 +26,10 @@ import styles from './styles.module.scss';
 interface Props {
   control: Control<Product, unknown>;
   errors: FieldErrors<Product>;
+  setValue: UseFormSetValue<Product>;
 }
 
-function KioskInformation({ control, errors }: Props) {
+function KioskInformation({ control, errors, setValue }: Props) {
   const { providers } = useProviders();
 
   const {
@@ -31,33 +37,6 @@ function KioskInformation({ control, errors }: Props) {
     remove: providerProductCodeRemove,
     append: providerProductCodeAppend,
   } = useFieldArray({ control, name: 'providerProductCode' });
-
-  const [search, setSearch] = useState('');
-
-  const filteredProviders = useMemo(() => {
-    return providers.filter((p) =>
-      p.name?.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, providers]);
-
-  const isAlreadySelected = (providerId: string) => {
-    return providerProductCodeFields.some((field) => field.id === providerId);
-  };
-
-  const handleAddProvider = (
-    selectedProvider: (typeof providers)[0] | null
-  ) => {
-    if (!selectedProvider || isAlreadySelected(selectedProvider.id)) return;
-
-    providerProductCodeAppend({
-      id: selectedProvider.id,
-      name: selectedProvider.name,
-    });
-  };
-
-  useEffect(() => {
-    console.log('PROVIDERS CARGADOS:', providers);
-  }, [providers]);
 
   return (
     <div className={styles.container}>
@@ -84,30 +63,6 @@ function KioskInformation({ control, errors }: Props) {
         </button>
       </Typography>
 
-      <Autocomplete
-        options={filteredProviders}
-        getOptionLabel={(option) => option.name}
-        onChange={(_, newValue) => handleAddProvider(newValue)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label='Buscar proveedor'
-            variant='outlined'
-            sx={{
-              mb: 2,
-              label: { color: '#454545' },
-              input: { color: '#454545' },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#454545',
-              },
-            }}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        )}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        openOnFocus
-      />
-
       <Divider sx={{ mb: 2 }} />
 
       {providerProductCodeFields.length > 0 ? (
@@ -115,32 +70,102 @@ function KioskInformation({ control, errors }: Props) {
           <Box
             key={item.id}
             sx={{
-              gap: 1,
+              gap: 2,
               display: 'flex',
               alignItems: 'center',
               paddingBottom: 3,
             }}
           >
-            <CustomInput
-              name={`providerProductCode.${index}.id`}
-              label='Id del producto'
-              control={control}
-              error={
-                errors.providerProductCode &&
-                errors.providerProductCode[index]?.id
-              }
-              type={InputType.Number}
-            />
-            <CustomInput
-              name={`providerProductCode.${index}.name`}
-              label='Nombre del proveedor'
-              control={control}
-              error={
-                errors.providerProductCode &&
-                errors.providerProductCode[index]?.name
-              }
-              type={InputType.Text}
-            />
+            <Box sx={{ width: '50%' }}>
+              <CustomInput
+                name={`providerProductCode.${index}.id`}
+                label='Id del producto'
+                control={control}
+                error={
+                  errors.providerProductCode &&
+                  errors.providerProductCode[index]?.id
+                }
+                type={InputType.Number}
+              />
+            </Box>
+
+            <Box sx={{ width: '50%' }}>
+              <Controller
+                control={control}
+                name={`providerProductCode.${index}.name`}
+                render={({ field }) => (
+                  <Autocomplete
+                    options={providers.map((p) => ({
+                      label: p.name,
+                      id: p.id,
+                    }))}
+                    getOptionLabel={(option) => option.label || ''}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value?.id
+                    }
+                    onChange={(_, value) => {
+                      field.onChange(value?.label || '');
+                      setValue(
+                        `providerProductCode.${index}.id`,
+                        value?.id || ''
+                      );
+                    }}
+                    value={
+                      providers.find((p) => p.name === field.value)
+                        ? { label: field.value, id: item.id }
+                        : null
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label='Nombre del proveedor'
+                        variant='outlined'
+                        sx={{
+                          height: 42,
+                          '& .MuiOutlinedInput-root': {
+                            height: 42,
+                            '& fieldset': {
+                              borderColor: '#454545',
+                            },
+                            '&:hover fieldset': {
+                              borderColor: '#454545',
+                            },
+                            '&.Mui-focused fieldset': {
+                              borderColor: '#454545',
+                            },
+                          },
+                          '& .MuiInputBase-input': {
+                            height: '42px',
+                            padding: '0 8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            color: '#454545',
+                          },
+                          '& .MuiInputLabel-root': {
+                            color: '#454545',
+                          },
+                          '& .MuiInputLabel-root.Mui-focused': {
+                            color: '#454545',
+                          },
+                          '& .MuiAutocomplete-popupIndicator': {
+                            color: '#454545',
+                          },
+                        }}
+                        error={Boolean(
+                          errors.providerProductCode &&
+                            errors.providerProductCode[index]?.name
+                        )}
+                        helperText={
+                          errors.providerProductCode &&
+                          errors.providerProductCode[index]?.name?.message
+                        }
+                      />
+                    )}
+                  />
+                )}
+              />
+            </Box>
+
             <IconButton
               size='small'
               color='error'
@@ -157,8 +182,7 @@ function KioskInformation({ control, errors }: Props) {
           fontStyle='italic'
           color='InactiveCaptionText'
         >
-          No hay información del prestador, presioná Agregar o buscá por nombre
-          para comenzar.
+          No hay información del prestador, presioná Agregar para comenzar.
         </Typography>
       )}
     </div>

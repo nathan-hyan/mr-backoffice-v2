@@ -46,6 +46,7 @@ function AddEditProduct() {
   }, []);
 
   const images = watch('imageURL').filter(Boolean);
+
   function getTodayFormattedEs() {
     const meses = [
       'enero',
@@ -127,7 +128,11 @@ function AddEditProduct() {
               watch={watch}
               setValue={setValue}
             />
-            <KioskInformation control={control} errors={errors} />
+            <KioskInformation
+              control={control}
+              errors={errors}
+              setValue={setValue}
+            />
             <Dimensions control={control} errors={errors} />
           </div>
         </div>

@@ -8,7 +8,7 @@ import { Product } from 'types/data';
 import usePercentage from './usePercentage';
 import useStorage from './useStorage';
 
-function useFileUpload(watch: UseFormWatch<Product>) {
+function useFileUpload(watch: UseFormWatch<Product>, fallbackName?: string) {
   const { uploadImage } = useStorage();
   const { getPercentage, currentPercentage, clearCurrentTimeout } =
     usePercentage();
@@ -20,17 +20,17 @@ function useFileUpload(watch: UseFormWatch<Product>) {
   ) => {
     const { files } = event.target;
 
-    const productName = watch('name');
+    const productName = fallbackName ?? watch('name');
+
     if (!productName || productName.length === 0) {
-      enqueueSnackbar(
-        'Por favor, ingrese un nombre al producto antes de cargar una imagen',
-        { variant: 'error' }
-      );
+      enqueueSnackbar('Por favor, defina un nombre para subir la imagen', {
+        variant: 'error',
+      });
       return;
     }
 
     if (!files) {
-      enqueueSnackbar('Ocurrio un error leyendo los archivos seleccionados', {
+      enqueueSnackbar('Ocurrió un error leyendo los archivos seleccionados', {
         variant: 'error',
       });
       return;
@@ -41,9 +41,7 @@ function useFileUpload(watch: UseFormWatch<Product>) {
 
     for (let i = 0; i < files.length; i += 1) {
       const current = files.item(i);
-      if (!current) {
-        return;
-      }
+      if (!current) return;
 
       await uploadImage(current, productName)
         .then((imageReference) => {
@@ -51,18 +49,18 @@ function useFileUpload(watch: UseFormWatch<Product>) {
             setImageURL((prevState) => [url, ...prevState])
           );
           clearCurrentTimeout();
+
           if (i + 1 === files.length) {
-            enqueueSnackbar('Imagenes subidas correctamente', {
+            enqueueSnackbar('Imágenes subidas correctamente', {
               variant: 'success',
             });
-
             setIsUploading(false);
           }
 
           getPercentage(files.length, i);
         })
         .catch((err) => {
-          enqueueSnackbar(`Ocurrio un error: ${err.message}`, {
+          enqueueSnackbar(`Ocurrió un error: ${err.message}`, {
             variant: 'error',
           });
         });
@@ -76,4 +74,5 @@ function useFileUpload(watch: UseFormWatch<Product>) {
     imageURL,
   };
 }
+
 export default useFileUpload;
