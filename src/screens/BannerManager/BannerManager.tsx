@@ -103,7 +103,7 @@ function Banners() {
 
           <Box sx={{ width: '30%' }}>
             <Typography variant='h6' fontWeight='bold'>
-              Header (1 imagen)
+              Header (2 imagen)
             </Typography>
             <TextField
               label='Hashtag promocional (opcional)'
@@ -120,7 +120,7 @@ function Banners() {
               watch={watch}
               fieldName='headerImage'
               prefix='header'
-              maxImages={1}
+              maxImages={2}
             />
           </Box>
         </div>
