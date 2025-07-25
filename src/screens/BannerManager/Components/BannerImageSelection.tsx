@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { Box } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 import defaultBanner from '~assets/defaultProduct.jpg';
 import useBannerUpload from '~hooks/useBannerUpload';
@@ -14,9 +15,16 @@ interface Props {
   setValue: UseFormSetValue<Record<string, string[]>>;
   fieldName: string;
   prefix: string;
+  maxImages?: number;
 }
 
-function BannerImageSelection({ data, setValue, fieldName, prefix }: Props) {
+function BannerImageSelection({
+  data,
+  setValue,
+  fieldName,
+  prefix,
+  maxImages = 0,
+}: Props) {
   const {
     handleFileUpload,
     isUploading,
@@ -24,6 +32,7 @@ function BannerImageSelection({ data, setValue, fieldName, prefix }: Props) {
     imageURL,
     setImageURL,
   } = useBannerUpload(prefix);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [images, setImages] = useState<string[]>(
     data.length > 0 ? data : [defaultBanner]
@@ -31,10 +40,28 @@ function BannerImageSelection({ data, setValue, fieldName, prefix }: Props) {
 
   useEffect(() => {
     if (imageURL.length) {
+      if (maxImages > 0 && imageURL.length > maxImages) {
+        enqueueSnackbar(
+          `Máximo ${maxImages} imágenes permitido para la sección "${prefix}"`,
+          { variant: 'warning' }
+        );
+        setImageURL(data); // revertimos la subida para mantener estado original
+        return;
+      }
+
       setImages(imageURL);
       setValue(fieldName, imageURL);
     }
-  }, [imageURL, setValue, fieldName]);
+  }, [
+    imageURL,
+    maxImages,
+    data,
+    setValue,
+    fieldName,
+    prefix,
+    enqueueSnackbar,
+    setImageURL,
+  ]);
 
   useEffect(() => {
     if (data.length > 0) setImages(data);

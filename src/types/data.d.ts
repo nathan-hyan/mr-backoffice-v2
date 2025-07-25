@@ -185,3 +185,10 @@ export interface Providers {
   balance: string;
   buys: number;
 }
+
+export interface BannerDocument {
+  id: string;
+  images: ImageType[];
+  tag?: string | null;
+  updatedAt: Date;
+}
