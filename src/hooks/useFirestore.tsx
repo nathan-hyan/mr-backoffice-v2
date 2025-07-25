@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useState } from 'react';
 import { FirebaseError } from 'firebase/app';
 import {
@@ -13,9 +14,11 @@ import {
   onSnapshot,
   orderBy,
   query,
+  setDoc,
   updateDoc,
 } from 'firebase/firestore';
 import { useSnackbar } from 'notistack';
+import { BannerDocument } from 'types/data';
 
 import { database } from '~config/firebase';
 import { FirestoreCollections } from '~constants/firebase';
@@ -168,6 +171,26 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     return collection(database, collectionName);
   };
 
+  const setOrUpdateDocument = async (
+    documentId: string,
+    data: BannerDocument
+  ) => {
+    try {
+      const docRef = doc(database, collectionName, documentId);
+      const existing = await getDoc(docRef);
+
+      if (existing.exists()) {
+        await updateDoc(docRef, data as any);
+        enqueueSnackbar('Banner actualizado', { variant: 'info' });
+      } else {
+        await setDoc(docRef, data);
+        enqueueSnackbar('Banner creado', { variant: 'success' });
+      }
+    } catch (err) {
+      throwError(err);
+    }
+  };
+
   return {
     updateDocument,
     addDocument,
@@ -179,6 +202,7 @@ function useFirestore<T>(collectionName: FirestoreCollections) {
     updateLoading,
     getLastDocument,
     queryDocuments,
+    setOrUpdateDocument,
   };
 }
 export default useFirestore;
