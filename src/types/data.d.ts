@@ -188,7 +188,7 @@ export interface Providers {
 
 export interface BannerDocument {
   id: string;
-  images: ImageType[];
+  images: string[];
   tag?: string | null;
   updatedAt: Date;
 }

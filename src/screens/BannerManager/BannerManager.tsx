@@ -12,12 +12,12 @@ import BannerImageSelection from './Components/BannerImageSelection';
 function Banners() {
   const { watch, setValue, getValues, reset } = useForm<Record<string, any>>({
     defaultValues: {
-      spinnerImages: [],
+      sliderImages: [],
       headerImage: [],
       midImage1: [],
       midImage2: [],
       bottomImage: [],
-      spinnerTag: '',
+      sliderTag: '',
       headerTag: '',
       mid1Tag: '',
       mid2Tag: '',
@@ -30,12 +30,12 @@ function Banners() {
 
   const handleSaveBanners = async () => {
     const {
-      spinnerImages,
+      sliderImages,
       headerImage,
       midImage1,
       midImage2,
       bottomImage,
-      spinnerTag,
+      sliderTag,
       headerTag,
       mid1Tag,
       mid2Tag,
@@ -43,7 +43,7 @@ function Banners() {
     } = getValues();
 
     const bannersToSave = [
-      { id: 'spinner', images: spinnerImages, tag: spinnerTag },
+      { id: 'slider', images: sliderImages, tag: sliderTag },
       { id: 'header', images: headerImage, tag: headerTag },
       { id: 'mid1', images: midImage1, tag: mid1Tag },
       { id: 'mid2', images: midImage2, tag: mid2Tag },
@@ -81,29 +81,29 @@ function Banners() {
         <div className={styles.headerImage}>
           <Box sx={{ width: '70%' }}>
             <Typography variant='h6' fontWeight='bold'>
-              Spinner (sin límite)
+              Slider(sin límite)
             </Typography>
             <TextField
               label='Hashtag promocional (opcional)'
               variant='outlined'
               size='small'
-              value={watch('spinnerTag')}
-              onChange={(e) => setValue('spinnerTag', e.target.value)}
+              value={watch('sliderTag')}
+              onChange={(e) => setValue('sliderTag', e.target.value)}
               sx={{ mb: 2 }}
             />
             <Divider sx={{ mb: 2 }} />
             <BannerImageSelection
-              data={watch('spinnerImages')}
+              data={watch('sliderImages')}
               setValue={setValue}
               watch={watch}
-              fieldName='spinnerImages'
-              prefix='spinner'
+              fieldName='sliderImages'
+              prefix='slider'
             />
           </Box>
 
           <Box sx={{ width: '30%' }}>
             <Typography variant='h6' fontWeight='bold'>
-              Header (1 imagen)
+              Header (2 imagen)
             </Typography>
             <TextField
               label='Hashtag promocional (opcional)'
@@ -120,7 +120,7 @@ function Banners() {
               watch={watch}
               fieldName='headerImage'
               prefix='header'
-              maxImages={1}
+              maxImages={2}
             />
           </Box>
         </div>
