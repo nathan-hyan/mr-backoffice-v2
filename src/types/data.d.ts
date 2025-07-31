@@ -186,9 +186,22 @@ export interface Providers {
   buys: number;
 }
 
+interface BannerItem {
+  url: string;
+  tag: string;
+}
+
 export interface BannerDocument {
   id: string;
-  images: string[];
+  images: BannerItem[];
   tag?: string | null;
   updatedAt: Date;
+}
+
+export interface BannerFormValues {
+  sliderImages: BannerItem[];
+  headerImage: BannerItem[];
+  midImage1: BannerItem[];
+  midImage2: BannerItem[];
+  bottomImage: BannerItem[];
 }

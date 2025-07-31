@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from 'react-hook-form';
-import { Box, Button, Divider, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 
 import { FirestoreCollections } from '~constants/firebase';
 import useFirestore from '~hooks/useFirestore';
@@ -17,37 +17,21 @@ function Banners() {
       midImage1: [],
       midImage2: [],
       bottomImage: [],
-      sliderTag: '',
-      headerTag: '',
-      mid1Tag: '',
-      mid2Tag: '',
-      bottomTag: '',
-      mid3Tag: '',
     },
   });
 
   const { setOrUpdateDocument } = useFirestore(FirestoreCollections.Banners);
 
   const handleSaveBanners = async () => {
-    const {
-      sliderImages,
-      headerImage,
-      midImage1,
-      midImage2,
-      bottomImage,
-      sliderTag,
-      headerTag,
-      mid1Tag,
-      mid2Tag,
-      mid3Tag,
-    } = getValues();
+    const { sliderImages, headerImage, midImage1, midImage2, bottomImage } =
+      getValues();
 
     const bannersToSave = [
-      { id: 'slider', images: sliderImages, tag: sliderTag },
-      { id: 'header', images: headerImage, tag: headerTag },
-      { id: 'mid1', images: midImage1, tag: mid1Tag },
-      { id: 'mid2', images: midImage2, tag: mid2Tag },
-      { id: 'bottom', images: bottomImage, tag: mid3Tag },
+      { id: 'slider', images: sliderImages },
+      { id: 'header', images: headerImage },
+      { id: 'mid1', images: midImage1 },
+      { id: 'mid2', images: midImage2 },
+      { id: 'bottom', images: bottomImage },
     ];
 
     const filteredBanners = bannersToSave.filter(
@@ -58,7 +42,6 @@ function Banners() {
       filteredBanners.map((banner) =>
         setOrUpdateDocument(banner.id, {
           images: banner.images,
-          tag: banner.tag?.trim() || null,
           updatedAt: new Date(),
           id: banner.id,
         })
@@ -77,20 +60,11 @@ function Banners() {
         <Typography variant='h4' fontWeight='bold'>
           Header
         </Typography>
-
         <div className={styles.headerImage}>
           <Box sx={{ width: '70%' }}>
             <Typography variant='h6' fontWeight='bold'>
-              Slider(sin límite)
+              Slider (sin límite)
             </Typography>
-            <TextField
-              label='Hashtag promocional (opcional)'
-              variant='outlined'
-              size='small'
-              value={watch('sliderTag')}
-              onChange={(e) => setValue('sliderTag', e.target.value)}
-              sx={{ mb: 2 }}
-            />
             <Divider sx={{ mb: 2 }} />
             <BannerImageSelection
               data={watch('sliderImages')}
@@ -103,16 +77,8 @@ function Banners() {
 
           <Box sx={{ width: '30%' }}>
             <Typography variant='h6' fontWeight='bold'>
-              Header (2 imagen)
+              Header (2 imágenes)
             </Typography>
-            <TextField
-              label='Hashtag promocional (opcional)'
-              variant='outlined'
-              size='small'
-              value={watch('headerTag')}
-              onChange={(e) => setValue('headerTag', e.target.value)}
-              sx={{ mb: 2 }}
-            />
             <Divider sx={{ mb: 2 }} />
             <BannerImageSelection
               data={watch('headerImage')}
@@ -136,14 +102,6 @@ function Banners() {
               <Typography variant='h6' fontWeight='bold'>
                 Mid 1 (1 imagen)
               </Typography>
-              <TextField
-                label='Hashtag promocional (opcional)'
-                variant='outlined'
-                size='small'
-                value={watch('mid1Tag')}
-                onChange={(e) => setValue('mid1Tag', e.target.value)}
-                sx={{ mb: 2 }}
-              />
               <Divider sx={{ mb: 2 }} />
               <BannerImageSelection
                 data={watch('midImage1')}
@@ -159,14 +117,6 @@ function Banners() {
               <Typography variant='h6' fontWeight='bold'>
                 Mid 2 (2 imágenes)
               </Typography>
-              <TextField
-                label='Hashtag promocional (opcional)'
-                variant='outlined'
-                size='small'
-                value={watch('mid2Tag')}
-                onChange={(e) => setValue('mid2Tag', e.target.value)}
-                sx={{ mb: 2 }}
-              />
               <Divider sx={{ mb: 2 }} />
               <BannerImageSelection
                 data={watch('midImage2')}
@@ -184,14 +134,6 @@ function Banners() {
               <Typography variant='h6' fontWeight='bold'>
                 Mid 3 (1 imagen)
               </Typography>
-              <TextField
-                label='Hashtag promocional (opcional)'
-                variant='outlined'
-                size='small'
-                value={watch('mid3Tag')}
-                onChange={(e) => setValue('mid3Tag', e.target.value)}
-                sx={{ mb: 2 }}
-              />
               <Divider sx={{ mb: 2 }} />
               <BannerImageSelection
                 data={watch('bottomImage')}
