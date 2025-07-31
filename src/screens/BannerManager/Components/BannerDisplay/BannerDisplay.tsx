@@ -9,9 +9,14 @@ import { CSS } from '@dnd-kit/utilities';
 
 import styles from './styles.module.scss';
 
+interface BannerItem {
+  url: string;
+  tag: string;
+}
+
 interface Props {
-  data: string[];
-  onReorder?: (newOrder: string[]) => void;
+  data: BannerItem[];
+  onReorder?: (newOrder: BannerItem[]) => void;
 }
 
 function SortableImage({
@@ -64,15 +69,21 @@ function BannerImageDisplay({ data, onReorder = () => {} }: Props) {
   const handleDragEnd = (event: import('@dnd-kit/core').DragEndEvent) => {
     const { active, over } = event;
     if (active.id !== over?.id && onReorder) {
-      const oldIndex = data.findIndex((img) => img === active.id);
-      const newIndex = data.findIndex((img) => img === over?.id);
-      onReorder(arrayMove(data, oldIndex, newIndex));
+      const oldIndex = data.findIndex((img) => img.url === active.id);
+      const newIndex = data.findIndex((img) => img.url === over?.id);
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const updatedOrder = arrayMove(data, oldIndex, newIndex);
+        onReorder(updatedOrder);
+      }
     }
   };
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={data} strategy={horizontalListSortingStrategy}>
+      <SortableContext
+        items={data.map((item) => item.url)}
+        strategy={horizontalListSortingStrategy}
+      >
         <div
           style={{
             display: 'flex',
@@ -86,9 +97,9 @@ function BannerImageDisplay({ data, onReorder = () => {} }: Props) {
           )}
           {data.map((image, idx) => (
             <SortableImage
-              key={image}
-              id={image}
-              src={image}
+              key={image.url}
+              id={image.url}
+              src={image.url}
               isPrimary={idx === 0}
             />
           ))}

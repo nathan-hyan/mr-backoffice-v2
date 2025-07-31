@@ -5,12 +5,18 @@ import { enqueueSnackbar } from 'notistack';
 import usePercentage from './usePercentage';
 import useStorage from './useStorage';
 
+interface BannerItem {
+  url: string;
+  tag: string;
+}
+
 function useBannerUpload(prefix: string) {
   const { uploadImage } = useStorage();
   const { getPercentage, currentPercentage, clearCurrentTimeout } =
     usePercentage();
+
   const [isUploading, setIsUploading] = useState(false);
-  const [imageURL, setImageURL] = useState<string[]>([]);
+  const [imagesData, setImagesData] = useState<BannerItem[]>([]);
 
   const handleFileUpload: ChangeEventHandler<HTMLInputElement> = async (
     event
@@ -32,7 +38,7 @@ function useBannerUpload(prefix: string) {
 
       return uploadImage(file, namePrefix)
         .then((imageReference) =>
-          getDownloadURL(imageReference.ref).then((url) => url)
+          getDownloadURL(imageReference.ref).then((url) => ({ url, tag: '' }))
         )
         .catch((err) => {
           enqueueSnackbar(`❌ Error al subir: ${err.message}`, {
@@ -42,11 +48,11 @@ function useBannerUpload(prefix: string) {
         });
     });
 
-    const urls = await Promise.all(uploadPromises);
-    const validUrls = urls.filter((url): url is string => Boolean(url));
+    const results = await Promise.all(uploadPromises);
+    const validResults = results.filter((item): item is BannerItem => !!item);
 
-    if (validUrls.length > 0) {
-      setImageURL(validUrls);
+    if (validResults.length > 0) {
+      setImagesData(validResults);
       enqueueSnackbar('✅ Imágenes subidas correctamente', {
         variant: 'success',
       });
@@ -61,8 +67,8 @@ function useBannerUpload(prefix: string) {
     handleFileUpload,
     isUploading,
     uploadProgress: currentPercentage,
-    imageURL,
-    setImageURL,
+    imagesData,
+    setImagesData,
   };
 }
 
