@@ -61,6 +61,7 @@ export interface Department {
   name: string;
   categories: Category[];
   imageURL?: string[];
+  active: boolean;
 }
 
 export interface Category {
