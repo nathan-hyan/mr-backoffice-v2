@@ -12,6 +12,7 @@ import {
   ListItemText,
   MenuItem,
   Paper,
+  Switch,
   Typography,
 } from '@mui/material';
 import { Department } from 'types/data';
@@ -28,6 +29,8 @@ interface Props {
 
   openModal: (dep?: Department) => void;
   removeDepartment: (id: string) => void;
+
+  onToggleActive: (id: string, isActive: boolean) => void;
 }
 
 function DepartmentList({
@@ -36,6 +39,7 @@ function DepartmentList({
   handleSelectDepartment,
   openModal,
   removeDepartment,
+  onToggleActive,
 }: Props) {
   const [markedForDeletion, setMarkedForDeletion] =
     useState<Nullable<string>>(null);
@@ -105,6 +109,12 @@ function DepartmentList({
                       sx={{ width: 32, height: 32, mr: 1 }}
                     />
                     <ListItemText>{dep.name}</ListItemText>
+
+                    <Switch
+                      checked={dep.active}
+                      onChange={() => onToggleActive(dep.id!, !dep.active)}
+                      onClick={(e) => e.stopPropagation()}
+                    />
                   </ListItemButton>
                   {index + 1 !== data.length && <Divider />}
                 </Fragment>

@@ -240,6 +240,13 @@ function CategoryManager() {
     }
   };
 
+  const handleToggleDepartmentActive = (
+    departmentId: string,
+    isActive: boolean
+  ) => {
+    updateDepartment(departmentId, { active: isActive });
+  };
+
   return (
     <>
       <AddDepartment
@@ -256,6 +263,7 @@ function CategoryManager() {
               ...dep,
               internalId: getLatestInternalId(departments) + 1,
               categories: [],
+              active: true,
             };
             addDepartment(newDep);
           }
@@ -291,6 +299,7 @@ function CategoryManager() {
               handleSelectDepartment={handleSelectDepartment}
               openModal={openDepartmentModal}
               removeDepartment={removeDepartment}
+              onToggleActive={handleToggleDepartmentActive}
             />
           </Grid>
           <Grid item xs={3}>
