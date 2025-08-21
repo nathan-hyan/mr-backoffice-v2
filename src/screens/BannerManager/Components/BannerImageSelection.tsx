@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
-import { Box, TextField } from '@mui/material';
+import { Autocomplete, Box, TextField } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { BannerFormValues } from 'types/data';
 
 import defaultBanner from '~assets/defaultProduct.jpg';
+import { useTags } from '~contexts/Tags';
 import useBannerUpload from '~hooks/useBannerUpload';
 import { styles } from '~screens/AddEditProduct/components/Information/components/ImageSelection/ImageSelection.styles';
 
@@ -45,6 +47,11 @@ function BannerImageSelection({
   const [images, setImages] = useState<BannerItem[]>(
     data.length > 0 ? data : [{ url: defaultBanner, tag: '' }]
   );
+  const { tags, fetchTags } = useTags();
+
+  useEffect(() => {
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     if (imagesData.length) {
@@ -94,31 +101,41 @@ function BannerImageSelection({
       <BannerImageDisplay data={images} onReorder={handleReorder} />
 
       {images.map((img, idx) => (
-        <TextField
+        <Autocomplete
           key={`tag-${img.url}`}
-          label={`Tag imagen ${idx + 1}`}
+          freeSolo
+          options={tags.map((tag) => ({ label: tag, value: tag }))}
           value={img.tag}
-          onChange={(e) => handleTagChange(idx, e.target.value)}
-          variant='outlined'
-          size='small'
-          sx={{ my: 1 }}
-          fullWidth
-          InputProps={{
-            sx: {
-              borderRadius: 1,
-              '& input': {
-                color: '#000',
-              },
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#000',
-              },
-            },
+          onInputChange={(_, newTag) => {
+            handleTagChange(idx, newTag);
           }}
-          InputLabelProps={{
-            sx: {
-              color: '#000',
-            },
-          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={`Tag imagen ${idx + 1}`}
+              variant='outlined'
+              size='small'
+              sx={{ my: 1 }}
+              fullWidth
+              InputProps={{
+                ...params.InputProps,
+                sx: {
+                  borderRadius: 1,
+                  '& input': {
+                    color: '#000',
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#000',
+                  },
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: '#000',
+                },
+              }}
+            />
+          )}
         />
       ))}
 

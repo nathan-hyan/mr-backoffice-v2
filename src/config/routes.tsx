@@ -39,6 +39,7 @@ import Providers from '~screens/Providers';
 import ProvidersDetails from '~screens/Providers/ProvidersDetails';
 import BillsPreview from '~screens/Solds/Bills/billsPreview';
 import SearchScreen from '~screens/Solds/searchScreen';
+import TagManager from '~screens/TagManager/TagManager';
 import WorkInProgress from '~screens/WorkInProgress/WorkInProgress';
 
 import App from '../App';
@@ -93,6 +94,7 @@ export const ROUTES = [
     path: '/provider-details',
     element: <ProvidersDetails />,
   },
+
   {
     id: 55,
     path: '/priceList',
@@ -205,6 +207,14 @@ export const ROUTESB = [
     description: '',
     path: '/priceModifier',
     element: <PriceModifier />,
+  },
+  {
+    id: 51,
+    icon: <FiberManualRecord fontSize='5px' />,
+    path: '/tags',
+    title: 'Administrador de Tags',
+    description: '',
+    element: <TagManager />,
   },
   {
     id: 24,

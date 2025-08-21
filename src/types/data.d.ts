@@ -126,6 +126,7 @@ export interface Product {
   updatedAt: Timestamp;
   showInStore: boolean;
   userFeedback: UserFeedback[];
+  tag: Tag[];
 }
 export interface Venta {
   id?: string;
@@ -195,7 +196,7 @@ interface BannerItem {
 export interface BannerDocument {
   id: string;
   images: BannerItem[];
-  tag?: string | null;
+  tag?: Tag[];
   updatedAt: Date;
 }
 
@@ -205,4 +206,8 @@ export interface BannerFormValues {
   midImage1: BannerItem[];
   midImage2: BannerItem[];
   bottomImage: BannerItem[];
+}
+export interface Tag {
+  id?: string;
+  tag: string;
 }

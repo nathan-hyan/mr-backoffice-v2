@@ -20,6 +20,7 @@ import {
 import ProductProvider from '~contexts/Products';
 import ProvidersProvider from '~contexts/Providers';
 import VentasProvider from '~contexts/Sells';
+import TagProvider from '~contexts/Tags';
 import { UserContextProvider } from '~contexts/User';
 
 import './index.scss';
@@ -43,12 +44,14 @@ const router = createHashRouter([
         <UserContextProvider>
           <ThemeProvider theme={theme}>
             <VentasProvider>
-              <ProvidersProvider>
-                <CssBaseline enableColorScheme />
-                <ProductProvider>
-                  <NavbarWrapper />
-                </ProductProvider>
-              </ProvidersProvider>
+              <TagProvider>
+                <ProvidersProvider>
+                  <CssBaseline enableColorScheme />
+                  <ProductProvider>
+                    <NavbarWrapper />
+                  </ProductProvider>
+                </ProvidersProvider>
+              </TagProvider>
             </VentasProvider>
           </ThemeProvider>
         </UserContextProvider>
