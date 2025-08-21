@@ -16,6 +16,7 @@ import {
 import ImageSelection from './components/Information/components/ImageSelection/ImageSelection';
 import Information from './components/Information/Information';
 import Stock from './components/Stock/Stock';
+import TagSelector from './components/TagSelector/TagSelector';
 import useProductModal from './hook';
 
 function AddEditProduct() {
@@ -120,6 +121,7 @@ function AddEditProduct() {
             <Specifications control={control} errors={errors} />{' '}
             <Variants control={control} errors={errors} />
             <ImageSelection data={images} setValue={setValue} watch={watch} />
+            <TagSelector control={control} errors={errors} />
           </div>
           <div className={styles.formRight}>
             <Prices
@@ -133,6 +135,7 @@ function AddEditProduct() {
               errors={errors}
               setValue={setValue}
             />
+
             <Dimensions control={control} errors={errors} />
           </div>
         </div>
