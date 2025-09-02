@@ -1,0 +1,37 @@
+.container {
+    color: #000;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+
+    .inputText {
+        width: 100%;
+        padding: 0.5rem;
+        background-color: #fff;
+        border: solid 1px #ccc;
+        border-radius: 5px;
+        color: #000;
+    }
+
+    .search {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .redirectButton {
+        background-color: #FF7878;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken(#FF7878, 10%);
+        }
+    }
+}

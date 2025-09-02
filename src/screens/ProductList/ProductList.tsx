@@ -7,7 +7,8 @@ import useFirestore from '~hooks/useFirestore';
 import useGATag from '~hooks/useGATag';
 import CustomTable from '~screens/ProductList/components/CustomTable';
 import SearchBox from '~screens/ProductList/components/SearchBox';
-import SortByBox from '~screens/ProductList/components/SortByBox';
+
+import styles from './styles.module.scss';
 
 function ProductList() {
   useGATag();
@@ -53,11 +54,12 @@ function ProductList() {
   ]);
 
   return (
-    <>
-      <SearchBox />
-      <SortByBox />
-      <CustomTable />
-    </>
+    <div className={styles.container}>
+      <div className={styles.component}>
+        <SearchBox />
+        <CustomTable />
+      </div>
+    </div>
   );
 }
 export default ProductList;
