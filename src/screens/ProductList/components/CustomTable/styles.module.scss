@@ -1,0 +1,25 @@
+.container {
+    color: #000;
+
+    .pagination {
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+
+        padding: 7px;
+
+        select {
+            background-color: #fff;
+            color: #000;
+            border-radius: 5px;
+        }
+
+        .buttonPagination {
+            background-color: #6889f5;
+            color: #fff;
+            border-radius: 5px;
+        }
+    }
+}

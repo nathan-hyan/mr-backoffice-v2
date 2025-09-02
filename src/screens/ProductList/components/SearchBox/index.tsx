@@ -1,96 +1,119 @@
-import { ChangeEventHandler /* MouseEvent  */ } from 'react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import {
-  IconButton,
-  InputAdornment,
-  Paper,
-  TextField,
-  /*   ToggleButton,
-  ToggleButtonGroup, */
-} from '@mui/material';
+import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-/* import { Nullable } from 'vite-env'; */
 import { GACategories, GATypes } from '~constants/gaTagTypes';
 import { useProducts } from '~contexts/Products';
 import useGATag from '~hooks/useGATag';
 
-function SearchBox() {
+import styles from './styles.module.scss';
+
+function ProductSearchPanel() {
   const { tagAction } = useGATag(true);
   const { performSearch, searchQuery, clearSearch, searchCriteria } =
     useProducts();
 
-  const handleChangeValue: ChangeEventHandler<
-    HTMLInputElement | HTMLTextAreaElement
-  > = (e) => {
+  const [localQuery, setLocalQuery] = useState(searchQuery);
+  const [criteria, setCriteria] = useState(searchCriteria);
+  const navigate = useNavigate();
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    setLocalQuery(value);
 
-    performSearch(value, searchCriteria);
-  };
-
-  const handleClearInput = () => {
-    tagAction(GACategories.Event, GATypes.Click, 'Cleared search box');
-    clearSearch();
-  };
-
-  /*  const handleChangeSearch: (
-    event: MouseEvent<HTMLElement, globalThis.MouseEvent>,
-    value: Nullable<number>
-  ) => void = (_, newValue) => {
-    if (typeof newValue === 'number') {
-      tagAction(
-        GACategories.Event,
-        GATypes.Changed,
-        `Search type: ${newValue === 0 ? 'nombre producto' : 'codigo barras'}}`
-      );
-      performSearch(searchQuery, newValue);
+    if (value === '') {
+      tagAction(GACategories.Event, GATypes.Click, 'Cleared search box');
+      clearSearch();
+    } else {
+      performSearch(value, criteria);
     }
-  }; */
+  };
+
+  const handleCriteriaChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    setCriteria(value);
+
+    let searchType = '';
+    if (value === 0) {
+      searchType = 'nombre producto';
+    } else if (value === 1) {
+      searchType = 'codigo barras';
+    } else {
+      searchType = 'ID';
+    }
+
+    tagAction(
+      GACategories.Event,
+      GATypes.Changed,
+      `Search type: ${searchType}`
+    );
+
+    performSearch(localQuery, value);
+  };
+
+  const handleRedirect = () => {
+    navigate('/add');
+  };
 
   return (
-    <Paper
-      sx={{
-        p: 3,
-      }}
-    >
-      <TextField
-        sx={{
-          width: '100%',
-        }}
-        value={searchQuery}
-        onChange={handleChangeValue}
-        id='standard-basic'
-        label='Buscar un producto...'
-        variant='standard'
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end'>
-              <IconButton color='warning' onClick={handleClearInput}>
-                <HighlightOffIcon />
-              </IconButton>
-              <IconButton color='primary'>
-                <ArrowForwardIcon />
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
-      {/* <ToggleButtonGroup
-        color='primary'
-        value={searchCriteria}
-        exclusive
-        onChange={handleChangeSearch}
-        size='small'
-        fullWidth
-        aria-label='Platform'
-        sx={{
-          mt: 3,
-        }}
-      >
-        <ToggleButton value={0}>Nombre Prod.</ToggleButton>
-        <ToggleButton value={1}>Cod. Barras</ToggleButton>
-      </ToggleButtonGroup> */}
-    </Paper>
+    <div className={styles.container}>
+      <div className={styles.search}>
+        <div>
+          <input
+            className={styles.inputText}
+            type='text'
+            placeholder='Buscar producto'
+            value={localQuery}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
+          <label htmlFor='searchCriteria-nombre'>
+            <input
+              id='searchCriteria-nombre'
+              type='radio'
+              name='searchCriteria'
+              value={0}
+              checked={criteria === 0}
+              onChange={handleCriteriaChange}
+            />
+            Nombre
+          </label>
+          <label htmlFor='searchCriteria-codigo'>
+            <input
+              id='searchCriteria-codigo'
+              type='radio'
+              name='searchCriteria'
+              value={1}
+              checked={criteria === 1}
+              onChange={handleCriteriaChange}
+            />
+            Código de barra
+          </label>
+          <label htmlFor='searchCriteria-id'>
+            <input
+              id='searchCriteria-id'
+              type='radio'
+              name='searchCriteria'
+              value={2}
+              checked={criteria === 2}
+              onChange={handleCriteriaChange}
+            />
+            ID
+          </label>
+        </div>
+      </div>
+      <div>
+        <button
+          className={styles.redirectButton}
+          type='button'
+          onClick={handleRedirect}
+        >
+          + Agregar Producto
+        </button>
+      </div>
+    </div>
   );
 }
-export default SearchBox;
+
+export default ProductSearchPanel;

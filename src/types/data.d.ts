@@ -127,6 +127,8 @@ export interface Product {
   showInStore: boolean;
   userFeedback: UserFeedback[];
   tag: Tag[];
+  isActive: boolean;
+  isEcom: boolean;
 }
 export interface Venta {
   id?: string;

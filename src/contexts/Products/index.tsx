@@ -63,16 +63,29 @@ export default function ProductProvider({ children }: Props) {
           .toLowerCase();
 
       const normalizedQuery = normalizeText(query);
-      const queryWords = normalizedQuery.split(' ');
+      const queryWords = normalizedQuery.split(' ').filter(Boolean);
 
-      const filteredProducts = productListCopy.filter(({ name, barcode }) => {
-        if (criteria === SearchCriteria.ProductName) {
-          const normalizedName = normalizeText(name);
-          const nameWords = normalizedName.split(' ');
-          return queryWords.every((word) => nameWords.includes(word));
+      const filteredProducts = productListCopy.filter(
+        ({ name, barcode, id }) => {
+          let targetText = '';
+
+          switch (criteria) {
+            case SearchCriteria.ProductName:
+              targetText = normalizeText(name);
+              break;
+            case SearchCriteria.BarCode:
+              targetText = normalizeText(barcode);
+              break;
+            case SearchCriteria.id:
+              targetText = normalizeText(id);
+              break;
+            default:
+              return false;
+          }
+
+          return queryWords.every((word) => targetText.includes(word));
         }
-        return normalizeText(barcode).includes(normalizedQuery);
-      });
+      );
 
       setProductList(filteredProducts);
     },
