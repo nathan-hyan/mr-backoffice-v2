@@ -13,6 +13,9 @@
     "prepare": "husky install",
     "pre-push": "lint-staged"
   },
+   "engines": {
+  "node": "22.x"
+},
   "overrides": {
     "glob-parent": "^5.1.2",
     "trim": "^0.0.3",
