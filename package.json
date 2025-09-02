@@ -13,7 +13,7 @@
     "prepare": "husky install",
     "pre-push": "lint-staged"
   },
-   "engines": {
+  "engines": {
   "node": "22.x"
 },
   "overrides": {
