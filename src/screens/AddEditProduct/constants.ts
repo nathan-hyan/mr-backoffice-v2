@@ -290,9 +290,9 @@ export const EMPTY_FORM: Product = {
   prices: {
     cost: { value: 0 },
     retail1: { value: 70, cantidad: 1, percent: 0 },
-    retail2: { value: 60, cantidad: 3, percent: 0 },
-    retail3: { value: 50, cantidad: 5, percent: 0 },
-    retail4: { value: 45, cantidad: 10, percent: 0 },
+    retail2: { value: 63, cantidad: 3, percent: 0 },
+    retail3: { value: 56, cantidad: 5, percent: 0 },
+    retail4: { value: 50, cantidad: 10, percent: 0 },
     online: { value: 65 },
     mayo1: { value: 60 },
     mayo2: { value: 50 },
