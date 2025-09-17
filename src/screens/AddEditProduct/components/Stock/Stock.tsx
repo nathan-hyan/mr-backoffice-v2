@@ -9,9 +9,9 @@ import {
 } from 'react-hook-form';
 import {
   Box,
+  Checkbox,
   Divider,
   FormControlLabel,
-  Radio,
   Typography,
 } from '@mui/material';
 import { Product } from 'types/data';
@@ -108,6 +108,7 @@ function Stock({ control, watch, errors, setValue }: Props) {
           }} */
         />
       </Box>
+
       <Controller
         control={control}
         name='stock.noPhysicalStock'
@@ -116,17 +117,36 @@ function Stock({ control, watch, errors, setValue }: Props) {
           <FormControlLabel
             sx={{ color: '#9c9c9c' }}
             control={
-              <Radio
+              <Checkbox
+                checked={field.value}
+                onChange={(e) => field.onChange(e.target.checked)}
                 sx={{
-                  color: '#9c9c9c',
+                  margin: 1,
+                  width: 22,
+                  height: 22,
+                  borderRadius: '50%',
+                  border: '2px solid #9c9c9c',
+                  padding: 0,
                   '&.Mui-checked': {
-                    color: '#1976d2',
+                    backgroundColor: '#79A8FF',
+                    borderColor: '#79A8FF',
+                  },
+                  '& .MuiSvgIcon-root': {
+                    display: 'none',
+                  },
+                  '&.Mui-checked::before': {
+                    content: '""',
+                    display: 'block',
+                    width: 10,
+                    height: 10,
+                    borderRadius: '50%',
+                    backgroundColor: '#fff',
+                    margin: 'auto',
                   },
                 }}
               />
             }
-            label='Sin Stock (Por Ejemplo ,Fotocopias, servicios de boletas)'
-            {...field}
+            label='Sin Stock (Por Ejemplo, Fotocopias, servicios de boletas)'
           />
         )}
       />

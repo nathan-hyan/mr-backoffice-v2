@@ -45,19 +45,14 @@ function Prices({ control, watch, setValue, errors }: Props) {
 
     getRetailPrices().forEach((item) => {
       const pct = Number(watch(`prices.${item.name}.value`));
-      const qty = Number(watch(`prices.${item.name}.cantidad`)) || 1;
-
-      if (!isNaN(pct) && qty > 0) {
+      if (!isNaN(pct)) {
         const unit = calculateNumberWithPercentage(costo, pct, 'incr');
         setValue(`prices.${item.name}.retail`, Number(unit.toFixed(2)));
       }
     });
   }, [
     costo,
-    watch('prices.retail1.cantidad'),
-    watch('prices.retail2.cantidad'),
-    watch('prices.retail3.cantidad'),
-    watch('prices.retail4.cantidad'),
+    ...getRetailPrices().map((item) => watch(`prices.${item.name}.value`)),
   ]);
 
   useEffect(() => {
@@ -146,9 +141,8 @@ function Prices({ control, watch, setValue, errors }: Props) {
                   value={formatPrice(display)}
                   onChange={(e) => {
                     const val = Number(e.target.value);
-                    if (!isNaN(val) && costo > 0 && qty > 0) {
-                      const unitPrice = val / qty;
-                      const newPct = ((unitPrice - costo) / costo) * 100;
+                    if (!isNaN(val) && costo > 0) {
+                      const newPct = ((val - costo) / costo) * 100;
                       setValue(`prices.${item.name}.value`, newPct);
                       setValue(`prices.${item.name}.retail`, val);
                     }

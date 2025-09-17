@@ -105,10 +105,25 @@ function KioskInformation({ control, errors, setValue }: Props) {
                     }
                     onChange={(_, value) => {
                       field.onChange(value?.label || '');
-                      setValue(
-                        `providerProductCode.${index}.id`,
-                        value?.id || ''
+
+                      const selectedProvider = providers.find(
+                        (p) => p.name === value?.label
                       );
+                      const currentId = watch(
+                        `providerProductCode.${index}.id`
+                      );
+
+                      if (
+                        selectedProvider &&
+                        (currentId === '' ||
+                          currentId === null ||
+                          currentId === undefined)
+                      ) {
+                        setValue(
+                          `providerProductCode.${index}.id`,
+                          selectedProvider.id
+                        );
+                      }
                     }}
                     value={
                       providers.find((p) => p.name === field.value)

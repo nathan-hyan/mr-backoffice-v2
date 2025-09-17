@@ -38,6 +38,7 @@
         border-radius: 5px;
         border: none;
         font-size: 15px;
+        cursor: pointer;
     }
 
     .saveButton {
@@ -48,14 +49,16 @@
         border: none;
         color: #454545;
         font-size: 15px;
+        cursor: pointer;
     }
 }
 
 .formContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
-
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .formLeft,
@@ -64,4 +67,9 @@
     flex-direction: column;
     gap: 15px;
     margin: 15px;
+
+    min-width: 0;
+    overflow-x: hidden;
+
+
 }
