@@ -6,8 +6,9 @@ import { Product } from 'types/data';
 import defaultProduct from '~assets/defaultProduct.jpg';
 import useFileUpload from '~hooks/useFileUpload';
 
+import styles from './styles.module.scss';
+
 import { ImageDisplay, ImageUploader } from './components';
-import { styles } from './ImageSelection.styles';
 
 interface Props {
   data: string[];
@@ -16,22 +17,26 @@ interface Props {
 }
 
 function ImageSelection({ data, setValue, watch }: Props) {
-  const { handleFileUpload, isUploading, uploadProgress, imageURL } =
-    useFileUpload(watch);
+  const { handleFileUpload, isUploading, uploadProgress } = useFileUpload(
+    watch,
+    setValue
+  );
 
   const [images, setImages] = useState<string[]>(
     data.length > 0 ? data : [defaultProduct]
   );
 
   useEffect(() => {
-    if (imageURL.length) {
-      setImages(imageURL);
-      setValue('imageURL', imageURL);
+    const current = watch('imageURL');
+    if (current && current.length > 0) {
+      setImages(current);
     }
-  }, [imageURL, setValue]);
+  }, [watch]);
 
   useEffect(() => {
-    if (data.length > 0) setImages(data);
+    if (data.length > 0) {
+      setImages(data);
+    }
   }, [data]);
 
   const handleReorder = (newOrder: string[]) => {
@@ -39,9 +44,19 @@ function ImageSelection({ data, setValue, watch }: Props) {
     setValue('imageURL', newOrder);
   };
 
+  const handleDeleteImage = (id: string) => {
+    const nuevaLista = images.filter((img) => img !== id);
+    setImages(nuevaLista);
+    setValue('imageURL', nuevaLista);
+  };
+
   return (
-    <Box sx={styles.container}>
-      <ImageDisplay data={images} onReorder={handleReorder} />
+    <Box className={styles.container}>
+      <ImageDisplay
+        data={images}
+        onReorder={handleReorder}
+        onDelete={handleDeleteImage}
+      />
       <ImageUploader
         isUploading={isUploading}
         uploadProgress={uploadProgress}

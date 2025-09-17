@@ -34,7 +34,12 @@ function CustomTable() {
   return (
     <div className={styles.container}>
       <div className={styles.list}>
-        <Table sx={{ '& td, & th': { border: 'none' } }}>
+        <Table
+          sx={{
+            '& td, & th': { border: 'none' },
+            '& tbody tr': { borderBottom: '1px solid #ddd' },
+          }}
+        >
           <thead>
             <Row header='show' />
           </thead>

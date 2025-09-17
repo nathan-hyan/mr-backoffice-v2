@@ -143,7 +143,6 @@ function CustomInput<T extends FieldValues>({
             },
             '& .MuiInputBase-input.Mui-disabled': {
               color: '#000',
-
               WebkitTextFillColor: '#000',
             },
             '& .MuiInputLabel-root': {
@@ -154,6 +153,17 @@ function CustomInput<T extends FieldValues>({
             },
             '& .Mui-focused': {
               color: '#000',
+            },
+            '& input[type=number]': {
+              MozAppearance: 'textfield',
+            },
+            '& input[type=number]::-webkit-outer-spin-button': {
+              WebkitAppearance: 'none',
+              margin: 0,
+            },
+            '& input[type=number]::-webkit-inner-spin-button': {
+              WebkitAppearance: 'none',
+              margin: 0,
             },
           }}
         />

@@ -69,3 +69,12 @@ export function fabricateFakeData(): {
     },
   ];
 }
+
+export function formatTimestampEs(timestamp: Timestamp): string {
+  const date = timestamp.toDate();
+  return date.toLocaleDateString('es-AR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}

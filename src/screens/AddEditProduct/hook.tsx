@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { Timestamp } from 'firebase/firestore';
 import { enqueueSnackbar } from 'notistack';
 import { Product } from 'types/data';
 import { Nullable } from 'vite-env';
 
-import { ROUTES } from '~config/routes';
 import { FirestoreCollections } from '~constants/firebase';
 import { useProducts } from '~contexts/Products';
 import useFirestore from '~hooks/useFirestore';
@@ -50,16 +50,9 @@ function useProductModal({ productIdToEdit }: Props) {
   };
 
   const onSubmit = (data: Product) => {
+    const hoy = Timestamp.fromDate(new Date());
+
     let stock = { ...data.stock };
-
-    if (productIdToEdit) {
-      updateDocument(productIdToEdit, data, () => {
-        reset();
-
-        navigate('/');
-      });
-      return;
-    }
 
     if (data.stock.noPhysicalStock) {
       stock = {
@@ -68,22 +61,43 @@ function useProductModal({ productIdToEdit }: Props) {
         minStock: 0,
         noPhysicalStock: true,
       };
+    } else {
+      stock.current ??= 0;
+      stock.maxStock ??= 0;
+      stock.minStock ??= 0;
     }
 
-    addDocument({
+    const payload: Product = {
       ...data,
       stock,
-      internalId: getLatestInternalId(productList) + 1,
-    }).then(() => {
-      reset();
+      updatedAt: hoy,
+      createdAt: data.createdAt ?? hoy,
+    };
 
-      navigate('/add');
-    });
+    if (productIdToEdit) {
+      updateDocument(productIdToEdit, payload, () => {
+        reset();
+        navigate('/');
+      });
+    } else {
+      addDocument({
+        ...payload,
+        internalId: getLatestInternalId(productList) + 1,
+      }).then(() => {
+        reset();
+        navigate('/add');
+      });
+    }
   };
 
   const handleCancel = () => {
     reset();
-    navigate(ROUTES[4].path);
+
+    if (productIdToEdit) {
+      enqueueSnackbar('Cambios descartados', { variant: 'info' });
+
+      navigate('/');
+    }
   };
 
   const fillFakeData = () => {

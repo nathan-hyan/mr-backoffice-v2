@@ -8,7 +8,7 @@ import { BannerFormValues } from 'types/data';
 import defaultBanner from '~assets/defaultProduct.jpg';
 import { useTags } from '~contexts/Tags';
 import useBannerUpload from '~hooks/useBannerUpload';
-import { styles } from '~screens/AddEditProduct/components/Information/components/ImageSelection/ImageSelection.styles';
+import styles from '~screens/AddEditProduct/components/Information/components/ImageSelection/styles.module.scss';
 
 import BannerImageDisplay from './BannerDisplay/BannerDisplay';
 import BannerImageUploader from './BannerUpload/BannerUpload';
@@ -95,10 +95,19 @@ function BannerImageSelection({
     setImagesData(updated);
     setValue(fieldName, updated);
   };
-
+  const handleDeleteImage = (url: string) => {
+    const nuevaLista = images.filter((img) => img.url !== url);
+    setImages(nuevaLista);
+    setImagesData(nuevaLista);
+    setValue(fieldName, nuevaLista);
+  };
   return (
-    <Box sx={styles.container}>
-      <BannerImageDisplay data={images} onReorder={handleReorder} />
+    <Box className={styles.container}>
+      <BannerImageDisplay
+        data={images}
+        onReorder={handleReorder}
+        onDelete={handleDeleteImage}
+      />
 
       {images.map((img, idx) => (
         <Autocomplete

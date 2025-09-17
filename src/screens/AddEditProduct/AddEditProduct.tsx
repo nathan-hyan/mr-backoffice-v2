@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { Timestamp } from 'firebase/firestore';
 
 import { useProviders } from '~contexts/Providers';
 
@@ -18,6 +19,7 @@ import Information from './components/Information/Information';
 import Stock from './components/Stock/Stock';
 import TagSelector from './components/TagSelector/TagSelector';
 import useProductModal from './hook';
+import { formatTimestampEs } from './utils';
 
 function AddEditProduct() {
   const { id } = useParams();
@@ -48,29 +50,7 @@ function AddEditProduct() {
 
   const images = watch('imageURL').filter(Boolean);
 
-  function getTodayFormattedEs() {
-    const meses = [
-      'enero',
-      'febrero',
-      'marzo',
-      'abril',
-      'mayo',
-      'junio',
-      'julio',
-      'agosto',
-      'septiembre',
-      'octubre',
-      'noviembre',
-      'diciembre',
-    ];
-    const hoy = new Date();
-    const dia = hoy.getDate();
-    const mes = meses[hoy.getMonth()];
-    const anio = hoy.getFullYear();
-    return `${dia} de ${mes} de ${anio}`;
-  }
-
-  const fechaHoy = getTodayFormattedEs();
+  const fechaHoy = formatTimestampEs(Timestamp.fromDate(new Date()));
 
   return (
     <div className={styles.container}>

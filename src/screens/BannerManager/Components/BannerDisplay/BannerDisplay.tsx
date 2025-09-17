@@ -17,16 +17,19 @@ interface BannerItem {
 interface Props {
   data: BannerItem[];
   onReorder?: (newOrder: BannerItem[]) => void;
+  onDelete?: (url: string) => void;
 }
 
 function SortableImage({
   id,
   src,
   isPrimary,
+  onDelete = () => {},
 }: {
   id: string;
   src: string;
   isPrimary: boolean;
+  onDelete?: (id: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -34,38 +37,72 @@ function SortableImage({
   return (
     <div
       ref={setNodeRef}
-      {...attributes}
-      {...listeners}
       style={{
-        transform: CSS.Transform.toString(transform),
-        transition,
         position: 'relative',
         marginRight: 16,
-        cursor: 'grab',
       }}
     >
-      <img src={src} alt='Banner' className={styles.image} />
-      {isPrimary && (
-        <span
+      <div
+        {...attributes}
+        {...listeners}
+        style={{
+          transform: CSS.Transform.toString(transform),
+          transition,
+          cursor: 'grab',
+        }}
+      >
+        <img src={src} alt='Banner' className={styles.image} />
+        {isPrimary && (
+          <span
+            style={{
+              position: 'absolute',
+              top: 2,
+              left: 2,
+              background: '#1976d2',
+              color: '#fff',
+              fontSize: 10,
+              padding: '2px 6px',
+              borderRadius: 4,
+            }}
+          >
+            Principal
+          </span>
+        )}
+      </div>
+
+      {onDelete && (
+        <button
+          type='button'
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(id);
+          }}
           style={{
             position: 'absolute',
             top: 2,
-            left: 2,
-            background: '#1976d2',
+            right: 2,
+            background: '#f44336',
             color: '#fff',
             fontSize: 10,
             padding: '2px 6px',
             borderRadius: 4,
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 1,
           }}
         >
-          Principal
-        </span>
+          ❌
+        </button>
       )}
     </div>
   );
 }
 
-function BannerImageDisplay({ data, onReorder = () => {} }: Props) {
+function BannerImageDisplay({
+  data,
+  onReorder = () => {},
+  onDelete = () => {},
+}: Props) {
   const handleDragEnd = (event: import('@dnd-kit/core').DragEndEvent) => {
     const { active, over } = event;
     if (active.id !== over?.id && onReorder) {
@@ -101,6 +138,7 @@ function BannerImageDisplay({ data, onReorder = () => {} }: Props) {
               id={image.url}
               src={image.url}
               isPrimary={idx === 0}
+              onDelete={onDelete}
             />
           ))}
         </div>
