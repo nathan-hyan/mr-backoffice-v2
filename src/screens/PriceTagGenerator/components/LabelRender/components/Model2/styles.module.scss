@@ -1,0 +1,116 @@
+.gridWrapper {
+    margin: 30px 100px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+}
+
+.labelContainer {
+    border: 1px solid black;
+    box-sizing: border-box;
+
+}
+
+.topSection {
+    height: 100px;
+    background-color: #e9e90f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+        font-size: 32px;
+        margin-left: 5px;
+
+    }
+
+    .qrSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0 10px;
+
+        p {
+            margin: 0;
+            font-size: 12px;
+
+        }
+
+    }
+
+    .qrCode {
+        width: 60px;
+        height: 60px;
+    }
+
+
+}
+
+hr {
+
+
+    margin: 0
+}
+
+.middleSection {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+
+    p {
+        width: 100%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.bottomSection {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        font-weight: bold;
+    }
+}
+
+
+
+.cm5 {
+    width: 5cm;
+
+    .bottomSection {
+        p {
+            font-size: 14px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+.cm66 {
+    width: 6.6cm;
+
+    h2 {
+        font-size: 40px;
+        margin-left: 15px;
+
+    }
+}

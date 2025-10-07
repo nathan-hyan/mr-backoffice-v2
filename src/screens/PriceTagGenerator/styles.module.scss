@@ -1,0 +1,81 @@
+.container {
+    background-color: #fff;
+    color: #000;
+}
+
+.headerBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.printButton {
+    margin-right: 16px;
+}
+
+.printAccept {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #1486f0;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #0365c0;
+    }
+
+    &:active {
+        background-color: #3f91df;
+    }
+}
+
+.confirmButton {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #12b603;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #139208;
+    }
+
+    &:active {
+        background-color: #46d839;
+    }
+}
+
+.confirmedItem {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.deleteButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-right: 5px;
+
+    &:hover {
+        background-color: #ac0e11;
+    }
+
+    &:active {
+        background-color: #e65b5e;
+    }
+}
