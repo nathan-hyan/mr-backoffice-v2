@@ -1,0 +1,182 @@
+.gridWrapper {
+    margin: 30px 100px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+
+}
+
+.labelContainer {
+    border: 1px solid black;
+    box-sizing: border-box;
+
+}
+
+.topSection {
+    height: 175px;
+    background-color: #e9e90f;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+
+
+
+    .qrSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0 10px;
+
+        p {
+            margin: 0;
+            font-size: 12px;
+
+        }
+
+    }
+
+    .qrCode {
+        width: 60px;
+        height: 60px;
+    }
+
+
+}
+
+.topPrice {
+    padding-left: 10px;
+    width: 100%;
+
+    p {
+        margin: 0;
+        height: 60px;
+
+    }
+
+    span {
+
+        margin: 0;
+        font-weight: bold;
+        font-size: 43px;
+        height: 60px;
+    }
+}
+
+.middleTopSection {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0;
+    width: 100%;
+
+    p {
+        margin: 0;
+
+    }
+
+    span {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .multiplePrices {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }
+}
+
+
+
+.middleSection {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+
+
+    p {
+        width: 100%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.bottomSection {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        font-weight: bold;
+    }
+}
+
+
+
+.cm5 {
+    width: 5cm;
+
+    .bottomSection {
+        p {
+            font-size: 14px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+    }
+}
+
+.cm66 {
+    width: 6.6cm;
+
+    .topPrice {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        span {
+
+            font-size: 55px;
+
+        }
+    }
+
+    .middleTopSection {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+
+
+
+        span {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .multiplePrices {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
