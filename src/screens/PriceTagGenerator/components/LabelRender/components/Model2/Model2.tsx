@@ -22,13 +22,21 @@ interface Props {
 
 function LabelModel2({ product, size, copies }: Props) {
   const labels = Array.from({ length: copies });
-  const sizeClass = size === '5cm' ? styles.cm5 : styles.cm66;
+
+  let sizeClass = '';
+  if (size === '4cm') {
+    sizeClass = styles.cm4;
+  } else if (size === '5cm') {
+    sizeClass = styles.cm5;
+  } else {
+    sizeClass = styles.cm66;
+  }
 
   return (
     <div className={styles.gridWrapper}>
       {labels.map((_, index) => (
-        <div className={`${styles.labelContainer} ${sizeClass}`}>
-          <div key={index}>
+        <div key={index} className={sizeClass}>
+          <div className={styles.labelContainer}>
             <div className={styles.topSection}>
               <h2>${product.prices.retail1.retail}</h2>
               <div className={styles.qrSection}>

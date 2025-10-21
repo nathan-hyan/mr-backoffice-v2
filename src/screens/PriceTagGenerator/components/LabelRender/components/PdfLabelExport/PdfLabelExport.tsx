@@ -7,7 +7,7 @@ import PdfLabelRenderer from '../PDFLabelRenderer/PdfLaberRenderer';
 const CM_TO_PT = 28.3465;
 const PAGE_WIDTH_CM = 21;
 const PAGE_HEIGHT_CM = 29.7;
-const MARGIN_CM = 0.5;
+const MARGIN_CM = 0.4;
 
 export type ConfirmedProduct = {
   product: Product;
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     paddingTop: MARGIN_CM * CM_TO_PT,
     paddingBottom: MARGIN_CM * CM_TO_PT,
-    paddingLeft: MARGIN_CM * CM_TO_PT,
-    paddingRight: MARGIN_CM * CM_TO_PT,
+    paddingLeft: MARGIN_CM * CM_TO_PT - 1.5,
+    paddingRight: MARGIN_CM * CM_TO_PT - 1.5,
   },
 });
 
@@ -88,13 +88,21 @@ function PdfLabelExport({ confirmed }: { confirmed: ConfirmedProduct[] }) {
           const content = row[j];
           if (content) {
             currentPage.push(
-              <PdfLabelRenderer
+              <View
                 key={`label-${index}-${i}-${j}`}
-                product={content.product}
-                model={content.model}
-                size={content.size}
-                barcodeImage={content.barcodeImage}
-              />
+                style={{
+                  width: labelWidthPt,
+                  height: labelHeightPt,
+                  marginBottom: 1,
+                }}
+              >
+                <PdfLabelRenderer
+                  product={content.product}
+                  model={content.model}
+                  size={content.size}
+                  barcodeImage={content.barcodeImage}
+                />
+              </View>
             );
           } else {
             currentPage.push(
@@ -103,6 +111,7 @@ function PdfLabelExport({ confirmed }: { confirmed: ConfirmedProduct[] }) {
                 style={{
                   width: labelWidthPt,
                   height: labelHeightPt,
+                  marginBottom: 3,
                 }}
               />
             );

@@ -1,16 +1,17 @@
 .gridWrapper {
     margin: 30px 100px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
 
 }
 
 .labelContainer {
+    height: 70px;
 
-    border: 1px solid black;
-    box-sizing: border-box;
-    padding: 10px 0;
+    width: 4cm;
+
+
 
     p {
         margin: 0;
@@ -24,16 +25,38 @@
 }
 
 .content {
-    width: 100%;
-    flex-direction: column;
+    align-items: center;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5px;
+    width: 100%;
+
+
+    p {
+
+        font-size: 8px;
+    }
+
+}
+
+.barcodeSection {
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    p {
+        height: 9px;
+        font-size: 8px;
+    }
+
 }
 
 .name {
     width: 100%;
-    height: 60px;
+
+    margin: 0;
 
     p {
         width: 100%;
@@ -43,16 +66,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: center;
+        height: 22px;
 
 
 
     }
-}
-
-.cm5 {
-    width: 5cm;
-}
-
-.cm66 {
-    width: 6.6cm;
 }

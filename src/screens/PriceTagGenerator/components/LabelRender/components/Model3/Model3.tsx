@@ -18,24 +18,24 @@ function LabelModel3({ product, size, copies }: Props) {
   return (
     <div className={styles.gridWrapper}>
       {labels.map((_, index) => (
-        <div className={`${styles.labelContainer} ${sizeClass}`}>
-          <div key={index}>
+        <div className={sizeClass}>
+          <div key={index} className={styles.labelContainer}>
             <div className={styles.topSection}>
               <div className={styles.topPrice}>
                 <p>
-                  1x <span> ${product.prices.retail1.retail}</span>
+                  1x <span>$ {product.prices.retail1.retail}</span>
                 </p>
               </div>
               <div className={styles.middleTopSection}>
                 <div className={styles.multiplePrices}>
                   <p>
-                    3x <span>${product.prices.retail2.retail}</span>
+                    3x <span>$ {product.prices.retail2.retail}</span>
                   </p>
                   <p>
-                    5x: <span>${product.prices.retail3.retail}</span>
+                    5x <span>$ {product.prices.retail3.retail}</span>
                   </p>
                   <p>
-                    10x: <span> ${product.prices.retail4.retail}</span>
+                    10x <span> $ {product.prices.retail4.retail}</span>
                   </p>
                 </div>
                 <div className={styles.qrSection}>

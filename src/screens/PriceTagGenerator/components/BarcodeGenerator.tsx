@@ -8,9 +8,9 @@ function BarcodeGenerator({ value }: { value: string }) {
     JsBarcode(renderElementRef.current, value, {
       background: 'transparent',
       margin: 0,
-      height: 80,
-      width: 1.3,
-      fontSize: 10,
+      height: 30,
+      width: 1.2,
+      fontSize: 8,
       displayValue: false,
     });
   }, [value]);

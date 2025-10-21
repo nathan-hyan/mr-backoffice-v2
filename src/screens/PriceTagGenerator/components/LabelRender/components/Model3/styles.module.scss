@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
 .gridWrapper {
     margin: 30px 100px;
     display: grid;
@@ -6,139 +8,156 @@
 
 }
 
-.labelContainer {
-    border: 1px solid black;
-    box-sizing: border-box;
-
-}
-
-.topSection {
-    height: 175px;
-    background-color: #e9e90f;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-direction: column;
-
-
-
-    .qrSection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        margin: 0 10px;
-
-        p {
-            margin: 0;
-            font-size: 12px;
-
-        }
-
-    }
-
-    .qrCode {
-        width: 60px;
-        height: 60px;
-    }
-
-
-}
-
-.topPrice {
-    padding-left: 10px;
-    width: 100%;
-
-    p {
-        margin: 0;
-        height: 60px;
-
-    }
-
-    span {
-
-        margin: 0;
-        font-weight: bold;
-        font-size: 43px;
-        height: 60px;
-    }
-}
-
-.middleTopSection {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin: 0;
-    width: 100%;
-
-    p {
-        margin: 0;
-
-    }
-
-    span {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .multiplePrices {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: flex-start;
-    }
-}
-
-
-
-.middleSection {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-
-
-    p {
-        width: 100%;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: center;
-        margin: 0;
-    }
-}
-
-.bottomSection {
-    width: 100%;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    span {
-        font-weight: bold;
-    }
-}
-
 
 
 .cm5 {
     width: 5cm;
 
-    .bottomSection {
+    .labelContainer {
+        height: 138px;
+        box-sizing: border-box;
+        font-family: poppins, sans-serif;
+
+    }
+
+    .topSection {
+        height: 98px;
+        background-color: #FFF111;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+
+    }
+
+    .topPrice {
+        padding-left: 10px;
+        width: 100%;
+
+
+
         p {
-            font-size: 14px;
+            margin: 0;
+            height: 32px;
+
         }
 
         span {
+            height: 32px;
+            line-height: 1.2;
+            font-weight: 900;
+            font-size: 32px;
+
+        }
+    }
+
+    .middleTopSection {
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+        line-height: 1.2;
+
+        p {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            margin: 0;
+            margin: 0;
+
+        }
+
+        span {
+
+            margin-left: 5px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .multiplePrices {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            line-height: 1.1;
+        }
+
+        .qrSection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0 10px;
+
+            p {
+                margin: 0;
+                font-size: 10px;
+                font-weight: bold;
+
+            }
+
+        }
+
+        .qrCode {
+            width: 46px;
+            height: 46px;
+        }
+    }
+
+    hr {
+        margin: 0;
+    }
+
+    .middleSection {
+        width: 100%;
+        height: 27px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+
+
+        p {
+            width: 100%;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            margin: 0;
+            font-size: 10px;
+            line-height: 1.1;
+        }
+    }
+
+    .bottomSection {
+        width: 100%;
+        height: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-left: 10px;
+
+        span {
             font-weight: bold;
+            font-size: 10px;
+            margin: 0;
+            height: 7px;
+            line-height: 0.7;
+        }
+
+        p {
+            font-size: 10px;
+            margin: 0;
+            height: 7px;
+            line-height: 0.7;
         }
     }
 }
@@ -146,37 +165,145 @@
 .cm66 {
     width: 6.6cm;
 
-    .topPrice {
+    .labelContainer {
+        height: 182px;
+        box-sizing: border-box;
+        font-family: poppins, sans-serif;
+
+    }
+
+    .topSection {
+        height: 129px;
+        background-color: #FFF111;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+
+    }
+
+    .topPrice {
+        padding-left: 20px;
+        width: 100%;
+
+
+
+        p {
+            margin: 0;
+            height: 42px;
+            font-size: 20px;
+
+        }
 
         span {
-
-            font-size: 55px;
+            height: 42px;
+            line-height: 1.2;
+            font-weight: 900;
+            font-size: 42px;
 
         }
     }
 
     .middleTopSection {
+
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        margin: 0;
+        width: 100%;
+        line-height: 1.2;
 
-
-
+        p {
+            margin: 0;
+            font-size: 20px;
+        }
 
         span {
             font-size: 24px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .multiplePrices {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            line-height: 1.1;
+        }
+
+        .qrSection {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            margin: 0 10px;
+
+            p {
+                margin: 0;
+                font-size: 12px;
+                font-weight: bold;
+
+            }
+
+        }
+
+        .qrCode {
+            width: 59px;
+            height: 59px;
+        }
+    }
+
+    hr {
+        margin: 0;
+    }
+
+    .middleSection {
+        width: 100%;
+        height: 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+
+
+        p {
+            width: 100%;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.1;
+        }
+    }
+
+    .bottomSection {
+        width: 100%;
+        height: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-left: 20px;
+
+        span {
+            font-weight: bold;
+            font-size: 13px;
+            margin: 0;
+            height: 7px;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 13px;
+            margin: 0;
+            height: 7px;
+            line-height: 1;
         }
     }
 }
