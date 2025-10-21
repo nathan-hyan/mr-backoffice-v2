@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useProducts } from '~contexts/Products';
 
@@ -28,9 +29,35 @@ function ControlPanel({ onChange, selectedModel, onSelectModel }: Props) {
   const { productList, performSearch, searchQuery } = useProducts();
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [size, setSize] = useState('5cm');
+  const [size, setSize] = useState('4cm');
   const [copies, setCopies] = useState(1);
   const [showModal, setShowModal] = useState(false);
+
+  const isBarcodeModel =
+    typeof selectedModel === 'string' &&
+    /código de barras|codigo de barras|barcode/i.test(selectedModel);
+
+  const isWholesaleModel =
+    typeof selectedModel === 'string' && /por mayor/i.test(selectedModel);
+
+  const getSizeOptions = () => {
+    if (isBarcodeModel) return ['4cm'];
+    if (isWholesaleModel) return ['5cm', '6.6cm'];
+    return ['4cm', '5cm', '6.6cm'];
+  };
+
+  useEffect(() => {
+    const validSizes = getSizeOptions();
+    if (!validSizes.includes(size)) {
+      const fallback = validSizes[0];
+      setSize(fallback);
+      onChange({
+        selectedProducts: selectedProduct ? [selectedProduct.id] : [],
+        size: fallback,
+        copies,
+      });
+    }
+  }, [selectedModel]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     performSearch(e.target.value, 0);
@@ -131,9 +158,13 @@ function ControlPanel({ onChange, selectedModel, onSelectModel }: Props) {
           className={styles.input}
           value={size}
           onChange={handleSizeChange}
+          disabled={isBarcodeModel} // solo se bloquea en código de barras
         >
-          <option value='5cm'>5 cm</option>
-          <option value='6.6cm'>6.6 cm</option>
+          {getSizeOptions().map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
         </select>
       </div>
 
