@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import qr from '~assets/qrplace.png';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import styles from './styles.module.scss';
 
@@ -11,6 +12,10 @@ interface Product {
     retail1: {
       retail: number;
     };
+    cost: {
+      value: number;
+    };
+    retail: { value: number };
   };
 }
 
@@ -38,7 +43,18 @@ function LabelModel2({ product, size, copies }: Props) {
         <div key={index} className={sizeClass}>
           <div className={styles.labelContainer}>
             <div className={styles.topSection}>
-              <h2>${product.prices.retail1.retail}</h2>
+              <h2>
+                $
+                {product.prices.retail1?.retail
+                  ? Math.floor(product.prices.retail1.retail)
+                  : Math.floor(
+                      calculateNumberWithPercentage(
+                        product.prices.cost?.value ?? 0,
+                        product.prices.retail?.value ?? 0,
+                        'incr'
+                      ) || 0
+                    )}
+              </h2>
               <div className={styles.qrSection}>
                 <img className={styles.qrCode} src={qr} alt='QR' />
                 <p>{product.id.slice(0, 6)}</p>
