@@ -375,7 +375,7 @@ function PdfLabelRenderer({ product, model, size, barcodeImage }: Props) {
                     marginLeft: 5,
                   }}
                 >
-                  ${product.prices.retail2.retail}
+                  ${product.prices.retail2?.retail ?? 0}
                 </Text>
               </Text>
               <Text
@@ -394,7 +394,7 @@ function PdfLabelRenderer({ product, model, size, barcodeImage }: Props) {
                     marginLeft: 5,
                   }}
                 >
-                  ${product.prices.retail3.retail}
+                  ${product.prices.retail3?.retail ?? 0}
                 </Text>
               </Text>
               <Text
@@ -413,7 +413,7 @@ function PdfLabelRenderer({ product, model, size, barcodeImage }: Props) {
                     marginLeft: 5,
                   }}
                 >
-                  ${product.prices.retail4.retail}
+                  ${product.prices.retail4?.retail ?? 0}
                 </Text>
               </Text>
             </View>

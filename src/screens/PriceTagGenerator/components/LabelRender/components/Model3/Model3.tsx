@@ -2,6 +2,7 @@
 import { Product } from 'types/data';
 
 import qr from '~assets/qrplace.png';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 
 import styles from './styles.module.scss';
 
@@ -23,19 +24,32 @@ function LabelModel3({ product, size, copies }: Props) {
             <div className={styles.topSection}>
               <div className={styles.topPrice}>
                 <p>
-                  1x <span>$ {product.prices.retail1.retail}</span>
+                  1x{' '}
+                  <span>
+                    {' '}
+                    $
+                    {product.prices.retail1?.retail
+                      ? Math.floor(product.prices.retail1.retail)
+                      : Math.floor(
+                          calculateNumberWithPercentage(
+                            product.prices.cost?.value ?? 0,
+                            product.prices.retail?.value ?? 0,
+                            'incr'
+                          ) || 0
+                        )}
+                  </span>
                 </p>
               </div>
               <div className={styles.middleTopSection}>
                 <div className={styles.multiplePrices}>
                   <p>
-                    3x <span>$ {product.prices.retail2.retail}</span>
+                    3x <span>$ {product.prices.retail2?.retail ?? 0} </span>
                   </p>
                   <p>
-                    5x <span>$ {product.prices.retail3.retail}</span>
+                    5x <span>$ {product.prices.retail3?.retail ?? 0} </span>
                   </p>
                   <p>
-                    10x <span> $ {product.prices.retail4.retail}</span>
+                    10x <span> $ {product.prices.retail4?.retail ?? 0}</span>
                   </p>
                 </div>
                 <div className={styles.qrSection}>
