@@ -3,6 +3,7 @@ import { Font, Image, StyleSheet, Text, View } from '@react-pdf/renderer';
 import { Product } from 'types/data';
 
 import qr from '~assets/qrplace.png';
+import calculateNumberWithPercentage from '~utils/addPercentage';
 
 Font.register({
   family: 'Poppins',
@@ -160,11 +161,19 @@ function PdfLabelRenderer({ product, model, size, barcodeImage }: Props) {
               fontSize: conf.priceFS,
               fontFamily: 'Poppins',
               fontWeight: 900,
-
               marginLeft: 5,
             }}
           >
-            ${product.prices.retail1.retail}
+            $
+            {product.prices.retail1?.retail
+              ? Math.floor(product.prices.retail1.retail)
+              : Math.floor(
+                  calculateNumberWithPercentage(
+                    product.prices.cost?.value ?? 0,
+                    product.prices.retail?.value ?? 0,
+                    'incr'
+                  ) || 0
+                )}
           </Text>
 
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -320,7 +329,16 @@ function PdfLabelRenderer({ product, model, size, barcodeImage }: Props) {
                     lineHeight: 1,
                   }}
                 >
-                  ${product.prices.retail1.retail}
+                  $
+                  {product.prices.retail1?.retail
+                    ? Math.floor(product.prices.retail1.retail)
+                    : Math.floor(
+                        calculateNumberWithPercentage(
+                          product.prices.cost?.value ?? 0,
+                          product.prices.retail?.value ?? 0,
+                          'incr'
+                        ) || 0
+                      )}
                 </Text>
               </Text>
             </View>
