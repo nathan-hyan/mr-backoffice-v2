@@ -9,15 +9,15 @@ Font.register({
   family: 'Poppins',
   fonts: [
     {
-      src: './src/screens/PriceTagGenerator/components/LabelRender/components/PDFLabelRenderer/fonts/Poppins-Regular.ttf',
+      src: '/Fonts/Poppins-Regular.ttf',
       fontWeight: 'normal',
     },
     {
-      src: './src/screens/PriceTagGenerator/components/LabelRender/components/PDFLabelRenderer/fonts/Poppins-Bold.ttf',
+      src: '/Fonts/Poppins-Bold.ttf',
       fontWeight: 'bold',
     },
     {
-      src: './src/screens/PriceTagGenerator/components/LabelRender/components/PDFLabelRenderer/fonts/Poppins-Black.ttf',
+      src: '/Fonts/Poppins-Black.ttf',
       fontWeight: 900,
     },
   ],
